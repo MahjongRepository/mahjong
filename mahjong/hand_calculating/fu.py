@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import math
-
 from mahjong.constants import TERMINAL_INDICES, HONOR_INDICES
 from mahjong.meld import Meld
 from mahjong.utils import is_pair, is_pon, simplify, contains_terminals
@@ -155,4 +153,4 @@ class HandFuCalculator(object):
     def round_fu(self, fu_details):
         # 22 -> 30 and etc.
         fu = sum([x['fu'] for x in fu_details])
-        return int(math.ceil(fu / 10.0)) * 10
+        return (fu + 9) // 10 * 10

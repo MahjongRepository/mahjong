@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import math
 
 
 class ScoresCalculator(object):
@@ -40,10 +39,10 @@ class ScoresCalculator(object):
             six_rounded = double_rounded * 3
         else:
             base_points = fu * pow(2, 2 + han)
-            rounded = math.ceil(base_points / 100.) * 100
-            double_rounded = math.ceil(2 * base_points / 100.) * 100
-            four_rounded = math.ceil(4 * base_points / 100.) * 100
-            six_rounded = math.ceil(6 * base_points / 100.) * 100
+            rounded = (base_points + 99) // 100 * 100
+            double_rounded = (2 * base_points + 99) // 100 * 100
+            four_rounded = (4 * base_points + 99) // 100 * 100
+            six_rounded = (6 * base_points + 99) // 100 * 100
 
             # mangan
             if rounded > 2000:
