@@ -363,7 +363,7 @@ class FinishedHand(object):
                     for tile in tiles_for_dora:
                         count_of_dora += plus_dora(tile, dora_indicators)
 
-                    for tile in tiles:
+                    for tile in tiles_for_dora:
                         if is_aka_dora(tile, has_aka_dora):
                             count_of_aka_dora += 1
 
