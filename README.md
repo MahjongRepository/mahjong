@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/MahjongRepository/mahjong.svg?branch=master)](https://travis-ci.org/MahjongRepository/mahjong)
+
 # Riichi mahjong hands calculation
 
 We have a code which can calculate hand cost (han, fu, yaku and scores) 
