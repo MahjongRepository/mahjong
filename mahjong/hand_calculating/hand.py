@@ -29,7 +29,6 @@ class HandResponse(object):
 
 
 class FinishedHand(object):
-    config = YakuConfig()
 
     def estimate_hand_value(self,
                             tiles,
@@ -52,7 +51,8 @@ class FinishedHand(object):
                             player_wind=None,
                             round_wind=None,
                             has_open_tanyao=False,
-                            has_aka_dora=False):
+                            has_aka_dora=False,
+                            disable_double_yakuman=False):
         """
         :param tiles: array with 14 tiles in 136-tile format
         :param win_tile: tile that caused win (ron or tsumo)
@@ -69,14 +69,17 @@ class FinishedHand(object):
         :param is_chiihou:
         :param is_daburu_riichi:
         :param is_nagashi_mangan:
-        :param has_open_tanyao:
-        :param has_aka_dora:
         :param melds: array with Meld objects
         :param dora_indicators: array of tiles in 136-tile format
         :param player_wind: index of player wind
         :param round_wind: index of round wind
+        :param has_open_tanyao:
+        :param has_aka_dora:
+        :param disable_double_yakuman:
         :return: HandResponse object
         """
+
+        self.config = YakuConfig()
 
         if not melds:
             melds = []
@@ -126,6 +129,13 @@ class FinishedHand(object):
 
         if not agari.is_agari(tiles_34, opened_melds):
             return HandResponse(error='Hand is not winning')
+
+        if disable_double_yakuman:
+            self.config.daburu_kokushi.han_closed = 13
+            self.config.suuankou_tanki.han_closed = 13
+            self.config.daburu_chuuren_poutou.han_closed = 13
+            self.config.daisuushi.han_closed = 13
+            self.config.daisuushi.han_open = 13
 
         hand_options = divider.divide_hand(tiles_34, opened_melds, called_kan_indices)
 

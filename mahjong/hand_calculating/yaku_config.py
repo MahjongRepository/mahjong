@@ -8,74 +8,76 @@ from mahjong.hand_calculating.yaku_list.yakuman import *
 
 
 class YakuConfig(object):
-    # Yaku situations
-    tsumo = AkaDora()
-    riichi = Riichi()
-    ippatsu = Ippatsu()
-    chankan = Chankan()
-    rinshan = Rinshan()
-    haitei = Haitei()
-    houtei = Houtei()
-    daburu_riichi = DaburuRiichi()
-    nagashi_mangan = NagashiMangan()
-    renhou = Renhou()
 
-    # Yaku 1 Hands
-    pinfu = Pinfu()
-    tanyao = Tanyao()
-    iipeiko = Iipeiko()
-    haku = Haku()
-    hatsu = Hatsu()
-    chun = Chun()
+    def __init__(self):
+        # Yaku situations
+        self.tsumo = AkaDora()
+        self.riichi = Riichi()
+        self.ippatsu = Ippatsu()
+        self.chankan = Chankan()
+        self.rinshan = Rinshan()
+        self.haitei = Haitei()
+        self.houtei = Houtei()
+        self.daburu_riichi = DaburuRiichi()
+        self.nagashi_mangan = NagashiMangan()
+        self.renhou = Renhou()
 
-    east = YakuhaiEast()
-    south = YakuhaiSouth()
-    west = YakuhaiWest()
-    north = YakuhaiNorth()
-    yakuhai_place = YakuhaiOfPlace()
-    yakuhai_round = YakuhaiOfRound()
+        # Yaku 1 Hands
+        self.pinfu = Pinfu()
+        self.tanyao = Tanyao()
+        self.iipeiko = Iipeiko()
+        self.haku = Haku()
+        self.hatsu = Hatsu()
+        self.chun = Chun()
 
-    # Yaku 2 Hands
-    sanshoku = Sanshoku()
-    ittsu = Ittsu()
-    chanta = Chanta()
-    honroto = Honroto()
-    toitoi = Toitoi()
-    sanankou = Sanankou()
-    sankantsu = SanKantsu()
-    sanshoku_douko = SanshokuDoukou()
-    chiitoitsu = Chiitoitsu()
-    shosangen = Shosangen()
+        self.east = YakuhaiEast()
+        self.south = YakuhaiSouth()
+        self.west = YakuhaiWest()
+        self.north = YakuhaiNorth()
+        self.yakuhai_place = YakuhaiOfPlace()
+        self.yakuhai_round = YakuhaiOfRound()
 
-    # Yaku 3 Hands
-    honitsu = Honitsu()
-    junchan = Junchan()
-    ryanpeiko = Ryanpeikou()
+        # Yaku 2 Hands
+        self.sanshoku = Sanshoku()
+        self.ittsu = Ittsu()
+        self.chanta = Chanta()
+        self.honroto = Honroto()
+        self.toitoi = Toitoi()
+        self.sanankou = Sanankou()
+        self.sankantsu = SanKantsu()
+        self.sanshoku_douko = SanshokuDoukou()
+        self.chiitoitsu = Chiitoitsu()
+        self.shosangen = Shosangen()
 
-    # Yaku 6 Hands
-    chinitsu = Chinitsu()
+        # Yaku 3 Hands
+        self.honitsu = Honitsu()
+        self.junchan = Junchan()
+        self.ryanpeiko = Ryanpeikou()
 
-    # Yakuman list
-    kokushi = KokushiMusou()
-    chuuren_poutou = ChuurenPoutou()
-    suuankou = Suuankou()
-    daisangen = Daisangen()
-    shosuushi = Shousuushii()
-    ryuisou = Ryuuiisou()
-    suukantsu = Suukantsu()
-    tsuisou = Tsuuiisou()
-    chinroto = Chinroutou()
+        # Yaku 6 Hands
+        self.chinitsu = Chinitsu()
 
-    # Double yakuman
-    daisuushi = DaiSuushii()
-    daburu_kokushi = DaburuKokushiMusou()
-    suuankou_tanki = SuuankouTanki()
-    daburu_chuuren_poutou = DaburuChuurenPoutou()
+        # Yakuman list
+        self.kokushi = KokushiMusou()
+        self.chuuren_poutou = ChuurenPoutou()
+        self.suuankou = Suuankou()
+        self.daisangen = Daisangen()
+        self.shosuushi = Shousuushii()
+        self.ryuisou = Ryuuiisou()
+        self.suukantsu = Suukantsu()
+        self.tsuisou = Tsuuiisou()
+        self.chinroto = Chinroutou()
 
-    # Yakuman situations
-    tenhou = Tenhou()
-    chiihou = Chiihou()
+        # Double yakuman
+        self.daisuushi = DaiSuushii()
+        self.daburu_kokushi = DaburuKokushiMusou()
+        self.suuankou_tanki = SuuankouTanki()
+        self.daburu_chuuren_poutou = DaburuChuurenPoutou()
 
-    # Other
-    dora = Dora()
-    aka_dora = AkaDora()
+        # Yakuman situations
+        self.tenhou = Tenhou()
+        self.chiihou = Chiihou()
+
+        # Other
+        self.dora = Dora()
+        self.aka_dora = AkaDora()
