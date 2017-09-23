@@ -7,7 +7,7 @@ from mahjong.hand_calculating.scores import ScoresCalculator
 from mahjong.hand_calculating.yaku_config import YakuConfig
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
-from mahjong.utils import is_chi, is_pon, plus_dora
+from mahjong.utils import is_chi, is_pon, plus_dora, is_aka_dora
 
 
 class HandResponse(object):
@@ -24,6 +24,7 @@ class HandResponse(object):
         self.fu = fu
         self.fu_details = fu_details
         self.yaku = yaku
+        self.yaku = sorted(yaku, key=lambda x: x.yaku_id)
         self.error = error
 
 
@@ -89,8 +90,8 @@ class FinishedHand(object):
         kan_indices_136 = []
         for meld in melds:
             if meld.type == Meld.KAN or meld.type == Meld.CHANKAN:
-                called_kan_indices.append(meld.tiles[0] // 4)
-                kan_indices_136 = [meld.tiles[0]]
+                called_kan_indices.append(meld.tiles[3] // 4)
+                kan_indices_136.append(meld.tiles[3])
 
         if not dora_indicators:
             dora_indicators = []
@@ -343,27 +344,29 @@ class FinishedHand(object):
                     error = 'Not valid han ({0}) and fu ({1})'.format(han, fu)
                     cost = None
 
-                # we can add dora han only if we have other yaku in hand
-                # and if we don't have yakuman
+                # we don't need to add dora to yakuman
                 if not yakuman_list:
                     tiles_for_dora = tiles + kan_indices_136
                     count_of_dora = 0
                     count_of_aka_dora = 0
+
                     for tile in tiles_for_dora:
-                        count_of_dora += plus_dora(tile, dora_indicators, has_aka_dora)
+                        count_of_dora += plus_dora(tile, dora_indicators)
+
+                    for tile in tiles:
+                        if is_aka_dora(tile, has_aka_dora):
+                            count_of_aka_dora += 1
 
                     if count_of_dora:
-                        yaku_item = self.config.dora
-                        yaku_item.han_open = count_of_dora
-                        yaku_item.han_closed = count_of_dora
-                        hand_yaku.append(yaku_item)
+                        self.config.dora.han_open = count_of_dora
+                        self.config.dora.han_closed = count_of_dora
+                        hand_yaku.append(self.config.dora)
                         han += count_of_dora
 
                     if count_of_aka_dora:
-                        yaku_item = self.config.aka_dora
-                        yaku_item.han_open = count_of_aka_dora
-                        yaku_item.han_closed = count_of_aka_dora
-                        hand_yaku.append(yaku_item)
+                        self.config.aka_dora.han_open = count_of_aka_dora
+                        self.config.aka_dora.han_closed = count_of_aka_dora
+                        hand_yaku.append(self.config.aka_dora)
                         han += count_of_aka_dora
 
                 if not error:

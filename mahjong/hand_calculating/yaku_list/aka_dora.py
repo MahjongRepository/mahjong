@@ -18,3 +18,6 @@ class AkaDora(Yaku):
 
     def is_condition_met(self, hand, *args):
         return True
+
+    def __str__(self):
+        return 'Aka Dora {}'.format(self.han_closed)

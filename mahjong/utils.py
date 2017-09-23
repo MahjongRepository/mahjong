@@ -1,11 +1,15 @@
 from mahjong.constants import EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, HONOR_INDICES, TERMINAL_INDICES
 
 
-def is_aka_dora(tile):
+def is_aka_dora(tile, aka_enabled):
     """
     :param tile: int 136 tiles format
+    :param aka_enabled: depends on table rules
     :return: boolean
     """
+
+    if not aka_enabled:
+        return False
 
     if tile in [FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU]:
         return True
@@ -13,7 +17,7 @@ def is_aka_dora(tile):
     return False
 
 
-def plus_dora(tile, dora_indicators, count_aka_dora=True):
+def plus_dora(tile, dora_indicators):
     """
     :param tile: int 136 tiles format
     :param dora_indicators: array of 136 tiles format
@@ -21,9 +25,6 @@ def plus_dora(tile, dora_indicators, count_aka_dora=True):
     """
     tile_index = tile // 4
     dora_count = 0
-
-    if count_aka_dora and is_aka_dora(tile):
-        dora_count += 1
 
     for dora in dora_indicators:
         dora //= 4
