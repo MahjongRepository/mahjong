@@ -587,7 +587,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
 
         tiles = self._string_to_136_array(sou='111333', man='123', pin='44666')
         melds = [
-            self._make_meld(Meld.KAN, sou='1111'),
+            self._make_meld(Meld.CHANKAN, sou='1111'),
             self._make_meld(Meld.KAN, sou='3333'),
             self._make_meld(Meld.KAN, pin='6666'),
         ]

@@ -18,5 +18,5 @@ class SanKantsu(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand, melds, *args):
-        kan_sets = [x for x in melds if x.type == Meld.KAN]
+        kan_sets = [x for x in melds if x.type == Meld.KAN or x.type == Meld.CHANKAN]
         return len(kan_sets) == 3
