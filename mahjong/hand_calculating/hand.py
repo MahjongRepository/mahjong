@@ -23,8 +23,8 @@ class HandResponse(object):
         self.han = han
         self.fu = fu
         self.fu_details = fu_details
-        self.yaku = yaku
-        self.yaku = sorted(yaku, key=lambda x: x.yaku_id)
+        if yaku:
+            self.yaku = sorted(yaku, key=lambda x: x.yaku_id)
         self.error = error
 
 
