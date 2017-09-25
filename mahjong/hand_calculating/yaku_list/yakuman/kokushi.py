@@ -22,5 +22,3 @@ class KokushiMusou(Yaku):
                 tiles_34[26] * tiles_34[27] * tiles_34[28] * tiles_34[29] * tiles_34[30] *
                 tiles_34[31] * tiles_34[32] * tiles_34[33] == 2):
             return True
-
-

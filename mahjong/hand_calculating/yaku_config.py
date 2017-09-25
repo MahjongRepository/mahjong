@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
-from mahjong.hand_calculating.yaku_list import *
-from mahjong.hand_calculating.yaku_list.east import YakuhaiEast
-from mahjong.hand_calculating.yaku_list.north import YakuhaiNorth
-from mahjong.hand_calculating.yaku_list.south import YakuhaiSouth
-from mahjong.hand_calculating.yaku_list.west import YakuhaiWest
-from mahjong.hand_calculating.yaku_list.yakuman import *
+from mahjong.hand_calculating.yaku_list import AkaDora, Riichi, Ippatsu, Chankan, Rinshan, Haitei, Houtei, \
+    DaburuRiichi, NagashiMangan, Renhou, Pinfu, Tanyao, Iipeiko, Haku, Hatsu, Chun, YakuhaiOfPlace, YakuhaiOfRound, \
+    YakuhaiEast, YakuhaiSouth, YakuhaiWest, YakuhaiNorth, Sanshoku, Ittsu, Chanta, Honroto, Toitoi, Sanankou, \
+    SanKantsu, SanshokuDoukou, Chiitoitsu, Shosangen, Honitsu, Junchan, Ryanpeikou, Chinitsu, Tsumo, Dora
+from mahjong.hand_calculating.yaku_list.yakuman import KokushiMusou, ChuurenPoutou, Suuankou, Daisangen, Shousuushii, \
+    Ryuuiisou, Suukantsu, Tsuuiisou, Chinroutou, DaiSuushii, DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, \
+    Tenhou, Chiihou
 
 
 class YakuConfig(object):
 
     def __init__(self):
         # Yaku situations
-        self.tsumo = AkaDora()
+        self.tsumo = Tsumo()
         self.riichi = Riichi()
         self.ippatsu = Ippatsu()
         self.chankan = Chankan()

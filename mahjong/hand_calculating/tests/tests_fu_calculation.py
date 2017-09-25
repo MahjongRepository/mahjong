@@ -8,7 +8,7 @@ from mahjong.tests_mixin import TestMixin
 
 
 class FuCalculationTestCase(unittest.TestCase, TestMixin):
-    
+
     def _get_win_group(self, hand, win_tile):
         return [x for x in hand if win_tile // 4 in x][0]
 
@@ -154,7 +154,10 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
 
         valued_tiles = [EAST]
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile),  valued_tiles=valued_tiles)
+        fu_details, fu = fu_calculator.calculate_fu(hand,
+                                                    win_tile,
+                                                    self._get_win_group(hand, win_tile),
+                                                    valued_tiles=valued_tiles)
         self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 30, 'reason': HandFuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 2, 'reason': HandFuCalculator.VALUED_PAIR} in fu_details)
@@ -162,7 +165,10 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
 
         # double valued pair
         valued_tiles = [EAST, EAST]
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile),  valued_tiles=valued_tiles)
+        fu_details, fu = fu_calculator.calculate_fu(hand,
+                                                    win_tile,
+                                                    self._get_win_group(hand, win_tile),
+                                                    valued_tiles=valued_tiles)
         self.assertEqual(3, len(fu_details))
         self.assertTrue({'fu': 30, 'reason': HandFuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 2, 'reason': HandFuCalculator.VALUED_PAIR} in fu_details)

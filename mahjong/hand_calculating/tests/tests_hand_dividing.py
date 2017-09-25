@@ -2,7 +2,6 @@
 import unittest
 
 from mahjong.hand_calculating.divider import HandDivider
-from mahjong.hand_calculating.scores import ScoresCalculator
 from mahjong.tests_mixin import TestMixin
 
 

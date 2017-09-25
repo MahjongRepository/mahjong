@@ -8,7 +8,7 @@ from mahjong.tests_mixin import TestMixin
 
 
 class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
-    
+
     def setUp(self):
         self.config = YakuConfig()
 

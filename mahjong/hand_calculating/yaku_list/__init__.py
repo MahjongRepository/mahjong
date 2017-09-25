@@ -32,3 +32,7 @@ from mahjong.hand_calculating.yaku_list.toitoi import Toitoi
 from mahjong.hand_calculating.yaku_list.tsumo import Tsumo
 from mahjong.hand_calculating.yaku_list.yakuhai_place import YakuhaiOfPlace
 from mahjong.hand_calculating.yaku_list.yakuhai_round import YakuhaiOfRound
+from mahjong.hand_calculating.yaku_list.east import YakuhaiEast
+from mahjong.hand_calculating.yaku_list.west import YakuhaiWest
+from mahjong.hand_calculating.yaku_list.north import YakuhaiNorth
+from mahjong.hand_calculating.yaku_list.south import YakuhaiSouth

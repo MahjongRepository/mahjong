@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from mahjong.constants import EAST, SOUTH, WEST
+from mahjong.constants import WEST
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_pon
 
