@@ -2,7 +2,7 @@
 import unittest
 
 from mahjong.constants import EAST, SOUTH, WEST, NORTH, FIVE_RED_SOU
-from mahjong.hand_calculating.hand import FinishedHand
+from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.meld import Meld
 from mahjong.tests_mixin import TestMixin
 from mahjong.hand_calculating.yaku_config import YakuConfig
@@ -19,7 +19,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         I did fixes and leave hands in tests, to be sure that bugs were fixed.
         """
 
-        hand = FinishedHand()
+        hand = HandCalculator()
         player_wind = EAST
 
         tiles = self._string_to_136_array(pin='112233999', honors='11177')
@@ -208,7 +208,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.han, 1)
 
     def test_is_riichi(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
@@ -224,7 +224,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertNotEqual(result.error, None)
 
     def test_is_tsumo(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
@@ -241,7 +241,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertNotEqual(result.error, None)
 
     def test_is_ippatsu(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
@@ -257,7 +257,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertNotEqual(result.error, None)
 
     def test_is_rinshan(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
@@ -269,7 +269,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_chankan(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
@@ -281,7 +281,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_haitei(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
@@ -293,7 +293,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_houtei(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
@@ -305,7 +305,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_renhou(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
@@ -317,7 +317,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_daburu_riichi(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
@@ -329,7 +329,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_nagashi_mangan(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='13579', man='234456', pin='66')
 
@@ -340,7 +340,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_chitoitsu_hand(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='113355', man='113355', pin='11')
         self.assertTrue(self.config.chiitoitsu.is_condition_met(self._hand(tiles)))
@@ -358,7 +358,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_tanyao(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='234567', man='234567', pin='22')
         self.assertTrue(self.config.tanyao.is_condition_met(self._hand(tiles)))
@@ -395,7 +395,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
 
     def test_is_pinfu_hand(self):
         player_wind, round_wind = EAST, WEST
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123456', man='123456', pin='55')
         win_tile = self._string_to_136_tile(man='6')
@@ -458,7 +458,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertNotEqual(result.error, None)
 
     def test_is_iipeiko(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='112233', man='123', pin='23444')
         self.assertTrue(self.config.iipeiko.is_condition_met(self._hand(tiles)))
@@ -477,7 +477,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertNotEqual(result.error, None)
 
     def test_is_ryanpeiko(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='112233', man='22', pin='223344')
         self.assertTrue(self.config.ryanpeiko.is_condition_met(self._hand(tiles)))
@@ -502,7 +502,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertNotEqual(result.error, None)
 
     def test_is_sanshoku(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='123', man='123', pin='12345677')
         self.assertTrue(self.config.sanshoku.is_condition_met(self._hand(tiles)))
@@ -527,7 +527,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_sanshoku_douko(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='111', man='111', pin='11145677')
         self.assertTrue(self.config.sanshoku_douko.is_condition_met(self._hand(tiles)))
@@ -546,7 +546,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_toitoi(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='111333', man='333', pin='44555')
         self.assertTrue(self.config.toitoi.is_condition_met(self._hand(tiles)))
@@ -575,7 +575,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_sankantsu(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='111333', man='123', pin='44666')
         melds = [
@@ -600,7 +600,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_honroto(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='111999', man='111', honors='11222')
         self.assertTrue(self.config.honroto.is_condition_met(self._hand(tiles)))
@@ -625,7 +625,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.han, 4)
 
     def test_is_sanankou(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='111444', man='333', pin='44555')
         open_sets = [self._string_to_open_34_set(sou='444'), self._string_to_open_34_set(sou='111')]
@@ -656,7 +656,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_shosangen(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='123', man='345', honors='55666777')
         self.assertTrue(self.config.shosangen.is_condition_met(self._hand(tiles)))
@@ -671,7 +671,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 3)
 
     def test_is_chanta(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='123', man='123789', honors='22333')
         self.assertTrue(self.config.chanta.is_condition_met(self._hand(tiles)))
@@ -699,7 +699,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_junchan(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='789', man='123789', pin='12399')
         self.assertTrue(self.config.junchan.is_condition_met(self._hand(tiles)))
@@ -727,7 +727,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_honitsu(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         # tiles = self._string_to_34_array(man='123456789', honors='11122')
         # self.assertTrue(self.config.honitsu.is_condition_met(self._hand(tiles)))
@@ -755,7 +755,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_chinitsu(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(man='12345666778899')
         self.assertTrue(self.config.chinitsu.is_condition_met(self._hand(tiles)))
@@ -780,7 +780,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_ittsu(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(man='123456789', sou='123', honors='22')
         self.assertTrue(self.config.ittsu.is_condition_met(self._hand(tiles)))
@@ -808,7 +808,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_haku(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='234567', man='23422', honors='555')
         self.assertTrue(self.config.haku.is_condition_met(self._hand(tiles)))
@@ -823,7 +823,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_hatsu(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='234567', man='23422', honors='666')
         self.assertTrue(self.config.hatsu.is_condition_met(self._hand(tiles)))
@@ -838,7 +838,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_chun(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='234567', man='23422', honors='777')
         self.assertTrue(self.config.chun.is_condition_met(self._hand(tiles)))
@@ -854,7 +854,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
 
     def test_is_east(self):
         player_wind, round_wind = EAST, WEST
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='234567', man='23422', honors='111')
         self.assertTrue(self.config.east.is_condition_met(self._hand(tiles), player_wind, round_wind))
@@ -887,7 +887,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
 
     def test_is_south(self):
         player_wind, round_wind = SOUTH, EAST
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='234567', man='23422', honors='222')
         self.assertTrue(self.config.south.is_condition_met(self._hand(tiles), player_wind, round_wind))
@@ -920,7 +920,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
 
     def test_is_west(self):
         player_wind, round_wind = WEST, EAST
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='234567', man='23422', honors='333')
         self.assertTrue(self.config.west.is_condition_met(self._hand(tiles), player_wind, round_wind))
@@ -953,7 +953,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
 
     def test_is_north(self):
         player_wind, round_wind = NORTH, EAST
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='234567', man='23422', honors='444')
         self.assertTrue(self.config.north.is_condition_met(self._hand(tiles), player_wind, round_wind))
@@ -985,7 +985,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 2)
 
     def test_dora_in_hand(self):
-        hand = FinishedHand()
+        hand = HandCalculator()
 
         # hand without yaku, but with dora should be consider as invalid
         tiles = self._string_to_136_array(sou='345678', man='456789', honors='55')

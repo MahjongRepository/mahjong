@@ -2,7 +2,7 @@
 from mahjong.agari import Agari
 from mahjong.constants import EAST, SOUTH, WEST, NORTH, CHUN, HATSU, HAKU
 from mahjong.hand_calculating.divider import HandDivider
-from mahjong.hand_calculating.fu import HandFuCalculator
+from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.scores import ScoresCalculator
 from mahjong.hand_calculating.yaku_config import YakuConfig
 from mahjong.meld import Meld
@@ -22,13 +22,14 @@ class HandResponse(object):
         self.cost = cost
         self.han = han
         self.fu = fu
-        self.fu_details = fu_details
+        if fu_details:
+            self.fu_details = sorted(fu_details, key=lambda x: x['fu'], reverse=True)
         if yaku:
             self.yaku = sorted(yaku, key=lambda x: x.yaku_id)
         self.error = error
 
 
-class FinishedHand(object):
+class HandCalculator(object):
 
     def estimate_hand_value(self,
                             tiles,
@@ -125,7 +126,7 @@ class FinishedHand(object):
 
         tiles_34 = TilesConverter.to_34_array(tiles)
         divider = HandDivider()
-        fu_calculator = HandFuCalculator()
+        fu_calculator = FuCalculator()
 
         if not agari.is_agari(tiles_34, opened_melds):
             return HandResponse(error='Hand is not winning')
