@@ -25,7 +25,9 @@ Project repository: https://github.com/MahjongRepository/mahjong
 How to install
 --------------
 
-       pip install mahjong
+::
+
+   pip install mahjong
 
 How to use
 ----------
