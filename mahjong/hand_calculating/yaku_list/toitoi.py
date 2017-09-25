@@ -9,7 +9,7 @@ class Toitoi(Yaku):
     """
 
     def set_attributes(self):
-        self.yaku_id = 31
+        self.yaku_id = 28
         self.name = 'Toitoi'
 
         self.han_open = 2

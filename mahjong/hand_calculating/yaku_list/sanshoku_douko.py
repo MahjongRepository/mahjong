@@ -9,7 +9,7 @@ class SanshokuDoukou(Yaku):
     """
 
     def set_attributes(self):
-        self.yaku_id = 27
+        self.yaku_id = 26
         self.name = 'Sanshoku Doukou'
 
         self.han_open = 2
