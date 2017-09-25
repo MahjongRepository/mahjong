@@ -234,6 +234,16 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.fu, 50)
         self.assertEqual(len(result.yaku), 1)
 
+        tiles = self._string_to_136_array(pin='11123456678999')
+        win_tile = self._string_to_136_tile(pin='3')
+        melds = [self._make_meld(Meld.KAN, pin='9999', is_open=False)]
+
+        result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 6)
+        self.assertEqual(result.fu, 70)
+        self.assertEqual(len(result.yaku), 1)
+
     def test_is_suukantsu(self):
         hand = FinishedHand()
 

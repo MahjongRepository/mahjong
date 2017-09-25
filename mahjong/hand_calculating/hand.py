@@ -320,7 +320,8 @@ class FinishedHand(object):
                     if self.config.ryuisou.is_condition_met(hand):
                         hand_yaku.append(self.config.ryuisou)
 
-                    if not is_open_hand and self.config.chuuren_poutou.is_condition_met(hand):
+                    # closed kan can't be used in chuuren_poutou
+                    if not len(melds) and self.config.chuuren_poutou.is_condition_met(hand):
                         if tiles_34[win_tile // 4] == 2:
                             hand_yaku.append(self.config.daburu_chuuren_poutou)
                         else:
