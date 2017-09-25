@@ -1,12 +1,15 @@
+import io
 from distutils.core import setup
 
-description = """
-A python module for calculating riichi mahjong hands: yaku, han and fu.
 
-Right now it supports only japanese version (riichi mahjong). MCR (chinese version) in plans
+def get_long_description():
+    """Generate a long description from the README file."""
+    descr = []
+    for fname in ('README.rst',):
+        with io.open(fname, encoding='utf-8') as f:
+            descr.append(f.read())
+    return '\n\n'.join(descr)
 
-You can find usage examples here https://github.com/MahjongRepository/mahjong
-"""
 
 setup(
     name='mahjong',
@@ -16,9 +19,9 @@ setup(
         'mahjong.hand_calculating.yaku_list',
         'mahjong.hand_calculating.yaku_list.yakuman',
     ],
-    version='1.0.3',
+    version='1.0.4',
     description='Mahjong hands calculation',
-    long_description=description,
+    long_description=get_long_description(),
     author='Alexey Lisikhin',
     author_email='lisikhin@gmail.com',
     url='https://github.com/MahjongRepository/mahjong',
