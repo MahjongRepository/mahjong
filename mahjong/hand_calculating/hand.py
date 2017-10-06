@@ -90,11 +90,9 @@ class HandCalculator(object):
         win_tile_34 = (win_tile or 0) // 4
 
         # TODO Deprecated. Change it to melds in all places
-        called_kan_indices = []
         kan_indices_136 = []
         for meld in melds:
             if meld.type == Meld.KAN or meld.type == Meld.CHANKAN:
-                called_kan_indices.append(meld.tiles[3] // 4)
                 kan_indices_136.append(meld.tiles[3])
 
         if not dora_indicators:
@@ -138,7 +136,7 @@ class HandCalculator(object):
             self.config.daisuushi.han_closed = 13
             self.config.daisuushi.han_open = 13
 
-        hand_options = divider.divide_hand(tiles_34, opened_melds, called_kan_indices)
+        hand_options = divider.divide_hand(tiles_34, melds)
 
         calculated_hands = []
         for hand in hand_options:
@@ -159,8 +157,10 @@ class HandCalculator(object):
             # for forms like 45666 and ron on 6
             # we can assume that ron was on 456 form and on 66 form
             # and depends on form we will have different hand cost
+            # so, we had to check all possible win groups
             win_groups = [x for x in closed_set_items if win_tile_34 in x]
-            for win_group in win_groups:
+            unique_win_groups = [list(x) for x in set(tuple(x) for x in win_groups)]
+            for win_group in unique_win_groups:
                 cost = None
                 error = None
                 hand_yaku = []

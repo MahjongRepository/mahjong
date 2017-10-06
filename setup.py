@@ -19,7 +19,7 @@ setup(
         'mahjong.hand_calculating.yaku_list',
         'mahjong.hand_calculating.yaku_list.yakuman',
     ],
-    version='1.0.5',
+    version='1.0.6',
     description='Mahjong hands calculation',
     long_description=get_long_description(),
     author='Alexey Lisikhin',

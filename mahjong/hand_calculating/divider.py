@@ -9,33 +9,23 @@ from mahjong.utils import is_chi, is_pon
 
 class HandDivider(object):
 
-    def divide_hand(self, tiles_34, open_sets, called_kan_indices):
+    def divide_hand(self, tiles_34, melds=None):
         """
         Return a list of possible hands.
         :param tiles_34:
-        :param open_sets: list of array with 34 arrays
-        :param called_kan_indices: list of array with 34 tiles
+        :param melds: list of Meld objects
         :return:
         """
+        if not melds:
+            melds = []
+
+        closed_hand_tiles_34 = tiles_34[:]
 
         # small optimization, we can't have a pair in open part of the hand,
         # so we don't need to try find pairs in open sets
-        open_tile_indices = open_sets and reduce(lambda x, y: x + y, open_sets) or []
-        closed_hand_tiles_34 = tiles_34[:]
+        open_tile_indices = melds and reduce(lambda x, y: x + y, [x.tiles_34 for x in melds]) or []
         for open_item in open_tile_indices:
             closed_hand_tiles_34[open_item] -= 1
-
-        # let's remove closed kan sets from hand
-        closed_kan_sets = []
-        for kan_item in called_kan_indices:
-            open_tiles = len([x for x in open_tile_indices if x == kan_item])
-            if open_tiles != 3:
-                closed_hand_tiles_34[kan_item] -= 3
-                tiles_34[kan_item] -= 3
-                closed_kan_sets.append([kan_item] * 3)
-
-        if closed_kan_sets:
-            closed_kan_sets = [closed_kan_sets]
 
         pair_indices = self.find_pairs(closed_hand_tiles_34)
 
@@ -76,11 +66,9 @@ class HandDivider(object):
                 arrays.append(pin)
             if honor:
                 arrays.append(honor)
-            if open_sets:
-                for item in open_sets:
-                    arrays.append([item])
-            if closed_kan_sets:
-                arrays.append(closed_kan_sets)
+
+            for meld in melds:
+                arrays.append([meld.tiles_34])
 
             # let's find all possible hand from our valid sets
             for s in itertools.product(*arrays):
