@@ -628,25 +628,35 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='111444', man='333', pin='44555')
-        open_sets = [self._string_to_open_34_set(sou='444'), self._string_to_open_34_set(sou='111')]
         win_tile = self._string_to_136_tile(sou='4')
-        self.assertFalse(self.config.sanankou.is_condition_met(self._hand(tiles), win_tile, open_sets, False))
 
-        open_sets = [self._string_to_open_34_set(sou='111')]
-        self.assertFalse(self.config.sanankou.is_condition_met(self._hand(tiles), win_tile, open_sets, False))
-        self.assertTrue(self.config.sanankou.is_condition_met(self._hand(tiles), win_tile, open_sets, True))
+        melds = [
+            self._make_meld(Meld.PON, sou='444'),
+            self._make_meld(Meld.PON, sou='111')
+        ]
+        self.assertFalse(self.config.sanankou.is_condition_met(self._hand(tiles), win_tile, melds, False))
+
+        melds = [
+            self._make_meld(Meld.PON, sou='111')
+        ]
+        self.assertFalse(self.config.sanankou.is_condition_met(self._hand(tiles), win_tile, melds, False))
+        self.assertTrue(self.config.sanankou.is_condition_met(self._hand(tiles), win_tile, melds, True))
 
         tiles = self._string_to_34_array(pin='444789999', honors='22333')
         win_tile = self._string_to_136_tile(pin='9')
         self.assertTrue(self.config.sanankou.is_condition_met(self._hand(tiles), win_tile, [], False))
 
-        open_sets = [self._string_to_open_34_set(pin='456')]
+        melds = [
+            self._make_meld(Meld.CHI, pin='456')
+        ]
         tiles = self._string_to_34_array(pin='222456666777', honors='77')
         win_tile = self._string_to_136_tile(pin='6')
-        self.assertFalse(self.config.sanankou.is_condition_met(self._hand(tiles), win_tile, open_sets, False))
+        self.assertFalse(self.config.sanankou.is_condition_met(self._hand(tiles), win_tile, melds, False))
 
         tiles = self._string_to_136_array(sou='123444', man='333', pin='44555')
-        melds = [self._make_meld(Meld.CHI, sou='123')]
+        melds = [
+            self._make_meld(Meld.CHI, sou='123')
+        ]
         win_tile = self._string_to_136_tile(pin='5')
 
         result = hand.estimate_hand_value(tiles, win_tile, melds=melds, is_tsumo=True)

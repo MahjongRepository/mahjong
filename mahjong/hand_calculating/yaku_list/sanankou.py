@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_chi, is_pon
+from mahjong.meld import Meld
 
 
 class Sanankou(Yaku):
@@ -17,16 +18,18 @@ class Sanankou(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, win_tile, open_sets, is_tsumo):
+    def is_condition_met(self, hand, win_tile, melds, is_tsumo):
         """
         Three closed pon sets, the other sets need not to be closed
         :param hand: list of hand's sets
         :param win_tile: 136 tiles format
-        :param open_sets: list of open sets
+        :param melds: list Meld objects
         :param is_tsumo:
         :return: true|false
         """
         win_tile //= 4
+
+        open_sets = [x.tiles_34 for x in melds]
 
         chi_sets = [x for x in hand if (is_chi(x) and win_tile in x and x not in open_sets)]
         pon_sets = [x for x in hand if is_pon(x)]

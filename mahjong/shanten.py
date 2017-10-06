@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import math
 
-import copy
-
 from mahjong.utils import find_isolated_tile_indices
+from mahjong.tile import TilesConverter
 
 
 class Shanten(object):
@@ -18,15 +17,19 @@ class Shanten(object):
     number_isolated_tiles = 0
     min_shanten = 0
 
-    def calculate_shanten(self, tiles_34, open_sets_34=None):
+    def calculate_shanten(self, tiles_136, melds=None):
         """
         Return the count of tiles before tempai
-        :param tiles_34: 34 tiles format array
-        :param open_sets_34: array of array of 34 tiles format
+        :param tiles_136: list of tiles
+        :param melds: list of Melds objects
         :return: int
         """
-        # we will modify them later, so we need to use a copy
-        tiles_34 = copy.deepcopy(tiles_34)
+
+        if not melds:
+            melds = []
+
+        tiles_34 = TilesConverter.to_34_array(tiles_136)
+        open_sets_34 = [x.tiles_34 for x in melds]
 
         self._init(tiles_34)
 

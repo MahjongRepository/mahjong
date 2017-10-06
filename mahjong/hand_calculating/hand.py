@@ -126,7 +126,7 @@ class HandCalculator(object):
         divider = HandDivider()
         fu_calculator = FuCalculator()
 
-        if not agari.is_agari(tiles_34, opened_melds):
+        if not agari.is_agari(tiles, melds):
             return HandResponse(error='Hand is not winning')
 
         if disable_double_yakuman:
@@ -263,7 +263,7 @@ class HandCalculator(object):
                     if self.config.toitoi.is_condition_met(hand):
                         hand_yaku.append(self.config.toitoi)
 
-                    if self.config.sanankou.is_condition_met(hand, win_tile, opened_melds, is_tsumo):
+                    if self.config.sanankou.is_condition_met(hand, win_tile, melds, is_tsumo):
                         hand_yaku.append(self.config.sanankou)
 
                     if self.config.sanshoku_douko.is_condition_met(hand):

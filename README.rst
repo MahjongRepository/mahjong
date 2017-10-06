@@ -136,7 +136,7 @@ Shanten calculation
     from mahjong.tile import TilesConverter
 
     shanten = Shanten()
-    tiles = TilesConverter.string_to_34_array(man='13569', pin='123459', sou='443')
+    tiles = TilesConverter.string_to_136_array(man='13569', pin='123459', sou='443')
     result = shanten.calculate_shanten(tiles)
 
     print(result)
