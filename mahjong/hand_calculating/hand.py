@@ -30,6 +30,7 @@ class HandResponse(object):
 
 
 class HandCalculator(object):
+    config = None
 
     def estimate_hand_value(self,
                             tiles,
@@ -80,27 +81,21 @@ class HandCalculator(object):
         :return: HandResponse object
         """
 
-        self.config = YakuConfig()
-
         if not melds:
             melds = []
-
-        opened_melds = [x.tiles_34 for x in melds if x.opened]
-        is_open_hand = len(opened_melds) > 0
-        win_tile_34 = (win_tile or 0) // 4
-
-        # TODO Deprecated. Change it to melds in all places
-        kan_indices_136 = []
-        for meld in melds:
-            if meld.type == Meld.KAN or meld.type == Meld.CHANKAN:
-                kan_indices_136.append(meld.tiles[3])
 
         if not dora_indicators:
             dora_indicators = []
 
+        self.config = YakuConfig()
         agari = Agari()
         hand_yaku = []
         scores_calculator = ScoresCalculator()
+        tiles_34 = TilesConverter.to_34_array(tiles)
+        divider = HandDivider()
+        fu_calculator = FuCalculator()
+
+        is_open_hand = len([x for x in melds if x.opened]) > 0
 
         # special situation
         if is_nagashi_mangan:
@@ -122,10 +117,6 @@ class HandCalculator(object):
         if is_ippatsu and not is_riichi and not is_daburu_riichi:
             return HandResponse(error="Ippatsu can't be declared without riichi")
 
-        tiles_34 = TilesConverter.to_34_array(tiles)
-        divider = HandDivider()
-        fu_calculator = FuCalculator()
-
         if not agari.is_agari(tiles, melds):
             return HandResponse(error='Hand is not winning')
 
@@ -140,34 +131,18 @@ class HandCalculator(object):
 
         calculated_hands = []
         for hand in hand_options:
-            is_chitoitsu = self.config.chiitoitsu.is_condition_met(hand)
+            is_chiitoitsu = self.config.chiitoitsu.is_condition_met(hand)
             valued_tiles = [HAKU, HATSU, CHUN, player_wind, round_wind]
 
-            # to detect win groups
-            # we had to use only closed sets
-            # and we had to filter sets that in open hand
-            copied_opened_melds = opened_melds[:]
-            closed_set_items = []
-            for x in hand:
-                if x not in copied_opened_melds:
-                    closed_set_items.append(x)
-                else:
-                    copied_opened_melds.remove(x)
-
-            # for forms like 45666 and ron on 6
-            # we can assume that ron was on 456 form and on 66 form
-            # and depends on form we will have different hand cost
-            # so, we had to check all possible win groups
-            win_groups = [x for x in closed_set_items if win_tile_34 in x]
-            unique_win_groups = [list(x) for x in set(tuple(x) for x in win_groups)]
-            for win_group in unique_win_groups:
+            win_groups = self._find_win_groups(win_tile, hand, melds)
+            for win_group in win_groups:
                 cost = None
                 error = None
                 hand_yaku = []
                 han = 0
 
                 fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, win_group, is_tsumo, valued_tiles, melds)
-                is_pinfu = len(fu_details) == 1 and not is_chitoitsu
+                is_pinfu = len(fu_details) == 1 and not is_chiitoitsu
 
                 pon_sets = [x for x in hand if is_pon(x)]
                 chi_sets = [x for x in hand if is_chi(x)]
@@ -180,10 +155,10 @@ class HandCalculator(object):
                     hand_yaku.append(self.config.pinfu)
 
                 # let's skip hand that looks like chitoitsu, but it contains open sets
-                if is_chitoitsu and is_open_hand:
+                if is_chiitoitsu and is_open_hand:
                     continue
 
-                if is_chitoitsu:
+                if is_chiitoitsu:
                     hand_yaku.append(self.config.chiitoitsu)
 
                 is_tanyao = self.config.tanyao.is_condition_met(hand)
@@ -358,7 +333,13 @@ class HandCalculator(object):
 
                 # we don't need to add dora to yakuman
                 if not yakuman_list:
-                    tiles_for_dora = tiles + kan_indices_136
+                    tiles_for_dora = tiles
+
+                    # we had to search for dora in kan fourth tiles as well
+                    for meld in melds:
+                        if meld.type == Meld.KAN or meld.type == Meld.CHANKAN:
+                            tiles_for_dora.append(meld.tiles[3])
+
                     count_of_dora = 0
                     count_of_aka_dora = 0
 
@@ -425,3 +406,25 @@ class HandCalculator(object):
         fu_details = calculated_hand['fu_details']
 
         return HandResponse(cost, han, fu, hand_yaku, error, fu_details)
+
+    def _find_win_groups(self, win_tile, hand, melds):
+        win_tile_34 = (win_tile or 0) // 4
+        opened_melds = [x.tiles_34 for x in melds if x.opened]
+
+        # to detect win groups
+        # we had to use only closed sets
+        closed_set_items = []
+        for x in hand:
+            if x not in opened_melds:
+                closed_set_items.append(x)
+            else:
+                opened_melds.remove(x)
+
+        # for forms like 45666 and ron on 6
+        # we can assume that ron was on 456 form and on 66 form
+        # and depends on form we will have different hand cost
+        # so, we had to check all possible win groups
+        win_groups = [x for x in closed_set_items if win_tile_34 in x]
+        unique_win_groups = [list(x) for x in set(tuple(x) for x in win_groups)]
+
+        return unique_win_groups
