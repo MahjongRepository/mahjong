@@ -1,5 +1,6 @@
 from mahjong.tile import TilesConverter
 from mahjong.meld import Meld
+from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.hand_calculating.divider import HandDivider
 
 
@@ -31,10 +32,44 @@ class TestMixin(object):
 
     def _make_meld(self, meld_type, is_open=True, man='', pin='', sou='', honors=''):
         tiles = self._string_to_136_array(man=man, pin=pin, sou=sou, honors=honors)
-        meld = Meld()
-        meld.who = 0
-        meld.type = meld_type
-        meld.tiles = tiles
-        meld.opened = is_open
-        meld.called_tile = tiles[0]
+        meld = Meld(meld_type=meld_type, tiles=tiles, opened=is_open, called_tile=tiles[0], who=0)
         return meld
+
+    def _make_hand_config(self,
+                          is_tsumo=False,
+                          is_riichi=False,
+                          is_ippatsu=False,
+                          is_rinshan=False,
+                          is_chankan=False,
+                          is_haitei=False,
+                          is_houtei=False,
+                          is_daburu_riichi=False,
+                          is_nagashi_mangan=False,
+                          is_tenhou=False,
+                          is_renhou=False,
+                          is_chiihou=False,
+                          player_wind=None,
+                          round_wind=None,
+                          has_open_tanyao=False,
+                          has_aka_dora=False,
+                          disable_double_yakuman=False):
+
+        return HandConfig(
+            is_tsumo=is_tsumo,
+            is_riichi=is_riichi,
+            is_ippatsu=is_ippatsu,
+            is_rinshan=is_rinshan,
+            is_chankan=is_chankan,
+            is_haitei=is_haitei,
+            is_houtei=is_houtei,
+            is_daburu_riichi=is_daburu_riichi,
+            is_nagashi_mangan=is_nagashi_mangan,
+            is_tenhou=is_tenhou,
+            is_renhou=is_renhou,
+            is_chiihou=is_chiihou,
+            player_wind=player_wind,
+            round_wind=round_wind,
+            has_open_tanyao=has_open_tanyao,
+            has_aka_dora=has_aka_dora,
+            disable_double_yakuman=disable_double_yakuman
+        )

@@ -18,7 +18,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
 
-        result = hand.estimate_hand_value(tiles, win_tile, is_tenhou=True)
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_tenhou=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(result.fu, 40)
@@ -30,7 +30,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
 
-        result = hand.estimate_hand_value(tiles, win_tile, is_chiihou=True)
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_chiihou=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(result.fu, 40)
@@ -168,19 +168,19 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou='111444', man='333', pin='44555')
         win_tile = self._string_to_136_tile(pin='5')
 
-        result = hand.estimate_hand_value(tiles, win_tile, is_tsumo=True)
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_tsumo=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(result.fu, 50)
         self.assertEqual(len(result.yaku), 1)
 
-        result = hand.estimate_hand_value(tiles, win_tile, is_tsumo=False)
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_tsumo=False))
         self.assertNotEqual(result.han, 13)
 
         tiles = self._string_to_136_array(sou='111444', man='333', pin='44455')
         win_tile = self._string_to_136_tile(pin='5')
 
-        result = hand.estimate_hand_value(tiles, win_tile, is_tsumo=True)
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_tsumo=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 26)
         self.assertEqual(result.fu, 50)
@@ -189,7 +189,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(man='33344455577799')
         win_tile = self._string_to_136_tile(man='9')
 
-        result = hand.estimate_hand_value(tiles, win_tile, is_tsumo=False)
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_tsumo=False))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 26)
         self.assertEqual(result.fu, 50)
@@ -277,7 +277,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou='119', man='19', pin='19', honors='1234567')
         win_tile = self._string_to_136_tile(sou='1')
 
-        result = hand.estimate_hand_value(tiles, win_tile, disable_double_yakuman=True)
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(disable_double_yakuman=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(result.fu, 0)
@@ -287,7 +287,8 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou='111444', man='333', pin='44455')
         win_tile = self._string_to_136_tile(pin='5')
 
-        result = hand.estimate_hand_value(tiles, win_tile, is_tsumo=True, disable_double_yakuman=True)
+        result = hand.estimate_hand_value(tiles, win_tile,
+                                          config=self._make_hand_config(is_tsumo=True, disable_double_yakuman=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(result.fu, 50)
@@ -297,7 +298,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(man='11122345678999')
         win_tile = self._string_to_136_tile(man='2')
 
-        result = hand.estimate_hand_value(tiles, win_tile, disable_double_yakuman=True)
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(disable_double_yakuman=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(result.fu, 50)
@@ -307,7 +308,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou='22', honors='111222333444')
         win_tile = self._string_to_136_tile(honors='4')
 
-        result = hand.estimate_hand_value(tiles, win_tile, disable_double_yakuman=True)
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(disable_double_yakuman=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(result.fu, 60)

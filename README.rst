@@ -45,6 +45,8 @@ Tanyao hand by ron
 
     from mahjong.hand_calculating.hand import HandCalculator
     from mahjong.tile import TilesConverter
+    from mahjong.hand_calculating.hand_config import HandConfig
+    from mahjong.meld import Meld
 
     calculator = HandCalculator()
 
@@ -77,7 +79,7 @@ How about tsumo?
 
 .. code-block:: python
 
-    result = calculator.estimate_hand_value(tiles, win_tile, is_tsumo=True)
+    result = calculator.estimate_hand_value(tiles, win_tile, config=HandConfig(is_tsumo=True))
 
     print(result.han, result.fu)
     print(result.cost['main'], result.cost['additional'])
@@ -103,13 +105,9 @@ What if we add open set?
 
 .. code-block:: python
 
-    from mahjong.meld import Meld
+    melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man='444'))]
 
-    meld = Meld()
-    meld.type = Meld.PON
-    meld.tiles = TilesConverter.string_to_136_array(man='444')
-
-    result = calculator.estimate_hand_value(tiles, win_tile, melds=[meld], has_open_tanyao=True)
+    result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(has_open_tanyao=True))
 
     print(result.han, result.fu)
     print(result.cost['main'])
@@ -135,7 +133,6 @@ Shanten calculation
 .. code-block:: python
 
     from mahjong.shanten import Shanten
-    from mahjong.tile import TilesConverter
 
     shanten = Shanten()
     tiles = TilesConverter.string_to_136_array(man='13569', pin='123459', sou='443')
