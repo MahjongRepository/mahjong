@@ -32,6 +32,8 @@ How to install
 How to use
 ----------
 
+You can find more examples here: https://github.com/MahjongRepository/mahjong/blob/master/doc/examples.py
+
 Let's calculate how much will cost this hand:
 
 .. image:: https://user-images.githubusercontent.com/475367/30796350-3d30431a-a204-11e7-99e5-aab144c82f97.png
