@@ -6,6 +6,13 @@ from mahjong.hand_calculating.divider import HandDivider
 
 class TestMixin(object):
 
+    def _string_to_open_34_set(self, sou='', pin='', man='', honors=''):
+        open_set = TilesConverter.string_to_136_array(sou=sou, pin=pin, man=man, honors=honors)
+        open_set[0] //= 4
+        open_set[1] //= 4
+        open_set[2] //= 4
+        return open_set
+
     def _string_to_34_tile(self, sou='', pin='', man='', honors=''):
         item = TilesConverter.string_to_136_array(sou=sou, pin=pin, man=man, honors=honors)
         item[0] //= 4

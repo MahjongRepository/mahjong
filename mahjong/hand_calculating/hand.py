@@ -39,7 +39,8 @@ class HandCalculator(object):
         divider = HandDivider()
         fu_calculator = FuCalculator()
 
-        is_open_hand = len([x for x in melds if x.opened]) > 0
+        opened_melds = [x.tiles_34 for x in melds if x.opened]
+        is_open_hand = len(opened_melds) > 0
 
         # special situation
         if self.config.is_nagashi_mangan:
@@ -61,7 +62,7 @@ class HandCalculator(object):
         if self.config.is_ippatsu and not self.config.is_riichi and not self.config.is_daburu_riichi:
             return HandResponse(error="Ippatsu can't be declared without riichi")
 
-        if not agari.is_agari(tiles, melds):
+        if not agari.is_agari(tiles_34, opened_melds):
             return HandResponse(error='Hand is not winning')
 
         if self.config.disable_double_yakuman:
@@ -78,7 +79,7 @@ class HandCalculator(object):
             is_chiitoitsu = self.config.yaku.chiitoitsu.is_condition_met(hand)
             valued_tiles = [HAKU, HATSU, CHUN, self.config.player_wind, self.config.round_wind]
 
-            win_groups = self._find_win_groups(win_tile, hand, melds)
+            win_groups = self._find_win_groups(win_tile, hand, opened_melds)
             for win_group in win_groups:
                 cost = None
                 error = None
@@ -359,9 +360,8 @@ class HandCalculator(object):
 
         return HandResponse(cost, han, fu, hand_yaku, error, fu_details)
 
-    def _find_win_groups(self, win_tile, hand, melds):
+    def _find_win_groups(self, win_tile, hand, opened_melds):
         win_tile_34 = (win_tile or 0) // 4
-        opened_melds = [x.tiles_34 for x in melds if x.opened]
 
         # to detect win groups
         # we had to use only closed sets

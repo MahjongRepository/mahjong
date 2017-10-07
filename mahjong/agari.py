@@ -2,70 +2,65 @@
 import copy
 
 from mahjong.utils import find_isolated_tile_indices
-from mahjong.tile import TilesConverter
 
 
 class Agari(object):
 
-    def is_agari(self, tiles_136, melds=None):
+    def is_agari(self, tiles_34, open_sets_34=None):
         """
         Determine was it win or not
-        :param tiles_136: list of tiles
-        :param melds: list of Melds objects
+        :param tiles_34: 34 tiles format array
+        :param open_sets_34: array of array of 34 tiles format
         :return: boolean
         """
-
-        if not melds:
-            melds = []
-
-        tiles_34 = TilesConverter.to_34_array(tiles_136)
-        open_sets_34 = [x.tiles_34 for x in melds]
+        # we will modify them later, so we need to use a copy
+        tiles = copy.deepcopy(tiles_34)
 
         # With open hand we need to remove open sets from hand and replace them with isolated pon sets
         # it will allow to determine agari state correctly
         if open_sets_34:
-            isolated_tiles = find_isolated_tile_indices(tiles_34)
+            isolated_tiles = find_isolated_tile_indices(tiles)
             for meld in open_sets_34:
                 if not isolated_tiles:
                     break
 
                 isolated_tile = isolated_tiles.pop()
 
-                tiles_34[meld[0]] -= 1
-                tiles_34[meld[1]] -= 1
-                tiles_34[meld[2]] -= 1
-                tiles_34[isolated_tile] = 3
+                tiles[meld[0]] -= 1
+                tiles[meld[1]] -= 1
+                tiles[meld[2]] -= 1
+                tiles[isolated_tile] = 3
 
-        j = (1 << tiles_34[27]) | (1 << tiles_34[28]) | (1 << tiles_34[29]) | (1 << tiles_34[30]) | \
-            (1 << tiles_34[31]) | (1 << tiles_34[32]) | (1 << tiles_34[33])
+        j = (1 << tiles[27]) | (1 << tiles[28]) | (1 << tiles[29]) | (1 << tiles[30]) | \
+            (1 << tiles[31]) | (1 << tiles[32]) | (1 << tiles[33])
 
         if j >= 0x10:
             return False
 
         # 13 orphans
-        if ((j & 3) == 2) and (tiles_34[0] * tiles_34[8] * tiles_34[9] * tiles_34[17] * tiles_34[18] *
-                               tiles_34[26] * tiles_34[27] * tiles_34[28] * tiles_34[29] * tiles_34[30] *
-                               tiles_34[31] * tiles_34[32] * tiles_34[33] == 2):
+        if ((j & 3) == 2) and (tiles[0] * tiles[8] * tiles[9] * tiles[17] * tiles[18] *
+                               tiles[26] * tiles[27] * tiles[28] * tiles[29] * tiles[30] *
+                               tiles[31] * tiles[32] * tiles[33] == 2):
             return True
 
         # seven pairs
-        if not (j & 10) and sum([tiles_34[i] == 2 for i in range(0, 34)]) == 7:
+        if not (j & 10) and sum([tiles[i] == 2 for i in range(0, 34)]) == 7:
             return True
 
         if j & 2:
             return False
 
-        n00 = tiles_34[0] + tiles_34[3] + tiles_34[6]
-        n01 = tiles_34[1] + tiles_34[4] + tiles_34[7]
-        n02 = tiles_34[2] + tiles_34[5] + tiles_34[8]
+        n00 = tiles[0] + tiles[3] + tiles[6]
+        n01 = tiles[1] + tiles[4] + tiles[7]
+        n02 = tiles[2] + tiles[5] + tiles[8]
 
-        n10 = tiles_34[9] + tiles_34[12] + tiles_34[15]
-        n11 = tiles_34[10] + tiles_34[13] + tiles_34[16]
-        n12 = tiles_34[11] + tiles_34[14] + tiles_34[17]
+        n10 = tiles[9] + tiles[12] + tiles[15]
+        n11 = tiles[10] + tiles[13] + tiles[16]
+        n12 = tiles[11] + tiles[14] + tiles[17]
 
-        n20 = tiles_34[18] + tiles_34[21] + tiles_34[24]
-        n21 = tiles_34[19] + tiles_34[22] + tiles_34[25]
-        n22 = tiles_34[20] + tiles_34[23] + tiles_34[26]
+        n20 = tiles[18] + tiles[21] + tiles[24]
+        n21 = tiles[19] + tiles[22] + tiles[25]
+        n22 = tiles[20] + tiles[23] + tiles[26]
 
         n0 = (n00 + n01 + n02) % 3
         if n0 == 1:
@@ -79,17 +74,17 @@ class Agari(object):
         if n2 == 1:
             return False
 
-        if ((n0 == 2) + (n1 == 2) + (n2 == 2) + (tiles_34[27] == 2) + (tiles_34[28] == 2) +
-                (tiles_34[29] == 2) + (tiles_34[30] == 2) + (tiles_34[31] == 2) + (tiles_34[32] == 2) +
-                (tiles_34[33] == 2) != 1):
+        if ((n0 == 2) + (n1 == 2) + (n2 == 2) + (tiles[27] == 2) + (tiles[28] == 2) +
+                (tiles[29] == 2) + (tiles[30] == 2) + (tiles[31] == 2) + (tiles[32] == 2) +
+                (tiles[33] == 2) != 1):
             return False
 
         nn0 = (n00 * 1 + n01 * 2) % 3
-        m0 = self._to_meld(tiles_34, 0)
+        m0 = self._to_meld(tiles, 0)
         nn1 = (n10 * 1 + n11 * 2) % 3
-        m1 = self._to_meld(tiles_34, 9)
+        m1 = self._to_meld(tiles, 9)
         nn2 = (n20 * 1 + n21 * 2) % 3
-        m2 = self._to_meld(tiles_34, 18)
+        m2 = self._to_meld(tiles, 18)
 
         if j & 4:
             return not (n0 | nn0 | n1 | nn1 | n2 | nn2) and self._is_mentsu(m0) \
