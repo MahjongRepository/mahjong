@@ -3,6 +3,7 @@
 
 For now only **Python 3.5+** is supported.
 
+
 Riichi mahjong hands calculation
 ================================
 
@@ -22,12 +23,14 @@ Right now it supports only japanese version (riichi mahjong). MCR (chinese versi
 
 Project repository: https://github.com/MahjongRepository/mahjong
 
+
 How to install
 --------------
 
 ::
 
    pip install mahjong
+
 
 How to use
 ----------
@@ -37,6 +40,7 @@ You can find more examples here: https://github.com/MahjongRepository/mahjong/bl
 Let's calculate how much will cost this hand:
 
 .. image:: https://user-images.githubusercontent.com/475367/30796350-3d30431a-a204-11e7-99e5-aab144c82f97.png
+
 
 Tanyao hand by ron
 ^^^^^^^^^^^^^^^^^^
@@ -74,6 +78,7 @@ Output:
     {'fu': 4, 'reason': 'closed_pon'}
     {'fu': 2, 'reason': 'open_pon'}
 
+
 How about tsumo?
 ^^^^^^^^^^^^^^^^
 
@@ -99,6 +104,7 @@ Output:
     {'fu': 4, 'reason': 'closed_pon'}
     {'fu': 4, 'reason': 'closed_pon'}
     {'fu': 2, 'reason': 'tsumo'}
+
 
 What if we add open set?
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -126,6 +132,7 @@ Output:
     {'fu': 4, 'reason': 'closed_pon'}
     {'fu': 2, 'reason': 'open_pon'}
     {'fu': 2, 'reason': 'open_pon'}
+
 
 Shanten calculation
 ===================
