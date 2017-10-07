@@ -5,28 +5,10 @@ from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.scores import ScoresCalculator
 from mahjong.hand_calculating.yaku_config import YakuConfig
+from mahjong.hand_calculating.hand_response import HandResponse
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 from mahjong.utils import is_chi, is_pon, plus_dora, is_aka_dora
-
-
-class HandResponse(object):
-    cost = None
-    han = None
-    fu = None
-    fu_details = None
-    yaku = None
-    error = None
-
-    def __init__(self, cost=None, han=None, fu=None, yaku=None, error=None, fu_details=None):
-        self.cost = cost
-        self.han = han
-        self.fu = fu
-        if fu_details:
-            self.fu_details = sorted(fu_details, key=lambda x: x['fu'], reverse=True)
-        if yaku:
-            self.yaku = sorted(yaku, key=lambda x: x.yaku_id)
-        self.error = error
 
 
 class HandCalculator(object):
