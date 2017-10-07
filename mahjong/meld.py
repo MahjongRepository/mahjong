@@ -17,7 +17,7 @@ class Meld(object):
     # we need it to distinguish opened and closed kan
     opened = True
 
-    def __init__(self, meld_type, tiles, opened=True, called_tile=None, who=None, from_who=None):
+    def __init__(self, meld_type=None, tiles=None, opened=True, called_tile=None, who=None, from_who=None):
         self.type = meld_type
         self.tiles = tiles
         self.opened = opened
