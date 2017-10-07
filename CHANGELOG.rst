@@ -1,6 +1,11 @@
 Releases History
 ================
 
+1.1.1 (2017-10-07)
+------------------
+
+- Fix a bug with not correct agari state determination and closed kan in the hand
+
 1.1.0 (2017-10-07)
 ------------------
 

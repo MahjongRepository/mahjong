@@ -40,6 +40,7 @@ class HandCalculator(object):
         fu_calculator = FuCalculator()
 
         opened_melds = [x.tiles_34 for x in melds if x.opened]
+        all_melds = [x.tiles_34 for x in melds]
         is_open_hand = len(opened_melds) > 0
 
         # special situation
@@ -62,7 +63,7 @@ class HandCalculator(object):
         if self.config.is_ippatsu and not self.config.is_riichi and not self.config.is_daburu_riichi:
             return HandResponse(error="Ippatsu can't be declared without riichi")
 
-        if not agari.is_agari(tiles_34, opened_melds):
+        if not agari.is_agari(tiles_34, all_melds):
             return HandResponse(error='Hand is not winning')
 
         if self.config.disable_double_yakuman:
