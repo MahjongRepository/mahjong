@@ -286,7 +286,7 @@ class HandCalculator(object):
 
                 # we don't need to add dora to yakuman
                 if not yakuman_list:
-                    tiles_for_dora = tiles
+                    tiles_for_dora = tiles[:]
 
                     # we had to search for dora in kan fourth tiles as well
                     for meld in melds:
