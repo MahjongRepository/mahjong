@@ -19,7 +19,7 @@ class Meld(object):
 
     def __init__(self, meld_type=None, tiles=None, opened=True, called_tile=None, who=None, from_who=None):
         self.type = meld_type
-        self.tiles = tiles
+        self.tiles = tiles or []
         self.opened = opened
         self.called_tile = called_tile
         self.who = who
