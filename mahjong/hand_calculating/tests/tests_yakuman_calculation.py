@@ -313,3 +313,16 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.han, 13)
         self.assertEqual(result.fu, 60)
         self.assertEqual(len(result.yaku), 1)
+
+    def test_sextuple_yakuman(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(honors='11122233344455')
+        win_tile = self._string_to_136_tile(honors='5')
+
+        config = self._make_hand_config(is_tenhou=True, disable_double_yakuman=False)
+
+        result = hand.estimate_hand_value(tiles, win_tile, config=config)
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 78)
+        self.assertEqual(result.cost['main'], 192000)

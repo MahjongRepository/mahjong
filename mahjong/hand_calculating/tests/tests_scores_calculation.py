@@ -48,6 +48,18 @@ class ScoresCalculationTestCase(unittest.TestCase):
         result = hand.calculate_scores(han=26, fu=0, config=config)
         self.assertEqual(result['main'], 64000)
 
+        result = hand.calculate_scores(han=39, fu=0, config=config)
+        self.assertEqual(result['main'], 96000)
+
+        result = hand.calculate_scores(han=52, fu=0, config=config)
+        self.assertEqual(result['main'], 128000)
+
+        result = hand.calculate_scores(han=65, fu=0, config=config)
+        self.assertEqual(result['main'], 160000)
+
+        result = hand.calculate_scores(han=78, fu=0, config=config)
+        self.assertEqual(result['main'], 192000)
+
     def test_calculate_scores_and_ron_by_dealer(self):
         hand = ScoresCalculator()
         config = HandConfig(player_wind=EAST, kazoe=HandConfig.KAZOE_NO_LIMIT)
@@ -81,6 +93,18 @@ class ScoresCalculationTestCase(unittest.TestCase):
 
         result = hand.calculate_scores(han=26, fu=0, config=config)
         self.assertEqual(result['main'], 96000)
+
+        result = hand.calculate_scores(han=39, fu=0, config=config)
+        self.assertEqual(result['main'], 144000)
+
+        result = hand.calculate_scores(han=52, fu=0, config=config)
+        self.assertEqual(result['main'], 192000)
+
+        result = hand.calculate_scores(han=65, fu=0, config=config)
+        self.assertEqual(result['main'], 240000)
+
+        result = hand.calculate_scores(han=78, fu=0, config=config)
+        self.assertEqual(result['main'], 288000)
 
     def test_calculate_scores_and_tsumo(self):
         hand = ScoresCalculator()
@@ -126,6 +150,22 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['main'], 32000)
         self.assertEqual(result['additional'], 16000)
 
+        result = hand.calculate_scores(han=39, fu=0, config=config)
+        self.assertEqual(result['main'], 48000)
+        self.assertEqual(result['additional'], 24000)
+
+        result = hand.calculate_scores(han=52, fu=0, config=config)
+        self.assertEqual(result['main'], 64000)
+        self.assertEqual(result['additional'], 32000)
+
+        result = hand.calculate_scores(han=65, fu=0, config=config)
+        self.assertEqual(result['main'], 80000)
+        self.assertEqual(result['additional'], 40000)
+
+        result = hand.calculate_scores(han=78, fu=0, config=config)
+        self.assertEqual(result['main'], 96000)
+        self.assertEqual(result['additional'], 48000)
+
     def test_calculate_scores_and_tsumo_by_dealer(self):
         hand = ScoresCalculator()
         config = HandConfig(player_wind=EAST, is_tsumo=True, kazoe=HandConfig.KAZOE_NO_LIMIT)
@@ -165,3 +205,19 @@ class ScoresCalculationTestCase(unittest.TestCase):
         result = hand.calculate_scores(han=26, fu=0, config=config)
         self.assertEqual(result['main'], 32000)
         self.assertEqual(result['additional'], 32000)
+
+        result = hand.calculate_scores(han=39, fu=0, config=config)
+        self.assertEqual(result['main'], 48000)
+        self.assertEqual(result['additional'], 48000)
+
+        result = hand.calculate_scores(han=52, fu=0, config=config)
+        self.assertEqual(result['main'], 64000)
+        self.assertEqual(result['additional'], 64000)
+
+        result = hand.calculate_scores(han=65, fu=0, config=config)
+        self.assertEqual(result['main'], 80000)
+        self.assertEqual(result['additional'], 80000)
+
+        result = hand.calculate_scores(han=78, fu=0, config=config)
+        self.assertEqual(result['main'], 96000)
+        self.assertEqual(result['additional'], 96000)

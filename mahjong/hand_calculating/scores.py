@@ -27,8 +27,16 @@ class ScoresCalculator(object):
                 han = 12
 
         if han >= 5:
+            if han >= 78:
+                rounded = 48000
+            elif han >= 65:
+                rounded = 40000
+            elif han >= 52:
+                rounded = 32000
+            elif han >= 39:
+                rounded = 24000
             # double yakuman
-            if han >= 26:
+            elif han >= 26:
                 rounded = 16000
             # yakuman
             elif han >= 13:
