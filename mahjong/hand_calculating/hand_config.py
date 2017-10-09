@@ -3,7 +3,16 @@ from mahjong.constants import EAST
 from mahjong.hand_calculating.yaku_config import YakuConfig
 
 
-class HandConfig(object):
+class HandConstants(object):
+    # Hands over 26+ han don't count as double yakuman
+    KAZOE_LIMITED = 0
+    # Hands over 13+ is a sanbaiman
+    KAZOE_SANBAIMAN = 1
+    # 26+ han as double yakuman, 39+ han as triple yakuman, etc.
+    KAZOE_NO_LIMIT = 2
+
+
+class HandConfig(HandConstants):
     """
     Special class to pass various settings to the hand calculator object
     """
@@ -31,6 +40,8 @@ class HandConfig(object):
 
     disable_double_yakuman = False
 
+    kazoe = None
+
     def __init__(self,
                  is_tsumo=False,
                  is_riichi=False,
@@ -48,7 +59,9 @@ class HandConfig(object):
                  round_wind=None,
                  has_open_tanyao=False,
                  has_aka_dora=False,
-                 disable_double_yakuman=False):
+                 disable_double_yakuman=False,
+                 kazoe=HandConstants.KAZOE_LIMITED
+                 ):
 
         self.yaku = YakuConfig()
 
@@ -73,3 +86,5 @@ class HandConfig(object):
         self.has_aka_dora = has_aka_dora
 
         self.disable_double_yakuman = disable_double_yakuman
+
+        self.kazoe = kazoe

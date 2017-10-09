@@ -60,3 +60,25 @@ tiles = TilesConverter.string_to_34_array(man='13569', pin='123459', sou='443')
 result = shanten.calculate_shanten(tiles)
 
 print(result)
+
+####################################################################
+# Kazoe as a sanbaiman                                             #
+####################################################################
+
+
+tiles = TilesConverter.string_to_136_array(man='22244466677788')
+win_tile = TilesConverter.string_to_136_array(man='7')[0]
+melds = [
+    Meld(Meld.KAN, TilesConverter.string_to_136_array(man='2222'), False)
+]
+
+dora_indicators = [
+    TilesConverter.string_to_136_array(man='1')[0],
+    TilesConverter.string_to_136_array(man='1')[0],
+    TilesConverter.string_to_136_array(man='1')[0],
+    TilesConverter.string_to_136_array(man='1')[0],
+]
+
+config = HandConfig(is_riichi=True, kazoe=HandConfig.KAZOE_SANBAIMAN)
+result = calculator.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
+print_hand_result(result)

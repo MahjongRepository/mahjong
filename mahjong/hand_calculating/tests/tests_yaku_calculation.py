@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.constants import EAST, SOUTH, WEST, NORTH, FIVE_RED_SOU
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.meld import Meld
@@ -1116,3 +1117,34 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         result = hand.estimate_hand_value(tiles, win_tile, melds)
         # error is correct answer
         self.assertNotEqual(result.error, None)
+
+    def test_kazoe_settings(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(man='22244466677788')
+        win_tile = self._string_to_136_tile(man='7')
+        melds = [
+            self._make_meld(Meld.KAN, man='2222', is_open=False),
+        ]
+
+        dora_indicators = [
+            self._string_to_136_tile(man='1'),
+            self._string_to_136_tile(man='1'),
+            self._string_to_136_tile(man='1'),
+            self._string_to_136_tile(man='1'),
+        ]
+
+        config = HandConfig(is_riichi=True, kazoe=HandConfig.KAZOE_LIMITED)
+        result = hand.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
+        self.assertEqual(result.han, 28)
+        self.assertEqual(result.cost['main'], 32000)
+
+        config = HandConfig(is_riichi=True, kazoe=HandConfig.KAZOE_SANBAIMAN)
+        result = hand.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
+        self.assertEqual(result.han, 28)
+        self.assertEqual(result.cost['main'], 24000)
+
+        config = HandConfig(is_riichi=True, kazoe=HandConfig.KAZOE_NO_LIMIT)
+        result = hand.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
+        self.assertEqual(result.han, 28)
+        self.assertEqual(result.cost['main'], 64000)

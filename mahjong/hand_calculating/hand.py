@@ -48,7 +48,7 @@ class HandCalculator(object):
             hand_yaku.append(self.config.yaku.nagashi_mangan)
             fu = 30
             han = self.config.yaku.nagashi_mangan.han_closed
-            cost = scores_calculator.calculate_scores(han, fu, self.config.is_tsumo, self.config.is_dealer)
+            cost = scores_calculator.calculate_scores(han, fu, self.config, False)
             return HandResponse(cost, han, fu, hand_yaku)
 
         if win_tile not in tiles:
@@ -317,7 +317,7 @@ class HandCalculator(object):
                         han += count_of_aka_dora
 
                 if not error:
-                    cost = scores_calculator.calculate_scores(han, fu, self.config.is_tsumo, self.config.is_dealer)
+                    cost = scores_calculator.calculate_scores(han, fu, self.config, len(yakuman_list) > 0)
 
                 calculated_hand = {
                     'cost': cost,
@@ -338,7 +338,7 @@ class HandCalculator(object):
                 han = self.config.yaku.kokushi.han_closed
 
             fu = 0
-            cost = scores_calculator.calculate_scores(han, fu, self.config.is_tsumo, self.config.is_dealer)
+            cost = scores_calculator.calculate_scores(han, fu, self.config, False)
             calculated_hands.append({
                 'cost': cost,
                 'error': None,

@@ -1,20 +1,31 @@
 # -*- coding: utf-8 -*-
+from mahjong.hand_calculating.hand_config import HandConfig
 
 
 class ScoresCalculator(object):
 
-    def calculate_scores(self, han, fu, is_tsumo, is_dealer):
+    def calculate_scores(self, han, fu, config, is_yakuman=False):
         """
         Calculate how much scores cost a hand with given han and fu
-        :param han:
-        :param fu:
-        :param is_tsumo:
-        :param is_dealer:
+        :param han: int
+        :param fu: int
+        :param config: HandConfig object
+        :param is_yakuman: boolean
         :return: a dictionary with main and additional cost
         for ron additional cost is always = 0
         for tsumo main cost is cost for dealer and additional is cost for player
         {'main': 1000, 'additional': 0}
         """
+
+        # kazoe hand
+        if han >= 13 and not is_yakuman:
+            # Hands over 26+ han don't count as double yakuman
+            if config.kazoe == HandConfig.KAZOE_LIMITED:
+                han = 13
+            # Hands over 13+ is a sanbaiman
+            elif config.kazoe == HandConfig.KAZOE_SANBAIMAN:
+                han = 12
+
         if han >= 5:
             # double yakuman
             if han >= 26:
@@ -58,7 +69,7 @@ class ScoresCalculator(object):
                 four_rounded = 7700
                 six_rounded = 11600
 
-        if is_tsumo:
-            return {'main': double_rounded, 'additional': is_dealer and double_rounded or rounded}
+        if config.is_tsumo:
+            return {'main': double_rounded, 'additional': config.is_dealer and double_rounded or rounded}
         else:
-            return {'main': is_dealer and six_rounded or four_rounded, 'additional': 0}
+            return {'main': config.is_dealer and six_rounded or four_rounded, 'additional': 0}
