@@ -79,7 +79,7 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertTrue({'fu': 2, 'reason': FuCalculator.HAND_WITHOUT_FU} in fu_details)
         self.assertEqual(fu, 30)
 
-    def test_open_pinfu_hand_withou_additional_fu(self):
+    def test_open_hand_withou_additional_fu(self):
         fu_calculator = FuCalculator()
         config = HandConfig()
 
@@ -117,6 +117,20 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(1, len(fu_details))
         self.assertTrue({'fu': 20, 'reason': FuCalculator.BASE} in fu_details)
         self.assertEqual(fu, 20)
+
+    def test_tsumo_hand_and_disabled_pinfu(self):
+        fu_calculator = FuCalculator()
+        config = HandConfig(is_tsumo=True, fu_for_pinfu_tsumo=True)
+
+        tiles = self._string_to_136_array(sou='2278', man='123456', pin='123')
+        win_tile = self._string_to_136_tile(sou='6')
+        hand = self._hand(self._to_34_array(tiles + [win_tile]))
+
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config)
+        self.assertEqual(2, len(fu_details))
+        self.assertTrue({'fu': 20, 'reason': FuCalculator.BASE} in fu_details)
+        self.assertTrue({'fu': 2, 'reason': FuCalculator.TSUMO} in fu_details)
+        self.assertEqual(fu, 30)
 
     def test_tsumo_hand_and_not_pinfu(self):
         fu_calculator = FuCalculator()

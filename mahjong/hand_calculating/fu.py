@@ -136,7 +136,9 @@ class FuCalculator(object):
                     else:
                         fu_details.append({'fu': 4, 'reason': FuCalculator.CLOSED_PON})
 
-        if config.is_tsumo and len(fu_details):
+        add_tsumo_fu = len(fu_details) > 0 or config.fu_for_pinfu_tsumo
+
+        if config.is_tsumo and add_tsumo_fu:
             # 2 additional fu for tsumo (but not for pinfu)
             fu_details.append({'fu': 2, 'reason': FuCalculator.TSUMO})
 

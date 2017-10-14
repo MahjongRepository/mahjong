@@ -43,7 +43,10 @@ class HandConfig(HandConstants):
     kazoe = None
     # true or false
     kiriage = False
+    # if false, 1-20 hand will be possible
     fu_for_open_pinfu = True
+    # if true, pinfu tsumo will be disabled
+    fu_for_pinfu_tsumo = False
 
     def __init__(self,
                  is_tsumo=False,
@@ -65,7 +68,8 @@ class HandConfig(HandConstants):
                  disable_double_yakuman=False,
                  kazoe=HandConstants.KAZOE_LIMITED,
                  kiriage=False,
-                 fu_for_open_pinfu=True):
+                 fu_for_open_pinfu=True,
+                 fu_for_pinfu_tsumo=False):
 
         self.yaku = YakuConfig()
 
@@ -95,3 +99,4 @@ class HandConfig(HandConstants):
 
         self.kiriage = kiriage
         self.fu_for_open_pinfu = fu_for_open_pinfu
+        self.fu_for_pinfu_tsumo = fu_for_pinfu_tsumo
