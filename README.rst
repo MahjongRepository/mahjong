@@ -14,6 +14,9 @@ It supports features like:
 - Disable or enable aka dora in the hand
 - Disable or enable open tanyao yaku
 - Disable or enable double yakuman (like suuanko tanki)
+- Settings for different kazoe yakuman calculation (it kan be an yakuman or a sanbaiman)
+- Support kiriage mangan
+- Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting)
 
 The code was validated on tenhou.net phoenix replays in total on **11,120,125 hands**.
 

@@ -1,6 +1,15 @@
 Releases History
 ================
 
+1.1.2 (2017-10-14)
+------------------
+
+- Add settings for different kazoe yakuman calculation (it kan be an yakuman or a sanbaiman)
+- Support up to sextuple yakuman scores
+- Support kiriage mangan
+- Allow to disable +2 fu in open hand
+- Allow to disable tsumo pinfu (add 2 additional fu for hand like that)
+
 1.1.1 (2017-10-07)
 ------------------
 
