@@ -63,19 +63,19 @@ class ScoresCalculator(object):
             four_rounded = (4 * base_points + 99) // 100 * 100
             six_rounded = (6 * base_points + 99) // 100 * 100
 
+            is_kiriage = False
+            if config.kiriage:
+                if han == 4 and fu == 30:
+                    is_kiriage = True
+                if han == 3 and fu == 60:
+                    is_kiriage = True
+
             # mangan
-            if rounded > 2000:
+            if rounded > 2000 or is_kiriage:
                 rounded = 2000
                 double_rounded = rounded * 2
                 four_rounded = double_rounded * 2
                 six_rounded = double_rounded * 3
-
-            # kiriage mangan
-            if han == 4 and fu == 30:
-                rounded = 2000
-                double_rounded = 3900
-                four_rounded = 7700
-                six_rounded = 11600
 
         if config.is_tsumo:
             return {'main': double_rounded, 'additional': config.is_dealer and double_rounded or rounded}

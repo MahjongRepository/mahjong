@@ -221,3 +221,22 @@ class ScoresCalculationTestCase(unittest.TestCase):
         result = hand.calculate_scores(han=78, fu=0, config=config)
         self.assertEqual(result['main'], 96000)
         self.assertEqual(result['additional'], 96000)
+
+    def test_kiriage_mangan(self):
+        hand = ScoresCalculator()
+
+        config = HandConfig(kiriage=True)
+
+        result = hand.calculate_scores(han=4, fu=30, config=config)
+        self.assertEqual(result['main'], 8000)
+
+        result = hand.calculate_scores(han=3, fu=60, config=config)
+        self.assertEqual(result['main'], 8000)
+
+        config = HandConfig(kiriage=True, player_wind=EAST)
+
+        result = hand.calculate_scores(han=4, fu=30, config=config)
+        self.assertEqual(result['main'], 12000)
+
+        result = hand.calculate_scores(han=3, fu=60, config=config)
+        self.assertEqual(result['main'], 12000)
