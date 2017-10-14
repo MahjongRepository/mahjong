@@ -82,3 +82,19 @@ dora_indicators = [
 config = HandConfig(is_riichi=True, kazoe=HandConfig.KAZOE_SANBAIMAN)
 result = calculator.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
 print_hand_result(result)
+
+
+####################################################################
+# Change the cost of yaku                                          #
+####################################################################
+
+
+config = HandConfig(is_renhou=True)
+# renhou as an yakuman
+config.yaku.renhou.han_closed = 13
+
+tiles = TilesConverter.string_to_136_array(man='22444', pin='333567', sou='444')
+win_tile = TilesConverter.string_to_136_array(sou='4')[0]
+
+result = calculator.estimate_hand_value(tiles, win_tile, config=config)
+print_hand_result(result)
