@@ -3,7 +3,6 @@ import unittest
 
 from mahjong.agari import Agari
 from mahjong.tests_mixin import TestMixin
-from mahjong.meld import Meld
 
 
 class AgariTestCase(unittest.TestCase, TestMixin):

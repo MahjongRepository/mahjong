@@ -3,7 +3,6 @@ import unittest
 
 from mahjong.shanten import Shanten
 from mahjong.tests_mixin import TestMixin
-from mahjong.meld import Meld
 
 
 class ShantenTestCase(unittest.TestCase, TestMixin):

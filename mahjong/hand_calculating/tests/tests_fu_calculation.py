@@ -9,7 +9,7 @@ from mahjong.tests_mixin import TestMixin
 
 
 class FuCalculationTestCase(unittest.TestCase, TestMixin):
-    
+
     def _get_win_group(self, hand, win_tile):
         return [x for x in hand if win_tile // 4 in x][0]
 
@@ -40,7 +40,8 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.PON, sou='222')]
 
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config, melds=melds)
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
+                                                    melds=melds)
         self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 20, 'reason': FuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 2, 'reason': FuCalculator.OPEN_PON} in fu_details)
@@ -73,7 +74,8 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.CHI, sou='234')]
 
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config, melds=melds)
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
+                                                    melds=melds)
         self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 20, 'reason': FuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 2, 'reason': FuCalculator.HAND_WITHOUT_FU} in fu_details)
@@ -87,9 +89,10 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         win_tile = self._string_to_136_tile(sou='6')
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.CHI, sou='234')]
-    
+
         config = HandConfig(fu_for_open_pinfu=False)
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config, melds=melds)
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
+                                                    melds=melds)
         self.assertEqual(1, len(fu_details))
         self.assertTrue({'fu': 20, 'reason': FuCalculator.BASE} in fu_details)
         self.assertEqual(fu, 20)
@@ -314,7 +317,8 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.PON, sou='222')]
 
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config, melds=melds)
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
+                                                    melds=melds)
         self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 20, 'reason': FuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 2, 'reason': FuCalculator.OPEN_PON} in fu_details)
@@ -329,7 +333,8 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.PON, honors='111')]
 
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config, melds=melds)
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
+                                                    melds=melds)
         self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 20, 'reason': FuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 4, 'reason': FuCalculator.OPEN_TERMINAL_PON} in fu_details)
@@ -344,7 +349,8 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.KAN, sou='222', is_open=False)]
 
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config, melds=melds)
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
+                                                    melds=melds)
         self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 30, 'reason': FuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 16, 'reason': FuCalculator.CLOSED_KAN} in fu_details)
@@ -359,7 +365,8 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.KAN, sou='222', is_open=True)]
 
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config, melds=melds)
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
+                                                    melds=melds)
         self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 20, 'reason': FuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 8, 'reason': FuCalculator.OPEN_KAN} in fu_details)
@@ -374,7 +381,8 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.KAN, pin='111', is_open=False)]
 
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config, melds=melds)
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
+                                                    melds=melds)
         self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 30, 'reason': FuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 32, 'reason': FuCalculator.CLOSED_TERMINAL_KAN} in fu_details)
@@ -389,7 +397,8 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.KAN, pin='111', is_open=True)]
 
-        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config, melds=melds)
+        fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
+                                                    melds=melds)
         self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 20, 'reason': FuCalculator.BASE} in fu_details)
         self.assertTrue({'fu': 16, 'reason': FuCalculator.OPEN_TERMINAL_KAN} in fu_details)

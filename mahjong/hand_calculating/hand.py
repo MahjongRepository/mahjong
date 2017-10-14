@@ -15,7 +15,7 @@ class HandCalculator(object):
     config = None
 
     def estimate_hand_value(self, tiles, win_tile, melds=None, dora_indicators=None, config=None):
-        """ 
+        """
         :param tiles: array with 14 tiles in 136-tile format
         :param win_tile: 136 format tile that caused win (ron or tsumo)
         :param melds: array with Meld objects
@@ -29,7 +29,7 @@ class HandCalculator(object):
 
         if not dora_indicators:
             dora_indicators = []
-            
+
         self.config = config or HandConfig()
 
         agari = Agari()
@@ -257,7 +257,8 @@ class HandCalculator(object):
                         else:
                             hand_yaku.append(self.config.yaku.chuuren_poutou)
 
-                    if not is_open_hand and self.config.yaku.suuankou.is_condition_met(hand, win_tile, self.config.is_tsumo):
+                    if not is_open_hand and self.config.yaku.suuankou.is_condition_met(hand, win_tile,
+                                                                                       self.config.is_tsumo):
                         if tiles_34[win_tile // 4] == 2:
                             hand_yaku.append(self.config.yaku.suuankou_tanki)
                         else:

@@ -1102,10 +1102,10 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         """
         There were a bug when we don't count closed kan set for agari
         and calculator though that hand was agari (but it doesn't)
-        :return: 
+        :return:
         """
         hand = HandCalculator()
-        
+
         tiles = self._string_to_136_array(man='45666777', pin='111', honors='222')
         win_tile = self._string_to_136_tile(man='4')
         melds = [
@@ -1113,7 +1113,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
             self._make_meld(Meld.KAN, man='6666', is_open=False),
             self._make_meld(Meld.PON, man='777'),
         ]
-        
+
         result = hand.estimate_hand_value(tiles, win_tile, melds)
         # error is correct answer
         self.assertNotEqual(result.error, None)

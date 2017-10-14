@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_chi, is_pon
-from mahjong.meld import Meld
 
 
 class Sanankou(Yaku):
