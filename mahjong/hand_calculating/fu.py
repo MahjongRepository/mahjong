@@ -30,15 +30,16 @@ class FuCalculator(object):
                      hand,
                      win_tile,
                      win_group,
-                     is_tsumo=False,
+                     config,
                      valued_tiles=None,
-                     melds=None):
+                     melds=None,):
         """
         Calculate hand fu with explanations
         :param hand:
         :param win_tile: 136 tile format
         :param win_group: one set where win tile exists
         :param is_tsumo:
+        :param config: HandConfig object
         :param valued_tiles: dragons, player wind, round wind
         :param melds: opened sets
         :return:
@@ -109,7 +110,7 @@ class FuCalculator(object):
             is_honor = set_item[0] in TERMINAL_INDICES + HONOR_INDICES
 
             # we win by ron on the third pon tile, our pon will be count as open
-            if not is_tsumo and set_item == win_group:
+            if not config.is_tsumo and set_item == win_group:
                 set_was_open = True
 
             if is_honor:
@@ -135,15 +136,15 @@ class FuCalculator(object):
                     else:
                         fu_details.append({'fu': 4, 'reason': FuCalculator.CLOSED_PON})
 
-        if is_tsumo and len(fu_details):
+        if config.is_tsumo and len(fu_details):
             # 2 additional fu for tsumo (but not for pinfu)
             fu_details.append({'fu': 2, 'reason': FuCalculator.TSUMO})
 
-        if is_open_hand and not len(fu_details):
+        if is_open_hand and not len(fu_details) and config.fu_for_open_pinfu:
             # there is no 1-20 hands, so we had to add additional fu
             fu_details.append({'fu': 2, 'reason': FuCalculator.HAND_WITHOUT_FU})
 
-        if is_open_hand or is_tsumo:
+        if is_open_hand or config.is_tsumo:
             fu_details.append({'fu': 20, 'reason': FuCalculator.BASE})
         else:
             fu_details.append({'fu': 30, 'reason': FuCalculator.BASE})

@@ -1148,3 +1148,16 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         result = hand.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
         self.assertEqual(result.han, 28)
         self.assertEqual(result.cost['main'], 64000)
+
+    def test_open_hand_without_additional_fu(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(sou='234678', man='234567', pin='22')
+        win_tile = self._string_to_136_tile(sou='6')
+        melds = [self._make_meld(Meld.CHI, sou='234')]
+
+        config = HandConfig(has_open_tanyao=True, fu_for_open_pinfu=False)
+        result = hand.estimate_hand_value(tiles, win_tile, melds, config=config)
+        self.assertEqual(result.han, 1)
+        self.assertEqual(result.fu, 20)
+        self.assertEqual(result.cost['main'], 700)

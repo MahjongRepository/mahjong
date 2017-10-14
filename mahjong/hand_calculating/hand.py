@@ -91,12 +91,12 @@ class HandCalculator(object):
                     hand,
                     win_tile,
                     win_group,
-                    self.config.is_tsumo,
+                    self.config,
                     valued_tiles,
                     melds
                 )
 
-                is_pinfu = len(fu_details) == 1 and not is_chiitoitsu
+                is_pinfu = len(fu_details) == 1 and not is_chiitoitsu and not is_open_hand
 
                 pon_sets = [x for x in hand if is_pon(x)]
                 chi_sets = [x for x in hand if is_chi(x)]
@@ -281,8 +281,8 @@ class HandCalculator(object):
                     else:
                         han += item.han_closed
 
-                if han == 0 or (han == 1 and fu < 30):
-                    error = 'Not valid han ({0}) and fu ({1})'.format(han, fu)
+                if han == 0:
+                    error = 'There are no yaku in the hand'
                     cost = None
 
                 # we don't need to add dora to yakuman
