@@ -1,6 +1,11 @@
 Releases History
 ================
 
+1.1.3 (2018-08-22)
+------------------
+
+- Add is_tile_strictly_isolated() function to the utils.py
+
 1.1.2 (2017-10-14)
 ------------------
 

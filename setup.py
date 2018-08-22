@@ -15,7 +15,7 @@ setup(
         'mahjong.hand_calculating.yaku_list',
         'mahjong.hand_calculating.yaku_list.yakuman',
     ],
-    version='1.1.2',
+    version='1.1.3',
     description='Mahjong hands calculation',
     long_description=readme + '\n\n' + changelog,
     author='Alexey Lisikhin',
@@ -29,5 +29,6 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 )
