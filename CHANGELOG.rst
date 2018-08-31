@@ -1,6 +1,11 @@
 Releases History
 ================
 
+1.1.4 (2018-08-31)
+------------------
+
+- Add is_terminal() and is_dora_indicator_for_terminal() functions to the utils.py
+
 1.1.3 (2018-08-22)
 ------------------
 
