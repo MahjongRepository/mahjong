@@ -127,6 +127,22 @@ def is_honor(tile):
     return tile >= 27
 
 
+def is_terminal(tile):
+    """
+    :param tile: 34 tile format
+    :return: boolean
+    """
+    return tile in TERMINAL_INDICES
+
+
+def is_dora_indicator_for_terminal(tile):
+    """
+    :param tile: 34 tile format
+    :return: boolean
+    """
+    return tile == 7 or tile == 8 or tile == 16 or tile == 17 or tile == 25 or tile == 26
+
+
 def contains_terminals(hand_set):
     """
     :param hand_set: array of 34 tiles
