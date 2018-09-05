@@ -4,7 +4,7 @@ Releases History
 1.1.5 (2018-09-04)
 ------------------
 
-- Allow to disable chiitoitsu or kokushi in shanten calculator Nihisil
+- Allow to disable chiitoitsu or kokushi in shanten calculator
 
 1.1.4 (2018-08-31)
 ------------------
