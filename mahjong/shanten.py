@@ -18,11 +18,13 @@ class Shanten(object):
     number_isolated_tiles = 0
     min_shanten = 0
 
-    def calculate_shanten(self, tiles_34, open_sets_34=None):
+    def calculate_shanten(self, tiles_34, open_sets_34=None, chiitoitsu=True, kokushi=True):
         """
         Return the count of tiles before tempai
         :param tiles_34: 34 tiles format array
         :param open_sets_34: array of array of 34 tiles format
+        :param chiitoitsu: bool
+        :param kokushi: bool
         :return: int
         """
         # we will modify them later, so we need to use a copy
@@ -51,7 +53,7 @@ class Shanten(object):
                 tiles_34[isolated_tile] = 3
 
         if not open_sets_34:
-            self.min_shanten = self._scan_chitoitsu_and_kokushi()
+            self.min_shanten = self._scan_chiitoitsu_and_kokushi(chiitoitsu, kokushi)
 
         self._remove_character_tiles(count_of_tiles)
 
@@ -271,7 +273,7 @@ class Shanten(object):
         self.tiles[k] += 1
         self.number_isolated_tiles |= (1 << k)
 
-    def _scan_chitoitsu_and_kokushi(self):
+    def _scan_chiitoitsu_and_kokushi(self, chiitoitsu, kokushi):
         shanten = self.min_shanten
 
         indices = [0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33]
@@ -294,13 +296,15 @@ class Shanten(object):
         for i in indices:
             pairs += self.tiles[i] != 0
 
-        ret_shanten = 6 - completed_pairs + (pairs < 7 and 7 - pairs or 0)
-        if ret_shanten < shanten:
-            shanten = ret_shanten
+        if chiitoitsu:
+            ret_shanten = 6 - completed_pairs + (pairs < 7 and 7 - pairs or 0)
+            if ret_shanten < shanten:
+                shanten = ret_shanten
 
-        ret_shanten = 13 - terminals - (completed_terminals and 1 or 0)
-        if ret_shanten < shanten:
-            shanten = ret_shanten
+        if kokushi:
+            ret_shanten = 13 - terminals - (completed_terminals and 1 or 0)
+            if ret_shanten < shanten:
+                shanten = ret_shanten
 
         return shanten
 
