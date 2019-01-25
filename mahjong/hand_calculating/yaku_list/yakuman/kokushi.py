@@ -11,6 +11,7 @@ class KokushiMusou(Yaku):
     def set_attributes(self):
         self.yaku_id = 47
         self.name = 'Kokushi Musou'
+        self.english = 'Thirteen Orphans'
 
         self.han_open = None
         self.han_closed = 13

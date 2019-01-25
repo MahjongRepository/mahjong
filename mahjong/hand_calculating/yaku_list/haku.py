@@ -12,6 +12,7 @@ class Haku(Yaku):
     def set_attributes(self):
         self.yaku_id = 18
         self.name = 'Yakuhai (haku)'
+        self.english = 'White Dragon'
 
         self.han_open = 1
         self.han_closed = 1

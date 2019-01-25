@@ -7,6 +7,7 @@ class Chiihou(Yaku):
     def set_attributes(self):
         self.yaku_id = 38
         self.name = 'Chiihou'
+        self.english = 'Earthly Hand'
 
         self.han_open = None
         self.han_closed = 13

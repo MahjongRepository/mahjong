@@ -12,6 +12,7 @@ class Chinitsu(Yaku):
     def set_attributes(self):
         self.yaku_id = 35
         self.name = 'Chinitsu'
+        self.english = 'Flush'
 
         self.han_open = 5
         self.han_closed = 6

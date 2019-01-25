@@ -208,7 +208,7 @@ class HandCalculator(object):
                         hand_yaku.append(self.config.yaku.hatsu)
 
                     if self.config.yaku.chun.is_condition_met(hand):
-                        hand_yaku.append(self.config.yaku.hatsu)
+                        hand_yaku.append(self.config.yaku.chun)
 
                     if self.config.yaku.east.is_condition_met(hand, self.config.player_wind, self.config.round_wind):
                         if self.config.player_wind == EAST:
@@ -334,16 +334,33 @@ class HandCalculator(object):
         # exception hand
         if not is_open_hand and self.config.yaku.kokushi.is_condition_met(None, tiles_34):
             if tiles_34[win_tile // 4] == 2:
-                han = self.config.yaku.daburu_kokushi.han_closed
+                hand_yaku.append(self.config.yaku.daburu_kokushi)
             else:
-                han = self.config.yaku.kokushi.han_closed
+                hand_yaku.append(self.config.yaku.kokushi)
+
+            if self.config.is_renhou:
+                hand_yaku.append(self.config.yaku.renhou)
+
+            if self.config.is_tenhou:
+                hand_yaku.append(self.config.yaku.tenhou)
+
+            if self.config.is_chiihou:
+                hand_yaku.append(self.config.yaku.chiihou)
+
+            # calculate han
+            han = 0
+            for item in hand_yaku:
+                if is_open_hand and item.han_open:
+                    han += item.han_open
+                else:
+                    han += item.han_closed
 
             fu = 0
-            cost = scores_calculator.calculate_scores(han, fu, self.config, False)
+            cost = scores_calculator.calculate_scores(han, fu, self.config, len(hand_yaku) > 0)
             calculated_hands.append({
                 'cost': cost,
                 'error': None,
-                'hand_yaku': [self.config.yaku.kokushi],
+                'hand_yaku': hand_yaku,
                 'han': han,
                 'fu': fu,
                 'fu_details': []

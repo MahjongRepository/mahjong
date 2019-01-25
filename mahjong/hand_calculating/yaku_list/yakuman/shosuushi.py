@@ -12,6 +12,7 @@ class Shousuushii(Yaku):
     def set_attributes(self):
         self.yaku_id = 50
         self.name = 'Shousuushii'
+        self.english = 'Small Four Winds'
 
         self.han_open = 13
         self.han_closed = 13

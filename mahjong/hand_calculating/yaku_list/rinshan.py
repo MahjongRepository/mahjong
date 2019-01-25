@@ -10,6 +10,7 @@ class Rinshan(Yaku):
     def set_attributes(self):
         self.yaku_id = 4
         self.name = 'Rinshan Kaihou'
+        self.english = 'Dead Wall Draw'
 
         self.han_open = 1
         self.han_closed = 1

@@ -11,6 +11,7 @@ class Sanshoku(Yaku):
     def set_attributes(self):
         self.yaku_id = 25
         self.name = 'Sanshoku Doujun'
+        self.english = 'Three Colored Triplets'
 
         self.han_open = 1
         self.han_closed = 2

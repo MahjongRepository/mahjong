@@ -13,6 +13,7 @@ class Tsuuiisou(Yaku):
     def set_attributes(self):
         self.yaku_id = 42
         self.name = 'Tsuu iisou'
+        self.english = 'All Honors'
 
         self.han_open = 13
         self.han_closed = 13

@@ -10,6 +10,7 @@ class Haitei(Yaku):
     def set_attributes(self):
         self.yaku_id = 5
         self.name = 'Haitei Raoyue'
+        self.english = 'Win By Last Draw'
 
         self.han_open = 1
         self.han_closed = 1

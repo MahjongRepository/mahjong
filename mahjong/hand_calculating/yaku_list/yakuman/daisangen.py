@@ -12,6 +12,7 @@ class Daisangen(Yaku):
     def set_attributes(self):
         self.yaku_id = 39
         self.name = 'Daisangen'
+        self.english = 'Big Three Dragons'
 
         self.han_open = 13
         self.han_closed = 13

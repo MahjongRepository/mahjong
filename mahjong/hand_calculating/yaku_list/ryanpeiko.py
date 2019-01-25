@@ -11,6 +11,7 @@ class Ryanpeikou(Yaku):
     def set_attributes(self):
         self.yaku_id = 32
         self.name = 'Ryanpeikou'
+        self.english = 'Two Sets Of Identical Sequences'
 
         self.han_open = None
         self.han_closed = 3

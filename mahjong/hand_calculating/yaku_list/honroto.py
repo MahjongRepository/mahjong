@@ -13,6 +13,7 @@ class Honroto(Yaku):
     def set_attributes(self):
         self.yaku_id = 31
         self.name = 'Honroutou'
+        self.english = 'Terminals and Honors'
 
         self.han_open = 2
         self.han_closed = 2

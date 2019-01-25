@@ -10,6 +10,7 @@ class Chinroutou(Yaku):
     def set_attributes(self):
         self.yaku_id = 44
         self.name = 'Chinroutou'
+        self.english = 'All Terminals'
 
         self.han_open = 13
         self.han_closed = 13

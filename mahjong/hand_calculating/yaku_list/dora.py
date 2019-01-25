@@ -7,6 +7,7 @@ class Dora(Yaku):
     def set_attributes(self):
         self.yaku_id = 52
         self.name = 'Dora'
+        self.english = 'Dora'
 
         self.han_open = 1
         self.han_closed = 1

@@ -11,6 +11,7 @@ class Toitoi(Yaku):
     def set_attributes(self):
         self.yaku_id = 28
         self.name = 'Toitoi'
+        self.english = 'All Triplets'
 
         self.han_open = 2
         self.han_closed = 2

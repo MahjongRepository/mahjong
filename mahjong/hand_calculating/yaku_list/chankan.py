@@ -10,6 +10,7 @@ class Chankan(Yaku):
     def set_attributes(self):
         self.yaku_id = 3
         self.name = 'Chankan'
+        self.english = 'Robbing A Kan'
 
         self.han_open = 1
         self.han_closed = 1
