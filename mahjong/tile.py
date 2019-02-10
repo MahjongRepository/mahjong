@@ -73,10 +73,12 @@ class TilesConverter(object):
         return results
 
     @staticmethod
-    def string_to_136_array(sou=None, pin=None, man=None, honors=None):
+    def string_to_136_array(sou=None, pin=None, man=None, honors=None, has_aka_dora=False):
         """
         Method to convert one line string tiles format to the 136 array.
-        You can pass r instead of 5 for it to become a red five from that suit.
+        You can pass r instead of 5 for it to become a red five from 
+        that suit. To prevent old usage without red, 
+        has_aka_dora has to be True for this to do that.
         We need it to increase readability of our tests
         """
         def _split_string(string, offset, red=None):
@@ -87,12 +89,12 @@ class TilesConverter(object):
                 return []
 
             for i in string:
-                if i == 'r':
+                if i == 'r' and has_aka_dora:
                     temp.append(red)
                     data.append(red)
                 else:
                     tile = offset + (int(i) - 1) * 4
-                    if tile == red:
+                    if tile == red and has_aka_dora:
                         # prevent non reds to become red
                         tile += 1
                     if tile in data:
