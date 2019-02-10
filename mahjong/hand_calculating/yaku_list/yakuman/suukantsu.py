@@ -11,6 +11,7 @@ class Suukantsu(Yaku):
     def set_attributes(self):
         self.yaku_id = 51
         self.name = 'Suu kantsu'
+        self.english = 'Four Kans'
 
         self.han_open = 13
         self.han_closed = 13

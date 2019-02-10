@@ -10,6 +10,7 @@ class Renhou(Yaku):
     def set_attributes(self):
         self.yaku_id = 36
         self.name = 'Renhou'
+        self.english = 'Hand Of Man'
 
         self.han_open = None
         self.han_closed = 5

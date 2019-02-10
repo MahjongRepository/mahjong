@@ -13,6 +13,7 @@ class Chanta(Yaku):
     def set_attributes(self):
         self.yaku_id = 23
         self.name = 'Chanta'
+        self.english = 'Terminal Or Honor In Each Group'
 
         self.han_open = 1
         self.han_closed = 2

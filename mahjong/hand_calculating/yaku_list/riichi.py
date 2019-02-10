@@ -7,6 +7,7 @@ class Riichi(Yaku):
     def set_attributes(self):
         self.yaku_id = 1
         self.name = 'Riichi'
+        self.english = 'Riichi'
 
         self.han_open = None
         self.han_closed = 1

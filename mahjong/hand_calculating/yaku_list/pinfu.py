@@ -10,6 +10,7 @@ class Pinfu(Yaku):
     def set_attributes(self):
         self.yaku_id = 7
         self.name = 'Pinfu'
+        self.english = 'All Sequences'
 
         self.han_open = None
         self.han_closed = 1

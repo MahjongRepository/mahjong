@@ -6,7 +6,8 @@ class DaburuKokushiMusou(Yaku):
 
     def set_attributes(self):
         self.yaku_id = 48
-        self.name = 'Daburu Kokushi Musou'
+        self.name = 'Kokushi Musou Juusanmen Matchi'
+        self.english = 'Thirteen Orphans 13-way wait'
 
         self.han_open = None
         self.han_closed = 26

@@ -10,6 +10,7 @@ class Ippatsu(Yaku):
     def set_attributes(self):
         self.yaku_id = 2
         self.name = 'Ippatsu'
+        self.english = 'One Shot'
 
         self.han_open = None
         self.han_closed = 1

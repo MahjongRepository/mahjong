@@ -10,6 +10,7 @@ class Tenhou(Yaku):
     def set_attributes(self):
         self.yaku_id = 37
         self.name = 'Tenhou'
+        self.english = 'Heavenly Hand'
 
         self.han_open = None
         self.han_closed = 13

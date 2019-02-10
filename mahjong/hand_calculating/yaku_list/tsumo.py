@@ -10,6 +10,7 @@ class Tsumo(Yaku):
     def set_attributes(self):
         self.yaku_id = 0
         self.name = 'Menzen Tsumo'
+        self.english = 'Self Draw'
 
         self.han_open = None
         self.han_closed = 1

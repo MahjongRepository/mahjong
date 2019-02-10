@@ -7,6 +7,7 @@ class Yaku(object):
     han_open = None
     han_closed = None
     is_yakuman = None
+    english = None
 
     def __init__(self):
         self.set_attributes()

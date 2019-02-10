@@ -13,6 +13,7 @@ class Tanyao(Yaku):
     def set_attributes(self):
         self.yaku_id = 8
         self.name = 'Tanyao'
+        self.english = 'All Simples'
 
         self.han_open = 1
         self.han_closed = 1

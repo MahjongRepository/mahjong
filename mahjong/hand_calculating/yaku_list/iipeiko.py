@@ -11,6 +11,7 @@ class Iipeiko(Yaku):
     def set_attributes(self):
         self.yaku_id = 9
         self.name = 'Iipeiko'
+        self.english = 'Identical Sequences'
 
         self.han_open = None
         self.han_closed = 1

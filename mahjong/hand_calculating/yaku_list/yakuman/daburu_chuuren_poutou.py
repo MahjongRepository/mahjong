@@ -7,6 +7,7 @@ class DaburuChuurenPoutou(Yaku):
     def set_attributes(self):
         self.yaku_id = 46
         self.name = 'Daburu Chuuren Poutou'
+        self.english = 'Pure Nine Gates'
 
         self.han_open = None
         self.han_closed = 26
