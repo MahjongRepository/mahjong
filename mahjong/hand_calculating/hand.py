@@ -208,7 +208,7 @@ class HandCalculator(object):
                         hand_yaku.append(self.config.yaku.hatsu)
 
                     if self.config.yaku.chun.is_condition_met(hand):
-                        hand_yaku.append(self.config.yaku.hatsu)
+                        hand_yaku.append(self.config.yaku.chun)
 
                     if self.config.yaku.east.is_condition_met(hand, self.config.player_wind, self.config.round_wind):
                         if self.config.player_wind == EAST:
