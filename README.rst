@@ -1,7 +1,7 @@
 .. image:: https://travis-ci.org/MahjongRepository/tenhou-js-bot.svg?branch=master
     :target: https://travis-ci.org/MahjongRepository/tenhou-js-bot
 
-For now only **Python 3.5+** is supported.
+Python 2.7 and 3.5+ are supported.
 
 
 Riichi mahjong hands calculation
