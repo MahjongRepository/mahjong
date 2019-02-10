@@ -113,6 +113,20 @@ class YakuTestCase(unittest.TestCase):
         
     def test_aka_dora(self):
         hand_calculator = HandCalculator()
+        win_tile = TilesConverter.string_to_136_array(man='9')[0]
+        
+        hand_config = HandConfig(
+                    is_tsumo=True,
+                    has_aka_dora=True
+                    )
+        
+        # three red old style, but not that useful
+        tiles = TilesConverter.string_to_136_array(sou='345', pin='456', man='12355599', has_aka_dora=False)
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(hand_calculation.han, 4)
+        
+        # zero red
         tiles = TilesConverter.string_to_136_array(sou='345', pin='456', man='12355599', has_aka_dora=True)
         win_tile = TilesConverter.string_to_136_array(man='9')[0]
         
