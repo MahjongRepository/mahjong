@@ -3,6 +3,8 @@
 
 Python 2.7 and 3.5+ are supported.
 
+We support japanese version of mahjong only (riichi mahjong).
+
 
 Riichi mahjong hands calculation
 ================================
@@ -39,8 +41,6 @@ Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)             
 The code was validated on tenhou.net phoenix replays in total on **11,120,125 hands**.
 
 So, we can say that our own hand calculator works the same way that tenhou.net hand calculation.
-
-Right now it supports only japanese version (riichi mahjong). MCR (chinese version) is in plans.
 
 Project repository: https://github.com/MahjongRepository/mahjong
 
