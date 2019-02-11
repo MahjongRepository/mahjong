@@ -8,8 +8,12 @@ class SanKantsu(Yaku):
     The hand with three kan sets
     """
 
+    def __init__(self, yaku_id):
+        super(SanKantsu, self).__init__(yaku_id)
+
     def set_attributes(self):
-        self.yaku_id = 27
+        self.tenhou_id = 27
+        
         self.name = 'San Kantsu'
         self.english = 'Three Kans'
 

@@ -10,8 +10,12 @@ class Tsuuiisou(Yaku):
     Hand composed entirely of honour tiles
     """
 
+    def __init__(self, yaku_id):
+        super(Tsuuiisou, self).__init__(yaku_id)
+
     def set_attributes(self):
-        self.yaku_id = 42
+        self.tenhou_id = 42
+        
         self.name = 'Tsuu iisou'
         self.english = 'All Honors'
 

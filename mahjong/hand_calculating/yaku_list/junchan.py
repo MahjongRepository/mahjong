@@ -11,8 +11,12 @@ class Junchan(Yaku):
     Honours are not allowed
     """
 
+    def __init__(self, yaku_id):
+        super(Junchan, self).__init__(yaku_id)
+
     def set_attributes(self):
-        self.yaku_id = 33
+        self.tenhou_id = 33
+        
         self.name = 'Junchan'
         self.english = 'Terminal In Each Meld'
 

@@ -7,8 +7,12 @@ class AkaDora(Yaku):
     Red five
     """
 
+    def __init__(self, yaku_id):
+        super(AkaDora, self).__init__(yaku_id)
+
     def set_attributes(self):
-        self.yaku_id = 54
+        self.tenhou_id = 54
+
         self.name = 'Aka Dora'
         self.english = 'Red Five'
 

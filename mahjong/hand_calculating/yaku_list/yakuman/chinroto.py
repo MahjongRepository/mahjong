@@ -7,8 +7,12 @@ from mahjong.hand_calculating.yaku import Yaku
 
 class Chinroutou(Yaku):
 
+    def __init__(self, yaku_id):
+        super(Chinroutou, self).__init__(yaku_id)
+
     def set_attributes(self):
-        self.yaku_id = 44
+        self.tenhou_id = 44
+        
         self.name = 'Chinroutou'
         self.english = 'All Terminals'
 

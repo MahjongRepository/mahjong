@@ -12,11 +12,52 @@ class HandConstants(object):
     KAZOE_NO_LIMIT = 2
 
 
+class OptionalRules(object):
+    """
+    All the supported optional rules
+    """
+    has_open_tanyao = False
+    has_aka_dora = False
+    has_double_yakuman = True
+    kazoe_limit = HandConstants.KAZOE_LIMITED
+    kiriage = False
+    # if false, 1-20 hand will be possible
+    fu_for_open_pinfu = True
+    # if true, pinfu tsumo will be disabled
+    fu_for_pinfu_tsumo = False
+    renhou_as_yakuman = False
+    has_daisharin=False
+    has_daisharin_other_suits=False
+
+    def __init__(self, has_open_tanyao=False,
+                        has_aka_dora=False,
+                        has_double_yakuman=True,
+                        kazoe_limit=HandConstants.KAZOE_LIMITED,
+                        kiriage=False,
+                        fu_for_open_pinfu=True,
+                        fu_for_pinfu_tsumo=False,
+                        renhou_as_yakuman=False,
+                        has_daisharin=False,
+                        has_daisharin_other_suits=False):
+
+        self.has_open_tanyao = has_open_tanyao
+        self.has_aka_dora = has_aka_dora
+        self.has_double_yakuman = has_double_yakuman
+        self.kazoe_limit = kazoe_limit
+        self.kiriage = kiriage
+        self.fu_for_open_pinfu = fu_for_open_pinfu
+        self.fu_for_pinfu_tsumo = fu_for_pinfu_tsumo
+        self.renhou_as_yakuman = renhou_as_yakuman
+        self.has_daisharin = has_daisharin or has_daisharin_other_suits
+        self.has_daisharin_other_suits = has_daisharin_other_suits
+
+
 class HandConfig(HandConstants):
     """
     Special class to pass various settings to the hand calculator object
     """
     yaku = None
+    options = None
 
     is_tsumo = False
     is_riichi = False
@@ -35,19 +76,6 @@ class HandConfig(HandConstants):
     player_wind = None
     round_wind = None
 
-    has_open_tanyao = False
-    has_aka_dora = False
-
-    disable_double_yakuman = False
-
-    kazoe = None
-    # true or false
-    kiriage = False
-    # if false, 1-20 hand will be possible
-    fu_for_open_pinfu = True
-    # if true, pinfu tsumo will be disabled
-    fu_for_pinfu_tsumo = False
-
     def __init__(self,
                  is_tsumo=False,
                  is_riichi=False,
@@ -63,15 +91,10 @@ class HandConfig(HandConstants):
                  is_chiihou=False,
                  player_wind=None,
                  round_wind=None,
-                 has_open_tanyao=False,
-                 has_aka_dora=False,
-                 disable_double_yakuman=False,
-                 kazoe=HandConstants.KAZOE_LIMITED,
-                 kiriage=False,
-                 fu_for_open_pinfu=True,
-                 fu_for_pinfu_tsumo=False):
+                 options=None):
 
         self.yaku = YakuConfig()
+        self.options = options or OptionalRules()
 
         self.is_tsumo = is_tsumo
         self.is_riichi = is_riichi
@@ -89,14 +112,3 @@ class HandConfig(HandConstants):
         self.player_wind = player_wind
         self.round_wind = round_wind
         self.is_dealer = player_wind == EAST
-
-        self.has_open_tanyao = has_open_tanyao
-        self.has_aka_dora = has_aka_dora
-
-        self.disable_double_yakuman = disable_double_yakuman
-
-        self.kazoe = kazoe
-
-        self.kiriage = kiriage
-        self.fu_for_open_pinfu = fu_for_open_pinfu
-        self.fu_for_pinfu_tsumo = fu_for_pinfu_tsumo

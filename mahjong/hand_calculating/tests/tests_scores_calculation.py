@@ -2,7 +2,7 @@
 import unittest
 
 from mahjong.constants import EAST
-from mahjong.hand_calculating.hand_config import HandConfig
+from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.hand_calculating.scores import ScoresCalculator
 
 
@@ -10,7 +10,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
 
     def test_calculate_scores_and_ron(self):
         hand = ScoresCalculator()
-        config = HandConfig(kazoe=HandConfig.KAZOE_NO_LIMIT)
+        config = HandConfig(options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
 
         result = hand.calculate_scores(han=1, fu=30, config=config)
         self.assertEqual(result['main'], 1000)
@@ -62,7 +62,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
 
     def test_calculate_scores_and_ron_by_dealer(self):
         hand = ScoresCalculator()
-        config = HandConfig(player_wind=EAST, kazoe=HandConfig.KAZOE_NO_LIMIT)
+        config = HandConfig(player_wind=EAST, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
 
         result = hand.calculate_scores(han=1, fu=30, config=config)
         self.assertEqual(result['main'], 1500)
@@ -108,7 +108,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
 
     def test_calculate_scores_and_tsumo(self):
         hand = ScoresCalculator()
-        config = HandConfig(is_tsumo=True, kazoe=HandConfig.KAZOE_NO_LIMIT)
+        config = HandConfig(is_tsumo=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
 
         result = hand.calculate_scores(han=1, fu=30, config=config)
         self.assertEqual(result['main'], 500)
@@ -168,7 +168,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
 
     def test_calculate_scores_and_tsumo_by_dealer(self):
         hand = ScoresCalculator()
-        config = HandConfig(player_wind=EAST, is_tsumo=True, kazoe=HandConfig.KAZOE_NO_LIMIT)
+        config = HandConfig(player_wind=EAST, is_tsumo=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
 
         result = hand.calculate_scores(han=1, fu=30, config=config)
         self.assertEqual(result['main'], 500)
@@ -225,7 +225,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
     def test_kiriage_mangan(self):
         hand = ScoresCalculator()
 
-        config = HandConfig(kiriage=True)
+        config = HandConfig(options=OptionalRules(kiriage=True))
 
         result = hand.calculate_scores(han=4, fu=30, config=config)
         self.assertEqual(result['main'], 8000)
@@ -233,7 +233,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         result = hand.calculate_scores(han=3, fu=60, config=config)
         self.assertEqual(result['main'], 8000)
 
-        config = HandConfig(kiriage=True, player_wind=EAST)
+        config = HandConfig(player_wind=EAST, options=OptionalRules(kiriage=True))
 
         result = hand.calculate_scores(han=4, fu=30, config=config)
         self.assertEqual(result['main'], 12000)

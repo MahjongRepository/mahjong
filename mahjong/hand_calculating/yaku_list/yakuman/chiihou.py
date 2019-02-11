@@ -5,7 +5,7 @@ from mahjong.hand_calculating.yaku import Yaku
 class Chiihou(Yaku):
 
     def set_attributes(self):
-        self.yaku_id = 38
+        self.tenhou_id = 38
         self.name = 'Chiihou'
         self.english = 'Earthly Hand'
 

@@ -1,84 +1,89 @@
 # -*- coding: utf-8 -*-
+from itertools import count
+
 from mahjong.hand_calculating.yaku_list import AkaDora, Riichi, Ippatsu, Chankan, Rinshan, Haitei, Houtei, \
     DaburuRiichi, NagashiMangan, Renhou, Pinfu, Tanyao, Iipeiko, Haku, Hatsu, Chun, YakuhaiOfPlace, YakuhaiOfRound, \
     YakuhaiEast, YakuhaiSouth, YakuhaiWest, YakuhaiNorth, Sanshoku, Ittsu, Chanta, Honroto, Toitoi, Sanankou, \
     SanKantsu, SanshokuDoukou, Chiitoitsu, Shosangen, Honitsu, Junchan, Ryanpeikou, Chinitsu, Tsumo, Dora
 from mahjong.hand_calculating.yaku_list.yakuman import KokushiMusou, ChuurenPoutou, Suuankou, Daisangen, Shousuushii, \
     Ryuuiisou, Suukantsu, Tsuuiisou, Chinroutou, DaiSuushii, DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, \
-    Tenhou, Chiihou
-
+    Tenhou, Chiihou, RenhouYakuman, Daisharin
 
 class YakuConfig(object):
 
     def __init__(self):
+        id = count(0)
+        
         # Yaku situations
-        self.tsumo = Tsumo()
-        self.riichi = Riichi()
-        self.ippatsu = Ippatsu()
-        self.chankan = Chankan()
-        self.rinshan = Rinshan()
-        self.haitei = Haitei()
-        self.houtei = Houtei()
-        self.daburu_riichi = DaburuRiichi()
-        self.nagashi_mangan = NagashiMangan()
-        self.renhou = Renhou()
+        self.tsumo = Tsumo(next(id))
+        self.riichi = Riichi(next(id))
+        self.ippatsu = Ippatsu(next(id))
+        self.chankan = Chankan(next(id))
+        self.rinshan = Rinshan(next(id))
+        self.haitei = Haitei(next(id))
+        self.houtei = Houtei(next(id))
+        self.daburu_riichi = DaburuRiichi(next(id))
+        self.nagashi_mangan = NagashiMangan(next(id))
+        self.renhou = Renhou(next(id))
 
         # Yaku 1 Hands
-        self.pinfu = Pinfu()
-        self.tanyao = Tanyao()
-        self.iipeiko = Iipeiko()
-        self.haku = Haku()
-        self.hatsu = Hatsu()
-        self.chun = Chun()
+        self.pinfu = Pinfu(next(id))
+        self.tanyao = Tanyao(next(id))
+        self.iipeiko = Iipeiko(next(id))
+        self.haku = Haku(next(id))
+        self.hatsu = Hatsu(next(id))
+        self.chun = Chun(next(id))
 
-        self.east = YakuhaiEast()
-        self.south = YakuhaiSouth()
-        self.west = YakuhaiWest()
-        self.north = YakuhaiNorth()
-        self.yakuhai_place = YakuhaiOfPlace()
-        self.yakuhai_round = YakuhaiOfRound()
+        self.east = YakuhaiEast(next(id))
+        self.south = YakuhaiSouth(next(id))
+        self.west = YakuhaiWest(next(id))
+        self.north = YakuhaiNorth(next(id))
+        self.yakuhai_place = YakuhaiOfPlace(next(id))
+        self.yakuhai_round = YakuhaiOfRound(next(id))
 
         # Yaku 2 Hands
-        self.sanshoku = Sanshoku()
-        self.ittsu = Ittsu()
-        self.chanta = Chanta()
-        self.honroto = Honroto()
-        self.toitoi = Toitoi()
-        self.sanankou = Sanankou()
-        self.sankantsu = SanKantsu()
-        self.sanshoku_douko = SanshokuDoukou()
-        self.chiitoitsu = Chiitoitsu()
-        self.shosangen = Shosangen()
+        self.sanshoku = Sanshoku(next(id))
+        self.ittsu = Ittsu(next(id))
+        self.chanta = Chanta(next(id))
+        self.honroto = Honroto(next(id))
+        self.toitoi = Toitoi(next(id))
+        self.sanankou = Sanankou(next(id))
+        self.sankantsu = SanKantsu(next(id))
+        self.sanshoku_douko = SanshokuDoukou(next(id))
+        self.chiitoitsu = Chiitoitsu(next(id))
+        self.shosangen = Shosangen(next(id))
 
         # Yaku 3 Hands
-        self.honitsu = Honitsu()
-        self.junchan = Junchan()
-        self.ryanpeiko = Ryanpeikou()
+        self.honitsu = Honitsu(next(id))
+        self.junchan = Junchan(next(id))
+        self.ryanpeiko = Ryanpeikou(next(id))
 
         # Yaku 6 Hands
-        self.chinitsu = Chinitsu()
+        self.chinitsu = Chinitsu(next(id))
 
         # Yakuman list
-        self.kokushi = KokushiMusou()
-        self.chuuren_poutou = ChuurenPoutou()
-        self.suuankou = Suuankou()
-        self.daisangen = Daisangen()
-        self.shosuushi = Shousuushii()
-        self.ryuisou = Ryuuiisou()
-        self.suukantsu = Suukantsu()
-        self.tsuisou = Tsuuiisou()
-        self.chinroto = Chinroutou()
+        self.kokushi = KokushiMusou(next(id))
+        self.chuuren_poutou = ChuurenPoutou(next(id))
+        self.suuankou = Suuankou(next(id))
+        self.daisangen = Daisangen(next(id))
+        self.shosuushi = Shousuushii(next(id))
+        self.ryuisou = Ryuuiisou(next(id))
+        self.suukantsu = Suukantsu(next(id))
+        self.tsuisou = Tsuuiisou(next(id))
+        self.chinroto = Chinroutou(next(id))
+        self.daisharin = Daisharin(next(id))
 
         # Double yakuman
-        self.daisuushi = DaiSuushii()
-        self.daburu_kokushi = DaburuKokushiMusou()
-        self.suuankou_tanki = SuuankouTanki()
-        self.daburu_chuuren_poutou = DaburuChuurenPoutou()
+        self.daisuushi = DaiSuushii(next(id))
+        self.daburu_kokushi = DaburuKokushiMusou(next(id))
+        self.suuankou_tanki = SuuankouTanki(next(id))
+        self.daburu_chuuren_poutou = DaburuChuurenPoutou(next(id))
 
         # Yakuman situations
-        self.tenhou = Tenhou()
-        self.chiihou = Chiihou()
+        self.tenhou = Tenhou(next(id))
+        self.chiihou = Chiihou(next(id))
+        self.renhou_yakuman = RenhouYakuman(next(id))
 
         # Other
-        self.dora = Dora()
-        self.aka_dora = AkaDora()
+        self.dora = Dora(next(id))
+        self.aka_dora = AkaDora(next(id))

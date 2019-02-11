@@ -136,13 +136,13 @@ class FuCalculator(object):
                     else:
                         fu_details.append({'fu': 4, 'reason': FuCalculator.CLOSED_PON})
 
-        add_tsumo_fu = len(fu_details) > 0 or config.fu_for_pinfu_tsumo
+        add_tsumo_fu = len(fu_details) > 0 or config.options.fu_for_pinfu_tsumo
 
         if config.is_tsumo and add_tsumo_fu:
             # 2 additional fu for tsumo (but not for pinfu)
             fu_details.append({'fu': 2, 'reason': FuCalculator.TSUMO})
 
-        if is_open_hand and not len(fu_details) and config.fu_for_open_pinfu:
+        if is_open_hand and not len(fu_details) and config.options.fu_for_open_pinfu:
             # there is no 1-20 hands, so we had to add additional fu
             fu_details.append({'fu': 2, 'reason': FuCalculator.HAND_WITHOUT_FU})
 

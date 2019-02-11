@@ -2,19 +2,20 @@
 from mahjong.hand_calculating.yaku import Yaku
 
 
-class DaburuKokushiMusou(Yaku):
-
+class RenhouYakuman(Yaku):
+    """
+    Yaku situation
+    """
+    
     def __init__(self, yaku_id):
-        super(DaburuKokushiMusou, self).__init__(yaku_id)
+        super(RenhouYakuman, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.tenhou_id = 48
-        
-        self.name = 'Kokushi Musou Juusanmen Matchi'
-        self.english = 'Thirteen Orphans 13-way wait'
+        self.name = 'Renhou'
+        self.english = 'Hand Of Man'
 
         self.han_open = None
-        self.han_closed = 26
+        self.han_closed = 13
 
         self.is_yakuman = True
 
