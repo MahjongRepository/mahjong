@@ -1,6 +1,14 @@
 Releases History
 ================
 
+1.1.6 (2019-02-10)
+------------------
+- Fix a bug when hatsu yaku was added to the hand instead of chun
+- Fix a bug where kokushi wasn't combined with tenhou/renhou/chihou
+- Add English names to all yaku
+- Add support of python 2.7
+- Add a way to pass aka dora to tile converter
+
 1.1.5 (2018-09-04)
 ------------------
 
