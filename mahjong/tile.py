@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU
 
 
 class Tile(object):
@@ -72,12 +73,15 @@ class TilesConverter(object):
         return results
 
     @staticmethod
-    def string_to_136_array(sou=None, pin=None, man=None, honors=None):
+    def string_to_136_array(sou=None, pin=None, man=None, honors=None, has_aka_dora=False):
         """
-        Method to convert one line string tiles format to the 136 array
+        Method to convert one line string tiles format to the 136 array.
+        You can pass r instead of 5 for it to become a red five from 
+        that suit. To prevent old usage without red, 
+        has_aka_dora has to be True for this to do that.
         We need it to increase readability of our tests
         """
-        def _split_string(string, offset):
+        def _split_string(string, offset, red=None):
             data = []
             temp = []
 
@@ -85,22 +89,29 @@ class TilesConverter(object):
                 return []
 
             for i in string:
-                tile = offset + (int(i) - 1) * 4
-                if tile in data:
-                    count_of_tiles = len([x for x in temp if x == tile])
-                    new_tile = tile + count_of_tiles
-                    data.append(new_tile)
-
-                    temp.append(tile)
+                if i == 'r' and has_aka_dora:
+                    temp.append(red)
+                    data.append(red)
                 else:
-                    data.append(tile)
-                    temp.append(tile)
+                    tile = offset + (int(i) - 1) * 4
+                    if tile == red and has_aka_dora:
+                        # prevent non reds to become red
+                        tile += 1
+                    if tile in data:
+                        count_of_tiles = len([x for x in temp if x == tile])
+                        new_tile = tile + count_of_tiles
+                        data.append(new_tile)
+
+                        temp.append(tile)
+                    else:
+                        data.append(tile)
+                        temp.append(tile)
 
             return data
 
-        results = _split_string(man, 0)
-        results += _split_string(pin, 36)
-        results += _split_string(sou, 72)
+        results = _split_string(man, 0, FIVE_RED_MAN)
+        results += _split_string(pin, 36, FIVE_RED_PIN)
+        results += _split_string(sou, 72, FIVE_RED_SOU)
         results += _split_string(honors, 108)
 
         return results

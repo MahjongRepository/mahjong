@@ -2,11 +2,12 @@
 import unittest
 
 from mahjong.hand_calculating.hand_config import HandConfig
-from mahjong.constants import EAST, SOUTH, WEST, NORTH, FIVE_RED_SOU
+from mahjong.constants import EAST, SOUTH, WEST, NORTH, FIVE_RED_SOU, FIVE_RED_MAN, FIVE_RED_SOU
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.meld import Meld
 from mahjong.tests_mixin import TestMixin
 from mahjong.hand_calculating.yaku_config import YakuConfig
+from mahjong.tile import TilesConverter
 
 
 class YakuCalculationTestCase(unittest.TestCase, TestMixin):
@@ -1161,3 +1162,65 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.han, 1)
         self.assertEqual(result.fu, 20)
         self.assertEqual(result.cost['main'], 700)
+        
+    def test_aka_dora(self):
+        hand_calculator = HandCalculator()
+        win_tile = TilesConverter.string_to_136_array(man='9')[0]
+        
+        hand_config = HandConfig(
+                    is_tsumo=True,
+                    has_aka_dora=True
+                    )
+        
+        # three red old style, but not that useful
+        tiles = TilesConverter.string_to_136_array(sou='345', pin='456', man='12355599', has_aka_dora=False)
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(hand_calculation.han, 4)
+        
+        # zero red
+        tiles = TilesConverter.string_to_136_array(sou='345', pin='456', man='12355599', has_aka_dora=True)
+        win_tile = TilesConverter.string_to_136_array(man='9')[0]
+        
+        hand_config = HandConfig(
+                    is_tsumo=True,
+                    has_aka_dora=True
+                    )
+        
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(hand_calculation.han, 1)
+        
+        # one red
+        tiles = TilesConverter.string_to_136_array(sou='34r', pin='456', man='12355599', has_aka_dora=True)
+        
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(hand_calculation.han, 2)
+        
+        # two red
+        tiles = TilesConverter.string_to_136_array(sou='34r', pin='4r6', man='12355599', has_aka_dora=True)
+        
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(hand_calculation.han, 3)
+        
+        # three red
+        tiles = TilesConverter.string_to_136_array(sou='34r', pin='4r6', man='123r5599', has_aka_dora=True)
+        
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(hand_calculation.han, 4)
+        
+        # four red
+        tiles = TilesConverter.string_to_136_array(sou='34r', pin='4r6', man='123rr599', has_aka_dora=True)
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(hand_calculation.han, 5)
+        
+        # five+ red (technically not legal in mahjong but not the fault of evaluator, really)
+        tiles = TilesConverter.string_to_136_array(sou='34r', pin='4r6', man='123rrr99', has_aka_dora=True)
+        
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(hand_calculation.han, 6)
