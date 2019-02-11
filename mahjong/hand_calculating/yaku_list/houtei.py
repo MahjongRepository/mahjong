@@ -6,11 +6,13 @@ class Houtei(Yaku):
     """
     Yaku situation
     """
-    
+
     def __init__(self, yaku_id):
         super(Houtei, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 6
+        
         self.name = 'Houtei Raoyui'
         self.english = 'Win by last discard'
 

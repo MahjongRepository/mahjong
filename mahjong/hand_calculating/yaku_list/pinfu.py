@@ -6,11 +6,13 @@ class Pinfu(Yaku):
     """
     Yaku situation
     """
-    
+
     def __init__(self, yaku_id):
         super(Pinfu, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 7
+        
         self.name = 'Pinfu'
         self.english = 'All Sequences'
 

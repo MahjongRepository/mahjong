@@ -3,11 +3,13 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class YakuhaiOfPlace(Yaku):
-    
+
     def __init__(self, yaku_id):
         super(YakuhaiOfPlace, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 10
+        
         self.name = 'Yakuhai (wind of place)'
         self.english = 'Value Tiles (Seat)'
 

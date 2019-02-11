@@ -6,11 +6,13 @@ class Rinshan(Yaku):
     """
     Yaku situation
     """
-    
+
     def __init__(self, yaku_id):
         super(Rinshan, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 4
+        
         self.name = 'Rinshan Kaihou'
         self.english = 'Dead Wall Draw'
 

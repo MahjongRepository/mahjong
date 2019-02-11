@@ -8,11 +8,13 @@ class Chinitsu(Yaku):
     """
     The hand contains tiles only from a single suit
     """
-    
+
     def __init__(self, yaku_id):
         super(Chinitsu, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 35
+
         self.name = 'Chinitsu'
         self.english = 'Flush'
 

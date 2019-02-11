@@ -7,11 +7,13 @@ class Suuankou(Yaku):
     """
     Four closed pon sets
     """
-    
+
     def __init__(self, yaku_id):
         super(Suuankou, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 41
+        
         self.name = 'Suu ankou'
         self.english = 'Four Concealed Triplets'
 

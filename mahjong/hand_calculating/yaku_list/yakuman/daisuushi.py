@@ -8,11 +8,13 @@ class DaiSuushii(Yaku):
     """
     The hand contains four sets of winds
     """
-    
+
     def __init__(self, yaku_id):
         super(DaiSuushii, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 49
+        
         self.name = 'Dai Suushii'
         self.english = 'Big Four Winds'
 

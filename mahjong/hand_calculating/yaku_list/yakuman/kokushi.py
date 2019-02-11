@@ -7,11 +7,13 @@ class KokushiMusou(Yaku):
     A hand composed of one of each of the terminals and honour tiles plus
     any tile that matches anything else in the hand.
     """
-    
+
     def __init__(self, yaku_id):
         super(KokushiMusou, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 47
+
         self.name = 'Kokushi Musou'
         self.english = 'Thirteen Orphans'
 

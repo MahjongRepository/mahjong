@@ -7,11 +7,13 @@ class Sanshoku(Yaku):
     """
     The same chi in three suits
     """
-    
+
     def __init__(self, yaku_id):
         super(Sanshoku, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 25
+        
         self.name = 'Sanshoku Doujun'
         self.english = 'Three Colored Triplets'
 

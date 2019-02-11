@@ -6,11 +6,13 @@ class Renhou(Yaku):
     """
     Yaku situation
     """
-    
+
     def __init__(self, yaku_id):
         super(Renhou, self).__init__(yaku_id)
 
     def set_attributes(self):
+        self.tenhou_id = 36
+        
         self.name = 'Renhou'
         self.english = 'Hand Of Man'
 
