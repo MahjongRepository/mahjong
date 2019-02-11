@@ -175,3 +175,43 @@ Shanten calculation
     result = shanten.calculate_shanten(tiles)
 
     print(result)
+
+
+Aotenjou scoring rules
+===================
+
+.. code-block:: python
+
+    tiles = self.TilesConverter.string_to_136_array(honors='11133555666777')
+    win_tile = self.TilesConverter.string_to_136_array(honors='3')[0]
+
+    melds = [
+        Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='1111'), opened=False),
+        Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='5555'), opened=False),
+        Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='6666'), opened=False),
+        Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='7777'), opened=False),
+    ]
+
+    result = hand.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=TilesConverter.string_to_136_array(honors='44447777'),
+        scores_calculator_factory=Aotenjou, config=HandConfig(is_riichi=True, is_tsumo=True, is_ippatsu=True, is_haitei=True, player_wind=EAST, round_wind=EAST))
+
+    print(result.han, result.fu)
+    print(result.cost['main'])
+    print(result.yaku)
+    for fu_item in result.fu_details:
+        print(fu_item)
+
+Output:
+
+::
+
+    95 160
+    50706024009129176059868128215100
+    [Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu kantsu, Tsuu iisou, Suu ankou tanki, Dora 24]
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 20, 'reason': 'base'}
+    {'fu': 2, 'reason': 'pair_wait'}
+    {'fu': 2, 'reason': 'tsumo'}
