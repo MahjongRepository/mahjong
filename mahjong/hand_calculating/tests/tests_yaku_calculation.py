@@ -319,6 +319,17 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.han, 5)
         self.assertEqual(result.fu, 40)
         self.assertEqual(len(result.yaku), 1)
+        
+    def test_is_renhou_yakuman(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
+        win_tile = self._string_to_136_tile(sou='4')
+
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_renhou=True, renhou_as_yakuman=True))
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 13)
+        self.assertEqual(len(result.yaku), 1)
 
     def test_is_daburu_riichi(self):
         hand = HandCalculator()

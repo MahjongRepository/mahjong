@@ -7,6 +7,7 @@ from mahjong.hand_calculating.yaku_list.yakuman.daisangen import Daisangen
 from mahjong.hand_calculating.yaku_list.yakuman.daisuushi import DaiSuushii
 from mahjong.hand_calculating.yaku_list.yakuman.kokushi import KokushiMusou
 from mahjong.hand_calculating.yaku_list.yakuman.ryuisou import Ryuuiisou
+from mahjong.hand_calculating.yaku_list.yakuman.renhou_yakuman import RenhouYakuman
 from mahjong.hand_calculating.yaku_list.yakuman.shosuushi import Shousuushii
 from mahjong.hand_calculating.yaku_list.yakuman.suuankou import Suuankou
 from mahjong.hand_calculating.yaku_list.yakuman.suuankou_tanki import SuuankouTanki

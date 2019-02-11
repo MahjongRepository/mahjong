@@ -29,6 +29,7 @@ class HandConfig(HandConstants):
     is_nagashi_mangan = False
     is_tenhou = False
     is_renhou = False
+    renhou_as_yakuman = False
     is_chiihou = False
 
     is_dealer = False
@@ -69,7 +70,8 @@ class HandConfig(HandConstants):
                  kazoe=HandConstants.KAZOE_LIMITED,
                  kiriage=False,
                  fu_for_open_pinfu=True,
-                 fu_for_pinfu_tsumo=False):
+                 fu_for_pinfu_tsumo=False,
+                 renhou_as_yakuman=False):
 
         self.yaku = YakuConfig()
 
@@ -100,3 +102,5 @@ class HandConfig(HandConstants):
         self.kiriage = kiriage
         self.fu_for_open_pinfu = fu_for_open_pinfu
         self.fu_for_pinfu_tsumo = fu_for_pinfu_tsumo
+        
+        self.renhou_as_yakuman = renhou_as_yakuman

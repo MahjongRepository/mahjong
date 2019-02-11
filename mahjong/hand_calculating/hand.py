@@ -144,7 +144,10 @@ class HandCalculator(object):
                     hand_yaku.append(self.config.yaku.houtei)
 
                 if self.config.is_renhou:
-                    hand_yaku.append(self.config.yaku.renhou)
+                    if self.config.renhou_as_yakuman:
+                        hand_yaku.append(self.config.yaku.renhou_yakuman)
+                    else:
+                        hand_yaku.append(self.config.yaku.renhou)
 
                 if self.config.is_tenhou:
                     hand_yaku.append(self.config.yaku.tenhou)
@@ -338,8 +341,8 @@ class HandCalculator(object):
             else:
                 hand_yaku.append(self.config.yaku.kokushi)
 
-            if self.config.is_renhou:
-                hand_yaku.append(self.config.yaku.renhou)
+            if self.config.is_renhou and self.config.renhou_as_yakuman:
+                hand_yaku.append(self.config.yaku.renhou_yakuman)
 
             if self.config.is_tenhou:
                 hand_yaku.append(self.config.yaku.tenhou)

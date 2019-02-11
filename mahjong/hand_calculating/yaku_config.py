@@ -5,7 +5,7 @@ from mahjong.hand_calculating.yaku_list import AkaDora, Riichi, Ippatsu, Chankan
     SanKantsu, SanshokuDoukou, Chiitoitsu, Shosangen, Honitsu, Junchan, Ryanpeikou, Chinitsu, Tsumo, Dora
 from mahjong.hand_calculating.yaku_list.yakuman import KokushiMusou, ChuurenPoutou, Suuankou, Daisangen, Shousuushii, \
     Ryuuiisou, Suukantsu, Tsuuiisou, Chinroutou, DaiSuushii, DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, \
-    Tenhou, Chiihou
+    Tenhou, Chiihou, RenhouYakuman
 
 
 class YakuConfig(object):
@@ -78,6 +78,7 @@ class YakuConfig(object):
         # Yakuman situations
         self.tenhou = Tenhou()
         self.chiihou = Chiihou()
+        self.renhou_yakuman = RenhouYakuman()
 
         # Other
         self.dora = Dora()

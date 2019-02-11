@@ -59,7 +59,8 @@ class TestMixin(object):
                           round_wind=None,
                           has_open_tanyao=False,
                           has_aka_dora=False,
-                          disable_double_yakuman=False):
+                          disable_double_yakuman=False,
+                          renhou_as_yakuman=False):
 
         return HandConfig(
             is_tsumo=is_tsumo,
@@ -78,5 +79,6 @@ class TestMixin(object):
             round_wind=round_wind,
             has_open_tanyao=has_open_tanyao,
             has_aka_dora=has_aka_dora,
-            disable_double_yakuman=disable_double_yakuman
+            disable_double_yakuman=disable_double_yakuman,
+            renhou_as_yakuman=renhou_as_yakuman
         )
