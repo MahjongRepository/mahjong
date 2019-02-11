@@ -33,6 +33,10 @@ Counting renhou as 5 han or yakuman                                             
 Disable or enable Daisharin yakuman                                                         has_daisharin             False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
 Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)                         has_daisharin_other_suits False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable yakuman for dealing into open hands                                       has_sashikomi_yakuman     False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Limit yakuman calculation to 6 (maximum score 192000)                                       limit_to_sextuple_yakuman True
 ==========================================================================================  ========================= ===========================
 
 

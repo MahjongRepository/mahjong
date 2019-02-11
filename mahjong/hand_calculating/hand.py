@@ -63,6 +63,9 @@ class HandCalculator(object):
         if self.config.is_ippatsu and not self.config.is_riichi and not self.config.is_daburu_riichi:
             return HandResponse(error="Ippatsu can't be declared without riichi")
 
+        if self.config.is_tsumo and self.config.is_renhou:
+            return HandResponse(error='Renhou is not possible with tsumo agari')
+
         if not agari.is_agari(tiles_34, all_melds):
             return HandResponse(error='Hand is not winning')
 
@@ -127,10 +130,19 @@ class HandCalculator(object):
                     hand_yaku.append(self.config.yaku.tanyao)
 
                 if self.config.is_riichi and not self.config.is_daburu_riichi:
-                    hand_yaku.append(self.config.yaku.riichi)
+                    if self.config.is_open_riichi:
+                        hand_yaku.append(self.config.yaku.open_riichi)
+                    else:
+                        hand_yaku.append(self.config.yaku.riichi)
 
                 if self.config.is_daburu_riichi:
-                    hand_yaku.append(self.config.yaku.daburu_riichi)
+                    if self.config.is_open_riichi:
+                        hand_yaku.append(self.config.yaku.daburu_open_riichi)
+                    else:
+                        hand_yaku.append(self.config.yaku.daburu_riichi)
+
+                if not self.config.is_tsumo and self.config.options.has_sashikomi_yakuman and ((self.config.yaku.daburu_open_riichi in hand_yaku) or (self.config.yaku.open_riichi in hand_yaku)):
+                    hand_yaku.append(self.config.yaku.sashikomi)
 
                 if self.config.is_ippatsu:
                     hand_yaku.append(self.config.yaku.ippatsu)
@@ -324,6 +336,9 @@ class HandCalculator(object):
                         hand_yaku.append(self.config.yaku.aka_dora)
                         han += count_of_aka_dora
 
+                if self.config.options.limit_to_sextuple_yakuman and han > 78:
+                    han = 78
+
                 if not error:
                     cost = scores_calculator.calculate_scores(han, fu, self.config, len(yakuman_list) > 0)
 
@@ -344,6 +359,15 @@ class HandCalculator(object):
                 hand_yaku.append(self.config.yaku.daburu_kokushi)
             else:
                 hand_yaku.append(self.config.yaku.kokushi)
+
+            if not self.config.is_tsumo and self.config.options.has_sashikomi_yakuman:
+                if self.config.is_riichi and not self.config.is_daburu_riichi:
+                    if self.config.is_open_riichi:
+                        hand_yaku.append(self.config.yaku.sashikomi)
+
+                if self.config.is_daburu_riichi:
+                    if self.config.is_open_riichi:
+                        hand_yaku.append(self.config.yaku.sashikomi)
 
             if self.config.is_renhou and self.config.options.renhou_as_yakuman:
                 hand_yaku.append(self.config.yaku.renhou_yakuman)

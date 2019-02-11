@@ -2,19 +2,17 @@
 from mahjong.hand_calculating.yaku import Yaku
 
 
-class Riichi(Yaku):
+class OpenRiichi(Yaku):
 
     def __init__(self, yaku_id):
-        super(Riichi, self).__init__(yaku_id)
+        super(OpenRiichi, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.tenhou_id = 1
-
-        self.name = 'Riichi'
-        self.english = 'Riichi'
+        self.name = 'Open Riichi'
+        self.english = 'Open Riichi'
 
         self.han_open = None
-        self.han_closed = 1
+        self.han_closed = 2
 
         self.is_yakuman = False
 

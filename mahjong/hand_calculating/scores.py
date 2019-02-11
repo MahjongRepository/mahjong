@@ -28,7 +28,11 @@ class ScoresCalculator(object):
 
         if han >= 5:
             if han >= 78:
-                rounded = 48000
+                if config.options.limit_to_sextuple_yakuman:
+                    rounded = 48000
+                else:
+                    extra_han, _ = divmod(han-78, 13)
+                    rounded = 48000 + (extra_han * 8000)
             elif han >= 65:
                 rounded = 40000
             elif han >= 52:

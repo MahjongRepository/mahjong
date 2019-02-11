@@ -5,6 +5,7 @@ from mahjong.hand_calculating.yaku_list.chiitoitsu import Chiitoitsu
 from mahjong.hand_calculating.yaku_list.chinitsu import Chinitsu
 from mahjong.hand_calculating.yaku_list.chun import Chun
 from mahjong.hand_calculating.yaku_list.daburu_riichi import DaburuRiichi
+from mahjong.hand_calculating.yaku_list.daburu_open_riichi import DaburuOpenRiichi
 from mahjong.hand_calculating.yaku_list.dora import Dora
 from mahjong.hand_calculating.yaku_list.haitei import Haitei
 from mahjong.hand_calculating.yaku_list.haku import Haku
@@ -17,6 +18,7 @@ from mahjong.hand_calculating.yaku_list.ippatsu import Ippatsu
 from mahjong.hand_calculating.yaku_list.ittsu import Ittsu
 from mahjong.hand_calculating.yaku_list.junchan import Junchan
 from mahjong.hand_calculating.yaku_list.nagashi_mangan import NagashiMangan
+from mahjong.hand_calculating.yaku_list.open_riichi import OpenRiichi
 from mahjong.hand_calculating.yaku_list.pinfu import Pinfu
 from mahjong.hand_calculating.yaku_list.renhou import Renhou
 from mahjong.hand_calculating.yaku_list.riichi import Riichi
