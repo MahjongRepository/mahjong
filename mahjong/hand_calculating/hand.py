@@ -66,7 +66,7 @@ class HandCalculator(object):
         if not agari.is_agari(tiles_34, all_melds):
             return HandResponse(error='Hand is not winning')
 
-        if self.config.disable_double_yakuman:
+        if not self.config.options.has_double_yakuman:
             self.config.yaku.daburu_kokushi.han_closed = 13
             self.config.yaku.suuankou_tanki.han_closed = 13
             self.config.yaku.daburu_chuuren_poutou.han_closed = 13
@@ -114,13 +114,13 @@ class HandCalculator(object):
 
                 if is_chiitoitsu:
                     hand_yaku.append(self.config.yaku.chiitoitsu)
-                
-                if self.config.allow_daisharin and self.config.yaku.daisharin.is_condition_met(hand, self.config.allow_daisharin_other_suits):
+
+                if self.config.options.has_daisharin and self.config.yaku.daisharin.is_condition_met(hand, self.config.options.has_daisharin_other_suits):
                     self.config.yaku.daisharin.rename(hand)
                     hand_yaku.append(self.config.yaku.daisharin)
 
                 is_tanyao = self.config.yaku.tanyao.is_condition_met(hand)
-                if is_open_hand and not self.config.has_open_tanyao:
+                if is_open_hand and not self.config.options.has_open_tanyao:
                     is_tanyao = False
 
                 if is_tanyao:
@@ -148,7 +148,7 @@ class HandCalculator(object):
                     hand_yaku.append(self.config.yaku.houtei)
 
                 if self.config.is_renhou:
-                    if self.config.renhou_as_yakuman:
+                    if self.config.options.renhou_as_yakuman:
                         hand_yaku.append(self.config.yaku.renhou_yakuman)
                     else:
                         hand_yaku.append(self.config.yaku.renhou)
@@ -309,7 +309,7 @@ class HandCalculator(object):
                         count_of_dora += plus_dora(tile, dora_indicators)
 
                     for tile in tiles_for_dora:
-                        if is_aka_dora(tile, self.config.has_aka_dora):
+                        if is_aka_dora(tile, self.config.options.has_aka_dora):
                             count_of_aka_dora += 1
 
                     if count_of_dora:
@@ -345,7 +345,7 @@ class HandCalculator(object):
             else:
                 hand_yaku.append(self.config.yaku.kokushi)
 
-            if self.config.is_renhou and self.config.renhou_as_yakuman:
+            if self.config.is_renhou and self.config.options.renhou_as_yakuman:
                 hand_yaku.append(self.config.yaku.renhou_yakuman)
 
             if self.config.is_tenhou:
