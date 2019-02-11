@@ -620,3 +620,35 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 91)
         self.assertEqual(result.cost['main'], 224000)
+
+    def test_paarenchan_no_yaku_disallowed(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(pin='12367778', sou='678', man='456')
+        win_tile = self._string_to_136_tile(pin='7')
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_tsumo=False, paarenchan=1))
+        self.assertIsNotNone(result.error, None)
+
+    def test_paarenchan_no_yaku_allowed(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(pin='12367778', sou='678', man='456')
+        win_tile = self._string_to_136_tile(pin='7')
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_tsumo=False, paarenchan=1, paarenchan_needs_yaku=False))
+        self.assertIsNone(result.error, None)
+        self.assertEqual(result.han, 13)
+
+    def test_paarenchan(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(pin='111222777', sou="44455")
+        win_tile = self._string_to_136_tile(pin='7')
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(paarenchan=1, is_tsumo=True))
+        self.assertIsNone(result.error, None)
+        self.assertEqual(result.han, 26)
+
+        tiles = self._string_to_136_array(pin='111222777', sou="44455")
+        win_tile = self._string_to_136_tile(pin='7')
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(paarenchan=4, is_tsumo=True))
+        self.assertIsNone(result.error, None)
+        self.assertEqual(result.han, 65)

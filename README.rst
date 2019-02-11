@@ -41,6 +41,8 @@ Disable or enable yakuman for dealing into open hands                           
 Limit yakuman calculation to 6 (maximum score 192000)                                       limit_to_sextuple_yakuman True
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
 Disable or enable extra yakuman for all honors 7 pairs                                      has_daichisei             False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable paarenchan without any yaku                                               paarenchan_needs_yaku     True
 ==========================================================================================  ========================= ===========================
 
 

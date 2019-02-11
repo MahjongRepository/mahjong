@@ -32,6 +32,7 @@ class OptionalRules(object):
     has_daichisei=False
     has_sashikomi_yakuman=False
     limit_to_sextuple_yakuman=True
+    paarenchan_needs_yaku=True
 
     def __init__(self, has_open_tanyao=False,
                         has_aka_dora=False,
@@ -45,6 +46,7 @@ class OptionalRules(object):
                         has_daisharin_other_suits=False,
                         has_sashikomi_yakuman=False,
                         limit_to_sextuple_yakuman=True,
+                        paarenchan_needs_yaku=True,
                         has_daichisei=False):
 
         self.has_open_tanyao = has_open_tanyao
@@ -60,6 +62,7 @@ class OptionalRules(object):
         self.has_sashikomi_yakuman = has_sashikomi_yakuman
         self.limit_to_sextuple_yakuman = limit_to_sextuple_yakuman
         self.has_daichisei = has_daichisei
+        self.paarenchan_needs_yaku = paarenchan_needs_yaku
 
 
 class HandConfig(HandConstants):
@@ -86,6 +89,8 @@ class HandConfig(HandConstants):
     is_dealer = False
     player_wind = None
     round_wind = None
+    # for optional yakuman paarenchan above 0 means that dealer has paarenchan possibility
+    paarenchan = 0
 
     kyoutaku_number = 0    # 1000-point
     tsumi_number = 0    # 100-point
@@ -108,6 +113,7 @@ class HandConfig(HandConstants):
                  round_wind=None,
                  kyoutaku_number=0,
                  tsumi_number=0,
+                 paarenchan=0,
                  options=None):
 
         self.yaku = YakuConfig()
@@ -130,6 +136,7 @@ class HandConfig(HandConstants):
         self.player_wind = player_wind
         self.round_wind = round_wind
         self.is_dealer = player_wind == EAST
+        self.paarenchan = paarenchan
 
         self.kyoutaku_number = kyoutaku_number
         self.tsumi_number = tsumi_number

@@ -4,10 +4,11 @@ from itertools import count
 from mahjong.hand_calculating.yaku_list import AkaDora, Riichi, Ippatsu, Chankan, Rinshan, Haitei, Houtei, \
     DaburuRiichi, NagashiMangan, Renhou, Pinfu, Tanyao, Iipeiko, Haku, Hatsu, Chun, YakuhaiOfPlace, YakuhaiOfRound, \
     YakuhaiEast, YakuhaiSouth, YakuhaiWest, YakuhaiNorth, Sanshoku, Ittsu, Chanta, Honroto, Toitoi, Sanankou, \
-    SanKantsu, SanshokuDoukou, Chiitoitsu, Shosangen, Honitsu, Junchan, Ryanpeikou, Chinitsu, Tsumo, Dora
+    SanKantsu, SanshokuDoukou, Chiitoitsu, Shosangen, Honitsu, Junchan, Ryanpeikou, Chinitsu, Tsumo, Dora, \
+    OpenRiichi, DaburuOpenRiichi
 from mahjong.hand_calculating.yaku_list.yakuman import KokushiMusou, ChuurenPoutou, Suuankou, Daisangen, Shousuushii, \
     Ryuuiisou, Suukantsu, Tsuuiisou, Chinroutou, DaiSuushii, DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, \
-    Tenhou, Chiihou, RenhouYakuman, Daisharin
+    Tenhou, Chiihou, RenhouYakuman, Daisharin, Sashikomi, Daichisei
 
 class YakuConfig(object):
 
@@ -87,6 +88,7 @@ class YakuConfig(object):
         self.chiihou = Chiihou(next(id))
         self.renhou_yakuman = RenhouYakuman(next(id))
         self.sashikomi = Sashikomi(next(id))
+        self.paarenchan = Paarenchan(next(id))
 
         # Other
         self.dora = Dora(next(id))

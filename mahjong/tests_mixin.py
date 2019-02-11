@@ -66,7 +66,9 @@ class TestMixin(object):
                           is_open_riichi=False,
                           has_sashikomi_yakuman=False,
                           limit_to_sextuple_yakuman=True,
-                          has_daichisei=False):
+                          paarenchan_needs_yaku=True,
+                          has_daichisei=False,
+                          paarenchan=0):
 
         options = OptionalRules(
             has_open_tanyao=has_open_tanyao,
@@ -75,9 +77,10 @@ class TestMixin(object):
             renhou_as_yakuman=renhou_as_yakuman,
             has_daisharin=allow_daisharin,
             has_daisharin_other_suits=allow_daisharin_other_suits,
+            has_daichisei=has_daichisei,
             has_sashikomi_yakuman=has_sashikomi_yakuman,
             limit_to_sextuple_yakuman=limit_to_sextuple_yakuman,
-            has_daichisei=has_daichisei,
+            paarenchan_needs_yaku=paarenchan_needs_yaku,
         )
         return HandConfig(
             is_tsumo=is_tsumo,
@@ -95,6 +98,7 @@ class TestMixin(object):
             player_wind=player_wind,
             round_wind=round_wind,
             is_open_riichi=is_open_riichi,
+            paarenchan=paarenchan,
 
             options=options
         )
