@@ -8,9 +8,11 @@ class YakuhaiEast(Yaku):
     """
     Pon of east winds
     """
+    
+    def __init__(self, yaku_id):
+        super(YakuhaiEast, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.yaku_id = 10
         self.name = 'Yakuhai (east)'
         self.english = 'East Round/Seat'
 

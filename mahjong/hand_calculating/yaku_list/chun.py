@@ -8,9 +8,11 @@ class Chun(Yaku):
     """
     Pon of red dragons
     """
+    
+    def __init__(self, yaku_id):
+        super(Chun, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.yaku_id = 20
         self.name = 'Yakuhai (chun)'
         self.english = 'Red Dragon'
 

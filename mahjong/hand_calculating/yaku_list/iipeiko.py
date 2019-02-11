@@ -7,9 +7,11 @@ class Iipeiko(Yaku):
     """
     Hand with two identical chi
     """
+    
+    def __init__(self, yaku_id):
+        super(Iipeiko, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.yaku_id = 9
         self.name = 'Iipeiko'
         self.english = 'Identical Sequences'
 

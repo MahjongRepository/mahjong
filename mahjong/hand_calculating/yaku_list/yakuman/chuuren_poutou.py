@@ -9,9 +9,11 @@ class ChuurenPoutou(Yaku):
     """
     The hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit.
     """
+    
+    def __init__(self, yaku_id):
+        super(ChuurenPoutou, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.yaku_id = 45
         self.name = 'Chuuren Poutou'
         self.english = 'Nine Gates'
 

@@ -9,8 +9,9 @@ class Yaku(object):
     is_yakuman = None
     english = None
 
-    def __init__(self):
+    def __init__(self, yaku_id):
         self.set_attributes()
+        self.yaku_id = yaku_id
 
     def __str__(self):
         return self.name

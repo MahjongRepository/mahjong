@@ -9,9 +9,11 @@ class Chanta(Yaku):
     Every set must have at least one terminal or honour tile, and the pair must be of
     a terminal or honour tile. Must contain at least one sequence (123 or 789)
     """
+    
+    def __init__(self, yaku_id):
+        super(Chanta, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.yaku_id = 23
         self.name = 'Chanta'
         self.english = 'Terminal Or Honor In Each Group'
 

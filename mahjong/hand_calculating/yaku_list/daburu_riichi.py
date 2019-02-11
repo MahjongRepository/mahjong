@@ -6,9 +6,11 @@ class DaburuRiichi(Yaku):
     """
     Yaku situation
     """
+    
+    def __init__(self, yaku_id):
+        super(DaburuRiichi, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.yaku_id = 21
         self.name = 'Double Riichi'
         self.english = 'Double Riichi'
 

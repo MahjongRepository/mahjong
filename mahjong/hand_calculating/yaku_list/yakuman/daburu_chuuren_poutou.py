@@ -3,9 +3,11 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class DaburuChuurenPoutou(Yaku):
+    
+    def __init__(self, yaku_id):
+        super(DaburuChuurenPoutou, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.yaku_id = 46
         self.name = 'Daburu Chuuren Poutou'
         self.english = 'Pure Nine Gates'
 

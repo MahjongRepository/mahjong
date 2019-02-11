@@ -8,9 +8,11 @@ class Daisangen(Yaku):
     """
     The hand contains three sets of dragons
     """
+    
+    def __init__(self, yaku_id):
+        super(Daisangen, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.yaku_id = 39
         self.name = 'Daisangen'
         self.english = 'Big Three Dragons'
 

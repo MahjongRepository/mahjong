@@ -6,9 +6,11 @@ class Ippatsu(Yaku):
     """
     Yaku situation
     """
+    
+    def __init__(self, yaku_id):
+        super(Ippatsu, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.yaku_id = 2
         self.name = 'Ippatsu'
         self.english = 'One Shot'
 
