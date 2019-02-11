@@ -134,7 +134,7 @@ What if we add open set?
 
     melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man='444'))]
 
-    result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(has_open_tanyao=True))
+    result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(options=OptionalRules(has_open_tanyao=True)))
 
     print(result.han, result.fu)
     print(result.cost['main'])
