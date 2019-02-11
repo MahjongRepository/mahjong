@@ -9,14 +9,32 @@ Riichi mahjong hands calculation
 
 This library can calculate hand cost (han, fu with details, yaku and scores) for riichi mahjong (japanese version).
 
-It supports features like:
+It supports optional features like:
 
-- Disable or enable aka dora in the hand
-- Disable or enable open tanyao yaku
-- Disable or enable double yakuman (like suuanko tanki)
-- Settings for different kazoe yakuman calculation (it сan be an yakuman or a sanbaiman)
-- Support kiriage mangan
-- Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting)
+==========================================================================================  ========================= ===========================
+Feature                                                                                     Keyword parameter         Default value
+==========================================================================================  ========================= ===========================
+Disable or enable open tanyao yaku                                                          has_open_tanyao           False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable aka dora in the hand                                                      has_aka_dora              False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable double yakuman (like suuanko tanki)                                       has_double_yakuman        True
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Settings for different kazoe yakuman calculation (it сan be an yakuman or a sanbaiman)      kazoe_limit               HandConstants.KAZOE_LIMITED
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Support kiriage mangan                                                                      kiriage                   False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting)   fu_for_open_pinfu         True
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable pinfu tsumo                                                               fu_for_pinfu_tsumo        False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Counting renhou as 5 han or yakuman                                                         renhou_as_yakuman         False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable Daisharin yakuman                                                         has_daisharin             False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)                         has_daisharin_other_suits False
+==========================================================================================  ========================= ===========================
+
 
 The code was validated on tenhou.net phoenix replays in total on **11,120,125 hands**.
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from mahjong.hand_calculating.hand_config import HandConfig
+from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.constants import EAST
 from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.meld import Meld
@@ -90,7 +90,7 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = self._hand(self._to_34_array(tiles + [win_tile]))
         melds = [self._make_meld(Meld.CHI, sou='234')]
 
-        config = HandConfig(fu_for_open_pinfu=False)
+        config = HandConfig(options=OptionalRules(fu_for_open_pinfu=False))
         fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, self._get_win_group(hand, win_tile), config,
                                                     melds=melds)
         self.assertEqual(1, len(fu_details))
@@ -123,7 +123,7 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
 
     def test_tsumo_hand_and_disabled_pinfu(self):
         fu_calculator = FuCalculator()
-        config = HandConfig(is_tsumo=True, fu_for_pinfu_tsumo=True)
+        config = HandConfig(is_tsumo=True, options=OptionalRules(fu_for_pinfu_tsumo=True))
 
         tiles = self._string_to_136_array(sou='2278', man='123456', pin='123')
         win_tile = self._string_to_136_tile(sou='6')

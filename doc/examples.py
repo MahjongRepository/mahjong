@@ -1,6 +1,6 @@
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.meld import Meld
-from mahjong.hand_calculating.hand_config import HandConfig
+from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.shanten import Shanten
 from mahjong.tile import TilesConverter
 
@@ -46,7 +46,7 @@ print_hand_result(result)
 
 melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man='444'))]
 
-result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(has_open_tanyao=True))
+result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(options=OptionalRules(has_open_tanyao=True)))
 print_hand_result(result)
 
 
@@ -79,7 +79,7 @@ dora_indicators = [
     TilesConverter.string_to_136_array(man='1')[0],
 ]
 
-config = HandConfig(is_riichi=True, kazoe=HandConfig.KAZOE_SANBAIMAN)
+config = HandConfig(is_riichi=True, options=OptionalRules(kazoe=HandConfig.KAZOE_SANBAIMAN))
 result = calculator.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
 print_hand_result(result)
 
@@ -90,7 +90,7 @@ print_hand_result(result)
 
 
 config = HandConfig(is_renhou=True)
-# renhou as an yakuman
+# renhou as an yakuman - old style
 config.yaku.renhou.han_closed = 13
 
 tiles = TilesConverter.string_to_136_array(man='22444', pin='333567', sou='444')

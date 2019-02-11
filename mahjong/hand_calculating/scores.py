@@ -20,10 +20,10 @@ class ScoresCalculator(object):
         # kazoe hand
         if han >= 13 and not is_yakuman:
             # Hands over 26+ han don't count as double yakuman
-            if config.kazoe == HandConfig.KAZOE_LIMITED:
+            if config.options.kazoe_limit == HandConfig.KAZOE_LIMITED:
                 han = 13
             # Hands over 13+ is a sanbaiman
-            elif config.kazoe == HandConfig.KAZOE_SANBAIMAN:
+            elif config.options.kazoe_limit == HandConfig.KAZOE_SANBAIMAN:
                 han = 12
 
         if han >= 5:
@@ -64,7 +64,7 @@ class ScoresCalculator(object):
             six_rounded = (6 * base_points + 99) // 100 * 100
 
             is_kiriage = False
-            if config.kiriage:
+            if config.options.kiriage:
                 if han == 4 and fu == 30:
                     is_kiriage = True
                 if han == 3 and fu == 60:
