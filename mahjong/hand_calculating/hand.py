@@ -114,6 +114,10 @@ class HandCalculator(object):
 
                 if is_chiitoitsu:
                     hand_yaku.append(self.config.yaku.chiitoitsu)
+                
+                if self.config.allow_daisharin and self.config.yaku.daisharin.is_condition_met(hand, self.config.allow_daisharin_other_suits):
+                    self.config.yaku.daisharin.rename(hand)
+                    hand_yaku.append(self.config.yaku.daisharin)
 
                 is_tanyao = self.config.yaku.tanyao.is_condition_met(hand)
                 if is_open_hand and not self.config.has_open_tanyao:

@@ -29,7 +29,6 @@ class HandConfig(HandConstants):
     is_nagashi_mangan = False
     is_tenhou = False
     is_renhou = False
-    renhou_as_yakuman = False
     is_chiihou = False
 
     is_dealer = False
@@ -48,6 +47,10 @@ class HandConfig(HandConstants):
     fu_for_open_pinfu = True
     # if true, pinfu tsumo will be disabled
     fu_for_pinfu_tsumo = False
+    
+    renhou_as_yakuman = False
+    allow_daisharin=False
+    allow_daisharin_other_suits=False
 
     def __init__(self,
                  is_tsumo=False,
@@ -71,7 +74,9 @@ class HandConfig(HandConstants):
                  kiriage=False,
                  fu_for_open_pinfu=True,
                  fu_for_pinfu_tsumo=False,
-                 renhou_as_yakuman=False):
+                 renhou_as_yakuman=False,
+                 allow_daisharin=False,
+                 allow_daisharin_other_suits=False):
 
         self.yaku = YakuConfig()
 
@@ -104,3 +109,5 @@ class HandConfig(HandConstants):
         self.fu_for_pinfu_tsumo = fu_for_pinfu_tsumo
         
         self.renhou_as_yakuman = renhou_as_yakuman
+        self.allow_daisharin = allow_daisharin
+        self.allow_daisharin_other_suits = allow_daisharin_other_suits

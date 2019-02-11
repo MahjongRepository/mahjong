@@ -60,7 +60,9 @@ class TestMixin(object):
                           has_open_tanyao=False,
                           has_aka_dora=False,
                           disable_double_yakuman=False,
-                          renhou_as_yakuman=False):
+                          renhou_as_yakuman=False,
+                          allow_daisharin=False,
+                          allow_daisharin_other_suits=False):
 
         return HandConfig(
             is_tsumo=is_tsumo,
@@ -80,5 +82,7 @@ class TestMixin(object):
             has_open_tanyao=has_open_tanyao,
             has_aka_dora=has_aka_dora,
             disable_double_yakuman=disable_double_yakuman,
-            renhou_as_yakuman=renhou_as_yakuman
+            renhou_as_yakuman=renhou_as_yakuman,
+            allow_daisharin=allow_daisharin,
+            allow_daisharin_other_suits=allow_daisharin_other_suits
         )
