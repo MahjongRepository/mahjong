@@ -62,7 +62,8 @@ class TestMixin(object):
                           disable_double_yakuman=False,
                           renhou_as_yakuman=False,
                           allow_daisharin=False,
-                          allow_daisharin_other_suits=False):
+                          allow_daisharin_other_suits=False,
+                          has_daichisei=False):
 
         options = OptionalRules(
             has_open_tanyao=has_open_tanyao,
@@ -70,7 +71,8 @@ class TestMixin(object):
             has_double_yakuman=not disable_double_yakuman,
             renhou_as_yakuman=renhou_as_yakuman,
             has_daisharin=allow_daisharin,
-            has_daisharin_other_suits=allow_daisharin_other_suits
+            has_daisharin_other_suits=allow_daisharin_other_suits,
+            has_daichisei=has_daichisei,
         )
         return HandConfig(
             is_tsumo=is_tsumo,

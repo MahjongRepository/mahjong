@@ -3,6 +3,7 @@ from mahjong.hand_calculating.yaku_list.yakuman.chinroto import Chinroutou
 from mahjong.hand_calculating.yaku_list.yakuman.chuuren_poutou import ChuurenPoutou
 from mahjong.hand_calculating.yaku_list.yakuman.daburu_chuuren_poutou import DaburuChuurenPoutou
 from mahjong.hand_calculating.yaku_list.yakuman.daburu_kokushi import DaburuKokushiMusou
+from mahjong.hand_calculating.yaku_list.yakuman.daichisei import Daichisei
 from mahjong.hand_calculating.yaku_list.yakuman.daisangen import Daisangen
 from mahjong.hand_calculating.yaku_list.yakuman.daisharin import Daisharin
 from mahjong.hand_calculating.yaku_list.yakuman.daisuushi import DaiSuushii

@@ -35,6 +35,8 @@ Counting renhou as 5 han or yakuman                                             
 Disable or enable Daisharin yakuman                                                         has_daisharin             False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
 Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)                         has_daisharin_other_suits False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable extra yakuman for all honors 7 pairs                                      has_daichisei             False
 ==========================================================================================  ========================= ===========================
 
 

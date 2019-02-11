@@ -104,6 +104,18 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.fu, 25)
         self.assertEqual(len(result.yaku), 1)
 
+    def test_is_tsuisou_and_daichisei(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(honors='11223344556677')
+        win_tile = self._string_to_136_tile(honors='7')
+
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(has_daichisei=True))
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 26)
+        self.assertEqual(len(result.yaku), 2)
+
+
     def test_is_chinroto(self):
         hand = HandCalculator()
 
@@ -352,9 +364,9 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         win_tile = TilesConverter.string_to_136_array(honors='1')[0]
 
         hand_config = HandConfig(
-            is_tsumo=True,
-            is_tenhou=False,
-            is_chiihou=False)
+                    is_tsumo=True,
+                    is_tenhou=False,
+                    is_chiihou=False)
 
         hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
 
