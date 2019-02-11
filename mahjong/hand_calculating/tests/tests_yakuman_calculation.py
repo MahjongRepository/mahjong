@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from mahjong.hand_calculating.hand_config import HandConfig
+from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.hand_calculating.yaku_config import YakuConfig
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.meld import Meld
@@ -463,6 +463,41 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertTrue(hand_config.yaku.chiihou in hand_calculation.yaku)
         self.assertEqual(hand_calculation.han, 39)
 
+        hand_config = HandConfig(
+                    is_tsumo=False,
+                    is_renhou=True,
+                    options=OptionalRules(renhou_as_yakuman=True))
+
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(len(hand_calculation.yaku), 2)
+        self.assertFalse(hand_config.yaku.kokushi in hand_calculation.yaku)
+        self.assertTrue(hand_config.yaku.daburu_kokushi in hand_calculation.yaku)
+        self.assertTrue(hand_config.yaku.renhou_yakuman in hand_calculation.yaku)
+        self.assertFalse(hand_config.yaku.tenhou in hand_calculation.yaku)
+        self.assertFalse(hand_config.yaku.chiihou in hand_calculation.yaku)
+        self.assertEqual(hand_calculation.han, 39)
+
+        hand_config = HandConfig(
+                    is_tsumo=False,
+                    is_renhou=True,
+                    is_riichi=True,
+                    is_open_riichi=True,
+                    options=OptionalRules(renhou_as_yakuman=True, has_sashikomi_yakuman=True))
+
+        hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+
+        self.assertIsNone(hand_calculation.error)
+        self.assertEqual(len(hand_calculation.yaku), 3)
+        self.assertFalse(hand_config.yaku.kokushi in hand_calculation.yaku)
+        self.assertTrue(hand_config.yaku.daburu_kokushi in hand_calculation.yaku)
+        self.assertTrue(hand_config.yaku.renhou_yakuman in hand_calculation.yaku)
+        self.assertTrue(hand_config.yaku.sashikomi in hand_calculation.yaku)
+        self.assertFalse(hand_config.yaku.tenhou in hand_calculation.yaku)
+        self.assertFalse(hand_config.yaku.chiihou in hand_calculation.yaku)
+        self.assertEqual(hand_calculation.han, 52)
+
     def test_is_renhou_yakuman(self):
         hand = HandCalculator()
 
@@ -548,3 +583,40 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.han, 13)
         self.assertEqual(len(result.yaku), 1)
         self.assertEqual(result.yaku[0].name, 'Daisuurin')
+
+    def test_is_open_riichi_sashikomi(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
+        win_tile = self._string_to_136_tile(sou='4')
+
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_riichi=True, is_open_riichi=True, has_sashikomi_yakuman=True))
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 13)
+        self.assertEqual(len(result.yaku), 1)
+
+    def test_septuple_yakuman_disabled(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(honors='11122233344455')
+        win_tile = self._string_to_136_tile(honors='5')
+
+        config = self._make_hand_config(is_renhou=True, disable_double_yakuman=False, renhou_as_yakuman=True, has_sashikomi_yakuman=True)
+
+        result = hand.estimate_hand_value(tiles, win_tile, config=config)
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 78)
+        self.assertEqual(result.cost['main'], 192000)
+
+    def test_septuple_yakuman_enabled(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(honors='11122233344455')
+        win_tile = self._string_to_136_tile(honors='5')
+
+        config = self._make_hand_config(is_tsumo=False, is_riichi=True, is_open_riichi=True, is_renhou=True, disable_double_yakuman=False, renhou_as_yakuman=True, has_sashikomi_yakuman=True, limit_to_sextuple_yakuman=False)
+
+        result = hand.estimate_hand_value(tiles, win_tile, config=config)
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 91)
+        self.assertEqual(result.cost['main'], 224000)

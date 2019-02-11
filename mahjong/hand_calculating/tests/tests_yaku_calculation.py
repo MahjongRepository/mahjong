@@ -225,6 +225,22 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         result = hand.estimate_hand_value(tiles, win_tile, melds=melds, config=self._make_hand_config(is_riichi=True))
         self.assertNotEqual(result.error, None)
 
+    def test_is_riichi(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
+        win_tile = self._string_to_136_tile(sou='4')
+
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_riichi=True))
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 1)
+        self.assertEqual(result.fu, 40)
+        self.assertEqual(len(result.yaku), 1)
+
+        melds = [self._make_meld(Meld.CHI, sou='123')]
+        result = hand.estimate_hand_value(tiles, win_tile, melds=melds, config=self._make_hand_config(is_riichi=True))
+        self.assertNotEqual(result.error, None)
+
     def test_is_tsumo(self):
         hand = HandCalculator()
 
@@ -330,6 +346,31 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
                                           config=self._make_hand_config(is_daburu_riichi=True, is_riichi=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 2)
+        self.assertEqual(result.fu, 40)
+        self.assertEqual(len(result.yaku), 1)
+
+    def test_is_open_riichi(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
+        win_tile = self._string_to_136_tile(sou='4')
+
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_riichi=True, is_open_riichi=True))
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 2)
+        self.assertEqual(result.fu, 40)
+        self.assertEqual(len(result.yaku), 1)
+
+    def test_is_daburu_open_riichi(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
+        win_tile = self._string_to_136_tile(sou='4')
+
+        result = hand.estimate_hand_value(tiles, win_tile,
+                                          config=self._make_hand_config(is_daburu_riichi=True, is_riichi=True, is_open_riichi=True))
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 3)
         self.assertEqual(result.fu, 40)
         self.assertEqual(len(result.yaku), 1)
 
