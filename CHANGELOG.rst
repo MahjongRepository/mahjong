@@ -1,6 +1,10 @@
 Releases History
 ================
 
+1.1.7 (2019-04-09)
+------------------
+- Introduce OptionalRules hand configuration
+
 1.1.6 (2019-02-10)
 ------------------
 - Fix a bug when hatsu yaku was added to the hand instead of chun
