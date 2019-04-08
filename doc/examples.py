@@ -79,7 +79,7 @@ dora_indicators = [
     TilesConverter.string_to_136_array(man='1')[0],
 ]
 
-config = HandConfig(is_riichi=True, options=OptionalRules(kazoe=HandConfig.KAZOE_SANBAIMAN))
+config = HandConfig(is_riichi=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_SANBAIMAN))
 result = calculator.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
 print_hand_result(result)
 
