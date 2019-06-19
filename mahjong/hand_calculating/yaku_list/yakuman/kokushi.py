@@ -16,6 +16,7 @@ class KokushiMusou(Yaku):
 
         self.name = 'Kokushi Musou'
         self.english = 'Thirteen Orphans'
+        self.japanese = '国士無双'
 
         self.han_open = None
         self.han_closed = 13

@@ -16,6 +16,7 @@ class SanKantsu(Yaku):
         
         self.name = 'San Kantsu'
         self.english = 'Three Kans'
+        self.japanese = '三暗刻'
 
         self.han_open = 2
         self.han_closed = 2

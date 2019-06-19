@@ -15,6 +15,7 @@ class Ippatsu(Yaku):
         
         self.name = 'Ippatsu'
         self.english = 'One Shot'
+        self.japanese = '一発'
 
         self.han_open = None
         self.han_closed = 1

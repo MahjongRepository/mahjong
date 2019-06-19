@@ -16,6 +16,7 @@ class Suuankou(Yaku):
         
         self.name = 'Suu ankou'
         self.english = 'Four Concealed Triplets'
+        self.japanese = '四暗刻'
 
         self.han_open = None
         self.han_closed = 13

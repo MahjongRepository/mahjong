@@ -16,6 +16,7 @@ class Ittsu(Yaku):
         
         self.name = 'Ittsu'
         self.english = 'Straight'
+        self.japanese = '一気通貫'
 
         self.han_open = 1
         self.han_closed = 2

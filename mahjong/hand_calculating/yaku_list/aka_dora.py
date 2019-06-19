@@ -15,6 +15,7 @@ class AkaDora(Yaku):
 
         self.name = 'Aka Dora'
         self.english = 'Red Five'
+        self.japanese = '赤ドラ'
 
         self.han_open = 1
         self.han_closed = 1

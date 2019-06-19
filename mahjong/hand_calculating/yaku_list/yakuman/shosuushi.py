@@ -17,6 +17,7 @@ class Shousuushii(Yaku):
         
         self.name = 'Shousuushii'
         self.english = 'Small Four Winds'
+        self.japanese = '小四喜'
 
         self.han_open = 13
         self.han_closed = 13

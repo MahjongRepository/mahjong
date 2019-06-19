@@ -17,6 +17,7 @@ class YakuhaiSouth(Yaku):
         
         self.name = 'Yakuhai (south)'
         self.english = 'South Round/Seat'
+        self.japanese = '役牌(南)'
 
         self.han_open = 1
         self.han_closed = 1

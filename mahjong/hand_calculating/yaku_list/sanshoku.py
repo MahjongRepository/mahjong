@@ -16,6 +16,7 @@ class Sanshoku(Yaku):
         
         self.name = 'Sanshoku Doujun'
         self.english = 'Three Colored Triplets'
+        self.japanese = '三色同順'
 
         self.han_open = 1
         self.han_closed = 2

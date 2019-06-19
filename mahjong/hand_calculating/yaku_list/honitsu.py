@@ -16,6 +16,7 @@ class Honitsu(Yaku):
         self.tenhou_id = 34
         self.name = 'Honitsu'
         self.english = 'Half Flush'
+        self.japanese = '混一色'
 
         self.han_open = 2
         self.han_closed = 3

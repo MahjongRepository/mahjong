@@ -18,6 +18,7 @@ class Honroto(Yaku):
         
         self.name = 'Honroutou'
         self.english = 'Terminals and Honors'
+        self.japanese = '混老頭'
 
         self.han_open = 2
         self.han_closed = 2
