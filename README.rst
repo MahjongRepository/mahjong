@@ -3,13 +3,13 @@
 
 Python 2.7 and 3.5+ are supported.
 
-We support japanese version of mahjong only (riichi mahjong).
+We support the Japanese version of mahjong only (riichi mahjong).
 
 
 Riichi mahjong hands calculation
 ================================
 
-This library can calculate hand cost (han, fu with details, yaku and scores) for riichi mahjong (japanese version).
+This library can calculate hand cost (han, fu with details, yaku, and scores) for riichi mahjong (Japanese version).
 
 It supports optional features like:
 
@@ -40,7 +40,7 @@ Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)             
 
 The code was validated on tenhou.net phoenix replays in total on **11,120,125 hands**.
 
-So, we can say that our own hand calculator works the same way that tenhou.net hand calculation.
+So, we can say that our hand calculator works the same way that tenhou.net hand calculation.
 
 Project repository: https://github.com/MahjongRepository/mahjong
 
