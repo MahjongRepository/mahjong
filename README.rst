@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/MahjongRepository/tenhou-js-bot.svg?branch=master
-    :target: https://travis-ci.org/MahjongRepository/tenhou-js-bot
+.. image:: https://travis-ci.org/MahjongRepository/mahjong.svg?branch=master
+    :target: https://travis-ci.org/MahjongRepository/mahjong
 
 Python 2.7 and 3.5+ are supported.
 
