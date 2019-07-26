@@ -200,19 +200,28 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
     def test_is_chuuren_poutou(self):
         hand = HandCalculator()
 
-        tiles = self._string_to_34_array(man='11122345678999')
+        tiles = self._string_to_34_array(man='11112345678999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
-        tiles = self._string_to_34_array(pin='11123345678999')
+        tiles = self._string_to_34_array(pin='11122345678999')
+        self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
+
+        tiles = self._string_to_34_array(sou='11123345678999')
+        self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
+
+        tiles = self._string_to_34_array(sou='11123445678999')
+        self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
+
+        tiles = self._string_to_34_array(sou='11123455678999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
         tiles = self._string_to_34_array(sou='11123456678999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
-        tiles = self._string_to_34_array(sou='11123456678999')
+        tiles = self._string_to_34_array(sou='11123456778999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
-        tiles = self._string_to_34_array(sou='11123456678999')
+        tiles = self._string_to_34_array(sou='11123456788999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
         tiles = self._string_to_34_array(sou='11123456789999')
@@ -227,14 +236,19 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.fu, 40)
         self.assertEqual(len(result.yaku), 1)
 
-        tiles = self._string_to_136_array(man='11122345678999')
-        win_tile = self._string_to_136_tile(man='2')
+        daburi = [
+            ['11122345678999', '2'],
+            ['11123456789999', '9'],
+            ['11112345678999', '1'],
+        ]
+        for hand_tiles, win_tile in daburi:
+            tiles = self._string_to_136_array(man=hand_tiles)
+            win_tile = self._string_to_136_tile(man=win_tile)
 
-        result = hand.estimate_hand_value(tiles, win_tile)
-        self.assertEqual(result.error, None)
-        self.assertEqual(result.han, 26)
-        self.assertEqual(result.fu, 50)
-        self.assertEqual(len(result.yaku), 1)
+            result = hand.estimate_hand_value(tiles, win_tile)
+            self.assertEqual(result.error, None)
+            self.assertEqual(result.han, 26)
+            self.assertEqual(len(result.yaku), 1)
 
         tiles = self._string_to_136_array(pin='11123456678999')
         win_tile = self._string_to_136_tile(pin='3')

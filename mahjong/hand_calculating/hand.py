@@ -259,7 +259,7 @@ class HandCalculator(object):
 
                     # closed kan can't be used in chuuren_poutou
                     if not len(melds) and self.config.yaku.chuuren_poutou.is_condition_met(hand):
-                        if tiles_34[win_tile // 4] == 2:
+                        if tiles_34[win_tile // 4] == 2 or tiles_34[win_tile // 4] == 4:
                             hand_yaku.append(self.config.yaku.daburu_chuuren_poutou)
                         else:
                             hand_yaku.append(self.config.yaku.chuuren_poutou)
