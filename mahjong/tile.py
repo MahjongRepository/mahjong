@@ -76,7 +76,7 @@ class TilesConverter(object):
     def string_to_136_array(sou=None, pin=None, man=None, honors=None, has_aka_dora=False):
         """
         Method to convert one line string tiles format to the 136 array.
-        You can pass r instead of 5 for it to become a red five from 
+        You can pass r or 0 instead of 5 for it to become a red five from
         that suit. To prevent old usage without red, 
         has_aka_dora has to be True for this to do that.
         We need it to increase readability of our tests
@@ -89,7 +89,7 @@ class TilesConverter(object):
                 return []
 
             for i in string:
-                if i == 'r' and has_aka_dora:
+                if (i == 'r' or i == '0') and has_aka_dora:
                     temp.append(red)
                     data.append(red)
                 else:
