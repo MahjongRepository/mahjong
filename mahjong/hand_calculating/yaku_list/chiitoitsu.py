@@ -12,7 +12,7 @@ class Chiitoitsu(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 22
-        
+
         self.name = 'Chiitoitsu'
         self.english = 'Seven Pairs'
 

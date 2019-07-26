@@ -13,7 +13,7 @@ class Iipeiko(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 9
-        
+
         self.name = 'Iipeiko'
         self.english = 'Identical Sequences'
 

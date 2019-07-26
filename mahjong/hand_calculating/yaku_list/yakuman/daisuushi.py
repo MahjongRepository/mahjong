@@ -14,7 +14,7 @@ class DaiSuushii(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 49
-        
+
         self.name = 'Dai Suushii'
         self.english = 'Big Four Winds'
 

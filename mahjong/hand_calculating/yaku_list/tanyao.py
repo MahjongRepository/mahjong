@@ -15,7 +15,7 @@ class Tanyao(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 8
-        
+
         self.name = 'Tanyao'
         self.english = 'All Simples'
 

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
-from mahjong.constants import EAST, SOUTH, WEST, NORTH, FIVE_RED_SOU, FIVE_RED_MAN, FIVE_RED_SOU
+from mahjong.constants import EAST, SOUTH, WEST, NORTH, FIVE_RED_SOU
 from mahjong.hand_calculating.hand import HandCalculator
+from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
+from mahjong.hand_calculating.yaku_config import YakuConfig
 from mahjong.meld import Meld
 from mahjong.tests_mixin import TestMixin
-from mahjong.hand_calculating.yaku_config import YakuConfig
 from mahjong.tile import TilesConverter
 
 
@@ -1168,9 +1168,9 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         win_tile = TilesConverter.string_to_136_array(man='9')[0]
 
         hand_config = HandConfig(
-                    is_tsumo=True,
-                    options=OptionalRules(has_aka_dora=True)
-                    )
+            is_tsumo=True,
+            options=OptionalRules(has_aka_dora=True)
+        )
 
         # three red old style, but not that useful
         tiles = TilesConverter.string_to_136_array(sou='345', pin='456', man='12355599', has_aka_dora=False)
@@ -1183,9 +1183,9 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         win_tile = TilesConverter.string_to_136_array(man='9')[0]
 
         hand_config = HandConfig(
-                    is_tsumo=True,
-                    options=OptionalRules(has_aka_dora=True)
-                    )
+            is_tsumo=True,
+            options=OptionalRules(has_aka_dora=True)
+        )
 
         hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
         self.assertIsNone(hand_calculation.error)

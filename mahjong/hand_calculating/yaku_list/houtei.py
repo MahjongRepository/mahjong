@@ -12,7 +12,7 @@ class Houtei(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 6
-        
+
         self.name = 'Houtei Raoyui'
         self.english = 'Win by last discard'
 

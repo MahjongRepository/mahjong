@@ -14,7 +14,7 @@ class YakuConfig(object):
 
     def __init__(self):
         id = count(0)
-        
+
         # Yaku situations
         self.tsumo = Tsumo(next(id))
         self.riichi = Riichi(next(id))

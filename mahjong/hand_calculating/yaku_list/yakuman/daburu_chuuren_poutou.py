@@ -9,7 +9,7 @@ class DaburuChuurenPoutou(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 46
-        
+
         self.name = 'Daburu Chuuren Poutou'
         self.english = 'Pure Nine Gates'
 

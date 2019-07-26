@@ -77,7 +77,7 @@ class TilesConverter(object):
         """
         Method to convert one line string tiles format to the 136 array.
         You can pass r or 0 instead of 5 for it to become a red five from
-        that suit. To prevent old usage without red, 
+        that suit. To prevent old usage without red,
         has_aka_dora has to be True for this to do that.
         We need it to increase readability of our tests
         """

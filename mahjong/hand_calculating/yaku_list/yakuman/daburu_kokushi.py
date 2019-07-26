@@ -9,7 +9,7 @@ class DaburuKokushiMusou(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 48
-        
+
         self.name = 'Kokushi Musou Juusanmen Matchi'
         self.english = 'Thirteen Orphans 13-way wait'
 

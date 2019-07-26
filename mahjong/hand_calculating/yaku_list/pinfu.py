@@ -12,7 +12,7 @@ class Pinfu(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 7
-        
+
         self.name = 'Pinfu'
         self.english = 'All Sequences'
 

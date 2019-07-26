@@ -9,7 +9,7 @@ class YakuhaiOfRound(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 11
-        
+
         self.name = 'Yakuhai (wind of round)'
         self.english = 'Value Tiles (Round)'
 

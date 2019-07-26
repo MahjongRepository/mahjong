@@ -9,7 +9,7 @@ class SuuankouTanki(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 40
-        
+
         self.name = 'Suu ankou tanki'
         self.english = 'Four Concealed Triplets Single Wait'
 

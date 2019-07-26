@@ -13,7 +13,7 @@ class Sanankou(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 29
-        
+
         self.name = 'San Ankou'
         self.english = 'Tripple Concealed Triplets'
 

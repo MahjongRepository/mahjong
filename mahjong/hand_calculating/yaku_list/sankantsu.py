@@ -13,7 +13,7 @@ class SanKantsu(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 27
-        
+
         self.name = 'San Kantsu'
         self.english = 'Three Kans'
 

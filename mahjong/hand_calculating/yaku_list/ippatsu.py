@@ -12,7 +12,7 @@ class Ippatsu(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 2
-        
+
         self.name = 'Ippatsu'
         self.english = 'One Shot'
 

@@ -15,7 +15,7 @@ class Chanta(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 23
-        
+
         self.name = 'Chanta'
         self.english = 'Terminal Or Honor In Each Group'
 

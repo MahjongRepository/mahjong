@@ -14,7 +14,7 @@ class Shosangen(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 30
-        
+
         self.name = 'Shou Sangen'
         self.english = 'Small Three Dragons'
 

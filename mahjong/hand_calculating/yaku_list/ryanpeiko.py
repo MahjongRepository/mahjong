@@ -13,7 +13,7 @@ class Ryanpeikou(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 32
-        
+
         self.name = 'Ryanpeikou'
         self.english = 'Two Sets Of Identical Sequences'
 

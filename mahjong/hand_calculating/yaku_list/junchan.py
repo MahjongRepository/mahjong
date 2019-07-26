@@ -16,7 +16,7 @@ class Junchan(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 33
-        
+
         self.name = 'Junchan'
         self.english = 'Terminal In Each Meld'
 

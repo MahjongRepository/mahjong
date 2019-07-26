@@ -14,7 +14,7 @@ class Daisangen(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 39
-        
+
         self.name = 'Daisangen'
         self.english = 'Big Three Dragons'
 

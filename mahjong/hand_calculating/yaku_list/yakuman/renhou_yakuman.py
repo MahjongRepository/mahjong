@@ -6,7 +6,7 @@ class RenhouYakuman(Yaku):
     """
     Yaku situation
     """
-    
+
     def __init__(self, yaku_id=None):
         super(RenhouYakuman, self).__init__(yaku_id)
 

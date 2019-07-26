@@ -9,7 +9,7 @@ class Riichi(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 1
-        
+
         self.name = 'Riichi'
         self.english = 'Riichi'
 

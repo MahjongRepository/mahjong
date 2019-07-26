@@ -15,7 +15,7 @@ class ChuurenPoutou(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 45
-        
+
         self.name = 'Chuuren Poutou'
         self.english = 'Nine Gates'
 

@@ -168,7 +168,8 @@ class ScoresCalculationTestCase(unittest.TestCase):
 
     def test_calculate_scores_and_tsumo_by_dealer(self):
         hand = ScoresCalculator()
-        config = HandConfig(player_wind=EAST, is_tsumo=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
+        config = HandConfig(player_wind=EAST, is_tsumo=True,
+                            options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
 
         result = hand.calculate_scores(han=1, fu=30, config=config)
         self.assertEqual(result['main'], 500)

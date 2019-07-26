@@ -30,10 +30,10 @@ class Yaku(object):
         :param: args: some yaku requires additional attributes
         :return: boolean
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def set_attributes(self):
         """
         Set id, name, han related to the yaku
         """
-        raise NotImplemented
+        raise NotImplementedError

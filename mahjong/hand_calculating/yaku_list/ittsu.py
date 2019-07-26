@@ -13,7 +13,7 @@ class Ittsu(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 24
-        
+
         self.name = 'Ittsu'
         self.english = 'Straight'
 

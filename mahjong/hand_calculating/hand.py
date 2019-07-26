@@ -115,7 +115,11 @@ class HandCalculator(object):
                 if is_chiitoitsu:
                     hand_yaku.append(self.config.yaku.chiitoitsu)
 
-                if self.config.options.has_daisharin and self.config.yaku.daisharin.is_condition_met(hand, self.config.options.has_daisharin_other_suits):
+                is_daisharin = self.config.yaku.daisharin.is_condition_met(
+                    hand,
+                    self.config.options.has_daisharin_other_suits
+                )
+                if self.config.options.has_daisharin and is_daisharin:
                     self.config.yaku.daisharin.rename(hand)
                     hand_yaku.append(self.config.yaku.daisharin)
 
