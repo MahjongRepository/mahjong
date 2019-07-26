@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 class Riichi(Yaku):
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Riichi, self).__init__(yaku_id)
 
     def set_attributes(self):

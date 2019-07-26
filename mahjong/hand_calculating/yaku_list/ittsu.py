@@ -8,7 +8,7 @@ class Ittsu(Yaku):
     Three sets of same suit: 1-2-3, 4-5-6, 7-8-9
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Ittsu, self).__init__(yaku_id)
 
     def set_attributes(self):

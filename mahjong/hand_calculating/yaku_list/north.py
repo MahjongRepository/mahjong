@@ -9,7 +9,7 @@ class YakuhaiNorth(Yaku):
     Pon of north winds
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(YakuhaiNorth, self).__init__(yaku_id)
 
     def set_attributes(self):

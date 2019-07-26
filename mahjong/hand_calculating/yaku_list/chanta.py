@@ -10,7 +10,7 @@ class Chanta(Yaku):
     a terminal or honour tile. Must contain at least one sequence (123 or 789)
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Chanta, self).__init__(yaku_id)
 
     def set_attributes(self):

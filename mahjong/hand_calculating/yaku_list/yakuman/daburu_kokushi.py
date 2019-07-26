@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 class DaburuKokushiMusou(Yaku):
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(DaburuKokushiMusou, self).__init__(yaku_id)
 
     def set_attributes(self):

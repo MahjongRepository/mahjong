@@ -14,7 +14,7 @@ class Daisharin(Yaku):
     Optionally can be of any suit
     """
     
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Daisharin, self).__init__(yaku_id)
 
     def set_attributes(self):

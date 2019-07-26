@@ -9,7 +9,7 @@ class Chun(Yaku):
     Pon of red dragons
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Chun, self).__init__(yaku_id)
 
     def set_attributes(self):

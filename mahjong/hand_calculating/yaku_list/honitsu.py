@@ -9,7 +9,7 @@ class Honitsu(Yaku):
     The hand contains tiles from a single suit plus honours
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Honitsu, self).__init__(yaku_id)
 
     def set_attributes(self):

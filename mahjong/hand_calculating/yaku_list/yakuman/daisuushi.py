@@ -9,7 +9,7 @@ class DaiSuushii(Yaku):
     The hand contains four sets of winds
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(DaiSuushii, self).__init__(yaku_id)
 
     def set_attributes(self):

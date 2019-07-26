@@ -7,7 +7,7 @@ class Houtei(Yaku):
     Yaku situation
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Houtei, self).__init__(yaku_id)
 
     def set_attributes(self):

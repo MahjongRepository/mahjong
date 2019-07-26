@@ -10,7 +10,7 @@ class Honroto(Yaku):
     All tiles are terminals or honours
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Honroto, self).__init__(yaku_id)
 
     def set_attributes(self):

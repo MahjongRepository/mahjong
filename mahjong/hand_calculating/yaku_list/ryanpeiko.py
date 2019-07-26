@@ -8,7 +8,7 @@ class Ryanpeikou(Yaku):
     The hand contains two different Iipeikou’s
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Ryanpeikou, self).__init__(yaku_id)
 
     def set_attributes(self):

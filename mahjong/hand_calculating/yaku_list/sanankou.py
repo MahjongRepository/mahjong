@@ -8,7 +8,7 @@ class Sanankou(Yaku):
     Three closed pon sets, the other sets need not to be closed
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Sanankou, self).__init__(yaku_id)
 
     def set_attributes(self):

@@ -9,7 +9,7 @@ class Shosangen(Yaku):
     Hand with two dragon pon sets and one dragon pair
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Shosangen, self).__init__(yaku_id)
 
     def set_attributes(self):

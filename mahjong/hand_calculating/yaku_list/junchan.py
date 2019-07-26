@@ -11,7 +11,7 @@ class Junchan(Yaku):
     Honours are not allowed
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Junchan, self).__init__(yaku_id)
 
     def set_attributes(self):
