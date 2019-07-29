@@ -54,3 +54,20 @@ class TileTestCase(unittest.TestCase):
     def test_convert_string_with_aka_dora_as_zero_to_136_array(self):
         tiles = TilesConverter.string_to_136_array(man='22444', pin='333067', sou='444', has_aka_dora=True)
         self.assertTrue(FIVE_RED_PIN in tiles)
+
+    def test_one_line_string_to_136_array(self):
+        initial_string = '789m456p555s11222z'
+        tiles = TilesConverter.one_line_string_to_136_array(initial_string)
+        self.assertEqual(len(tiles), 14)
+
+        new_string = TilesConverter.to_one_line_string(tiles)
+        self.assertEqual(initial_string, new_string)
+
+    def test_one_line_string_to_34_array(self):
+        initial_string = '789m456p555s11222z'
+        tiles = TilesConverter.one_line_string_to_34_array(initial_string)
+        self.assertEqual(len(tiles), 34)
+
+        tiles = TilesConverter.to_136_array(tiles)
+        new_string = TilesConverter.to_one_line_string(tiles)
+        self.assertEqual(initial_string, new_string)
