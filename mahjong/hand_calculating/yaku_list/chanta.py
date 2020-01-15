@@ -18,6 +18,7 @@ class Chanta(Yaku):
 
         self.name = 'Chanta'
         self.english = 'Terminal Or Honor In Each Group'
+        self.japanese = '混全帯么九'
 
         self.han_open = 1
         self.han_closed = 2

@@ -15,6 +15,7 @@ class Toitoi(Yaku):
         self.tenhou_id = 28
         self.name = 'Toitoi'
         self.english = 'All Triplets'
+        self.japanese = '対々和'
 
         self.han_open = 2
         self.han_closed = 2

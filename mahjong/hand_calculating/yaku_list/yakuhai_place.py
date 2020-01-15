@@ -12,6 +12,7 @@ class YakuhaiOfPlace(Yaku):
 
         self.name = 'Yakuhai (wind of place)'
         self.english = 'Value Tiles (Seat)'
+        self.japanese = '自風'
 
         self.han_open = 1
         self.han_closed = 1

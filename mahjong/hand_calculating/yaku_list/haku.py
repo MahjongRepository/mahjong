@@ -17,6 +17,7 @@ class Haku(Yaku):
 
         self.name = 'Yakuhai (haku)'
         self.english = 'White Dragon'
+        self.japanese = '役牌(白)'
 
         self.han_open = 1
         self.han_closed = 1

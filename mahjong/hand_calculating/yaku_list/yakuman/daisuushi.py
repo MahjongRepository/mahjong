@@ -17,6 +17,7 @@ class DaiSuushii(Yaku):
 
         self.name = 'Dai Suushii'
         self.english = 'Big Four Winds'
+        self.japanese = '大四喜'
 
         self.han_open = 26
         self.han_closed = 26

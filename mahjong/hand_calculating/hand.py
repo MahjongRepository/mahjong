@@ -57,6 +57,9 @@ class HandCalculator(object):
         if self.config.is_riichi and is_open_hand:
             return HandResponse(error="Riichi can't be declared with open hand")
 
+        if self.config.is_daburu_riichi and is_open_hand:
+            return HandResponse(error="Daburu Riichi can't be declared with open hand")
+
         if self.config.is_ippatsu and is_open_hand:
             return HandResponse(error="Ippatsu can't be declared with open hand")
 

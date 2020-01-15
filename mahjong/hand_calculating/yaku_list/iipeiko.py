@@ -16,6 +16,7 @@ class Iipeiko(Yaku):
 
         self.name = 'Iipeiko'
         self.english = 'Identical Sequences'
+        self.japanese = '一盃口'
 
         self.han_open = None
         self.han_closed = 1

@@ -12,6 +12,7 @@ class SuuankouTanki(Yaku):
 
         self.name = 'Suu ankou tanki'
         self.english = 'Four Concealed Triplets Single Wait'
+        self.japanese = '四暗刻単騎待ち'
 
         self.han_open = None
         self.han_closed = 26

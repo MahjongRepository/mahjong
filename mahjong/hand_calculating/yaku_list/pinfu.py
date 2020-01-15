@@ -15,6 +15,7 @@ class Pinfu(Yaku):
 
         self.name = 'Pinfu'
         self.english = 'All Sequences'
+        self.japanese = '平和'
 
         self.han_open = None
         self.han_closed = 1

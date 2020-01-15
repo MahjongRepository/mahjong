@@ -13,6 +13,7 @@ class NagashiMangan(Yaku):
     def set_attributes(self):
         self.name = 'Nagashi Mangan'
         self.english = 'Nagashi Mangan'
+        self.japanese = '流し満貫'
 
         self.han_open = 5
         self.han_closed = 5

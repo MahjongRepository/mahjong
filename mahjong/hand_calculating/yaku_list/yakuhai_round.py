@@ -12,6 +12,7 @@ class YakuhaiOfRound(Yaku):
 
         self.name = 'Yakuhai (wind of round)'
         self.english = 'Value Tiles (Round)'
+        self.japanese = '場風'
 
         self.han_open = 1
         self.han_closed = 1
