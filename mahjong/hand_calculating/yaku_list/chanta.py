@@ -10,12 +10,12 @@ class Chanta(Yaku):
     a terminal or honour tile. Must contain at least one sequence (123 or 789)
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Chanta, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 23
-        
+
         self.name = 'Chanta'
         self.english = 'Terminal Or Honor In Each Group'
         self.japanese = '混全帯么九'

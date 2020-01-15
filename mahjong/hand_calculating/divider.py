@@ -123,7 +123,7 @@ class HandDivider(object):
         :param tiles_34:
         :param first_index:
         :param second_index:
-        :param hand_not_completed: in that mode we can return just possible shi\pon sets
+        :param hand_not_completed: in that mode we can return just possible shi or pon sets
         :return: list of valid combinations
         """
         indices = []

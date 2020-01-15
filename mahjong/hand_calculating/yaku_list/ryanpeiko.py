@@ -8,12 +8,12 @@ class Ryanpeikou(Yaku):
     The hand contains two different Iipeikou’s
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Ryanpeikou, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 32
-        
+
         self.name = 'Ryanpeikou'
         self.english = 'Two Sets Of Identical Sequences'
         self.japanese = '二盃口'

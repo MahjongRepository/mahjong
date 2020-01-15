@@ -10,12 +10,12 @@ class Tanyao(Yaku):
     Hand without 1, 9, dragons and winds
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Tanyao, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 8
-        
+
         self.name = 'Tanyao'
         self.english = 'All Simples'
         self.japanese = '断么九'

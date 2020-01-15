@@ -9,12 +9,12 @@ class YakuhaiSouth(Yaku):
     Pon of south winds
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(YakuhaiSouth, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 10
-        
+
         self.name = 'Yakuhai (south)'
         self.english = 'South Round/Seat'
         self.japanese = '役牌(南)'

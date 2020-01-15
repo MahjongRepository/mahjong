@@ -4,12 +4,12 @@ from mahjong.hand_calculating.yaku import Yaku
 
 class DaburuKokushiMusou(Yaku):
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(DaburuKokushiMusou, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 48
-        
+
         self.name = 'Kokushi Musou Juusanmen Matchi'
         self.english = 'Thirteen Orphans 13-way wait'
         self.japanese = '国士無双十三面待ち'

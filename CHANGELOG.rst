@@ -1,6 +1,16 @@
 Releases History
 ================
 
+1.1.9 (2019-07-29)
+------------------
+-  Add `TilesConverter.one_line_string_to_136_array()` and `TilesConverter.one_line_string_to_34_array()` methods
+
+1.1.8 (2019-07-25)
+------------------
+- Fix an issue with incorrect daburu chuuren poutou calculations
+- Allow passing '0' as a red five to tiles converter
+
+
 1.1.7 (2019-04-09)
 ------------------
 - Introduce OptionalRules hand configuration

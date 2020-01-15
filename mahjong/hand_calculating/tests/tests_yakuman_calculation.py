@@ -200,19 +200,28 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
     def test_is_chuuren_poutou(self):
         hand = HandCalculator()
 
-        tiles = self._string_to_34_array(man='11122345678999')
+        tiles = self._string_to_34_array(man='11112345678999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
-        tiles = self._string_to_34_array(pin='11123345678999')
+        tiles = self._string_to_34_array(pin='11122345678999')
+        self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
+
+        tiles = self._string_to_34_array(sou='11123345678999')
+        self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
+
+        tiles = self._string_to_34_array(sou='11123445678999')
+        self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
+
+        tiles = self._string_to_34_array(sou='11123455678999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
         tiles = self._string_to_34_array(sou='11123456678999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
-        tiles = self._string_to_34_array(sou='11123456678999')
+        tiles = self._string_to_34_array(sou='11123456778999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
-        tiles = self._string_to_34_array(sou='11123456678999')
+        tiles = self._string_to_34_array(sou='11123456788999')
         self.assertTrue(self.config.chuuren_poutou.is_condition_met(self._hand(tiles)))
 
         tiles = self._string_to_34_array(sou='11123456789999')
@@ -227,14 +236,19 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.fu, 40)
         self.assertEqual(len(result.yaku), 1)
 
-        tiles = self._string_to_136_array(man='11122345678999')
-        win_tile = self._string_to_136_tile(man='2')
+        daburi = [
+            ['11122345678999', '2'],
+            ['11123456789999', '9'],
+            ['11112345678999', '1'],
+        ]
+        for hand_tiles, win_tile in daburi:
+            tiles = self._string_to_136_array(man=hand_tiles)
+            win_tile = self._string_to_136_tile(man=win_tile)
 
-        result = hand.estimate_hand_value(tiles, win_tile)
-        self.assertEqual(result.error, None)
-        self.assertEqual(result.han, 26)
-        self.assertEqual(result.fu, 50)
-        self.assertEqual(len(result.yaku), 1)
+            result = hand.estimate_hand_value(tiles, win_tile)
+            self.assertEqual(result.error, None)
+            self.assertEqual(result.han, 26)
+            self.assertEqual(len(result.yaku), 1)
 
         tiles = self._string_to_136_array(pin='11123456678999')
         win_tile = self._string_to_136_tile(pin='3')
@@ -328,22 +342,22 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 78)
         self.assertEqual(result.cost['main'], 192000)
-        
+
     def test_kokushi_musou_multiple_yakuman(self):
         hand_calculator = HandCalculator()
-        
+
         # kokushi test
-        
+
         tiles = TilesConverter.string_to_136_array(sou='19', pin='19', man='19', honors='12345677')
         win_tile = TilesConverter.string_to_136_array(honors='1')[0]
-        
+
         hand_config = HandConfig(
-                    is_tsumo=True,
-                    is_tenhou=False,
-                    is_chiihou=False)
-        
+            is_tsumo=True,
+            is_tenhou=False,
+            is_chiihou=False)
+
         hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-        
+
         self.assertIsNone(hand_calculation.error)
         self.assertEqual(len(hand_calculation.yaku), 1)
         self.assertTrue(hand_config.yaku.kokushi in hand_calculation.yaku)
@@ -351,14 +365,15 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertFalse(hand_config.yaku.tenhou in hand_calculation.yaku)
         self.assertFalse(hand_config.yaku.chiihou in hand_calculation.yaku)
         self.assertEqual(hand_calculation.han, 13)
-                
+
         hand_config = HandConfig(
-                    is_tsumo=True,
-                    is_tenhou=True,
-                    is_chiihou=False)
-        
+            is_tsumo=True,
+            is_tenhou=True,
+            is_chiihou=False
+        )
+
         hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-        
+
         self.assertIsNone(hand_calculation.error)
         self.assertEqual(len(hand_calculation.yaku), 2)
         self.assertTrue(hand_config.yaku.kokushi in hand_calculation.yaku)
@@ -366,14 +381,15 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertTrue(hand_config.yaku.tenhou in hand_calculation.yaku)
         self.assertFalse(hand_config.yaku.chiihou in hand_calculation.yaku)
         self.assertEqual(hand_calculation.han, 26)
-        
+
         hand_config = HandConfig(
-                    is_tsumo=True,
-                    is_tenhou=False,
-                    is_chiihou=True)
-        
+            is_tsumo=True,
+            is_tenhou=False,
+            is_chiihou=True
+        )
+
         hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-        
+
         self.assertIsNone(hand_calculation.error)
         self.assertEqual(len(hand_calculation.yaku), 2)
         self.assertTrue(hand_config.yaku.kokushi in hand_calculation.yaku)
@@ -381,19 +397,20 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertFalse(hand_config.yaku.tenhou in hand_calculation.yaku)
         self.assertTrue(hand_config.yaku.chiihou in hand_calculation.yaku)
         self.assertEqual(hand_calculation.han, 26)
-        
+
         # double kokushi test
-        
+
         tiles = TilesConverter.string_to_136_array(sou='19', pin='19', man='19', honors='12345677')
         win_tile = TilesConverter.string_to_136_array(honors='7')[0]
-        
+
         hand_config = HandConfig(
-                    is_tsumo=True,
-                    is_tenhou=False,
-                    is_chiihou=False)
-        
+            is_tsumo=True,
+            is_tenhou=False,
+            is_chiihou=False
+        )
+
         hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-        
+
         self.assertIsNone(hand_calculation.error)
         self.assertEqual(len(hand_calculation.yaku), 1)
         self.assertFalse(hand_config.yaku.kokushi in hand_calculation.yaku)
@@ -401,14 +418,15 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertFalse(hand_config.yaku.tenhou in hand_calculation.yaku)
         self.assertFalse(hand_config.yaku.chiihou in hand_calculation.yaku)
         self.assertEqual(hand_calculation.han, 26)
-                
+
         hand_config = HandConfig(
-                    is_tsumo=True,
-                    is_tenhou=True,
-                    is_chiihou=False)
-        
+            is_tsumo=True,
+            is_tenhou=True,
+            is_chiihou=False
+        )
+
         hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-        
+
         self.assertIsNone(hand_calculation.error)
         self.assertEqual(len(hand_calculation.yaku), 2)
         self.assertFalse(hand_config.yaku.kokushi in hand_calculation.yaku)
@@ -416,14 +434,15 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertTrue(hand_config.yaku.tenhou in hand_calculation.yaku)
         self.assertFalse(hand_config.yaku.chiihou in hand_calculation.yaku)
         self.assertEqual(hand_calculation.han, 39)
-        
+
         hand_config = HandConfig(
-                    is_tsumo=True,
-                    is_tenhou=False,
-                    is_chiihou=True)
-        
+            is_tsumo=True,
+            is_tenhou=False,
+            is_chiihou=True
+        )
+
         hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-        
+
         self.assertIsNone(hand_calculation.error)
         self.assertEqual(len(hand_calculation.yaku), 2)
         self.assertFalse(hand_config.yaku.kokushi in hand_calculation.yaku)
@@ -431,18 +450,20 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertFalse(hand_config.yaku.tenhou in hand_calculation.yaku)
         self.assertTrue(hand_config.yaku.chiihou in hand_calculation.yaku)
         self.assertEqual(hand_calculation.han, 39)
-        
+
     def test_is_renhou_yakuman(self):
         hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='123444', man='234456', pin='66')
         win_tile = self._string_to_136_tile(sou='4')
 
-        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_renhou=True, renhou_as_yakuman=True))
+        result = hand.estimate_hand_value(
+            tiles, win_tile, config=self._make_hand_config(is_renhou=True, renhou_as_yakuman=True)
+        )
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(len(result.yaku), 1)
-        
+
     def test_is_not_daisharin(self):
         hand = HandCalculator()
 
@@ -453,7 +474,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 11)
         self.assertEqual(len(result.yaku), 4)
-        
+
     def test_is_daisharin(self):
         hand = HandCalculator()
 
@@ -465,7 +486,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.han, 13)
         self.assertEqual(len(result.yaku), 1)
         self.assertEqual(result.yaku[0].name, 'Daisharin')
-        
+
     def test_is_not_daichikurin(self):
         hand = HandCalculator()
 
@@ -476,19 +497,21 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 11)
         self.assertEqual(len(result.yaku), 4)
-        
+
     def test_is_daichikurin(self):
         hand = HandCalculator()
 
         tiles = self._string_to_136_array(man='22334455667788')
         win_tile = self._string_to_136_tile(man='8')
 
-        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(allow_daisharin=True, allow_daisharin_other_suits=True))
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(
+            allow_daisharin=True, allow_daisharin_other_suits=True)
+                                          )
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(len(result.yaku), 1)
         self.assertEqual(result.yaku[0].name, 'Daichikurin')
-        
+
     def test_is_not_daisuurin(self):
         hand = HandCalculator()
 
@@ -499,14 +522,16 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 11)
         self.assertEqual(len(result.yaku), 4)
-        
+
     def test_is_daisuurin(self):
         hand = HandCalculator()
 
         tiles = self._string_to_136_array(sou='22334455667788')
         win_tile = self._string_to_136_tile(sou='8')
 
-        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(allow_daisharin=True, allow_daisharin_other_suits=True))
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(
+            allow_daisharin=True, allow_daisharin_other_suits=True)
+                                          )
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
         self.assertEqual(len(result.yaku), 1)

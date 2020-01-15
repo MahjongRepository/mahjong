@@ -10,12 +10,12 @@ class Ryuuiisou(Yaku):
     Hand composed entirely of green tiles. Green tiles are: green dragons and 2, 3, 4, 6 and 8 of sou.
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Ryuuiisou, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 43
-        
+
         self.name = 'Ryuuiisou'
         self.english = 'All Green'
         self.japanese = '緑一色'

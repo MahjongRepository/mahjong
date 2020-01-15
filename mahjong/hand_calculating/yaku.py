@@ -10,12 +10,11 @@ class Yaku(object):
     is_yakuman = None
     english = None
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         self.tenhou_id = None
+        self.yaku_id = yaku_id
 
         self.set_attributes()
-
-        self.yaku_id = yaku_id
 
     def __str__(self):
         return self.name
@@ -31,10 +30,10 @@ class Yaku(object):
         :param: args: some yaku requires additional attributes
         :return: boolean
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def set_attributes(self):
         """
         Set id, name, han related to the yaku
         """
-        raise NotImplemented
+        raise NotImplementedError

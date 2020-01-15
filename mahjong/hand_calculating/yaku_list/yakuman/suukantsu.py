@@ -8,12 +8,12 @@ class Suukantsu(Yaku):
     The hand with four kan sets
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Suukantsu, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 51
-        
+
         self.name = 'Suu kantsu'
         self.english = 'Four Kans'
         self.japanese = '四槓子'

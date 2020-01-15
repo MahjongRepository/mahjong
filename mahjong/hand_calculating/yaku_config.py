@@ -9,11 +9,12 @@ from mahjong.hand_calculating.yaku_list.yakuman import KokushiMusou, ChuurenPout
     Ryuuiisou, Suukantsu, Tsuuiisou, Chinroutou, DaiSuushii, DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, \
     Tenhou, Chiihou, RenhouYakuman, Daisharin
 
+
 class YakuConfig(object):
 
     def __init__(self):
         id = count(0)
-        
+
         # Yaku situations
         self.tsumo = Tsumo(next(id))
         self.riichi = Riichi(next(id))

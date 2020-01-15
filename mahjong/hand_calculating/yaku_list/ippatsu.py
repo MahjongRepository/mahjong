@@ -7,12 +7,12 @@ class Ippatsu(Yaku):
     Yaku situation
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Ippatsu, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 2
-        
+
         self.name = 'Ippatsu'
         self.english = 'One Shot'
         self.japanese = '一発'

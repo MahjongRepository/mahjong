@@ -8,13 +8,13 @@ from mahjong.utils import is_sou, is_pin, is_man, simplify
 class Daisharin(Yaku):
     """
     Optional yakuman
-    
+
     The hand contains 2-2 3-3 4-4 5-5 6-6 7-7 8-8 of one pin suit
-    
+
     Optionally can be of any suit
     """
-    
-    def __init__(self, yaku_id):
+
+    def __init__(self, yaku_id=None):
         super(Daisharin, self).__init__(yaku_id)
 
     def set_attributes(self):
@@ -24,7 +24,7 @@ class Daisharin(Yaku):
         self.han_closed = 13
 
         self.is_yakuman = True
-    
+
     def set_pin(self):
         self.name = 'Daisharin'
         self.english = 'Big wheels'
@@ -40,6 +40,7 @@ class Daisharin(Yaku):
         self.english = 'Numerous numbers'
         self.japanese = '大竹林'
         
+
     def rename(self, hand):
         # rename this yakuman depending on tiles used
         if is_sou(hand[0][0]):
@@ -68,7 +69,7 @@ class Daisharin(Yaku):
         only_one_suit = len([x for x in sets if x != 0]) == 1
         if not only_one_suit or honor_sets > 0:
             return False
-            
+
         if not allow_other_sets and pin_sets == 0:
             # if we are not allowing other sets than pins
             return False

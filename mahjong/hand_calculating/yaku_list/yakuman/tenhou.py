@@ -7,12 +7,12 @@ class Tenhou(Yaku):
     Yaku situation
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Tenhou, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 37
-        
+
         self.name = 'Tenhou'
         self.english = 'Heavenly Hand'
         self.japanese = '天和'

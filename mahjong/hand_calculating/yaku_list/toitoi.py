@@ -8,7 +8,7 @@ class Toitoi(Yaku):
     The hand consists of all pon sets (and of course a pair), no sequences.
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Toitoi, self).__init__(yaku_id)
 
     def set_attributes(self):

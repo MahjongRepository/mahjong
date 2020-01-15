@@ -9,12 +9,12 @@ class Shosangen(Yaku):
     Hand with two dragon pon sets and one dragon pair
     """
 
-    def __init__(self, yaku_id):
+    def __init__(self, yaku_id=None):
         super(Shosangen, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 30
-        
+
         self.name = 'Shou Sangen'
         self.english = 'Small Three Dragons'
         self.japanese = '小三元'

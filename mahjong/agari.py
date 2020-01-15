@@ -88,19 +88,19 @@ class Agari(object):
 
         if j & 4:
             return not (n0 | nn0 | n1 | nn1 | n2 | nn2) and self._is_mentsu(m0) \
-                   and self._is_mentsu(m1) and self._is_mentsu(m2)
+                and self._is_mentsu(m1) and self._is_mentsu(m2)
 
         if n0 == 2:
             return not (n1 | nn1 | n2 | nn2) and self._is_mentsu(m1) and self._is_mentsu(m2) \
-                   and self._is_atama_mentsu(nn0, m0)
+                and self._is_atama_mentsu(nn0, m0)
 
         if n1 == 2:
             return not (n2 | nn2 | n0 | nn0) and self._is_mentsu(m2) and self._is_mentsu(m0) \
-                   and self._is_atama_mentsu(nn1, m1)
+                and self._is_atama_mentsu(nn1, m1)
 
         if n2 == 2:
             return not (n0 | nn0 | n1 | nn1) and self._is_mentsu(m0) and self._is_mentsu(m1) \
-                   and self._is_atama_mentsu(nn2, m2)
+                and self._is_atama_mentsu(nn2, m2)
 
         return False
 
