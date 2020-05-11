@@ -13,6 +13,13 @@ class TileTestCase(unittest.TestCase):
         result = TilesConverter.to_one_line_string(tiles)
         self.assertEqual('1199m1199p1199s1177z', result)
 
+    def test_convert_to_one_line_string_with_aka_dora(self):
+        tiles = [1,16,13,46,5,13,24,34,134,124]
+        result = TilesConverter.to_one_line_string(tiles, print_aka_dora=False)
+        self.assertEqual('1244579m3p57z', result)
+        result = TilesConverter.to_one_line_string(tiles, print_aka_dora=True)
+        self.assertEqual('1244079m3p57z', result)
+
     def test_convert_to_34_array(self):
         tiles = [0, 34, 35, 36, 37, 70, 71, 72, 73, 106, 107, 108, 109, 134]
         result = TilesConverter.to_34_array(tiles)

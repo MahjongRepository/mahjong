@@ -14,10 +14,11 @@ class Tile(object):
 class TilesConverter(object):
 
     @staticmethod
-    def to_one_line_string(tiles):
+    def to_one_line_string(tiles, print_aka_dora=False):
         """
         Convert 136 tiles array to the one line string
-        Example of output 123s123p123m33z
+        Example of output with print_aka_dora=False: 1244579m3p57z
+        Example of output with print_aka_dora=True:  1244079m3p57z
         """
         tiles = sorted(tiles)
 
@@ -32,10 +33,14 @@ class TilesConverter(object):
         honors = [t for t in tiles if t >= 108]
         honors = [t - 108 for t in honors]
 
-        sou = sou and ''.join([str((i // 4) + 1) for i in sou]) + 's' or ''
-        pin = pin and ''.join([str((i // 4) + 1) for i in pin]) + 'p' or ''
-        man = man and ''.join([str((i // 4) + 1) for i in man]) + 'm' or ''
-        honors = honors and ''.join([str((i // 4) + 1) for i in honors]) + 'z' or ''
+        def words(suits, red_five, suffix):
+            return suits and ''.join(
+                ["0" if i == red_five and print_aka_dora else str((i // 4) + 1) for i in suits]) + suffix or ''
+
+        sou = words(sou, FIVE_RED_SOU - 72, 's')
+        pin = words(pin, FIVE_RED_PIN - 36, 'p')
+        man = words(man, FIVE_RED_MAN, 'm')
+        honors = words(honors, -1 - 108, 'z')
 
         return man + pin + sou + honors
 
