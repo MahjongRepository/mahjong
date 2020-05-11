@@ -9,6 +9,7 @@ class Yaku(object):
     han_closed = None
     is_yakuman = None
     english = None
+    japanese = None
 
     def __init__(self, yaku_id=None):
         self.tenhou_id = None

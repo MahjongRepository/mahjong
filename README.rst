@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/MahjongRepository/mahjong.svg?branch=master
-    :target: https://travis-ci.org/MahjongRepository/mahjong
+.. image:: https://github.com/MahjongRepository/mahjong/workflows/Mahjong%20lib/badge.svg
+    :target: https://github.com/MahjongRepository/mahjong
 
 Python 2.7 and 3.5+ are supported.
 
