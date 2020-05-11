@@ -181,6 +181,9 @@ class HandCalculator(object):
                 if self.config.yaku.chinroto.is_condition_met(hand):
                     hand_yaku.append(self.config.yaku.chinroto)
 
+                if self.config.yaku.ryuisou.is_condition_met(hand):
+                    hand_yaku.append(self.config.yaku.ryuisou)
+
                 # small optimization, try to detect yaku with chi required sets only if we have chi sets in hand
                 if len(chi_sets):
                     if self.config.yaku.chanta.is_condition_met(hand):
@@ -260,9 +263,6 @@ class HandCalculator(object):
 
                     if self.config.yaku.daisuushi.is_condition_met(hand):
                         hand_yaku.append(self.config.yaku.daisuushi)
-
-                    if self.config.yaku.ryuisou.is_condition_met(hand):
-                        hand_yaku.append(self.config.yaku.ryuisou)
 
                     # closed kan can't be used in chuuren_poutou
                     if not len(melds) and self.config.yaku.chuuren_poutou.is_condition_met(hand):
