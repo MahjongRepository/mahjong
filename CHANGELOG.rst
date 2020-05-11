@@ -1,6 +1,13 @@
 Releases History
 ================
 
+1.1.10 (2020-05-11)
+------------------
+- Add japanese yaku names
+- Fix an issue with not correct ryuuiisou detection
+- Allow to print aka dora in `TilesConverter.to_one_line_string()` method ("0" symbol)
+- Add support for Python 3.8
+
 1.1.9 (2019-07-29)
 ------------------
 -  Add `TilesConverter.one_line_string_to_136_array()` and `TilesConverter.one_line_string_to_34_array()` methods
