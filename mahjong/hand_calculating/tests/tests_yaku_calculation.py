@@ -489,7 +489,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='112233', man='22', pin='223344')
-        self.assertTrue(self.config.ryanpeiko.is_condition_met(self._hand(tiles)))
+        self.assertTrue(self.config.ryanpeiko.is_condition_met(self._hand(tiles, 1)))
 
         tiles = self._string_to_34_array(sou='111122223333', man='22')
         self.assertTrue(self.config.ryanpeiko.is_condition_met(self._hand(tiles, 1)))
@@ -561,7 +561,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertTrue(self.config.toitoi.is_condition_met(self._hand(tiles)))
 
         tiles = self._string_to_34_array(sou='777', pin='777888999', honors='44')
-        self.assertTrue(self.config.toitoi.is_condition_met(self._hand(tiles, 1)))
+        self.assertTrue(self.config.toitoi.is_condition_met(self._hand(tiles, 0)))
 
         tiles = self._string_to_136_array(sou='111333', man='333', pin='44555')
         melds = [self._make_meld(Meld.PON, sou='111'), self._make_meld(Meld.PON, sou='333')]

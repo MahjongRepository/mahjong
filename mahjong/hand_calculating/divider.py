@@ -99,7 +99,7 @@ class HandDivider(object):
                 hand.append([index] * 2)
             hands.append(hand)
 
-        return hands
+        return sorted(hands)
 
     def find_pairs(self, tiles_34, first_index=0, second_index=33):
         """

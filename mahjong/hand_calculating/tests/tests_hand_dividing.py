@@ -56,11 +56,11 @@ class HandDividerTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result), 2)
         self.assertEqual(
             self._string(result[0]),
-            ['123m', '123m', '123m', '888m', '99m']
+            ['111m', '222m', '333m', '888m', '99m']
         )
         self.assertEqual(
             self._string(result[1]),
-            ['111m', '222m', '333m', '888m', '99m']
+            ['123m', '123m', '123m', '888m', '99m']
         )
 
     def test_second_one_suit_hand_dividing(self):
@@ -97,11 +97,11 @@ class HandDividerTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result), 2)
         self.assertEqual(
             self._string(result[0]),
-            ['123m', '123m', '99p', '456s', '456s']
+            ['11m', '22m', '33m', '99p', '44s', '55s', '66s']
         )
         self.assertEqual(
             self._string(result[1]),
-            ['11m', '22m', '33m', '99p', '44s', '55s', '66s']
+            ['123m', '123m', '99p', '456s', '456s']
         )
 
     def test_fix_not_correct_kan_handling(self):
