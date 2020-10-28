@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import copy
-
 from mahjong.utils import find_isolated_tile_indices
 
 
@@ -14,7 +12,7 @@ class Agari(object):
         :return: boolean
         """
         # we will modify them later, so we need to use a copy
-        tiles = copy.deepcopy(tiles_34)
+        tiles = tiles_34[:]
 
         # With open hand we need to remove open sets from hand and replace them with isolated pon sets
         # it will allow to determine agari state correctly

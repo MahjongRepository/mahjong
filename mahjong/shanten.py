@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
 
-import copy
-
 from mahjong.utils import find_isolated_tile_indices
 
 
@@ -28,7 +26,7 @@ class Shanten(object):
         :return: int
         """
         # we will modify them later, so we need to use a copy
-        tiles_34 = copy.deepcopy(tiles_34)
+        tiles_34 = tiles_34[:]
 
         self._init(tiles_34)
 

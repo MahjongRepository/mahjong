@@ -1,5 +1,3 @@
-import copy
-
 from mahjong.constants import EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, TERMINAL_INDICES, CHUN
 
 
@@ -197,7 +195,7 @@ def is_tile_strictly_isolated(hand_34, tile_34):
     :param tile_34: int
     :return: bool
     """
-    hand_34 = copy.copy(hand_34)
+    hand_34 = hand_34[:]
     # we don't need to count target tile in the hand
     hand_34[tile_34] -= 1
     if hand_34[tile_34] < 0:
