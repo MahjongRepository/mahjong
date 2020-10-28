@@ -1,6 +1,11 @@
 Releases History
 ================
 
+1.1.11 (2020-10-28)
+-------------------
+- Speed up performance a bit
+- Add support for Python 3.9
+
 1.1.10 (2020-05-11)
 -------------------
 - Add japanese yaku names
