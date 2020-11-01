@@ -292,4 +292,3 @@ if __name__ == '__main__':
     test.test_calculate_scores_with_bonus()
 
     print('test passed!')
-
