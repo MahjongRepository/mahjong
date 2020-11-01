@@ -18,6 +18,7 @@ class Hatsu(Yaku):
         self.name = 'Yakuhai (hatsu)'
         self.english = 'Green Dragon'
         self.japanese = '役牌(發)'
+        self.chinese = '役牌（发）'
 
         self.han_open = 1
         self.han_closed = 1

@@ -13,6 +13,7 @@ class DaburuChuurenPoutou(Yaku):
         self.name = 'Daburu Chuuren Poutou'
         self.english = 'Pure Nine Gates'
         self.japanese = '純正九蓮宝燈'
+        self.chinese = '纯九莲宝灯'
 
         self.han_open = None
         self.han_closed = 26

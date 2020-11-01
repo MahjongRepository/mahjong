@@ -29,6 +29,7 @@ class Daisharin(Yaku):
         self.name = 'Daisharin'
         self.english = 'Big wheels'
         self.japanese = '大車輪'
+        self.chinese = '大车轮'
 
     def set_sou(self):
         self.name = 'Daisuurin'

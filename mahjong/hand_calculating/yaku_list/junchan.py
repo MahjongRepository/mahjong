@@ -20,6 +20,7 @@ class Junchan(Yaku):
         self.name = 'Junchan'
         self.english = 'Terminal In Each Meld'
         self.japanese = '純全帯么九'
+        self.chinese = '纯全带幺九'
 
         self.han_open = 2
         self.han_closed = 3

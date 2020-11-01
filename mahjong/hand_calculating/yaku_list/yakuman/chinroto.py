@@ -16,6 +16,7 @@ class Chinroutou(Yaku):
         self.name = 'Chinroutou'
         self.english = 'All Terminals'
         self.japanese = '清老頭'
+        self.chinese = '清老头'
 
         self.han_open = 13
         self.han_closed = 13

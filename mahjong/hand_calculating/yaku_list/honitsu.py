@@ -17,6 +17,7 @@ class Honitsu(Yaku):
         self.name = 'Honitsu'
         self.english = 'Half Flush'
         self.japanese = '混一色'
+        self.chinese = '混一色'
 
         self.han_open = 2
         self.han_closed = 3

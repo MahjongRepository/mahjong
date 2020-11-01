@@ -17,6 +17,7 @@ class Suukantsu(Yaku):
         self.name = 'Suu kantsu'
         self.english = 'Four Kans'
         self.japanese = '四槓子'
+        self.chinese = '四杠子'
 
         self.han_open = 13
         self.han_closed = 13
