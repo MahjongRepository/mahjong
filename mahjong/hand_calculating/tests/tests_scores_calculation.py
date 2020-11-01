@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from mahjong.constants import EAST
+from mahjong.constants import EAST, WEST
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.hand_calculating.scores import ScoresCalculator
 
@@ -227,7 +227,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         hand = ScoresCalculator()
 
         config = HandConfig(player_wind=EAST, is_tsumo=True, honba_number=2, tsumi_number=3)
-        result = hand.calculate_scores(han=30, fu=3, config=config)
+        result = hand.calculate_scores(han=3, fu=30, config=config)
         self.assertEqual(result['main'], 2000)
         self.assertEqual(result['additional'], 2000)
         self.assertEqual(result['main_bonus'], 200)
@@ -236,7 +236,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['total'], 9600)
 
         config = HandConfig(player_wind=WEST, is_tsumo=True, honba_number=4, tsumi_number=1)
-        result = hand.calculate_scores(han=30, fu=4, config=config)
+        result = hand.calculate_scores(han=4, fu=30, config=config)
         self.assertEqual(result['main'], 3900)
         self.assertEqual(result['additional'], 2000)
         self.assertEqual(result['main_bonus'], 400)
@@ -245,7 +245,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['total'], 10100)
 
         config = HandConfig(player_wind=WEST, honba_number=5)
-        result = hand.calculate_scores(han=30, fu=6, config=config)
+        result = hand.calculate_scores(han=6, fu=30, config=config)
         self.assertEqual(result['main'], 12000)
         self.assertEqual(result['additional'], 0)
         self.assertEqual(result['main_bonus'], 1500)
@@ -254,7 +254,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['total'], 13500)
 
         config = HandConfig(player_wind=EAST, honba_number=5)
-        result = hand.calculate_scores(han=30, fu=5, config=config)
+        result = hand.calculate_scores(han=5, fu=30, config=config)
         self.assertEqual(result['main'], 12000)
         self.assertEqual(result['additional'], 0)
         self.assertEqual(result['main_bonus'], 1500)
@@ -289,6 +289,7 @@ if __name__ == '__main__':
     test.test_calculate_scores_and_ron_by_dealer()
     test.test_calculate_scores_and_tsumo()
     test.test_calculate_scores_and_tsumo_by_dealer()
+    test.test_calculate_scores_with_bonus()
 
     print('test passed!')
 
