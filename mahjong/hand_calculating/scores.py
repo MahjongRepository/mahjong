@@ -41,7 +41,6 @@ class ScoresCalculator(object):
 
         """
 
-
         # kazoe hand
         if han >= 13 and not is_yakuman:
             # Hands over 26+ han don't count as double yakuman
