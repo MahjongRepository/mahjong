@@ -11,7 +11,7 @@ class RenhouYakuman(Yaku):
         super(RenhouYakuman, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.name = 'Renhou'
+        self.name = 'Renhou (yakuman)'
         self.english = 'Hand Of Man'
         self.japanese = '人和'
         self.chinese = '人和'

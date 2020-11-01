@@ -1,24 +1,29 @@
+import os.path
+import pkgutil
+import mahjong.hand_calculating.yaku_list.non_yakuman as nym
+import mahjong.hand_calculating.yaku_list.yakuman as ym
+
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.meld import Meld
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.shanten import Shanten
 from mahjong.tile import TilesConverter
-
+from mahjong.locale.text_reporter import TextReporter
 calculator = HandCalculator()
 
 
 # useful helper
-def print_hand_result(hand_result, language=None):
-    print(hand_result.han, hand_result.fu)
-    print(hand_result.cost)
+def print_hand_result(hand_result, locale='Chinese'):
 
-    if not language:    # by default, use yaku.name
-        print(hand_result.yaku)
+    reporter = TextReporter(locale=locale)
+    str_dict = reporter.report(hand_result)
+
+    if hand_result.error:
+        print(str_dict['error'])
     else:
-        print([yaku.languages[language] for yaku in hand_result.yaku])
-
-    for fu_item in hand_result.fu_details:
-        print(fu_item)
+        print(str_dict['fu_details'])
+        print(str_dict['yaku'])
+        print(str_dict['cost'])
 
     print('')
 
@@ -35,4 +40,4 @@ config = HandConfig()
 # config.is_dealer = True
 config.is_tsumo = True
 result = calculator.estimate_hand_value(tiles, win_tile, config=config)
-print_hand_result(result, language='Chinese')
+print_hand_result(result, locale='Chinese')

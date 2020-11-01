@@ -14,6 +14,15 @@ from mahjong.utils import is_chi, is_pon, plus_dora, is_aka_dora
 class HandCalculator(object):
     config = None
 
+    ERR_NO_WIN_TILE = 'NWT'
+    ERR_OPEN_HAND_RIICHI = 'OHR'
+    ERR_OPEN_HAND_DOUBLE_RIICHI = 'OHD'
+    ERR_OPEN_HAND_IPPATSU = 'OHI'
+    ERR_IPPATSU_WITHOUT_RIICHI = 'IWR'
+    ERR_HAND_NOT_WIN = 'HNW'
+    ERR_NO_HAND_YAKU = 'NHY'
+    # more possible errors, like houtei and haitei can't be together, etc
+
     def estimate_hand_value(self, tiles, win_tile, melds=None, dora_indicators=None, config=None):
         """
         :param tiles: array with 14 tiles in 136-tile format
@@ -52,22 +61,22 @@ class HandCalculator(object):
             return HandResponse(cost, han, fu, hand_yaku)
 
         if win_tile not in tiles:
-            return HandResponse(error="Win tile not in the hand")
+            return HandResponse(error=HandCalculator.ERR_NO_WIN_TILE)
 
         if self.config.is_riichi and is_open_hand:
-            return HandResponse(error="Riichi can't be declared with open hand")
+            return HandResponse(error=HandCalculator.ERR_OPEN_HAND_RIICHI)
 
         if self.config.is_daburu_riichi and is_open_hand:
-            return HandResponse(error="Daburu Riichi can't be declared with open hand")
+            return HandResponse(error=HandCalculator.ERR_OPEN_HAND_DOUBLE_RIICHI)
 
         if self.config.is_ippatsu and is_open_hand:
-            return HandResponse(error="Ippatsu can't be declared with open hand")
+            return HandResponse(error=HandCalculator.ERR_OPEN_HAND_IPPATSU)
 
         if self.config.is_ippatsu and not self.config.is_riichi and not self.config.is_daburu_riichi:
-            return HandResponse(error="Ippatsu can't be declared without riichi")
+            return HandResponse(error=HandCalculator.ERR_IPPATSU_WITHOUT_RIICHI)
 
         if not agari.is_agari(tiles_34, all_melds):
-            return HandResponse(error='Hand is not winning')
+            return HandResponse(error=HandCalculator.ERR_HAND_NOT_WIN)
 
         if not self.config.options.has_double_yakuman:
             self.config.yaku.daburu_kokushi.han_closed = 13
@@ -297,7 +306,7 @@ class HandCalculator(object):
                         han += item.han_closed
 
                 if han == 0:
-                    error = 'There are no yaku in the hand'
+                    error = HandCalculator.ERR_NO_HAND_YAKU
                     cost = None
 
                 # we don't need to add dora to yakuman
@@ -391,7 +400,7 @@ class HandCalculator(object):
         fu = calculated_hand['fu']
         fu_details = calculated_hand['fu_details']
 
-        return HandResponse(cost, han, fu, hand_yaku, error, fu_details)
+        return HandResponse(cost, han, fu, hand_yaku, error, fu_details, is_open_hand)
 
     def _find_win_groups(self, win_tile, hand, opened_melds):
         win_tile_34 = (win_tile or 0) // 4

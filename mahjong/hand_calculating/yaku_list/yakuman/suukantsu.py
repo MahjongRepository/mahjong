@@ -14,7 +14,7 @@ class Suukantsu(Yaku):
     def set_attributes(self):
         self.tenhou_id = 51
 
-        self.name = 'Suu kantsu'
+        self.name = 'Suu Kantsu'
         self.english = 'Four Kans'
         self.japanese = '四槓子'
         self.chinese = '四杠子'

@@ -32,16 +32,16 @@ class Daisharin(Yaku):
         self.chinese = '大车轮'
         self.set_languages()
 
-    def set_sou(self):
+    def set_man(self):
         self.name = 'Daisuurin'
-        self.english = 'Bamboo forest'
+        self.english = 'Numerous numbers'
         self.japanese = '大数隣'
-        self.chinese = '大树林'
+        self.chinese = '大数邻'
         self.set_languages()
 
-    def set_man(self):
+    def set_sou(self):
         self.name = 'Daichikurin'
-        self.english = 'Numerous numbers'
+        self.english = 'Bamboo forest'
         self.japanese = '大竹林'
         self.chinese = '大竹林'
         self.set_languages()

@@ -14,7 +14,7 @@ class Suuankou(Yaku):
     def set_attributes(self):
         self.tenhou_id = 41
 
-        self.name = 'Suu ankou'
+        self.name = 'Suu Ankou'
         self.english = 'Four Concealed Triplets'
         self.japanese = '四暗刻'
         self.chinese = '四暗刻'

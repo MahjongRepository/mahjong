@@ -10,6 +10,7 @@ class FuCalculator(object):
     PENCHAN = 'penchan'
     KANCHAN = 'kanchan'
     VALUED_PAIR = 'valued_pair'
+    DOUBLE_VALUED_PAIR = 'double_valued_pair'
     PAIR_WAIT = 'pair_wait'
     TSUMO = 'tsumo'
     HAND_WITHOUT_FU = 'hand_without_fu'
@@ -94,8 +95,7 @@ class FuCalculator(object):
 
         # east-east pair when you are on east gave double fu
         if count_of_valued_pairs == 2:
-            fu_details.append({'fu': 2, 'reason': FuCalculator.VALUED_PAIR})
-            fu_details.append({'fu': 2, 'reason': FuCalculator.VALUED_PAIR})
+            fu_details.append({'fu': 4, 'reason': FuCalculator.DOUBLE_VALUED_PAIR})
 
         # pair wait
         if is_pair(win_group):
