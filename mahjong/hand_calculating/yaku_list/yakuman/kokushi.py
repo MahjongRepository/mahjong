@@ -18,6 +18,7 @@ class KokushiMusou(Yaku):
         self.english = 'Thirteen Orphans'
         self.japanese = '国士無双'
         self.chinese = '国士无双'
+        self.set_languages()
 
         self.han_open = None
         self.han_closed = 13
