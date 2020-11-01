@@ -27,7 +27,7 @@ class YakuConfig(object):
         self.nagashi_mangan = NagashiMangan(next(id))
         self.renhou = Renhou(next(id))
 
-        # Yaku 1 Hands
+        # Yaku 1 Han
         self.pinfu = Pinfu(next(id))
         self.tanyao = Tanyao(next(id))
         self.iipeiko = Iipeiko(next(id))
@@ -42,7 +42,7 @@ class YakuConfig(object):
         self.yakuhai_place = YakuhaiOfPlace(next(id))
         self.yakuhai_round = YakuhaiOfRound(next(id))
 
-        # Yaku 2 Hands
+        # Yaku 2 Hans
         self.sanshoku = Sanshoku(next(id))
         self.ittsu = Ittsu(next(id))
         self.chanta = Chanta(next(id))
@@ -54,12 +54,12 @@ class YakuConfig(object):
         self.chiitoitsu = Chiitoitsu(next(id))
         self.shosangen = Shosangen(next(id))
 
-        # Yaku 3 Hands
+        # Yaku 3 Hans
         self.honitsu = Honitsu(next(id))
         self.junchan = Junchan(next(id))
         self.ryanpeiko = Ryanpeikou(next(id))
 
-        # Yaku 6 Hands
+        # Yaku 6 Hans
         self.chinitsu = Chinitsu(next(id))
 
         # Yakuman list

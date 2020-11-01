@@ -16,7 +16,7 @@ class Tsuuiisou(Yaku):
     def set_attributes(self):
         self.tenhou_id = 42
 
-        self.name = 'Tsuu iisou'
+        self.name = 'Tsuu Iisou'
         self.english = 'All Honors'
         self.japanese = '字一色'
         self.chinese = '字一色'
