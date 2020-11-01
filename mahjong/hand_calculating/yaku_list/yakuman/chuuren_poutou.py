@@ -20,6 +20,7 @@ class ChuurenPoutou(Yaku):
         self.english = 'Nine Gates'
         self.japanese = '九蓮宝燈'
         self.chinese = '九莲宝灯'
+        self.set_languages()
 
         self.han_open = None
         self.han_closed = 13

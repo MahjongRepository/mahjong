@@ -17,6 +17,7 @@ class Chinroutou(Yaku):
         self.english = 'All Terminals'
         self.japanese = '清老頭'
         self.chinese = '清老头'
+        self.set_languages()
 
         self.han_open = 13
         self.han_closed = 13

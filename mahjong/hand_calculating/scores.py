@@ -11,11 +11,36 @@ class ScoresCalculator(object):
         :param fu: int
         :param config: HandConfig object
         :param is_yakuman: boolean
-        :return: a dictionary with main and additional cost
-        for ron additional cost is always = 0
-        for tsumo main cost is cost for dealer and additional is cost for player
-        {'main': 1000, 'additional': 0}
+        :return: a dictionary with following keys:
+        'main': main cost (honba number not included)
+        'additional': additional cost (honba number not included)
+        'main_bonus': extra cost due to honba number to be added on main cost
+        'additional_bonus': extra cost due to honba number to be added on additional cost
+        'tsumi_bonus': the points taken from accumulated riichi 1000-point bons
+        'total': the total points the winner is to earn
+
+        for ron, main cost is the cost for the player who triggers the ron, and additional cost is always = 0
+        for dealer tsumo, main cost is the same as additional cost, which is the cost for any other player
+        for non-dealer (player) tsumo, main cost is cost for dealer and additional is cost for player
+
+        examples:
+        1. dealer tsumo 2000 ALL in 2 honba, with 3 riichi tsumi bons on desk
+        {'main': 2000, 'additional': 2000,
+         'main_bonus': 200, 'additional_bonus': 200,
+         'tsumi_bonus': 3000, 'total': 9600}
+
+         2. player tsumo 3900-2000 in 4 honba, with 1 riichi tsumi bon on desk
+         {'main': 3900, 'additional': 2000,
+         'main_bonus': 400, 'additional_bonus': 400,
+         'tsumi_bonus': 1000, 'total': 10100}
+
+         3. dealer (or player) ron 12000 in 5 honba, with no riichi tsumi bon on desk
+         {'main': 12000, 'additional': 0,
+         'main_bonus': 1500, 'additional_bonus': 0,
+         'tsumi_bonus': 0, 'total': 13500}
+
         """
+
 
         # kazoe hand
         if han >= 13 and not is_yakuman:
@@ -77,7 +102,36 @@ class ScoresCalculator(object):
                 four_rounded = double_rounded * 2
                 six_rounded = double_rounded * 3
 
+        main = 0
+        additional = 0
+        tsumi_bonus = 0
+        total = 0
+
         if config.is_tsumo:
-            return {'main': double_rounded, 'additional': config.is_dealer and double_rounded or rounded}
-        else:
-            return {'main': config.is_dealer and six_rounded or four_rounded, 'additional': 0}
+            main = double_rounded
+            main_bonus = 100 * config.honba_number
+            additional_bonus = main_bonus
+
+            if config.is_dealer:
+                additional = main
+            else:   # player
+                additional = rounded
+
+        else:   # ron
+            additional = 0
+            additional_bonus = 0
+            main_bonus = 300 * config.honba_number
+
+            if config.is_dealer:
+                main = six_rounded
+            else:   # player
+                main = four_rounded
+
+        tsumi_bonus = 1000 * config.tsumi_number
+        total = (main + main_bonus) + 2 * (additional + additional_bonus) + tsumi_bonus
+
+        ret_dict = {'main': main, 'main_bonus': main_bonus,
+                    'additional': additional, 'additional_bonus': additional_bonus,
+                    'tsumi_bonus': tsumi_bonus, 'total': total}
+
+        return ret_dict

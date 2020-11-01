@@ -76,6 +76,9 @@ class HandConfig(HandConstants):
     player_wind = None
     round_wind = None
 
+    tsumi_number = 0    # 1000-point
+    honba_number = 0    # 100-point
+
     def __init__(self,
                  is_tsumo=False,
                  is_riichi=False,
@@ -91,6 +94,8 @@ class HandConfig(HandConstants):
                  is_chiihou=False,
                  player_wind=None,
                  round_wind=None,
+                 tsumi_number=0,
+                 honba_number=0,
                  options=None):
 
         self.yaku = YakuConfig()
@@ -112,3 +117,6 @@ class HandConfig(HandConstants):
         self.player_wind = player_wind
         self.round_wind = round_wind
         self.is_dealer = player_wind == EAST
+
+        self.tsumi_number = tsumi_number
+        self.honba_number = honba_number

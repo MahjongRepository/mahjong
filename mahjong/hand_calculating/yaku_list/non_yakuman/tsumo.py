@@ -2,25 +2,26 @@
 from mahjong.hand_calculating.yaku import Yaku
 
 
-class RenhouYakuman(Yaku):
+class Tsumo(Yaku):
     """
     Yaku situation
     """
 
     def __init__(self, yaku_id=None):
-        super(RenhouYakuman, self).__init__(yaku_id)
+        super(Tsumo, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.name = 'Renhou'
-        self.english = 'Hand Of Man'
-        self.japanese = '人和'
-        self.chinese = '人和'
+        self.tenhou_id = 0
+        self.name = 'Menzen Tsumo'
+        self.english = 'Self Draw'
+        self.japanese = '門前清自摸和'
+        self.chinese = '门前清自摸和'
         self.set_languages()
 
         self.han_open = None
-        self.han_closed = 13
+        self.han_closed = 1
 
-        self.is_yakuman = True
+        self.is_yakuman = False
 
     def is_condition_met(self, hand, *args):
         # was it here or not is controlling by superior code

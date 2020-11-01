@@ -20,6 +20,7 @@ class Ryuuiisou(Yaku):
         self.english = 'All Green'
         self.japanese = '緑一色'
         self.chinese = '绿一色'
+        self.set_languages()
 
         self.han_open = 13
         self.han_closed = 13

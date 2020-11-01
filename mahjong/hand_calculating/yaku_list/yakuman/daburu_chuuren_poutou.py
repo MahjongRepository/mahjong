@@ -14,6 +14,7 @@ class DaburuChuurenPoutou(Yaku):
         self.english = 'Pure Nine Gates'
         self.japanese = '純正九蓮宝燈'
         self.chinese = '纯九莲宝灯'
+        self.set_languages()
 
         self.han_open = None
         self.han_closed = 26

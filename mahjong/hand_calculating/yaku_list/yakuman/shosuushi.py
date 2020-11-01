@@ -19,6 +19,7 @@ class Shousuushii(Yaku):
         self.english = 'Small Four Winds'
         self.japanese = '小四喜'
         self.chinese = '小四喜'
+        self.set_languages()
 
         self.han_open = 13
         self.han_closed = 13

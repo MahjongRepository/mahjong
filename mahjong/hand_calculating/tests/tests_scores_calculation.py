@@ -223,6 +223,45 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['main'], 96000)
         self.assertEqual(result['additional'], 96000)
 
+    def test_calculate_scores_with_bonus(self):
+        hand = ScoresCalculator()
+
+        config = HandConfig(player_wind=EAST, is_tsumo=True, honba_number=2, tsumi_number=3)
+        result = hand.calculate_scores(han=30, fu=3, config=config)
+        self.assertEqual(result['main'], 2000)
+        self.assertEqual(result['additional'], 2000)
+        self.assertEqual(result['main_bonus'], 200)
+        self.assertEqual(result['additional_bonus'], 200)
+        self.assertEqual(result['tsumi_bonus'], 3000)
+        self.assertEqual(result['total'], 9600)
+
+        config = HandConfig(player_wind=WEST, is_tsumo=True, honba_number=4, tsumi_number=1)
+        result = hand.calculate_scores(han=30, fu=4, config=config)
+        self.assertEqual(result['main'], 3900)
+        self.assertEqual(result['additional'], 2000)
+        self.assertEqual(result['main_bonus'], 400)
+        self.assertEqual(result['additional_bonus'], 400)
+        self.assertEqual(result['tsumi_bonus'], 1000)
+        self.assertEqual(result['total'], 10100)
+
+        config = HandConfig(player_wind=WEST, honba_number=5)
+        result = hand.calculate_scores(han=30, fu=6, config=config)
+        self.assertEqual(result['main'], 12000)
+        self.assertEqual(result['additional'], 0)
+        self.assertEqual(result['main_bonus'], 1500)
+        self.assertEqual(result['additional_bonus'], 0)
+        self.assertEqual(result['tsumi_bonus'], 0)
+        self.assertEqual(result['total'], 13500)
+
+        config = HandConfig(player_wind=EAST, honba_number=5)
+        result = hand.calculate_scores(han=30, fu=5, config=config)
+        self.assertEqual(result['main'], 12000)
+        self.assertEqual(result['additional'], 0)
+        self.assertEqual(result['main_bonus'], 1500)
+        self.assertEqual(result['additional_bonus'], 0)
+        self.assertEqual(result['tsumi_bonus'], 0)
+        self.assertEqual(result['total'], 13500)
+
     def test_kiriage_mangan(self):
         hand = ScoresCalculator()
 
@@ -241,3 +280,15 @@ class ScoresCalculationTestCase(unittest.TestCase):
 
         result = hand.calculate_scores(han=3, fu=60, config=config)
         self.assertEqual(result['main'], 12000)
+
+
+if __name__ == '__main__':
+    test = ScoresCalculationTestCase()
+    test.test_kiriage_mangan()
+    test.test_calculate_scores_and_ron()
+    test.test_calculate_scores_and_ron_by_dealer()
+    test.test_calculate_scores_and_tsumo()
+    test.test_calculate_scores_and_tsumo_by_dealer()
+
+    print('test passed!')
+
