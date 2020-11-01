@@ -18,6 +18,7 @@ class Chinitsu(Yaku):
         self.name = 'Chinitsu'
         self.english = 'Flush'
         self.japanese = '清一色'
+        self.chinese = '清一色'
 
         self.han_open = 5
         self.han_closed = 6

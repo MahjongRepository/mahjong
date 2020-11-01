@@ -13,6 +13,7 @@ class Dora(Yaku):
         self.name = 'Dora'
         self.english = 'Dora'
         self.japanese = 'ドラ'
+        self.chinese = '宝牌'
 
         self.han_open = 1
         self.han_closed = 1

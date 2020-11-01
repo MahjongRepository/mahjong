@@ -13,6 +13,7 @@ class Riichi(Yaku):
         self.name = 'Riichi'
         self.english = 'Riichi'
         self.japanese = '立直'
+        self.chinese = '立直'
 
         self.han_open = None
         self.han_closed = 1

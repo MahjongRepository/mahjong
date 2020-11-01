@@ -14,6 +14,7 @@ class NagashiMangan(Yaku):
         self.name = 'Nagashi Mangan'
         self.english = 'Nagashi Mangan'
         self.japanese = '流し満貫'
+        self.chinese = '流局满贯'
 
         self.han_open = 5
         self.han_closed = 5

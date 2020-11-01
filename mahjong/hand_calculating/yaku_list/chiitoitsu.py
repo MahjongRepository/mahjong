@@ -16,6 +16,7 @@ class Chiitoitsu(Yaku):
         self.name = 'Chiitoitsu'
         self.english = 'Seven Pairs'
         self.japanese = '七対子'
+        self.chinese = '七对子'
 
         self.han_open = None
         self.han_closed = 2

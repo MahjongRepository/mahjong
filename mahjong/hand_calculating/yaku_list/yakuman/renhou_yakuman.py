@@ -14,6 +14,7 @@ class RenhouYakuman(Yaku):
         self.name = 'Renhou'
         self.english = 'Hand Of Man'
         self.japanese = '人和'
+        self.chinese = '人和'
 
         self.han_open = None
         self.han_closed = 13

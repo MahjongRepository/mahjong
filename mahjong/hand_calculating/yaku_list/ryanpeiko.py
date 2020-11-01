@@ -17,6 +17,7 @@ class Ryanpeikou(Yaku):
         self.name = 'Ryanpeikou'
         self.english = 'Two Sets Of Identical Sequences'
         self.japanese = '二盃口'
+        self.chinese = '两杯口'
 
         self.han_open = None
         self.han_closed = 3

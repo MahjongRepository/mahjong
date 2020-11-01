@@ -19,6 +19,7 @@ class Tanyao(Yaku):
         self.name = 'Tanyao'
         self.english = 'All Simples'
         self.japanese = '断么九'
+        self.chinese = '断幺九'
 
         self.han_open = 1
         self.han_closed = 1

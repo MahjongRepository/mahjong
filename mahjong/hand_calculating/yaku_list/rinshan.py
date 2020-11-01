@@ -16,6 +16,7 @@ class Rinshan(Yaku):
         self.name = 'Rinshan Kaihou'
         self.english = 'Dead Wall Draw'
         self.japanese = '嶺上開花'
+        self.chinese = '岭上开花'
 
         self.han_open = 1
         self.han_closed = 1
