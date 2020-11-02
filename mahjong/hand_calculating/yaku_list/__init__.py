@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku_list.aka_dora import AkaDora
 from mahjong.hand_calculating.yaku_list.chankan import Chankan
 from mahjong.hand_calculating.yaku_list.chantai import Chantai
