@@ -232,7 +232,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['additional'], 2000)
         self.assertEqual(result['main_bonus'], 200)
         self.assertEqual(result['additional_bonus'], 200)
-        self.assertEqual(result['tsumi_bonus'], 3000)
+        self.assertEqual(result['kyoutaku_bonus'], 3000)
         self.assertEqual(result['total'], 9600)
 
         config = HandConfig(player_wind=WEST, is_tsumo=True, tsumi_number=4, kyoutaku_number=1)
