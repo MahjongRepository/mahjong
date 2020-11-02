@@ -36,4 +36,3 @@ from mahjong.hand_calculating.yaku_list.east import YakuhaiEast
 from mahjong.hand_calculating.yaku_list.west import YakuhaiWest
 from mahjong.hand_calculating.yaku_list.north import YakuhaiNorth
 from mahjong.hand_calculating.yaku_list.south import YakuhaiSouth
-
