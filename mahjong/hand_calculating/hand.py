@@ -21,9 +21,12 @@ class HandCalculator(object):
     ERR_IPPATSU_WITHOUT_RIICHI = 'IWR'
     ERR_HAND_NOT_WIN = 'HNW'
     ERR_NO_HAND_YAKU = 'NHY'
+    ERR_RENHOU_IMPOSSIBLE_AGARI = 'RIA'
+
     # more possible errors, like houtei and haitei can't be together, etc
 
-    def estimate_hand_value(self, tiles, win_tile, melds=None, dora_indicators=None, config=None, scores_calculator_factory=ScoresCalculator):
+    def estimate_hand_value(self, tiles, win_tile, melds=None, dora_indicators=None, config=None,
+                            scores_calculator_factory=ScoresCalculator):
         """
         :param tiles: array with 14 tiles in 136-tile format
         :param win_tile: 136 format tile that caused win (ron or tsumo)
@@ -77,7 +80,7 @@ class HandCalculator(object):
             return HandResponse(error=HandCalculator.ERR_IPPATSU_WITHOUT_RIICHI)
 
         if self.config.is_tsumo and self.config.is_renhou:
-            return HandResponse(error='Renhou is not possible with tsumo agari')
+            return HandResponse(error=HandCalculator.ERR_RENHOU_IMPOSSIBLE_AGARI)
 
         if not agari.is_agari(tiles_34, all_melds):
             return HandResponse(error=HandCalculator.ERR_HAND_NOT_WIN)
@@ -161,7 +164,9 @@ class HandCalculator(object):
                     else:
                         hand_yaku.append(self.config.yaku.daburu_riichi)
 
-                if not self.config.is_tsumo and self.config.options.has_sashikomi_yakuman and ((self.config.yaku.daburu_open_riichi in hand_yaku) or (self.config.yaku.open_riichi in hand_yaku)):
+                if (not self.config.is_tsumo and self.config.options.has_sashikomi_yakuman
+                    and ((self.config.yaku.daburu_open_riichi in hand_yaku)
+                         or (self.config.yaku.open_riichi in hand_yaku))):
                     hand_yaku.append(self.config.yaku.sashikomi)
 
                 if self.config.is_ippatsu:

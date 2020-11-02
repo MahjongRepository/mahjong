@@ -151,11 +151,8 @@ class Aotenjou(ScoresCalculator):
             return {'main': config.is_dealer and six_rounded or four_rounded, 'additional': 0}
 
     def aotenjou_filter_yaku(self, hand_yaku, config):
-        #print ("")
-        #print (hand_yaku)
-
         # in aotenjou yakumans are normal yaku
-        # but we need to filter lower yaku that are precursors to yakumans
+        # but we need to filter lower yaku that are precursors to yakumans
         if config.yaku.daisangen in hand_yaku:
             # for daisangen precursors are all dragons and shosangen
             hand_yaku.remove(config.yaku.chun)
@@ -212,5 +209,3 @@ class Aotenjou(ScoresCalculator):
             # for ryuisou we need to remove honitsu, if it is there
             if config.yaku.honitsu in hand_yaku:
                 hand_yaku.remove(config.yaku.honitsu)
-
-        # print(hand_yaku)

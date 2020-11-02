@@ -89,7 +89,7 @@ class HandConfig(HandConstants):
     is_dealer = False
     player_wind = None
     round_wind = None
-    # for optional yakuman paarenchan above 0 means that dealer has paarenchan possibility
+    # for optional yakuman paarenchan above 0 means that dealer has paarenchan possibility
     paarenchan = 0
 
     kyoutaku_number = 0    # 1000-point
