@@ -14,7 +14,7 @@ class Paarenchan(Yaku):
         self.tenhou_id = 37
 
         self.name = 'Paarenchan'
-        self.english = '8th Consecutive Dealer'
+        self.english = '8th Wonder'
 
         self.han_open = 13
         self.han_closed = 13
