@@ -3,7 +3,7 @@ from itertools import count
 
 from mahjong.hand_calculating.yaku_list.non_yakuman import AkaDora, Riichi, Ippatsu, Chankan, Rinshan, Haitei, Houtei, \
     DaburuRiichi, NagashiMangan, Renhou, Pinfu, Tanyao, Iipeiko, Haku, Hatsu, Chun, YakuhaiOfPlace, YakuhaiOfRound, \
-    YakuhaiEast, YakuhaiSouth, YakuhaiWest, YakuhaiNorth, Sanshoku, Ittsu, Chanta, Honroto, Toitoi, Sanankou, \
+    YakuhaiEast, YakuhaiSouth, YakuhaiWest, YakuhaiNorth, Sanshoku, Ittsu, Chantai, Honroto, Toitoi, Sanankou, \
     SanKantsu, SanshokuDoukou, Chiitoitsu, Shosangen, Honitsu, Junchan, Ryanpeikou, Chinitsu, Tsumo, Dora
 from mahjong.hand_calculating.yaku_list.yakuman import KokushiMusou, ChuurenPoutou, Suuankou, Daisangen, Shousuushii, \
     Ryuuiisou, Suukantsu, Tsuuiisou, Chinroutou, DaiSuushii, DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, \
@@ -45,7 +45,7 @@ class YakuConfig(object):
         # Yaku 2 Hans
         self.sanshoku = Sanshoku(next(id))
         self.ittsu = Ittsu(next(id))
-        self.chanta = Chanta(next(id))
+        self.chanta = Chantai(next(id))
         self.honroto = Honroto(next(id))
         self.toitoi = Toitoi(next(id))
         self.sanankou = Sanankou(next(id))

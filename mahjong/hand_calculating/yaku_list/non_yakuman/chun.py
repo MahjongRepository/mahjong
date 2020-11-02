@@ -16,10 +16,6 @@ class Chun(Yaku):
         self.tenhou_id = 20
 
         self.name = 'Yakuhai (chun)'
-        self.english = 'Red Dragon'
-        self.japanese = '役牌(中)'
-        self.chinese = '役牌（中）'
-        self.set_languages()
 
         self.han_open = 1
         self.han_closed = 1

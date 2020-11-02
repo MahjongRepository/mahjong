@@ -16,10 +16,6 @@ class Haku(Yaku):
         self.tenhou_id = 18
 
         self.name = 'Yakuhai (haku)'
-        self.english = 'White Dragon'
-        self.japanese = '役牌(白)'
-        self.chinese = '役牌（白）'
-        self.set_languages()
 
         self.han_open = 1
         self.han_closed = 1

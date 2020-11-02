@@ -16,10 +16,6 @@ class Shosangen(Yaku):
         self.tenhou_id = 30
 
         self.name = 'Shou Sangen'
-        self.english = 'Small Three Dragons'
-        self.japanese = '小三元'
-        self.chinese = '小三元'
-        self.set_languages()
 
         self.han_open = 2
         self.han_closed = 2

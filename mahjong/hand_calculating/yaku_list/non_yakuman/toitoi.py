@@ -14,12 +14,6 @@ class Toitoi(Yaku):
     def set_attributes(self):
         self.tenhou_id = 28
         self.name = 'Toitoi'
-        self.english = 'All Triplets'
-        self.japanese = '対々和'
-        self.chinese = '对对和'
-        self.set_languages()
-
-        self.set_languages()
 
         self.han_open = 2
         self.han_closed = 2

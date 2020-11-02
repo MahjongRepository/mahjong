@@ -13,10 +13,6 @@ class Tsumo(Yaku):
     def set_attributes(self):
         self.tenhou_id = 0
         self.name = 'Menzen Tsumo'
-        self.english = 'Self Draw'
-        self.japanese = '門前清自摸和'
-        self.chinese = '门前清自摸和'
-        self.set_languages()
 
         self.han_open = None
         self.han_closed = 1

@@ -14,10 +14,6 @@ class Haitei(Yaku):
         self.tenhou_id = 5
 
         self.name = 'Haitei Raoyue'
-        self.english = 'Win By Last Draw'
-        self.japanese = '海底摸月'
-        self.chinese = '海底摸月'
-        self.set_languages()
 
         self.han_open = 1
         self.han_closed = 1

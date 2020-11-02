@@ -12,10 +12,6 @@ class RenhouYakuman(Yaku):
 
     def set_attributes(self):
         self.name = 'Renhou (yakuman)'
-        self.english = 'Hand Of Man'
-        self.japanese = '人和'
-        self.chinese = '人和'
-        self.set_languages()
 
         self.han_open = None
         self.han_closed = 13

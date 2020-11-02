@@ -14,10 +14,6 @@ class Chankan(Yaku):
         self.tenhou_id = 3
 
         self.name = 'Chankan'
-        self.english = 'Robbing A Kan'
-        self.japanese = '槍槓'
-        self.chinese = '枪杠'
-        self.set_languages()
 
         self.han_open = 1
         self.han_closed = 1

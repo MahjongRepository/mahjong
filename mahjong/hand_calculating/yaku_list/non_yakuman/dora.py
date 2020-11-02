@@ -11,10 +11,6 @@ class Dora(Yaku):
         self.tenhou_id = 52
 
         self.name = 'Dora'
-        self.english = 'Dora'
-        self.japanese = 'ドラ'
-        self.chinese = '宝牌'
-        self.set_languages()
 
         self.han_open = 1
         self.han_closed = 1

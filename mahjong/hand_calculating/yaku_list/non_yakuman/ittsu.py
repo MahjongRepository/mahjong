@@ -15,10 +15,6 @@ class Ittsu(Yaku):
         self.tenhou_id = 24
 
         self.name = 'Ittsu'
-        self.english = 'Straight'
-        self.japanese = '一気通貫'
-        self.chinese = '一气通贯'
-        self.set_languages()
 
         self.han_open = 1
         self.han_closed = 2

@@ -18,10 +18,6 @@ class Junchan(Yaku):
         self.tenhou_id = 33
 
         self.name = 'Junchan'
-        self.english = 'Terminal In Each Meld'
-        self.japanese = '純全帯么九'
-        self.chinese = '纯全带幺九'
-        self.set_languages()
 
         self.han_open = 2
         self.han_closed = 3

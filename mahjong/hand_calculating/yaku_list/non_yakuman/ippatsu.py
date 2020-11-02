@@ -14,10 +14,6 @@ class Ippatsu(Yaku):
         self.tenhou_id = 2
 
         self.name = 'Ippatsu'
-        self.english = 'One Shot'
-        self.japanese = '一発'
-        self.chinese = '一发'
-        self.set_languages()
 
         self.han_open = None
         self.han_closed = 1

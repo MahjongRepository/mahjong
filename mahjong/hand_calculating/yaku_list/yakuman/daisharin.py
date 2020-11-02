@@ -27,24 +27,12 @@ class Daisharin(Yaku):
 
     def set_pin(self):
         self.name = 'Daisharin'
-        self.english = 'Big wheels'
-        self.japanese = '大車輪'
-        self.chinese = '大车轮'
-        self.set_languages()
 
     def set_man(self):
         self.name = 'Daisuurin'
-        self.english = 'Numerous numbers'
-        self.japanese = '大数隣'
-        self.chinese = '大数邻'
-        self.set_languages()
 
     def set_sou(self):
         self.name = 'Daichikurin'
-        self.english = 'Bamboo forest'
-        self.japanese = '大竹林'
-        self.chinese = '大竹林'
-        self.set_languages()
 
     def rename(self, hand):
         # rename this yakuman depending on tiles used

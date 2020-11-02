@@ -15,10 +15,6 @@ class Suukantsu(Yaku):
         self.tenhou_id = 51
 
         self.name = 'Suu Kantsu'
-        self.english = 'Four Kans'
-        self.japanese = '四槓子'
-        self.chinese = '四杠子'
-        self.set_languages()
 
         self.han_open = 13
         self.han_closed = 13

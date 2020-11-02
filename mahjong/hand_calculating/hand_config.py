@@ -19,6 +19,7 @@ class OptionalRules(object):
     has_open_tanyao = False
     has_aka_dora = False
     has_double_yakuman = True
+    # not implemented! tenhou does not support double yakuman for a single yaku
     kazoe_limit = HandConstants.KAZOE_LIMITED
     kiriage = False
     # if false, 1-20 hand will be possible
@@ -76,8 +77,8 @@ class HandConfig(HandConstants):
     player_wind = None
     round_wind = None
 
-    tsumi_number = 0    # 1000-point
-    honba_number = 0    # 100-point
+    kyoutaku_number = 0    # 1000-point
+    tsumi_number = 0    # 100-point
 
     def __init__(self,
                  is_tsumo=False,
@@ -94,8 +95,8 @@ class HandConfig(HandConstants):
                  is_chiihou=False,
                  player_wind=None,
                  round_wind=None,
+                 kyoutaku_number=0,
                  tsumi_number=0,
-                 honba_number=0,
                  options=None):
 
         self.yaku = YakuConfig()
@@ -118,5 +119,5 @@ class HandConfig(HandConstants):
         self.round_wind = round_wind
         self.is_dealer = player_wind == EAST
 
+        self.kyoutaku_number = kyoutaku_number
         self.tsumi_number = tsumi_number
-        self.honba_number = honba_number

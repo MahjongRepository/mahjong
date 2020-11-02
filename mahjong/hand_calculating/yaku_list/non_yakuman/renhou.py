@@ -14,10 +14,6 @@ class Renhou(Yaku):
         self.tenhou_id = 36
 
         self.name = 'Renhou'
-        self.english = 'Hand Of Man'
-        self.japanese = '人和'
-        self.chinese = '人和（役满）'
-        self.set_languages()
 
         self.han_open = None
         self.han_closed = 5

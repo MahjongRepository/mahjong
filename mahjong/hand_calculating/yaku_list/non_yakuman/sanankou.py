@@ -15,10 +15,6 @@ class Sanankou(Yaku):
         self.tenhou_id = 29
 
         self.name = 'San Ankou'
-        self.english = 'Triple Concealed Triplets'
-        self.japanese = '三暗刻'
-        self.chinese = '三暗刻'
-        self.set_languages()
 
         self.han_open = 2
         self.han_closed = 2
