@@ -226,7 +226,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
     def test_calculate_scores_with_bonus(self):
         hand = ScoresCalculator()
 
-        config = HandConfig(player_wind=EAST, is_tsumo=True, tsumi_number=2, kyotaku_number=3)
+        config = HandConfig(player_wind=EAST, is_tsumo=True, tsumi_number=2, kyoutaku_number=3)
         result = hand.calculate_scores(han=3, fu=30, config=config)
         self.assertEqual(result['main'], 2000)
         self.assertEqual(result['additional'], 2000)
@@ -235,7 +235,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['tsumi_bonus'], 3000)
         self.assertEqual(result['total'], 9600)
 
-        config = HandConfig(player_wind=WEST, is_tsumo=True, tsumi_number=4, kyotaku_number=1)
+        config = HandConfig(player_wind=WEST, is_tsumo=True, tsumi_number=4, kyoutaku_number=1)
         result = hand.calculate_scores(han=4, fu=30, config=config)
         self.assertEqual(result['main'], 3900)
         self.assertEqual(result['additional'], 2000)
@@ -244,7 +244,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['tsumi_bonus'], 1000)
         self.assertEqual(result['total'], 10100)
 
-        config = HandConfig(player_wind=WEST, honba_number=5)
+        config = HandConfig(player_wind=WEST, tsumi_number=5)
         result = hand.calculate_scores(han=6, fu=30, config=config)
         self.assertEqual(result['main'], 12000)
         self.assertEqual(result['additional'], 0)
@@ -253,7 +253,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['tsumi_bonus'], 0)
         self.assertEqual(result['total'], 13500)
 
-        config = HandConfig(player_wind=EAST, honba_number=5)
+        config = HandConfig(player_wind=EAST, tsumi_number=5)
         result = hand.calculate_scores(han=5, fu=30, config=config)
         self.assertEqual(result['main'], 12000)
         self.assertEqual(result['additional'], 0)
