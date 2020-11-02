@@ -693,13 +693,13 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         hand = HandCalculator()
 
         tiles = self._string_to_34_array(sou='123', man='123789', honors='22333')
-        self.assertTrue(self.config.chanta.is_condition_met(self._hand(tiles)))
+        self.assertTrue(self.config.chantai.is_condition_met(self._hand(tiles)))
 
         tiles = self._string_to_34_array(sou='111', man='111999', honors='22333')
-        self.assertFalse(self.config.chanta.is_condition_met(self._hand(tiles)))
+        self.assertFalse(self.config.chantai.is_condition_met(self._hand(tiles)))
 
         tiles = self._string_to_34_array(sou='111999', man='111999', pin='11999')
-        self.assertFalse(self.config.chanta.is_condition_met(self._hand(tiles)))
+        self.assertFalse(self.config.chantai.is_condition_met(self._hand(tiles)))
 
         tiles = self._string_to_136_array(sou='123', man='123789', honors='22333')
         win_tile = self._string_to_136_tile(honors='3')
