@@ -280,15 +280,3 @@ class ScoresCalculationTestCase(unittest.TestCase):
 
         result = hand.calculate_scores(han=3, fu=60, config=config)
         self.assertEqual(result['main'], 12000)
-
-
-if __name__ == '__main__':
-    test = ScoresCalculationTestCase()
-    test.test_kiriage_mangan()
-    test.test_calculate_scores_and_ron()
-    test.test_calculate_scores_and_ron_by_dealer()
-    test.test_calculate_scores_and_tsumo()
-    test.test_calculate_scores_and_tsumo_by_dealer()
-    test.test_calculate_scores_with_bonus()
-
-    print('test passed!')
