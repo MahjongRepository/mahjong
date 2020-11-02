@@ -16,10 +16,6 @@ class Daisangen(Yaku):
         self.tenhou_id = 39
 
         self.name = 'Daisangen'
-        self.english = 'Big Three Dragons'
-        self.japanese = '大三元'
-        self.chinese = '大三元'
-        self.set_languages()
 
         self.han_open = 13
         self.han_closed = 13

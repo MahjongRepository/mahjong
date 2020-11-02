@@ -14,10 +14,6 @@ class Chiitoitsu(Yaku):
         self.tenhou_id = 22
 
         self.name = 'Chiitoitsu'
-        self.english = 'Seven Pairs'
-        self.japanese = '七対子'
-        self.chinese = '七对子'
-        self.set_languages()
 
         self.han_open = None
         self.han_closed = 2

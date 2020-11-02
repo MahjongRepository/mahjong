@@ -4,23 +4,19 @@ from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_chi
 
 
-class Chanta(Yaku):
+class Chantai(Yaku):
     """
     Every set must have at least one terminal or honour tile, and the pair must be of
     a terminal or honour tile. Must contain at least one sequence (123 or 789)
     """
 
     def __init__(self, yaku_id=None):
-        super(Chanta, self).__init__(yaku_id)
+        super(Chantai, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 23
 
-        self.name = 'Chanta'
-        self.english = 'Terminal Or Honor In Each Group'
-        self.japanese = '混全帯么九'
-        self.chinese = '混全带幺九'
-        self.set_languages()
+        self.name = 'Chantai'
 
         self.han_open = 1
         self.han_closed = 2

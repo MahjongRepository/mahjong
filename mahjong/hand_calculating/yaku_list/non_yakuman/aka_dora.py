@@ -14,10 +14,6 @@ class AkaDora(Yaku):
         self.tenhou_id = 54
 
         self.name = 'Aka Dora'
-        self.english = 'Red Five'
-        self.japanese = '赤ドラ'
-        self.chinese = '红宝牌'
-        self.set_languages()
 
         self.han_open = 1
         self.han_closed = 1

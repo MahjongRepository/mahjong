@@ -9,11 +9,6 @@ class Yaku(object):
     han_closed = None
     is_yakuman = None
 
-    english = None
-    chinese = None
-    japanese = None
-    languages = {'English': english, 'Chinese': chinese, 'Japanese': japanese}
-
     def __init__(self, yaku_id=None):
         self.tenhou_id = None
         self.yaku_id = yaku_id
@@ -26,11 +21,6 @@ class Yaku(object):
     def __repr__(self):
         # for calls in array
         return self.__str__()
-
-    def set_languages(self):
-        self.languages = {'English': self.english,
-                          'Chinese': self.chinese,
-                          'Japanese': self.japanese}
 
     def is_condition_met(self, hand, *args):
         """

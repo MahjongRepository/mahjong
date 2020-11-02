@@ -15,10 +15,6 @@ class Honitsu(Yaku):
     def set_attributes(self):
         self.tenhou_id = 34
         self.name = 'Honitsu'
-        self.english = 'Half Flush'
-        self.japanese = '混一色'
-        self.chinese = '混一色'
-        self.set_languages()
 
         self.han_open = 2
         self.han_closed = 3

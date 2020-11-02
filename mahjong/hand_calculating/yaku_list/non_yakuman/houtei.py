@@ -14,10 +14,6 @@ class Houtei(Yaku):
         self.tenhou_id = 6
 
         self.name = 'Houtei Raoyui'
-        self.english = 'Win by last discard'
-        self.japanese = '河底撈魚'
-        self.chinese = '河底捞鱼'
-        self.set_languages()
 
         self.han_open = 1
         self.han_closed = 1

@@ -17,10 +17,6 @@ class Honroto(Yaku):
         self.tenhou_id = 31
 
         self.name = 'Honroutou'
-        self.english = 'Terminals and Honors'
-        self.japanese = '混老頭'
-        self.chinese = '混老头'
-        self.set_languages()
 
         self.han_open = 2
         self.han_closed = 2

@@ -16,10 +16,6 @@ class DaiSuushii(Yaku):
         self.tenhou_id = 49
 
         self.name = 'Dai Suushii'
-        self.english = 'Big Four Winds'
-        self.japanese = '大四喜'
-        self.chinese = '大四喜'
-        self.set_languages()
 
         self.han_open = 26
         self.han_closed = 26

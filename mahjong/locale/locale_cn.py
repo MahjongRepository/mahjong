@@ -1,6 +1,7 @@
 yaku_dict_cn = {
     'Aka Dora': '红宝牌',
     'Chankan': '枪杠',
+    'Chantai': '混全带幺九',
     'Chiitoitsu': '七对子',
     'Chinitsu': '清一色',
     'Yakuhai (chun)': '役牌（中）',
@@ -83,7 +84,7 @@ cost_dict_cn = {
     'dealer_pays': '庄家支付',
     'player_pays': '闲家支付',
     'trigger_pays': '放铳者支付',
-    'tsumi_bonus': '场上立直棒',
+    'kyoutaku_bonus': '场上立直棒',
     'total': '总计',
     'fu_details': '【符数详情】',
     'cost_details': '【得点详情】',

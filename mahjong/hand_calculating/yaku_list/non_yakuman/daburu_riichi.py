@@ -14,10 +14,6 @@ class DaburuRiichi(Yaku):
         self.tenhou_id = 21
 
         self.name = 'Double Riichi'
-        self.english = 'Double Riichi'
-        self.japanese = 'ダブル立直'
-        self.chinese = '两立直'
-        self.set_languages()
 
         self.han_open = None
         self.han_closed = 2

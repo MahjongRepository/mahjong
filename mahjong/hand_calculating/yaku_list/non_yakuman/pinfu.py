@@ -14,10 +14,6 @@ class Pinfu(Yaku):
         self.tenhou_id = 7
 
         self.name = 'Pinfu'
-        self.english = 'All Sequences'
-        self.japanese = '平和'
-        self.chinese = '平和'
-        self.set_languages()
 
         self.han_open = None
         self.han_closed = 1

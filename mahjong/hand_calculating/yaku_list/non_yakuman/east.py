@@ -16,10 +16,6 @@ class YakuhaiEast(Yaku):
         self.tenhou_id = 10
 
         self.name = 'Yakuhai (east)'
-        self.english = 'East Round/Seat'
-        self.japanese = '役牌(東)'
-        self.chinese = '役牌（东）'
-        self.set_languages()
 
         self.han_open = 1
         self.han_closed = 1

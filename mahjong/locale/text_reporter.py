@@ -1,6 +1,7 @@
 from mahjong.locale.locale_cn import yaku_dict_cn, fu_dict_cn, cost_dict_cn, err_dict_cn
 from mahjong.locale.locale_en import yaku_dict_en, fu_dict_en, cost_dict_en, err_dict_en
 from mahjong.locale.locale_jp import yaku_dict_jp, fu_dict_jp, cost_dict_jp, err_dict_jp
+from mahjong.locale.locale_default import yaku_dict_default, fu_dict_default, cost_dict_default, err_dict_default
 
 
 class TextReporter:
@@ -31,10 +32,11 @@ class TextReporter:
             self.cost_dict = cost_dict_jp
             self.err_dict = err_dict_jp
         else:
-            print('Unsupported Locale, use English instead')
-            self.yaku_dict = yaku_dict_en
-            self.fu_dict = fu_dict_en
-            self.err_dict = err_dict_en
+            print('Unsupported Locale, use Default instead')
+            self.yaku_dict = yaku_dict_default
+            self.fu_dict = fu_dict_default
+            self.cost_dict = cost_dict_default
+            self.err_dict = err_dict_default
 
     def report(self, hand_response):
         str_fu_details = ''
@@ -110,7 +112,7 @@ class TextReporter:
 
         if hand_response.cost:
             if hand_response.cost['additional'] == 0:   # trigger ron
-                str_detail = '{0}: {1}({2}+{3}) {4}\n'.format(
+                str_detail = '{0}: {1}({2}+{3}){4}\n'.format(
                     self.cost_dict['trigger_pays'],
                     hand_response.cost['main'] + hand_response.cost['main_bonus'],
                     hand_response.cost['main'],
@@ -121,7 +123,7 @@ class TextReporter:
                 str_cost_details += str_detail
 
             elif hand_response.cost['main'] == hand_response.cost['additional']:    # dealer tsumo
-                str_detail = '{0}: {1}({2}+{3}) {4}\n'.format(
+                str_detail = '{0}: {1}({2}+{3}){4}\n'.format(
                     self.cost_dict['player_pays'],
                     hand_response.cost['main'] + hand_response.cost['main_bonus'],
                     hand_response.cost['main'],
@@ -147,8 +149,8 @@ class TextReporter:
                 str_cost_details += str_detail
 
             str_detail = '{0}: {1}{2}\n{3}: {4}{2}\n'.format(
-                self.cost_dict['tsumi_bonus'],
-                hand_response.cost['tsumi_bonus'],
+                self.cost_dict['kyoutaku_bonus'],
+                hand_response.cost['kyoutaku_bonus'],
                 self.cost_dict['point'],
                 self.cost_dict['total'],
                 hand_response.cost['total']

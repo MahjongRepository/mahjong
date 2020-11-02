@@ -15,10 +15,6 @@ class SanshokuDoukou(Yaku):
         self.tenhou_id = 26
 
         self.name = 'Sanshoku Doukou'
-        self.english = 'Three Colored Triplets'
-        self.japanese = '三色同刻'
-        self.chinese = '三色同刻'
-        self.set_languages()
 
         self.han_open = 2
         self.han_closed = 2

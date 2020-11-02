@@ -17,10 +17,6 @@ class Tsuuiisou(Yaku):
         self.tenhou_id = 42
 
         self.name = 'Tsuu Iisou'
-        self.english = 'All Honors'
-        self.japanese = '字一色'
-        self.chinese = '字一色'
-        self.set_languages()
 
         self.han_open = 13
         self.han_closed = 13

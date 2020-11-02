@@ -17,10 +17,6 @@ class Ryuuiisou(Yaku):
         self.tenhou_id = 43
 
         self.name = 'Ryuuiisou'
-        self.english = 'All Green'
-        self.japanese = '緑一色'
-        self.chinese = '绿一色'
-        self.set_languages()
 
         self.han_open = 13
         self.han_closed = 13

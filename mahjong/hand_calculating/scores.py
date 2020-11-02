@@ -16,7 +16,7 @@ class ScoresCalculator(object):
         'additional': additional cost (honba number not included)
         'main_bonus': extra cost due to honba number to be added on main cost
         'additional_bonus': extra cost due to honba number to be added on additional cost
-        'tsumi_bonus': the points taken from accumulated riichi 1000-point bons
+        'kyoutaku_bonus': the points taken from accumulated riichi 1000-point bons
         'total': the total points the winner is to earn
 
         for ron, main cost is the cost for the player who triggers the ron, and additional cost is always = 0
@@ -103,12 +103,12 @@ class ScoresCalculator(object):
 
         main = 0
         additional = 0
-        tsumi_bonus = 0
+        kyoutaku_bonus = 0
         total = 0
 
         if config.is_tsumo:
             main = double_rounded
-            main_bonus = 100 * config.honba_number
+            main_bonus = 100 * config.tsumi_number
             additional_bonus = main_bonus
 
             if config.is_dealer:
@@ -119,18 +119,18 @@ class ScoresCalculator(object):
         else:   # ron
             additional = 0
             additional_bonus = 0
-            main_bonus = 300 * config.honba_number
+            main_bonus = 300 * config.tsumi_number
 
             if config.is_dealer:
                 main = six_rounded
             else:   # player
                 main = four_rounded
 
-        tsumi_bonus = 1000 * config.tsumi_number
-        total = (main + main_bonus) + 2 * (additional + additional_bonus) + tsumi_bonus
+        kyoutaku_bonus = 1000 * config.tsumi_number
+        total = (main + main_bonus) + 2 * (additional + additional_bonus) + kyoutaku_bonus
 
         ret_dict = {'main': main, 'main_bonus': main_bonus,
                     'additional': additional, 'additional_bonus': additional_bonus,
-                    'tsumi_bonus': tsumi_bonus, 'total': total}
+                    'kyoutaku_bonus': kyoutaku_bonus, 'total': total}
 
         return ret_dict

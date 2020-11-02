@@ -11,10 +11,6 @@ class Riichi(Yaku):
         self.tenhou_id = 1
 
         self.name = 'Riichi'
-        self.english = 'Riichi'
-        self.japanese = '立直'
-        self.chinese = '立直'
-        self.set_languages()
 
         self.han_open = None
         self.han_closed = 1

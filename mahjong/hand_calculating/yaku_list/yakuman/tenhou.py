@@ -14,10 +14,6 @@ class Tenhou(Yaku):
         self.tenhou_id = 37
 
         self.name = 'Tenhou'
-        self.english = 'Heavenly Hand'
-        self.japanese = '天和'
-        self.chinese = '天和'
-        self.set_languages()
 
         self.han_open = None
         self.han_closed = 13
