@@ -2,6 +2,7 @@ from mahjong.locale.locale_cn import yaku_dict_cn, fu_dict_cn, cost_dict_cn, err
 from mahjong.locale.locale_en import yaku_dict_en, fu_dict_en, cost_dict_en, err_dict_en
 from mahjong.locale.locale_jp import yaku_dict_jp, fu_dict_jp, cost_dict_jp, err_dict_jp
 
+
 class TextReporter:
     def __init__(self, locale='Chinese'):
         self.locale = locale
@@ -163,4 +164,3 @@ class TextReporter:
                'fu_details': str_fu_details, 'yaku': str_yaku_details}
 
         return ret
-
