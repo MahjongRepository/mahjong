@@ -18,6 +18,7 @@ class ScoresCalculator(object):
         'additional_bonus': extra cost due to honba number to be added on additional cost
         'kyoutaku_bonus': the points taken from accumulated riichi 1000-point bous (kyoutaku)
         'total': the total points the winner is to earn
+        'yaku_level': level of yaku (e.g. yakuman, mangan, nagashi mangan, etc)
 
         for ron, main cost is the cost for the player who triggers the ron, and additional cost is always = 0
         for dealer tsumo, main cost is the same as additional cost, which is the cost for any other player
@@ -27,12 +28,12 @@ class ScoresCalculator(object):
         1. dealer tsumo 2000 ALL in 2 honba, with 3 riichi bous on desk
         {'main': 2000, 'additional': 2000,
          'main_bonus': 200, 'additional_bonus': 200,
-         'kyoutaku_bonus': 3000, 'total': 9600}
+         'kyoutaku_bonus': 3000, 'total': 9600, 'yaku_level': ''}
 
          2. player tsumo 3900-2000 in 4 honba, with 1 riichi bou on desk
          {'main': 3900, 'additional': 2000,
          'main_bonus': 400, 'additional_bonus': 400,
-         'kyoutaku_bonus': 1000, 'total': 10100}
+         'kyoutaku_bonus': 1000, 'total': 10100, 'yaku_level': ''}
 
          3. dealer (or player) ron 12000 in 5 honba, with no riichi bou on desk
          {'main': 12000, 'additional': 0,
@@ -41,46 +42,61 @@ class ScoresCalculator(object):
 
         """
 
+        yaku_level = ''
+
+
         # kazoe hand
         if han >= 13 and not is_yakuman:
             # Hands over 26+ han don't count as double yakuman
             if config.options.kazoe_limit == HandConfig.KAZOE_LIMITED:
                 han = 13
+                yaku_level = 'kazoe yakuman'
             # Hands over 13+ is a sanbaiman
             elif config.options.kazoe_limit == HandConfig.KAZOE_SANBAIMAN:
                 han = 12
+                yaku_level = 'kazoe sanbaiman'
 
         if han >= 5:
             if han >= 78:
+                yaku_level = '6x yakuman'
                 rounded = 48000
             elif han >= 65:
+                yaku_level = '5x yakuman'
                 rounded = 40000
             elif han >= 52:
+                yaku_level = '4x yakuman'
                 rounded = 32000
             elif han >= 39:
+                yaku_level = '3x yakuman'
                 rounded = 24000
             # double yakuman
             elif han >= 26:
+                yaku_level = '2x yakuman'
                 rounded = 16000
             # yakuman
             elif han >= 13:
+                yaku_level = 'yakuman'
                 rounded = 8000
             # sanbaiman
             elif han >= 11:
+                yaku_level = 'sanbaiman'
                 rounded = 6000
             # baiman
             elif han >= 8:
+                yaku_level = 'baiman'
                 rounded = 4000
             # haneman
             elif han >= 6:
+                yaku_level = 'haneman'
                 rounded = 3000
             else:
+                yaku_level = 'mangan'
                 rounded = 2000
 
             double_rounded = rounded * 2
             four_rounded = double_rounded * 2
             six_rounded = double_rounded * 3
-        else:
+        else:   # han < 5
             base_points = fu * pow(2, 2 + han)
             rounded = (base_points + 99) // 100 * 100
             double_rounded = (2 * base_points + 99) // 100 * 100
@@ -89,10 +105,16 @@ class ScoresCalculator(object):
 
             is_kiriage = False
             if config.options.kiriage:
-                if han == 4 and fu == 30:
+                if (han == 4 and fu == 30) or (han == 3 and fu == 60):
+                    yaku_level = 'kiriage mangan'
                     is_kiriage = True
-                if han == 3 and fu == 60:
-                    is_kiriage = True
+                else:
+                    pass
+            else:   # kiriage not supported
+                if rounded > 2000:
+                    yaku_level = 'mangan'
+                else:
+                    pass
 
             # mangan
             if rounded > 2000 or is_kiriage:
@@ -100,6 +122,8 @@ class ScoresCalculator(object):
                 double_rounded = rounded * 2
                 four_rounded = double_rounded * 2
                 six_rounded = double_rounded * 3
+            else:   # below mangan
+                pass
 
         if config.is_tsumo:
             main = double_rounded
@@ -124,8 +148,15 @@ class ScoresCalculator(object):
         kyoutaku_bonus = 1000 * config.kyoutaku_number
         total = (main + main_bonus) + 2 * (additional + additional_bonus) + kyoutaku_bonus
 
+        if config.is_nagashi_mangan:
+            yaku_level = 'nagashi mangan'
+        else:
+            pass
+
         ret_dict = {'main': main, 'main_bonus': main_bonus,
                     'additional': additional, 'additional_bonus': additional_bonus,
-                    'kyoutaku_bonus': kyoutaku_bonus, 'total': total}
+                    'kyoutaku_bonus': kyoutaku_bonus, 'total': total, 'yaku_level': yaku_level}
+
+
 
         return ret_dict

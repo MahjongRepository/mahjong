@@ -153,8 +153,15 @@ class TextReporter:
                 hand_response.cost['kyoutaku_bonus'],
                 self.cost_dict['point'],
                 self.cost_dict['total'],
-                hand_response.cost['total']
+                hand_response.cost['total'],
             )
+
+            yaku_level = hand_response.cost['yaku_level']
+
+            if yaku_level:
+                str_detail += self.cost_dict[yaku_level] + '\n'
+            else:   # below mangan
+                str_detail += '\n'
 
             str_cost_details += str_detail
 

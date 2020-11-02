@@ -89,7 +89,19 @@ cost_dict_default = {
     'fu_details': 'Fu Details',
     'cost_details': 'Point Details',
     'yaku_details': 'Yaku Details',
-    'unavailable': 'Unavailable'
+    'unavailable': 'Unavailable',
+    '6x yakuman': '6x yakuman',
+    '5x yakuman': '5x yakuman',
+    '4x yakuman': '4x yakuman',
+    '3x yakuman': '3x yakuman',
+    '2x yakuman': '2x yakuman',
+    'yakuman': 'yakuman',
+    'sanbaiman': 'sanbaiman',
+    'baiman': 'baiman',
+    'haneman': 'haneman',
+    'mangan': 'mangan',
+    'kiriage mangan': 'kiriage mangan',
+    'nagashi mangan': 'nagashi mangan'
 }
 
 err_dict_default = {

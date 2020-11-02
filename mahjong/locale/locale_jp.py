@@ -89,7 +89,21 @@ cost_dict_jp = {
     'fu_details': '【符詳しく】',
     'cost_details': '【得点詳しく】',
     'yaku_details': '【役詳しく】',
-    'unavailable': '不可用'
+    'unavailable': '不可用',
+    'kazoe yakuman': '累计役满',
+    'kazoe sanbaiman': '累计三倍满',
+    '6x yakuman': '6倍役満',
+    '5x yakuman': '5倍役満',
+    '4x yakuman': '4倍役満',
+    '3x yakuman': '3倍役満',
+    '2x yakuman': '2倍役満',
+    'yakuman': '役満',
+    'sanbaiman': '三倍満',
+    'baiman': '倍満',
+    'haneman': '跳満',
+    'mangan': '満貫',
+    'kiriage mangan': '切り上げ満貫',
+    'nagashi mangan': '流し満貫'
 }
 
 err_dict_jp = {
