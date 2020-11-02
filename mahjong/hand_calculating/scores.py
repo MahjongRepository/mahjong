@@ -12,11 +12,11 @@ class ScoresCalculator(object):
         :param config: HandConfig object
         :param is_yakuman: boolean
         :return: a dictionary with following keys:
-        'main': main cost (honba number not included)
+        'main': main cost (honba number / tsumi bon not included)
         'additional': additional cost (honba number not included)
         'main_bonus': extra cost due to honba number to be added on main cost
         'additional_bonus': extra cost due to honba number to be added on additional cost
-        'kyoutaku_bonus': the points taken from accumulated riichi 1000-point bons
+        'kyoutaku_bonus': the points taken from accumulated riichi 1000-point bons (kyoutaku)
         'total': the total points the winner is to earn
 
         for ron, main cost is the cost for the player who triggers the ron, and additional cost is always = 0
@@ -27,17 +27,17 @@ class ScoresCalculator(object):
         1. dealer tsumo 2000 ALL in 2 honba, with 3 riichi tsumi bons on desk
         {'main': 2000, 'additional': 2000,
          'main_bonus': 200, 'additional_bonus': 200,
-         'tsumi_bonus': 3000, 'total': 9600}
+         'kyoutaku_bonus': 3000, 'total': 9600}
 
          2. player tsumo 3900-2000 in 4 honba, with 1 riichi tsumi bon on desk
          {'main': 3900, 'additional': 2000,
          'main_bonus': 400, 'additional_bonus': 400,
-         'tsumi_bonus': 1000, 'total': 10100}
+         'kyoutaku_bonus': 1000, 'total': 10100}
 
          3. dealer (or player) ron 12000 in 5 honba, with no riichi tsumi bon on desk
          {'main': 12000, 'additional': 0,
          'main_bonus': 1500, 'additional_bonus': 0,
-         'tsumi_bonus': 0, 'total': 13500}
+         'kyoutaku_bonus': 0, 'total': 13500}
 
         """
 
@@ -101,11 +101,6 @@ class ScoresCalculator(object):
                 four_rounded = double_rounded * 2
                 six_rounded = double_rounded * 3
 
-        main = 0
-        additional = 0
-        kyoutaku_bonus = 0
-        total = 0
-
         if config.is_tsumo:
             main = double_rounded
             main_bonus = 100 * config.tsumi_number
@@ -126,7 +121,7 @@ class ScoresCalculator(object):
             else:   # player
                 main = four_rounded
 
-        kyoutaku_bonus = 1000 * config.tsumi_number
+        kyoutaku_bonus = 1000 * config.kyoutaku_number
         total = (main + main_bonus) + 2 * (additional + additional_bonus) + kyoutaku_bonus
 
         ret_dict = {'main': main, 'main_bonus': main_bonus,
