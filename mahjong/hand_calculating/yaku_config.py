@@ -45,7 +45,7 @@ class YakuConfig(object):
         # Yaku 2 Hans
         self.sanshoku = Sanshoku(next(id))
         self.ittsu = Ittsu(next(id))
-        self.chanta = Chantai(next(id))
+        self.chantai = Chantai(next(id))
         self.honroto = Honroto(next(id))
         self.toitoi = Toitoi(next(id))
         self.sanankou = Sanankou(next(id))

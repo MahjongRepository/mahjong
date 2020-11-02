@@ -195,8 +195,8 @@ class HandCalculator(object):
 
                 # small optimization, try to detect yaku with chi required sets only if we have chi sets in hand
                 if len(chi_sets):
-                    if self.config.yaku.chanta.is_condition_met(hand):
-                        hand_yaku.append(self.config.yaku.chanta)
+                    if self.config.yaku.chantai.is_condition_met(hand):
+                        hand_yaku.append(self.config.yaku.chantai)
 
                     if self.config.yaku.junchan.is_condition_met(hand):
                         hand_yaku.append(self.config.yaku.junchan)
