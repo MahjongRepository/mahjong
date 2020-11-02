@@ -241,7 +241,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['additional'], 2000)
         self.assertEqual(result['main_bonus'], 400)
         self.assertEqual(result['additional_bonus'], 400)
-        self.assertEqual(result['tsumi_bonus'], 1000)
+        self.assertEqual(result['kyoutaku_bonus'], 1000)
         self.assertEqual(result['total'], 10100)
 
         config = HandConfig(player_wind=WEST, tsumi_number=5)
@@ -250,7 +250,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['additional'], 0)
         self.assertEqual(result['main_bonus'], 1500)
         self.assertEqual(result['additional_bonus'], 0)
-        self.assertEqual(result['tsumi_bonus'], 0)
+        self.assertEqual(result['kyoutaku_bonus'], 0)
         self.assertEqual(result['total'], 13500)
 
         config = HandConfig(player_wind=EAST, tsumi_number=5)
@@ -259,7 +259,7 @@ class ScoresCalculationTestCase(unittest.TestCase):
         self.assertEqual(result['additional'], 0)
         self.assertEqual(result['main_bonus'], 1500)
         self.assertEqual(result['additional_bonus'], 0)
-        self.assertEqual(result['tsumi_bonus'], 0)
+        self.assertEqual(result['kyoutaku_bonus'], 0)
         self.assertEqual(result['total'], 13500)
 
     def test_kiriage_mangan(self):
