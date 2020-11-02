@@ -490,8 +490,8 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
     def test_is_not_daichikurin(self):
         hand = HandCalculator()
 
-        tiles = self._string_to_136_array(man='22334455667788')
-        win_tile = self._string_to_136_tile(man='8')
+        tiles = self._string_to_136_array(sou='22334455667788')
+        win_tile = self._string_to_136_tile(sou='8')
 
         result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(allow_daisharin=True))
         self.assertEqual(result.error, None)
@@ -501,8 +501,8 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
     def test_is_daichikurin(self):
         hand = HandCalculator()
 
-        tiles = self._string_to_136_array(man='22334455667788')
-        win_tile = self._string_to_136_tile(man='8')
+        tiles = self._string_to_136_array(sou='22334455667788')
+        win_tile = self._string_to_136_tile(sou='8')
 
         result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(
             allow_daisharin=True, allow_daisharin_other_suits=True)
@@ -515,8 +515,8 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
     def test_is_not_daisuurin(self):
         hand = HandCalculator()
 
-        tiles = self._string_to_136_array(sou='22334455667788')
-        win_tile = self._string_to_136_tile(sou='8')
+        tiles = self._string_to_136_array(man='22334455667788')
+        win_tile = self._string_to_136_tile(man='8')
 
         result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(allow_daisharin=True))
         self.assertEqual(result.error, None)
@@ -526,8 +526,8 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
     def test_is_daisuurin(self):
         hand = HandCalculator()
 
-        tiles = self._string_to_136_array(sou='22334455667788')
-        win_tile = self._string_to_136_tile(sou='8')
+        tiles = self._string_to_136_array(man='22334455667788')
+        win_tile = self._string_to_136_tile(man='8')
 
         result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(
             allow_daisharin=True, allow_daisharin_other_suits=True)

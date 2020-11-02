@@ -214,9 +214,9 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
                                                     self._get_win_group(hand, win_tile),
                                                     config,
                                                     valued_tiles=valued_tiles)
-        self.assertEqual(3, len(fu_details))
+        self.assertEqual(2, len(fu_details))
         self.assertTrue({'fu': 30, 'reason': FuCalculator.BASE} in fu_details)
-        self.assertTrue({'fu': 2, 'reason': FuCalculator.VALUED_PAIR} in fu_details)
+        self.assertTrue({'fu': 4, 'reason': FuCalculator.DOUBLE_VALUED_PAIR} in fu_details)
         self.assertEqual(fu, 40)
 
     def test_pair_wait_fu(self):
