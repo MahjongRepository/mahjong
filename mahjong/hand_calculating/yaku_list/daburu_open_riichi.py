@@ -12,7 +12,6 @@ class DaburuOpenRiichi(Yaku):
 
     def set_attributes(self):
         self.name = "Double Open Riichi"
-        self.english = "Double Open Riichi"
 
         self.han_open = None
         self.han_closed = 3

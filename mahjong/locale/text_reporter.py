@@ -5,7 +5,7 @@ from mahjong.locale.locale_jp import cost_dict_jp, err_dict_jp, fu_dict_jp, yaku
 
 
 class TextReporter:
-    def __init__(self, locale="Chinese"):
+    def __init__(self, locale="English"):
         self.locale = locale
 
         self.yaku_dict = None
@@ -49,8 +49,6 @@ class TextReporter:
 
         if hand_response.error:
             str_err = "{0}: {1}\n".format(self.err_dict["Error"], self.err_dict[hand_response.error])
-        else:
-            pass
 
         if hand_response.yaku:
             for yaku in hand_response.yaku:
@@ -61,7 +59,7 @@ class TextReporter:
                 else:
                     han = yaku.han_closed
 
-                str_detail = "{0}: {1}{2}\n".format(self.yaku_dict[name], han, self.cost_dict["han"])
+                str_detail = "{0}: {1}{2}\n".format(self.yaku_dict.get(name, name), han, self.cost_dict["han"])
 
                 str_yaku_details += str_detail
 

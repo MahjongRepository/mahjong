@@ -8,7 +8,6 @@ class OpenRiichi(Yaku):
 
     def set_attributes(self):
         self.name = "Open Riichi"
-        self.english = "Open Riichi"
 
         self.han_open = None
         self.han_closed = 2

@@ -15,7 +15,6 @@ class Daichisei(Yaku):
 
     def set_attributes(self):
         self.name = "Daichisei"
-        self.english = "All honors - Seven Pairs"
 
         self.han_open = None
         self.han_closed = 13
