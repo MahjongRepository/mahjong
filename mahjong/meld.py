@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import warnings
+
 from mahjong.tile import TilesConverter
 
 
@@ -6,7 +8,7 @@ class Meld(object):
     CHI = "chi"
     PON = "pon"
     KAN = "kan"
-    CHANKAN = "chankan"
+    SHOUMINKAN = "shouminkan"
     NUKI = "nuki"
 
     who = None
@@ -35,3 +37,8 @@ class Meld(object):
     @property
     def tiles_34(self):
         return [x // 4 for x in self.tiles[:3]]
+
+    @property
+    def CHANKAN(self):
+        warnings.warn("Use .SHOUMINKAN attribute instead of .CHANKAN attribute", DeprecationWarning)
+        return self.SHOUMINKAN

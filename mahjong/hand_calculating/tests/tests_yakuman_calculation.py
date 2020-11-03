@@ -277,7 +277,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
             self._make_meld(Meld.KAN, sou="1111"),
             self._make_meld(Meld.KAN, sou="3333"),
             self._make_meld(Meld.KAN, pin="5555"),
-            self._make_meld(Meld.CHANKAN, man="2222"),
+            self._make_meld(Meld.SHOUMINKAN, man="2222"),
         ]
         self.assertTrue(self.config.suukantsu.is_condition_met(None, melds))
 

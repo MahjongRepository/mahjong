@@ -349,7 +349,7 @@ class HandCalculator(object):
 
                     # we had to search for dora in kan fourth tiles as well
                     for meld in melds:
-                        if meld.type == Meld.KAN or meld.type == Meld.CHANKAN:
+                        if meld.type == Meld.KAN or meld.type == Meld.SHOUMINKAN:
                             tiles_for_dora.append(meld.tiles[3])
 
                     count_of_dora = 0

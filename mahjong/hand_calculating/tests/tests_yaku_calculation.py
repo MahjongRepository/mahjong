@@ -634,7 +634,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertTrue(self.config.sankantsu.is_condition_met(hand, melds))
 
         melds = [
-            self._make_meld(Meld.CHANKAN, sou="1111"),
+            self._make_meld(Meld.SHOUMINKAN, sou="1111"),
             self._make_meld(Meld.KAN, sou="3333"),
             self._make_meld(Meld.KAN, pin="6666"),
         ]

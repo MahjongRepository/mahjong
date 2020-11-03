@@ -108,7 +108,7 @@ class FuCalculator(object):
             open_meld = open_meld and open_meld[0] or None
 
             set_was_open = open_meld and open_meld.opened or False
-            is_kan = (open_meld and (open_meld.type == Meld.KAN or open_meld.type == Meld.CHANKAN)) or False
+            is_kan = (open_meld and (open_meld.type == Meld.KAN or open_meld.type == Meld.SHOUMINKAN)) or False
             is_honor = set_item[0] in TERMINAL_INDICES + HONOR_INDICES
 
             # we win by ron on the third pon tile, our pon will be count as open
