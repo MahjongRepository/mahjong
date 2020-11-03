@@ -16,6 +16,7 @@ class OptionalRules(object):
     """
     All the supported optional rules
     """
+
     has_open_tanyao = False
     has_aka_dora = False
     has_double_yakuman = True
@@ -34,20 +35,23 @@ class OptionalRules(object):
     limit_to_sextuple_yakuman = True
     paarenchan_needs_yaku = True
 
-    def __init__(self, has_open_tanyao=False,
-                 has_aka_dora=False,
-                 has_double_yakuman=True,
-                 kazoe_limit=HandConstants.KAZOE_LIMITED,
-                 kiriage=False,
-                 fu_for_open_pinfu=True,
-                 fu_for_pinfu_tsumo=False,
-                 renhou_as_yakuman=False,
-                 has_daisharin=False,
-                 has_daisharin_other_suits=False,
-                 has_sashikomi_yakuman=False,
-                 limit_to_sextuple_yakuman=True,
-                 paarenchan_needs_yaku=True,
-                 has_daichisei=False):
+    def __init__(
+        self,
+        has_open_tanyao=False,
+        has_aka_dora=False,
+        has_double_yakuman=True,
+        kazoe_limit=HandConstants.KAZOE_LIMITED,
+        kiriage=False,
+        fu_for_open_pinfu=True,
+        fu_for_pinfu_tsumo=False,
+        renhou_as_yakuman=False,
+        has_daisharin=False,
+        has_daisharin_other_suits=False,
+        has_sashikomi_yakuman=False,
+        limit_to_sextuple_yakuman=True,
+        paarenchan_needs_yaku=True,
+        has_daichisei=False,
+    ):
 
         self.has_open_tanyao = has_open_tanyao
         self.has_aka_dora = has_aka_dora
@@ -69,6 +73,7 @@ class HandConfig(HandConstants):
     """
     Special class to pass various settings to the hand calculator object
     """
+
     yaku = None
     options = None
 
@@ -92,29 +97,31 @@ class HandConfig(HandConstants):
     # for optional yakuman paarenchan above 0 means that dealer has paarenchan possibility
     paarenchan = 0
 
-    kyoutaku_number = 0    # 1000-point
-    tsumi_number = 0    # 100-point
+    kyoutaku_number = 0  # 1000-point
+    tsumi_number = 0  # 100-point
 
-    def __init__(self,
-                 is_tsumo=False,
-                 is_riichi=False,
-                 is_ippatsu=False,
-                 is_rinshan=False,
-                 is_chankan=False,
-                 is_haitei=False,
-                 is_houtei=False,
-                 is_daburu_riichi=False,
-                 is_nagashi_mangan=False,
-                 is_tenhou=False,
-                 is_renhou=False,
-                 is_chiihou=False,
-                 is_open_riichi=False,
-                 player_wind=None,
-                 round_wind=None,
-                 kyoutaku_number=0,
-                 tsumi_number=0,
-                 paarenchan=0,
-                 options=None):
+    def __init__(
+        self,
+        is_tsumo=False,
+        is_riichi=False,
+        is_ippatsu=False,
+        is_rinshan=False,
+        is_chankan=False,
+        is_haitei=False,
+        is_houtei=False,
+        is_daburu_riichi=False,
+        is_nagashi_mangan=False,
+        is_tenhou=False,
+        is_renhou=False,
+        is_chiihou=False,
+        is_open_riichi=False,
+        player_wind=None,
+        round_wind=None,
+        kyoutaku_number=0,
+        tsumi_number=0,
+        paarenchan=0,
+        options=None,
+    ):
 
         self.yaku = YakuConfig()
         self.options = options or OptionalRules()

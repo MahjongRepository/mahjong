@@ -1,18 +1,73 @@
 # -*- coding: utf-8 -*-
 from itertools import count
 
-from mahjong.hand_calculating.yaku_list import AkaDora, Riichi, Ippatsu, Chankan, Rinshan, Haitei, Houtei, \
-    DaburuRiichi, NagashiMangan, Renhou, Pinfu, Tanyao, Iipeiko, Haku, Hatsu, Chun, YakuhaiOfPlace, YakuhaiOfRound, \
-    YakuhaiEast, YakuhaiSouth, YakuhaiWest, YakuhaiNorth, Sanshoku, Ittsu, Chantai, Honroto, Toitoi, Sanankou, \
-    SanKantsu, SanshokuDoukou, Chiitoitsu, Shosangen, Honitsu, Junchan, Ryanpeikou, Chinitsu, Tsumo, Dora, \
-    OpenRiichi, DaburuOpenRiichi
-from mahjong.hand_calculating.yaku_list.yakuman import KokushiMusou, ChuurenPoutou, Suuankou, Daisangen, Shousuushii, \
-    Ryuuiisou, Suukantsu, Tsuuiisou, Chinroutou, DaiSuushii, DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, \
-    Tenhou, Chiihou, RenhouYakuman, Daisharin, Sashikomi, Daichisei, Paarenchan
+from mahjong.hand_calculating.yaku_list import (
+    AkaDora,
+    Chankan,
+    Chantai,
+    Chiitoitsu,
+    Chinitsu,
+    Chun,
+    DaburuOpenRiichi,
+    DaburuRiichi,
+    Dora,
+    Haitei,
+    Haku,
+    Hatsu,
+    Honitsu,
+    Honroto,
+    Houtei,
+    Iipeiko,
+    Ippatsu,
+    Ittsu,
+    Junchan,
+    NagashiMangan,
+    OpenRiichi,
+    Pinfu,
+    Renhou,
+    Riichi,
+    Rinshan,
+    Ryanpeikou,
+    Sanankou,
+    SanKantsu,
+    Sanshoku,
+    SanshokuDoukou,
+    Shosangen,
+    Tanyao,
+    Toitoi,
+    Tsumo,
+    YakuhaiEast,
+    YakuhaiNorth,
+    YakuhaiOfPlace,
+    YakuhaiOfRound,
+    YakuhaiSouth,
+    YakuhaiWest,
+)
+from mahjong.hand_calculating.yaku_list.yakuman import (
+    Chiihou,
+    Chinroutou,
+    ChuurenPoutou,
+    DaburuChuurenPoutou,
+    DaburuKokushiMusou,
+    Daichisei,
+    Daisangen,
+    Daisharin,
+    DaiSuushii,
+    KokushiMusou,
+    Paarenchan,
+    RenhouYakuman,
+    Ryuuiisou,
+    Sashikomi,
+    Shousuushii,
+    Suuankou,
+    SuuankouTanki,
+    Suukantsu,
+    Tenhou,
+    Tsuuiisou,
+)
 
 
 class YakuConfig(object):
-
     def __init__(self):
         id = count(0)
 

@@ -12,7 +12,6 @@ class Tile(object):
 
 
 class TilesConverter(object):
-
     @staticmethod
     def to_one_line_string(tiles, print_aka_dora=False):
         """
@@ -34,13 +33,16 @@ class TilesConverter(object):
         honors = [t - 108 for t in honors]
 
         def words(suits, red_five, suffix):
-            return suits and ''.join(
-                ["0" if i == red_five and print_aka_dora else str((i // 4) + 1) for i in suits]) + suffix or ''
+            return (
+                suits
+                and "".join(["0" if i == red_five and print_aka_dora else str((i // 4) + 1) for i in suits]) + suffix
+                or ""
+            )
 
-        sou = words(sou, FIVE_RED_SOU - 72, 's')
-        pin = words(pin, FIVE_RED_PIN - 36, 'p')
-        man = words(man, FIVE_RED_MAN, 'm')
-        honors = words(honors, -1 - 108, 'z')
+        sou = words(sou, FIVE_RED_SOU - 72, "s")
+        pin = words(pin, FIVE_RED_PIN - 36, "p")
+        man = words(man, FIVE_RED_MAN, "m")
+        honors = words(honors, -1 - 108, "z")
 
         return man + pin + sou + honors
 
@@ -86,6 +88,7 @@ class TilesConverter(object):
         has_aka_dora has to be True for this to do that.
         We need it to increase readability of our tests
         """
+
         def _split_string(string, offset, red=None):
             data = []
             temp = []
@@ -94,7 +97,7 @@ class TilesConverter(object):
                 return []
 
             for i in string:
-                if (i == 'r' or i == '0') and has_aka_dora:
+                if (i == "r" or i == "0") and has_aka_dora:
                     temp.append(red)
                     data.append(red)
                 else:
@@ -166,25 +169,25 @@ class TilesConverter(object):
         that suit. To prevent old usage without red,
         has_aka_dora has to be True for this to do that.
         """
-        sou = ''
-        pin = ''
-        man = ''
-        honors = ''
+        sou = ""
+        pin = ""
+        man = ""
+        honors = ""
 
         split_start = 0
 
         for index, i in enumerate(string):
-            if i == 'm':
-                man += string[split_start: index]
+            if i == "m":
+                man += string[split_start:index]
                 split_start = index + 1
-            if i == 'p':
-                pin += string[split_start: index]
+            if i == "p":
+                pin += string[split_start:index]
                 split_start = index + 1
-            if i == 's':
-                sou += string[split_start: index]
+            if i == "s":
+                sou += string[split_start:index]
                 split_start = index + 1
-            if i == 'z' or i == 'h':
-                honors += string[split_start: index]
+            if i == "z" or i == "h":
+                honors += string[split_start:index]
                 split_start = index + 1
 
         return TilesConverter.string_to_136_array(sou, pin, man, honors, has_aka_dora)

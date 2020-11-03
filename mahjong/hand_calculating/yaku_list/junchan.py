@@ -17,7 +17,7 @@ class Junchan(Yaku):
     def set_attributes(self):
         self.tenhou_id = 33
 
-        self.name = 'Junchan'
+        self.name = "Junchan"
 
         self.han_open = 2
         self.han_closed = 3

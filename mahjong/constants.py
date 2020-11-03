@@ -19,9 +19,4 @@ FIVE_RED_SOU = 88
 
 AKA_DORA_LIST = [FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU]
 
-DISPLAY_WINDS = {
-    EAST: 'East',
-    SOUTH: 'South',
-    WEST: 'West',
-    NORTH: 'North'
-}
+DISPLAY_WINDS = {EAST: "East", SOUTH: "South", WEST: "West", NORTH: "North"}

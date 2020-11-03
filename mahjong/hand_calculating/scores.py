@@ -3,7 +3,6 @@ from mahjong.hand_calculating.hand_config import HandConfig
 
 
 class ScoresCalculator(object):
-
     def calculate_scores(self, han, fu, config, is_yakuman=False):
         """
         Calculate how much scores cost a hand with given han and fu
@@ -55,7 +54,7 @@ class ScoresCalculator(object):
                 if config.options.limit_to_sextuple_yakuman:
                     rounded = 48000
                 else:
-                    extra_han, _ = divmod(han-78, 13)
+                    extra_han, _ = divmod(han - 78, 13)
                     rounded = 48000 + (extra_han * 8000)
             elif han >= 65:
                 rounded = 40000
@@ -112,31 +111,35 @@ class ScoresCalculator(object):
 
             if config.is_dealer:
                 additional = main
-            else:   # player
+            else:  # player
                 additional = rounded
 
-        else:   # ron
+        else:  # ron
             additional = 0
             additional_bonus = 0
             main_bonus = 300 * config.tsumi_number
 
             if config.is_dealer:
                 main = six_rounded
-            else:   # player
+            else:  # player
                 main = four_rounded
 
         kyoutaku_bonus = 1000 * config.kyoutaku_number
         total = (main + main_bonus) + 2 * (additional + additional_bonus) + kyoutaku_bonus
 
-        ret_dict = {'main': main, 'main_bonus': main_bonus,
-                    'additional': additional, 'additional_bonus': additional_bonus,
-                    'kyoutaku_bonus': kyoutaku_bonus, 'total': total}
+        ret_dict = {
+            "main": main,
+            "main_bonus": main_bonus,
+            "additional": additional,
+            "additional_bonus": additional_bonus,
+            "kyoutaku_bonus": kyoutaku_bonus,
+            "total": total,
+        }
 
         return ret_dict
 
 
 class Aotenjou(ScoresCalculator):
-
     def calculate_scores(self, han, fu, config, is_yakuman=False):
 
         base_points = fu * pow(2, 2 + han)
@@ -146,9 +149,9 @@ class Aotenjou(ScoresCalculator):
         six_rounded = (6 * base_points + 99) // 100 * 100
 
         if config.is_tsumo:
-            return {'main': double_rounded, 'additional': config.is_dealer and double_rounded or rounded}
+            return {"main": double_rounded, "additional": config.is_dealer and double_rounded or rounded}
         else:
-            return {'main': config.is_dealer and six_rounded or four_rounded, 'additional': 0}
+            return {"main": config.is_dealer and six_rounded or four_rounded, "additional": 0}
 
     def aotenjou_filter_yaku(self, hand_yaku, config):
         # in aotenjou yakumans are normal yaku

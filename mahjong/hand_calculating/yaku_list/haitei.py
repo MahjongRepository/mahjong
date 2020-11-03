@@ -13,7 +13,7 @@ class Haitei(Yaku):
     def set_attributes(self):
         self.tenhou_id = 5
 
-        self.name = 'Haitei Raoyue'
+        self.name = "Haitei Raoyue"
 
         self.han_open = 1
         self.han_closed = 1

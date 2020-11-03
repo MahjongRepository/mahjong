@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from functools import reduce
 
-from mahjong.constants import TERMINAL_INDICES, HONOR_INDICES
+from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
 from mahjong.hand_calculating.yaku import Yaku
 
 
@@ -16,7 +16,7 @@ class Tanyao(Yaku):
     def set_attributes(self):
         self.tenhou_id = 8
 
-        self.name = 'Tanyao'
+        self.name = "Tanyao"
 
         self.han_open = 1
         self.han_closed = 1

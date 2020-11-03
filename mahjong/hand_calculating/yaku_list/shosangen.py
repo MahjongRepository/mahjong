@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from mahjong.constants import CHUN, HAKU, HATSU
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_pon, is_pair
+from mahjong.utils import is_pair, is_pon
 
 
 class Shosangen(Yaku):
@@ -15,7 +15,7 @@ class Shosangen(Yaku):
     def set_attributes(self):
         self.tenhou_id = 30
 
-        self.name = 'Shou Sangen'
+        self.name = "Shou Sangen"
 
         self.han_open = 2
         self.han_closed = 2

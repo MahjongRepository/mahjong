@@ -14,8 +14,8 @@ class Daichisei(Yaku):
         super(Daichisei, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.name = 'Daichisei'
-        self.english = 'All honors - Seven Pairs'
+        self.name = "Daichisei"
+        self.english = "All honors - Seven Pairs"
 
         self.han_open = None
         self.han_closed = 13

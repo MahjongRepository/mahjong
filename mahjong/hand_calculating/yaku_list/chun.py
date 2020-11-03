@@ -15,7 +15,7 @@ class Chun(Yaku):
     def set_attributes(self):
         self.tenhou_id = 20
 
-        self.name = 'Yakuhai (chun)'
+        self.name = "Yakuhai (chun)"
 
         self.han_open = 1
         self.han_closed = 1

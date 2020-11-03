@@ -11,8 +11,8 @@ class DaburuOpenRiichi(Yaku):
         super(DaburuOpenRiichi, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.name = 'Double Open Riichi'
-        self.english = 'Double Open Riichi'
+        self.name = "Double Open Riichi"
+        self.english = "Double Open Riichi"
 
         self.han_open = None
         self.han_closed = 3

@@ -1,32 +1,33 @@
 # -*- coding: utf-8 -*-
 from mahjong.agari import Agari
-from mahjong.constants import EAST, SOUTH, WEST, NORTH, CHUN, HATSU, HAKU
+from mahjong.constants import CHUN, EAST, HAKU, HATSU, NORTH, SOUTH, WEST
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator
-from mahjong.hand_calculating.scores import ScoresCalculator, Aotenjou
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.hand_calculating.hand_response import HandResponse
+from mahjong.hand_calculating.scores import Aotenjou, ScoresCalculator
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
-from mahjong.utils import is_chi, is_pon, plus_dora, is_aka_dora
+from mahjong.utils import is_aka_dora, is_chi, is_pon, plus_dora
 
 
 class HandCalculator(object):
     config = None
 
-    ERR_NO_WIN_TILE = 'NWT'
-    ERR_OPEN_HAND_RIICHI = 'OHR'
-    ERR_OPEN_HAND_DOUBLE_RIICHI = 'OHD'
-    ERR_OPEN_HAND_IPPATSU = 'OHI'
-    ERR_IPPATSU_WITHOUT_RIICHI = 'IWR'
-    ERR_HAND_NOT_WIN = 'HNW'
-    ERR_NO_HAND_YAKU = 'NHY'
-    ERR_RENHOU_IMPOSSIBLE_AGARI = 'RIA'
+    ERR_NO_WIN_TILE = "NWT"
+    ERR_OPEN_HAND_RIICHI = "OHR"
+    ERR_OPEN_HAND_DOUBLE_RIICHI = "OHD"
+    ERR_OPEN_HAND_IPPATSU = "OHI"
+    ERR_IPPATSU_WITHOUT_RIICHI = "IWR"
+    ERR_HAND_NOT_WIN = "HNW"
+    ERR_NO_HAND_YAKU = "NHY"
+    ERR_RENHOU_IMPOSSIBLE_AGARI = "RIA"
 
     # more possible errors, like houtei and haitei can't be together, etc
 
-    def estimate_hand_value(self, tiles, win_tile, melds=None, dora_indicators=None, config=None,
-                            scores_calculator_factory=ScoresCalculator):
+    def estimate_hand_value(
+        self, tiles, win_tile, melds=None, dora_indicators=None, config=None, scores_calculator_factory=ScoresCalculator
+    ):
         """
         :param tiles: array with 14 tiles in 136-tile format
         :param win_tile: 136 format tile that caused win (ron or tsumo)
@@ -106,14 +107,7 @@ class HandCalculator(object):
                 hand_yaku = []
                 han = 0
 
-                fu_details, fu = fu_calculator.calculate_fu(
-                    hand,
-                    win_tile,
-                    win_group,
-                    self.config,
-                    valued_tiles,
-                    melds
-                )
+                fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, win_group, self.config, valued_tiles, melds)
 
                 is_pinfu = len(fu_details) == 1 and not is_chiitoitsu and not is_open_hand
 
@@ -135,8 +129,7 @@ class HandCalculator(object):
                     hand_yaku.append(self.config.yaku.chiitoitsu)
 
                 is_daisharin = self.config.yaku.daisharin.is_condition_met(
-                    hand,
-                    self.config.options.has_daisharin_other_suits
+                    hand, self.config.options.has_daisharin_other_suits
                 )
                 if self.config.options.has_daisharin and is_daisharin:
                     self.config.yaku.daisharin.rename(hand)
@@ -164,9 +157,14 @@ class HandCalculator(object):
                     else:
                         hand_yaku.append(self.config.yaku.daburu_riichi)
 
-                if (not self.config.is_tsumo and self.config.options.has_sashikomi_yakuman
-                    and ((self.config.yaku.daburu_open_riichi in hand_yaku)
-                         or (self.config.yaku.open_riichi in hand_yaku))):
+                if (
+                    not self.config.is_tsumo
+                    and self.config.options.has_sashikomi_yakuman
+                    and (
+                        (self.config.yaku.daburu_open_riichi in hand_yaku)
+                        or (self.config.yaku.open_riichi in hand_yaku)
+                    )
+                ):
                     hand_yaku.append(self.config.yaku.sashikomi)
 
                 if self.config.is_ippatsu:
@@ -306,8 +304,9 @@ class HandCalculator(object):
                         else:
                             hand_yaku.append(self.config.yaku.chuuren_poutou)
 
-                    if not is_open_hand and self.config.yaku.suuankou.is_condition_met(hand, win_tile,
-                                                                                       self.config.is_tsumo):
+                    if not is_open_hand and self.config.yaku.suuankou.is_condition_met(
+                        hand, win_tile, self.config.is_tsumo
+                    ):
                         if tiles_34[win_tile // 4] == 2:
                             hand_yaku.append(self.config.yaku.suuankou_tanki)
                         else:
@@ -385,12 +384,12 @@ class HandCalculator(object):
                     cost = scores_calculator.calculate_scores(han, fu, self.config, len(yakuman_list) > 0)
 
                 calculated_hand = {
-                    'cost': cost,
-                    'error': error,
-                    'hand_yaku': hand_yaku,
-                    'han': han,
-                    'fu': fu,
-                    'fu_details': fu_details
+                    "cost": cost,
+                    "error": error,
+                    "hand_yaku": hand_yaku,
+                    "han": han,
+                    "fu": fu,
+                    "fu_details": fu_details,
                 }
 
                 calculated_hands.append(calculated_hand)
@@ -464,25 +463,20 @@ class HandCalculator(object):
                     han += count_of_aka_dora
 
             cost = scores_calculator.calculate_scores(han, fu, self.config, len(hand_yaku) > 0)
-            calculated_hands.append({
-                'cost': cost,
-                'error': None,
-                'hand_yaku': hand_yaku,
-                'han': han,
-                'fu': fu,
-                'fu_details': []
-            })
+            calculated_hands.append(
+                {"cost": cost, "error": None, "hand_yaku": hand_yaku, "han": han, "fu": fu, "fu_details": []}
+            )
 
         # let's use cost for most expensive hand
-        calculated_hands = sorted(calculated_hands, key=lambda x: (x['han'], x['fu']), reverse=True)
+        calculated_hands = sorted(calculated_hands, key=lambda x: (x["han"], x["fu"]), reverse=True)
         calculated_hand = calculated_hands[0]
 
-        cost = calculated_hand['cost']
-        error = calculated_hand['error']
-        hand_yaku = calculated_hand['hand_yaku']
-        han = calculated_hand['han']
-        fu = calculated_hand['fu']
-        fu_details = calculated_hand['fu_details']
+        cost = calculated_hand["cost"]
+        error = calculated_hand["error"]
+        hand_yaku = calculated_hand["hand_yaku"]
+        han = calculated_hand["han"]
+        fu = calculated_hand["fu"]
+        fu_details = calculated_hand["fu_details"]
 
         return HandResponse(cost, han, fu, hand_yaku, error, fu_details, is_open_hand)
 

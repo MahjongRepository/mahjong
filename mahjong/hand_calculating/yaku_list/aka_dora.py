@@ -13,7 +13,7 @@ class AkaDora(Yaku):
     def set_attributes(self):
         self.tenhou_id = 54
 
-        self.name = 'Aka Dora'
+        self.name = "Aka Dora"
 
         self.han_open = 1
         self.han_closed = 1
@@ -24,4 +24,4 @@ class AkaDora(Yaku):
         return True
 
     def __str__(self):
-        return 'Aka Dora {}'.format(self.han_closed)
+        return "Aka Dora {}".format(self.han_closed)

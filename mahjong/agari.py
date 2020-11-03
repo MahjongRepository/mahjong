@@ -3,7 +3,6 @@ from mahjong.utils import find_isolated_tile_indices
 
 
 class Agari(object):
-
     def is_agari(self, tiles_34, open_sets_34=None):
         """
         Determine was it win or not
@@ -29,16 +28,36 @@ class Agari(object):
                 tiles[meld[2]] -= 1
                 tiles[isolated_tile] = 3
 
-        j = (1 << tiles[27]) | (1 << tiles[28]) | (1 << tiles[29]) | (1 << tiles[30]) | \
-            (1 << tiles[31]) | (1 << tiles[32]) | (1 << tiles[33])
+        j = (
+            (1 << tiles[27])
+            | (1 << tiles[28])
+            | (1 << tiles[29])
+            | (1 << tiles[30])
+            | (1 << tiles[31])
+            | (1 << tiles[32])
+            | (1 << tiles[33])
+        )
 
         if j >= 0x10:
             return False
 
         # 13 orphans
-        if ((j & 3) == 2) and (tiles[0] * tiles[8] * tiles[9] * tiles[17] * tiles[18] *
-                               tiles[26] * tiles[27] * tiles[28] * tiles[29] * tiles[30] *
-                               tiles[31] * tiles[32] * tiles[33] == 2):
+        if ((j & 3) == 2) and (
+            tiles[0]
+            * tiles[8]
+            * tiles[9]
+            * tiles[17]
+            * tiles[18]
+            * tiles[26]
+            * tiles[27]
+            * tiles[28]
+            * tiles[29]
+            * tiles[30]
+            * tiles[31]
+            * tiles[32]
+            * tiles[33]
+            == 2
+        ):
             return True
 
         # seven pairs
@@ -72,9 +91,9 @@ class Agari(object):
         if n2 == 1:
             return False
 
-        if ((n0 == 2) + (n1 == 2) + (n2 == 2) + (tiles[27] == 2) + (tiles[28] == 2) +
-                (tiles[29] == 2) + (tiles[30] == 2) + (tiles[31] == 2) + (tiles[32] == 2) +
-                (tiles[33] == 2) != 1):
+        if (n0 == 2) + (n1 == 2) + (n2 == 2) + (tiles[27] == 2) + (tiles[28] == 2) + (tiles[29] == 2) + (
+            tiles[30] == 2
+        ) + (tiles[31] == 2) + (tiles[32] == 2) + (tiles[33] == 2) != 1:
             return False
 
         nn0 = (n00 * 1 + n01 * 2) % 3
@@ -85,20 +104,36 @@ class Agari(object):
         m2 = self._to_meld(tiles, 18)
 
         if j & 4:
-            return not (n0 | nn0 | n1 | nn1 | n2 | nn2) and self._is_mentsu(m0) \
-                and self._is_mentsu(m1) and self._is_mentsu(m2)
+            return (
+                not (n0 | nn0 | n1 | nn1 | n2 | nn2)
+                and self._is_mentsu(m0)
+                and self._is_mentsu(m1)
+                and self._is_mentsu(m2)
+            )
 
         if n0 == 2:
-            return not (n1 | nn1 | n2 | nn2) and self._is_mentsu(m1) and self._is_mentsu(m2) \
+            return (
+                not (n1 | nn1 | n2 | nn2)
+                and self._is_mentsu(m1)
+                and self._is_mentsu(m2)
                 and self._is_atama_mentsu(nn0, m0)
+            )
 
         if n1 == 2:
-            return not (n2 | nn2 | n0 | nn0) and self._is_mentsu(m2) and self._is_mentsu(m0) \
+            return (
+                not (n2 | nn2 | n0 | nn0)
+                and self._is_mentsu(m2)
+                and self._is_mentsu(m0)
                 and self._is_atama_mentsu(nn1, m1)
+            )
 
         if n2 == 2:
-            return not (n0 | nn0 | n1 | nn1) and self._is_mentsu(m0) and self._is_mentsu(m1) \
+            return (
+                not (n0 | nn0 | n1 | nn1)
+                and self._is_mentsu(m0)
+                and self._is_mentsu(m1)
                 and self._is_atama_mentsu(nn2, m2)
+            )
 
         return False
 
@@ -117,7 +152,7 @@ class Agari(object):
             return False
 
         is_not_mentsu = False
-        for x in range(0, 6):
+        for _ in range(0, 6):
             b = c
             c = 0
             if a == 1 or a == 4:
@@ -167,5 +202,5 @@ class Agari(object):
     def _to_meld(self, tiles, d):
         result = 0
         for i in range(0, 9):
-            result |= (tiles[d + i] << i * 3)
+            result |= tiles[d + i] << i * 3
         return result

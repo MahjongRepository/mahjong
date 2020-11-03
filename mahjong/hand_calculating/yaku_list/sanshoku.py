@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_chi, is_sou, is_pin, is_man, simplify
+from mahjong.utils import is_chi, is_man, is_pin, is_sou, simplify
 
 
 class Sanshoku(Yaku):
@@ -14,7 +14,7 @@ class Sanshoku(Yaku):
     def set_attributes(self):
         self.tenhou_id = 25
 
-        self.name = 'Sanshoku Doujun'
+        self.name = "Sanshoku Doujun"
 
         self.han_open = 1
         self.han_closed = 2

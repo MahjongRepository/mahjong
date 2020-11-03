@@ -15,7 +15,7 @@ class YakuhaiNorth(Yaku):
     def set_attributes(self):
         self.tenhou_id = 10
 
-        self.name = 'Yakuhai (north)'
+        self.name = "Yakuhai (north)"
 
         self.han_open = 1
         self.han_closed = 1

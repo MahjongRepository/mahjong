@@ -15,7 +15,7 @@ class Daisangen(Yaku):
     def set_attributes(self):
         self.tenhou_id = 39
 
-        self.name = 'Daisangen'
+        self.name = "Daisangen"
 
         self.han_open = 13
         self.han_closed = 13

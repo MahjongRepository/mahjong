@@ -13,7 +13,7 @@ class Houtei(Yaku):
     def set_attributes(self):
         self.tenhou_id = 6
 
-        self.name = 'Houtei Raoyui'
+        self.name = "Houtei Raoyui"
 
         self.han_open = 1
         self.han_closed = 1

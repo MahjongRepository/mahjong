@@ -3,11 +3,11 @@ from mahjong.tile import TilesConverter
 
 
 class Meld(object):
-    CHI = 'chi'
-    PON = 'pon'
-    KAN = 'kan'
-    CHANKAN = 'chankan'
-    NUKI = 'nuki'
+    CHI = "chi"
+    PON = "pon"
+    KAN = "kan"
+    CHANKAN = "chankan"
+    NUKI = "nuki"
 
     who = None
     tiles = None
@@ -26,7 +26,7 @@ class Meld(object):
         self.from_who = from_who
 
     def __str__(self):
-        return 'Type: {}, Tiles: {} {}'.format(self.type, TilesConverter.to_one_line_string(self.tiles), self.tiles)
+        return "Type: {}, Tiles: {} {}".format(self.type, TilesConverter.to_one_line_string(self.tiles), self.tiles)
 
     # for calls in array
     def __repr__(self):

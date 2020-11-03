@@ -2,7 +2,7 @@
 from functools import reduce
 
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_sou, is_pin, is_man, simplify
+from mahjong.utils import is_man, is_pin, is_sou, simplify
 
 
 class Daisharin(Yaku):
@@ -26,13 +26,13 @@ class Daisharin(Yaku):
         self.is_yakuman = True
 
     def set_pin(self):
-        self.name = 'Daisharin'
+        self.name = "Daisharin"
 
     def set_man(self):
-        self.name = 'Daisuurin'
+        self.name = "Daisuurin"
 
     def set_sou(self):
-        self.name = 'Daichikurin'
+        self.name = "Daichikurin"
 
     def rename(self, hand):
         # rename this yakuman depending on tiles used

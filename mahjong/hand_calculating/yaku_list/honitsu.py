@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from mahjong.constants import HONOR_INDICES
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_sou, is_pin, is_man
+from mahjong.utils import is_man, is_pin, is_sou
 
 
 class Honitsu(Yaku):
@@ -14,7 +14,7 @@ class Honitsu(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 34
-        self.name = 'Honitsu'
+        self.name = "Honitsu"
 
         self.han_open = 2
         self.han_closed = 3

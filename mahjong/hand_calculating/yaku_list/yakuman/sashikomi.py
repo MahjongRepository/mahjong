@@ -11,8 +11,8 @@ class Sashikomi(Yaku):
         super(Sashikomi, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.name = 'Sashikomi'
-        self.english = 'Dealt into open riichi'
+        self.name = "Sashikomi"
+        self.english = "Dealt into open riichi"
 
         self.han_open = None
         self.han_closed = 13

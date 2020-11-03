@@ -13,7 +13,7 @@ class DaburuRiichi(Yaku):
     def set_attributes(self):
         self.tenhou_id = 21
 
-        self.name = 'Double Riichi'
+        self.name = "Double Riichi"
 
         self.han_open = None
         self.han_closed = 2

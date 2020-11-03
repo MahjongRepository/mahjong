@@ -15,7 +15,7 @@ class Haku(Yaku):
     def set_attributes(self):
         self.tenhou_id = 18
 
-        self.name = 'Yakuhai (haku)'
+        self.name = "Yakuhai (haku)"
 
         self.han_open = 1
         self.han_closed = 1

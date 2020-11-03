@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_chi, is_sou, is_pin, is_man, simplify
+from mahjong.utils import is_chi, is_man, is_pin, is_sou, simplify
 
 
 class Ittsu(Yaku):
@@ -14,7 +14,7 @@ class Ittsu(Yaku):
     def set_attributes(self):
         self.tenhou_id = 24
 
-        self.name = 'Ittsu'
+        self.name = "Ittsu"
 
         self.han_open = 1
         self.han_closed = 2
@@ -47,9 +47,7 @@ class Ittsu(Yaku):
 
             for set_item in suit_item:
                 # cast tiles indices to 0..8 representation
-                casted_sets.append([simplify(set_item[0]),
-                                    simplify(set_item[1]),
-                                    simplify(set_item[2])])
+                casted_sets.append([simplify(set_item[0]), simplify(set_item[1]), simplify(set_item[2])])
 
             if [0, 1, 2] in casted_sets and [3, 4, 5] in casted_sets and [6, 7, 8] in casted_sets:
                 return True

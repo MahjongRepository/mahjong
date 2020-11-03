@@ -11,7 +11,7 @@ class NagashiMangan(Yaku):
         super(NagashiMangan, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.name = 'Nagashi Mangan'
+        self.name = "Nagashi Mangan"
 
         self.han_open = 5
         self.han_closed = 5

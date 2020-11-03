@@ -13,8 +13,8 @@ class Paarenchan(Yaku):
     def set_attributes(self):
         self.tenhou_id = 37
 
-        self.name = 'Paarenchan'
-        self.english = '8th Wonder'
+        self.name = "Paarenchan"
+        self.english = "8th Wonder"
 
         self.han_open = 13
         self.han_closed = 13
@@ -32,4 +32,4 @@ class Paarenchan(Yaku):
         return True
 
     def __str__(self):
-        return 'Paarenchan {}'.format(self.count)
+        return "Paarenchan {}".format(self.count)

@@ -13,7 +13,7 @@ class Rinshan(Yaku):
     def set_attributes(self):
         self.tenhou_id = 4
 
-        self.name = 'Rinshan Kaihou'
+        self.name = "Rinshan Kaihou"
 
         self.han_open = 1
         self.han_closed = 1

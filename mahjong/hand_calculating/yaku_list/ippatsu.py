@@ -13,7 +13,7 @@ class Ippatsu(Yaku):
     def set_attributes(self):
         self.tenhou_id = 2
 
-        self.name = 'Ippatsu'
+        self.name = "Ippatsu"
 
         self.han_open = None
         self.han_closed = 1

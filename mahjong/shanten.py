@@ -265,11 +265,11 @@ class Shanten(object):
 
     def _increase_isolated_tile(self, k):
         self.tiles[k] -= 1
-        self.number_isolated_tiles |= (1 << k)
+        self.number_isolated_tiles |= 1 << k
 
     def _decrease_isolated_tile(self, k):
         self.tiles[k] += 1
-        self.number_isolated_tiles |= (1 << k)
+        self.number_isolated_tiles |= 1 << k
 
     def _scan_chiitoitsu_and_kokushi(self, chiitoitsu, kokushi):
         shanten = self.min_shanten
@@ -314,8 +314,8 @@ class Shanten(object):
             if self.tiles[i] == 4:
                 self.number_melds += 1
                 self.number_jidahai += 1
-                number |= (1 << (i - 27))
-                isolated |= (1 << (i - 27))
+                number |= 1 << (i - 27)
+                isolated |= 1 << (i - 27)
 
             if self.tiles[i] == 3:
                 self.number_melds += 1
@@ -324,12 +324,12 @@ class Shanten(object):
                 self.number_pairs += 1
 
             if self.tiles[i] == 1:
-                isolated |= (1 << (i - 27))
+                isolated |= 1 << (i - 27)
 
         if self.number_jidahai and (nc % 3) == 2:
             self.number_jidahai -= 1
 
         if isolated:
-            self.number_isolated_tiles |= (1 << 27)
+            self.number_isolated_tiles |= 1 << 27
             if (number | isolated) == number:
-                self.number_characters |= (1 << 27)
+                self.number_characters |= 1 << 27

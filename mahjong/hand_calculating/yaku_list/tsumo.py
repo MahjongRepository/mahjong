@@ -12,7 +12,7 @@ class Tsumo(Yaku):
 
     def set_attributes(self):
         self.tenhou_id = 0
-        self.name = 'Menzen Tsumo'
+        self.name = "Menzen Tsumo"
 
         self.han_open = None
         self.han_closed = 1

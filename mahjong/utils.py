@@ -1,4 +1,4 @@
-from mahjong.constants import EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, TERMINAL_INDICES, CHUN
+from mahjong.constants import CHUN, EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, TERMINAL_INDICES
 
 
 def is_aka_dora(tile, aka_enabled):
@@ -233,10 +233,10 @@ def count_tiles_by_suits(tiles_34):
     :return: dict
     """
     suits = [
-        {'count': 0, 'name': 'sou',   'function': is_sou},
-        {'count': 0, 'name': 'man',   'function': is_man},
-        {'count': 0, 'name': 'pin',   'function': is_pin},
-        {'count': 0, 'name': 'honor', 'function': is_honor}
+        {"count": 0, "name": "sou", "function": is_sou},
+        {"count": 0, "name": "man", "function": is_man},
+        {"count": 0, "name": "pin", "function": is_pin},
+        {"count": 0, "name": "honor", "function": is_honor},
     ]
 
     for x in range(0, 34):
@@ -245,7 +245,7 @@ def count_tiles_by_suits(tiles_34):
             continue
 
         for item in suits:
-            if item['function'](x):
-                item['count'] += tile
+            if item["function"](x):
+                item["count"] += tile
 
     return suits

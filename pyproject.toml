@@ -1,0 +1,28 @@
+[tool.black]
+line-length = 120
+target-version = ['py38']
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+
+  # Project related excludes
+  | migrations
+)/
+'''
+
+[tool.isort]
+force_grid_wrap = 0
+include_trailing_comma = true
+line_length = 120
+multi_line_output = 3
+use_parentheses = true
+skip_glob = "migrations"

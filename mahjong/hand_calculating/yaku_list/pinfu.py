@@ -13,7 +13,7 @@ class Pinfu(Yaku):
     def set_attributes(self):
         self.tenhou_id = 7
 
-        self.name = 'Pinfu'
+        self.name = "Pinfu"
 
         self.han_open = None
         self.han_closed = 1
