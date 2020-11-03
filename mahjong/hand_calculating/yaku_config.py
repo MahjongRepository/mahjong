@@ -4,10 +4,11 @@ from itertools import count
 from mahjong.hand_calculating.yaku_list import AkaDora, Riichi, Ippatsu, Chankan, Rinshan, Haitei, Houtei, \
     DaburuRiichi, NagashiMangan, Renhou, Pinfu, Tanyao, Iipeiko, Haku, Hatsu, Chun, YakuhaiOfPlace, YakuhaiOfRound, \
     YakuhaiEast, YakuhaiSouth, YakuhaiWest, YakuhaiNorth, Sanshoku, Ittsu, Chantai, Honroto, Toitoi, Sanankou, \
-    SanKantsu, SanshokuDoukou, Chiitoitsu, Shosangen, Honitsu, Junchan, Ryanpeikou, Chinitsu, Tsumo, Dora
+    SanKantsu, SanshokuDoukou, Chiitoitsu, Shosangen, Honitsu, Junchan, Ryanpeikou, Chinitsu, Tsumo, Dora, \
+    OpenRiichi, DaburuOpenRiichi
 from mahjong.hand_calculating.yaku_list.yakuman import KokushiMusou, ChuurenPoutou, Suuankou, Daisangen, Shousuushii, \
     Ryuuiisou, Suukantsu, Tsuuiisou, Chinroutou, DaiSuushii, DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, \
-    Tenhou, Chiihou, RenhouYakuman, Daisharin
+    Tenhou, Chiihou, RenhouYakuman, Daisharin, Sashikomi, Daichisei, Paarenchan
 
 
 class YakuConfig(object):
@@ -18,12 +19,14 @@ class YakuConfig(object):
         # Yaku situations
         self.tsumo = Tsumo(next(id))
         self.riichi = Riichi(next(id))
+        self.open_riichi = OpenRiichi(next(id))
         self.ippatsu = Ippatsu(next(id))
         self.chankan = Chankan(next(id))
         self.rinshan = Rinshan(next(id))
         self.haitei = Haitei(next(id))
         self.houtei = Houtei(next(id))
         self.daburu_riichi = DaburuRiichi(next(id))
+        self.daburu_open_riichi = DaburuOpenRiichi(next(id))
         self.nagashi_mangan = NagashiMangan(next(id))
         self.renhou = Renhou(next(id))
 
@@ -73,6 +76,7 @@ class YakuConfig(object):
         self.tsuisou = Tsuuiisou(next(id))
         self.chinroto = Chinroutou(next(id))
         self.daisharin = Daisharin(next(id))
+        self.daichisei = Daichisei(next(id))
 
         # Double yakuman
         self.daisuushi = DaiSuushii(next(id))
@@ -84,6 +88,8 @@ class YakuConfig(object):
         self.tenhou = Tenhou(next(id))
         self.chiihou = Chiihou(next(id))
         self.renhou_yakuman = RenhouYakuman(next(id))
+        self.sashikomi = Sashikomi(next(id))
+        self.paarenchan = Paarenchan(next(id))
 
         # Other
         self.dora = Dora(next(id))

@@ -3,12 +3,15 @@ from mahjong.hand_calculating.yaku_list.yakuman.chinroto import Chinroutou
 from mahjong.hand_calculating.yaku_list.yakuman.chuuren_poutou import ChuurenPoutou
 from mahjong.hand_calculating.yaku_list.yakuman.daburu_chuuren_poutou import DaburuChuurenPoutou
 from mahjong.hand_calculating.yaku_list.yakuman.daburu_kokushi import DaburuKokushiMusou
+from mahjong.hand_calculating.yaku_list.yakuman.daichisei import Daichisei
 from mahjong.hand_calculating.yaku_list.yakuman.daisangen import Daisangen
 from mahjong.hand_calculating.yaku_list.yakuman.daisharin import Daisharin
 from mahjong.hand_calculating.yaku_list.yakuman.daisuushi import DaiSuushii
 from mahjong.hand_calculating.yaku_list.yakuman.kokushi import KokushiMusou
+from mahjong.hand_calculating.yaku_list.yakuman.paarenchan import Paarenchan
 from mahjong.hand_calculating.yaku_list.yakuman.ryuisou import Ryuuiisou
 from mahjong.hand_calculating.yaku_list.yakuman.renhou_yakuman import RenhouYakuman
+from mahjong.hand_calculating.yaku_list.yakuman.sashikomi import Sashikomi
 from mahjong.hand_calculating.yaku_list.yakuman.shosuushi import Shousuushii
 from mahjong.hand_calculating.yaku_list.yakuman.suuankou import Suuankou
 from mahjong.hand_calculating.yaku_list.yakuman.suuankou_tanki import SuuankouTanki

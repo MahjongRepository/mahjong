@@ -3,7 +3,7 @@ from mahjong.agari import Agari
 from mahjong.constants import EAST, SOUTH, WEST, NORTH, CHUN, HATSU, HAKU
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator
-from mahjong.hand_calculating.scores import ScoresCalculator
+from mahjong.hand_calculating.scores import ScoresCalculator, Aotenjou
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.hand_calculating.hand_response import HandResponse
 from mahjong.meld import Meld
@@ -21,9 +21,12 @@ class HandCalculator(object):
     ERR_IPPATSU_WITHOUT_RIICHI = 'IWR'
     ERR_HAND_NOT_WIN = 'HNW'
     ERR_NO_HAND_YAKU = 'NHY'
+    ERR_RENHOU_IMPOSSIBLE_AGARI = 'RIA'
+
     # more possible errors, like houtei and haitei can't be together, etc
 
-    def estimate_hand_value(self, tiles, win_tile, melds=None, dora_indicators=None, config=None):
+    def estimate_hand_value(self, tiles, win_tile, melds=None, dora_indicators=None, config=None,
+                            scores_calculator_factory=ScoresCalculator):
         """
         :param tiles: array with 14 tiles in 136-tile format
         :param win_tile: 136 format tile that caused win (ron or tsumo)
@@ -43,10 +46,11 @@ class HandCalculator(object):
 
         agari = Agari()
         hand_yaku = []
-        scores_calculator = ScoresCalculator()
+        scores_calculator = scores_calculator_factory()
         tiles_34 = TilesConverter.to_34_array(tiles)
         divider = HandDivider()
         fu_calculator = FuCalculator()
+        is_aotenjou = isinstance(scores_calculator, Aotenjou)
 
         opened_melds = [x.tiles_34 for x in melds if x.opened]
         all_melds = [x.tiles_34 for x in melds]
@@ -74,6 +78,9 @@ class HandCalculator(object):
 
         if self.config.is_ippatsu and not self.config.is_riichi and not self.config.is_daburu_riichi:
             return HandResponse(error=HandCalculator.ERR_IPPATSU_WITHOUT_RIICHI)
+
+        if self.config.is_tsumo and self.config.is_renhou:
+            return HandResponse(error=HandCalculator.ERR_RENHOU_IMPOSSIBLE_AGARI)
 
         if not agari.is_agari(tiles_34, all_melds):
             return HandResponse(error=HandCalculator.ERR_HAND_NOT_WIN)
@@ -135,6 +142,9 @@ class HandCalculator(object):
                     self.config.yaku.daisharin.rename(hand)
                     hand_yaku.append(self.config.yaku.daisharin)
 
+                if self.config.options.has_daichisei and self.config.yaku.daichisei.is_condition_met(hand):
+                    hand_yaku.append(self.config.yaku.daichisei)
+
                 is_tanyao = self.config.yaku.tanyao.is_condition_met(hand)
                 if is_open_hand and not self.config.options.has_open_tanyao:
                     is_tanyao = False
@@ -143,10 +153,21 @@ class HandCalculator(object):
                     hand_yaku.append(self.config.yaku.tanyao)
 
                 if self.config.is_riichi and not self.config.is_daburu_riichi:
-                    hand_yaku.append(self.config.yaku.riichi)
+                    if self.config.is_open_riichi:
+                        hand_yaku.append(self.config.yaku.open_riichi)
+                    else:
+                        hand_yaku.append(self.config.yaku.riichi)
 
                 if self.config.is_daburu_riichi:
-                    hand_yaku.append(self.config.yaku.daburu_riichi)
+                    if self.config.is_open_riichi:
+                        hand_yaku.append(self.config.yaku.daburu_open_riichi)
+                    else:
+                        hand_yaku.append(self.config.yaku.daburu_riichi)
+
+                if (not self.config.is_tsumo and self.config.options.has_sashikomi_yakuman
+                    and ((self.config.yaku.daburu_open_riichi in hand_yaku)
+                         or (self.config.yaku.open_riichi in hand_yaku))):
+                    hand_yaku.append(self.config.yaku.sashikomi)
 
                 if self.config.is_ippatsu:
                     hand_yaku.append(self.config.yaku.ippatsu)
@@ -192,6 +213,11 @@ class HandCalculator(object):
 
                 if self.config.yaku.ryuisou.is_condition_met(hand):
                     hand_yaku.append(self.config.yaku.ryuisou)
+
+                if self.config.paarenchan > 0 and not self.config.options.paarenchan_needs_yaku:
+                    # if no yaku is even needed to win on paarenchan and it is paarenchan condition, just add paarenchan
+                    self.config.yaku.paarenchan.set_paarenchan_count(self.config.paarenchan)
+                    hand_yaku.append(self.config.yaku.paarenchan)
 
                 # small optimization, try to detect yaku with chi required sets only if we have chi sets in hand
                 if len(chi_sets):
@@ -293,10 +319,19 @@ class HandCalculator(object):
                     if self.config.yaku.suukantsu.is_condition_met(hand, melds):
                         hand_yaku.append(self.config.yaku.suukantsu)
 
+                if self.config.paarenchan > 0 and self.config.options.paarenchan_needs_yaku and len(hand_yaku) > 0:
+                    # we waited until here to add paarenchan yakuman only if there is any other yaku
+                    self.config.yaku.paarenchan.set_paarenchan_count(self.config.paarenchan)
+                    hand_yaku.append(self.config.yaku.paarenchan)
+
                 # yakuman is not connected with other yaku
                 yakuman_list = [x for x in hand_yaku if x.is_yakuman]
                 if yakuman_list:
-                    hand_yaku = yakuman_list
+                    if not is_aotenjou:
+                        hand_yaku = yakuman_list
+                    else:
+                        scores_calculator.aotenjou_filter_yaku(hand_yaku, self.config)
+                        yakuman_list = []
 
                 # calculate han
                 for item in hand_yaku:
@@ -340,6 +375,12 @@ class HandCalculator(object):
                         hand_yaku.append(self.config.yaku.aka_dora)
                         han += count_of_aka_dora
 
+                if not is_aotenjou and (self.config.options.limit_to_sextuple_yakuman and han > 78):
+                    han = 78
+
+                if fu == 0 and is_aotenjou:
+                    fu = 40
+
                 if not error:
                     cost = scores_calculator.calculate_scores(han, fu, self.config, len(yakuman_list) > 0)
 
@@ -361,6 +402,15 @@ class HandCalculator(object):
             else:
                 hand_yaku.append(self.config.yaku.kokushi)
 
+            if not self.config.is_tsumo and self.config.options.has_sashikomi_yakuman:
+                if self.config.is_riichi and not self.config.is_daburu_riichi:
+                    if self.config.is_open_riichi:
+                        hand_yaku.append(self.config.yaku.sashikomi)
+
+                if self.config.is_daburu_riichi:
+                    if self.config.is_open_riichi:
+                        hand_yaku.append(self.config.yaku.sashikomi)
+
             if self.config.is_renhou and self.config.options.renhou_as_yakuman:
                 hand_yaku.append(self.config.yaku.renhou_yakuman)
 
@@ -369,6 +419,10 @@ class HandCalculator(object):
 
             if self.config.is_chiihou:
                 hand_yaku.append(self.config.yaku.chiihou)
+
+            if self.config.paarenchan > 0:
+                self.config.yaku.paarenchan.set_paarenchan_count(self.config.paarenchan)
+                hand_yaku.append(self.config.yaku.paarenchan)
 
             # calculate han
             han = 0
@@ -379,6 +433,36 @@ class HandCalculator(object):
                     han += item.han_closed
 
             fu = 0
+            if is_aotenjou:
+                if self.config.is_tsumo:
+                    fu = 30
+                else:
+                    fu = 40
+
+                tiles_for_dora = tiles[:]
+
+                count_of_dora = 0
+                count_of_aka_dora = 0
+
+                for tile in tiles_for_dora:
+                    count_of_dora += plus_dora(tile, dora_indicators)
+
+                for tile in tiles_for_dora:
+                    if is_aka_dora(tile, self.config.options.has_aka_dora):
+                        count_of_aka_dora += 1
+
+                if count_of_dora:
+                    self.config.yaku.dora.han_open = count_of_dora
+                    self.config.yaku.dora.han_closed = count_of_dora
+                    hand_yaku.append(self.config.yaku.dora)
+                    han += count_of_dora
+
+                if count_of_aka_dora:
+                    self.config.yaku.aka_dora.han_open = count_of_aka_dora
+                    self.config.yaku.aka_dora.han_closed = count_of_aka_dora
+                    hand_yaku.append(self.config.yaku.aka_dora)
+                    han += count_of_aka_dora
+
             cost = scores_calculator.calculate_scores(han, fu, self.config, len(hand_yaku) > 0)
             calculated_hands.append({
                 'cost': cost,
