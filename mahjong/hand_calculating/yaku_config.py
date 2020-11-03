@@ -8,7 +8,8 @@ from mahjong.hand_calculating.yaku_list import AkaDora, Riichi, Ippatsu, Chankan
     OpenRiichi, DaburuOpenRiichi
 from mahjong.hand_calculating.yaku_list.yakuman import KokushiMusou, ChuurenPoutou, Suuankou, Daisangen, Shousuushii, \
     Ryuuiisou, Suukantsu, Tsuuiisou, Chinroutou, DaiSuushii, DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, \
-    Tenhou, Chiihou, RenhouYakuman, Daisharin, Sashikomi, Daichisei
+    Tenhou, Chiihou, RenhouYakuman, Daisharin, Sashikomi, Daichisei, Paarenchan
+
 
 class YakuConfig(object):
 

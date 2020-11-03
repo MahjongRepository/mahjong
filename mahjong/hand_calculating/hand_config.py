@@ -27,27 +27,27 @@ class OptionalRules(object):
     # if true, pinfu tsumo will be disabled
     fu_for_pinfu_tsumo = False
     renhou_as_yakuman = False
-    has_daisharin=False
-    has_daisharin_other_suits=False
-    has_daichisei=False
-    has_sashikomi_yakuman=False
-    limit_to_sextuple_yakuman=True
-    paarenchan_needs_yaku=True
+    has_daisharin = False
+    has_daisharin_other_suits = False
+    has_daichisei = False
+    has_sashikomi_yakuman = False
+    limit_to_sextuple_yakuman = True
+    paarenchan_needs_yaku = True
 
     def __init__(self, has_open_tanyao=False,
-                        has_aka_dora=False,
-                        has_double_yakuman=True,
-                        kazoe_limit=HandConstants.KAZOE_LIMITED,
-                        kiriage=False,
-                        fu_for_open_pinfu=True,
-                        fu_for_pinfu_tsumo=False,
-                        renhou_as_yakuman=False,
-                        has_daisharin=False,
-                        has_daisharin_other_suits=False,
-                        has_sashikomi_yakuman=False,
-                        limit_to_sextuple_yakuman=True,
-                        paarenchan_needs_yaku=True,
-                        has_daichisei=False):
+                 has_aka_dora=False,
+                 has_double_yakuman=True,
+                 kazoe_limit=HandConstants.KAZOE_LIMITED,
+                 kiriage=False,
+                 fu_for_open_pinfu=True,
+                 fu_for_pinfu_tsumo=False,
+                 renhou_as_yakuman=False,
+                 has_daisharin=False,
+                 has_daisharin_other_suits=False,
+                 has_sashikomi_yakuman=False,
+                 limit_to_sextuple_yakuman=True,
+                 paarenchan_needs_yaku=True,
+                 has_daichisei=False):
 
         self.has_open_tanyao = has_open_tanyao
         self.has_aka_dora = has_aka_dora
