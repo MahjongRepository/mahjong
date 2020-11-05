@@ -41,65 +41,64 @@ class ScoresCalculator(object):
 
         """
 
-        yaku_level = ''
-
+        yaku_level = ""
 
         # kazoe hand
         if han >= 13 and not is_yakuman:
             # Hands over 26+ han don't count as double yakuman
             if config.options.kazoe_limit == HandConfig.KAZOE_LIMITED:
                 han = 13
-                yaku_level = 'kazoe yakuman'
+                yaku_level = "kazoe yakuman"
             # Hands over 13+ is a sanbaiman
             elif config.options.kazoe_limit == HandConfig.KAZOE_SANBAIMAN:
                 han = 12
-                yaku_level = 'kazoe sanbaiman'
+                yaku_level = "kazoe sanbaiman"
 
         if han >= 5:
             if han >= 78:
-                yaku_level = '6x yakuman'
+                yaku_level = "6x yakuman"
                 if config.options.limit_to_sextuple_yakuman:
                     rounded = 48000
                 else:
                     extra_han, _ = divmod(han - 78, 13)
                     rounded = 48000 + (extra_han * 8000)
             elif han >= 65:
-                yaku_level = '5x yakuman'
+                yaku_level = "5x yakuman"
                 rounded = 40000
             elif han >= 52:
-                yaku_level = '4x yakuman'
+                yaku_level = "4x yakuman"
                 rounded = 32000
             elif han >= 39:
-                yaku_level = '3x yakuman'
+                yaku_level = "3x yakuman"
                 rounded = 24000
             # double yakuman
             elif han >= 26:
-                yaku_level = '2x yakuman'
+                yaku_level = "2x yakuman"
                 rounded = 16000
             # yakuman
             elif han >= 13:
-                yaku_level = 'yakuman'
+                yaku_level = "yakuman"
                 rounded = 8000
             # sanbaiman
             elif han >= 11:
-                yaku_level = 'sanbaiman'
+                yaku_level = "sanbaiman"
                 rounded = 6000
             # baiman
             elif han >= 8:
-                yaku_level = 'baiman'
+                yaku_level = "baiman"
                 rounded = 4000
             # haneman
             elif han >= 6:
-                yaku_level = 'haneman'
+                yaku_level = "haneman"
                 rounded = 3000
             else:
-                yaku_level = 'mangan'
+                yaku_level = "mangan"
                 rounded = 2000
 
             double_rounded = rounded * 2
             four_rounded = double_rounded * 2
             six_rounded = double_rounded * 3
-        else:   # han < 5
+        else:  # han < 5
             base_points = fu * pow(2, 2 + han)
             rounded = (base_points + 99) // 100 * 100
             double_rounded = (2 * base_points + 99) // 100 * 100
@@ -109,15 +108,11 @@ class ScoresCalculator(object):
             is_kiriage = False
             if config.options.kiriage:
                 if (han == 4 and fu == 30) or (han == 3 and fu == 60):
-                    yaku_level = 'kiriage mangan'
+                    yaku_level = "kiriage mangan"
                     is_kiriage = True
-                else:
-                    pass
-            else:   # kiriage not supported
+            else:  # kiriage not supported
                 if rounded > 2000:
-                    yaku_level = 'mangan'
-                else:
-                    pass
+                    yaku_level = "mangan"
 
             # mangan
             if rounded > 2000 or is_kiriage:
@@ -125,7 +120,7 @@ class ScoresCalculator(object):
                 double_rounded = rounded * 2
                 four_rounded = double_rounded * 2
                 six_rounded = double_rounded * 3
-            else:   # below mangan
+            else:  # below mangan
                 pass
 
         if config.is_tsumo:
@@ -152,13 +147,17 @@ class ScoresCalculator(object):
         total = (main + main_bonus) + 2 * (additional + additional_bonus) + kyoutaku_bonus
 
         if config.is_nagashi_mangan:
-            yaku_level = 'nagashi mangan'
-        else:
-            pass
+            yaku_level = "nagashi mangan"
 
-        ret_dict = {'main': main, 'main_bonus': main_bonus,
-                    'additional': additional, 'additional_bonus': additional_bonus,
-                    'kyoutaku_bonus': kyoutaku_bonus, 'total': total, 'yaku_level': yaku_level}
+        ret_dict = {
+            "main": main,
+            "main_bonus": main_bonus,
+            "additional": additional,
+            "additional_bonus": additional_bonus,
+            "kyoutaku_bonus": kyoutaku_bonus,
+            "total": total,
+            "yaku_level": yaku_level,
+        }
 
         return ret_dict
 
