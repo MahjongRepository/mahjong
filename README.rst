@@ -177,7 +177,7 @@ Shanten calculation
 
 
 Aotenjou scoring rules
-===================
+======================
 
 .. code-block:: python
 
