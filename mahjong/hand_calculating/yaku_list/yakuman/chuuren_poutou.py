@@ -2,7 +2,7 @@
 from functools import reduce
 
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_sou, is_pin, is_man, simplify
+from mahjong.utils import is_man, is_pin, is_sou, simplify
 
 
 class ChuurenPoutou(Yaku):
@@ -16,7 +16,7 @@ class ChuurenPoutou(Yaku):
     def set_attributes(self):
         self.tenhou_id = 45
 
-        self.name = 'Chuuren Poutou'
+        self.name = "Chuuren Poutou"
 
         self.han_open = None
         self.han_closed = 13

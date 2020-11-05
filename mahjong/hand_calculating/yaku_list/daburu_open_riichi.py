@@ -2,21 +2,19 @@
 from mahjong.hand_calculating.yaku import Yaku
 
 
-class DaburuRiichi(Yaku):
+class DaburuOpenRiichi(Yaku):
     """
     Yaku situation
     """
 
-    def __init__(self, yaku_id=None):
-        super(DaburuRiichi, self).__init__(yaku_id)
+    def __init__(self, yaku_id):
+        super(DaburuOpenRiichi, self).__init__(yaku_id)
 
     def set_attributes(self):
-        self.tenhou_id = 21
-
-        self.name = "Double Riichi"
+        self.name = "Double Open Riichi"
 
         self.han_open = None
-        self.han_closed = 2
+        self.han_closed = 3
 
         self.is_yakuman = False
 

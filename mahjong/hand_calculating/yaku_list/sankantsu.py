@@ -14,7 +14,7 @@ class SanKantsu(Yaku):
     def set_attributes(self):
         self.tenhou_id = 27
 
-        self.name = 'San Kantsu'
+        self.name = "San Kantsu"
 
         self.han_open = 2
         self.han_closed = 2
@@ -22,5 +22,5 @@ class SanKantsu(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand, melds, *args):
-        kan_sets = [x for x in melds if x.type == Meld.KAN or x.type == Meld.CHANKAN]
+        kan_sets = [x for x in melds if x.type == Meld.KAN or x.type == Meld.SHOUMINKAN]
         return len(kan_sets) == 3

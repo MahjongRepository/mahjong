@@ -3,7 +3,6 @@ from mahjong.hand_calculating.hand_config import HandConfig
 
 
 class ScoresCalculator(object):
-
     def calculate_scores(self, han, fu, config, is_yakuman=False):
         """
         Calculate how much scores cost a hand with given han and fu
@@ -59,7 +58,11 @@ class ScoresCalculator(object):
         if han >= 5:
             if han >= 78:
                 yaku_level = '6x yakuman'
-                rounded = 48000
+                if config.options.limit_to_sextuple_yakuman:
+                    rounded = 48000
+                else:
+                    extra_han, _ = divmod(han - 78, 13)
+                    rounded = 48000 + (extra_han * 8000)
             elif han >= 65:
                 yaku_level = '5x yakuman'
                 rounded = 40000
@@ -132,17 +135,17 @@ class ScoresCalculator(object):
 
             if config.is_dealer:
                 additional = main
-            else:   # player
+            else:  # player
                 additional = rounded
 
-        else:   # ron
+        else:  # ron
             additional = 0
             additional_bonus = 0
             main_bonus = 300 * config.tsumi_number
 
             if config.is_dealer:
                 main = six_rounded
-            else:   # player
+            else:  # player
                 main = four_rounded
 
         kyoutaku_bonus = 1000 * config.kyoutaku_number
@@ -157,6 +160,79 @@ class ScoresCalculator(object):
                     'additional': additional, 'additional_bonus': additional_bonus,
                     'kyoutaku_bonus': kyoutaku_bonus, 'total': total, 'yaku_level': yaku_level}
 
-
-
         return ret_dict
+
+
+class Aotenjou(ScoresCalculator):
+    def calculate_scores(self, han, fu, config, is_yakuman=False):
+
+        base_points = fu * pow(2, 2 + han)
+        rounded = (base_points + 99) // 100 * 100
+        double_rounded = (2 * base_points + 99) // 100 * 100
+        four_rounded = (4 * base_points + 99) // 100 * 100
+        six_rounded = (6 * base_points + 99) // 100 * 100
+
+        if config.is_tsumo:
+            return {"main": double_rounded, "additional": config.is_dealer and double_rounded or rounded}
+        else:
+            return {"main": config.is_dealer and six_rounded or four_rounded, "additional": 0}
+
+    def aotenjou_filter_yaku(self, hand_yaku, config):
+        # in aotenjou yakumans are normal yaku
+        # but we need to filter lower yaku that are precursors to yakumans
+        if config.yaku.daisangen in hand_yaku:
+            # for daisangen precursors are all dragons and shosangen
+            hand_yaku.remove(config.yaku.chun)
+            hand_yaku.remove(config.yaku.hatsu)
+            hand_yaku.remove(config.yaku.haku)
+            hand_yaku.remove(config.yaku.shosangen)
+
+        if config.yaku.tsuisou in hand_yaku:
+            # for tsuuiisou we need to remove toitoi and honroto
+            hand_yaku.remove(config.yaku.toitoi)
+            hand_yaku.remove(config.yaku.honroto)
+
+        if config.yaku.shosuushi in hand_yaku:
+            # for shosuushi we do not need to remove anything
+            pass
+
+        if config.yaku.daisuushi in hand_yaku:
+            # for daisuushi we need to remove toitoi
+            hand_yaku.remove(config.yaku.toitoi)
+
+        if config.yaku.suuankou in hand_yaku or config.yaku.suuankou_tanki in hand_yaku:
+            # for suu ankou we need to remove toitoi and sanankou (sanankou is already removed by default)
+            if config.yaku.toitoi in hand_yaku:
+                # toitoi is "optional" in closed suukantsu, maybe a bug? or toitoi is not given when it's kans?
+                hand_yaku.remove(config.yaku.toitoi)
+
+        if config.yaku.chinroto in hand_yaku:
+            # for chinroto we need to remove toitoi and honroto
+            hand_yaku.remove(config.yaku.toitoi)
+            hand_yaku.remove(config.yaku.honroto)
+
+        if config.yaku.suukantsu in hand_yaku:
+            # for suukantsu we need to remove toitoi and sankantsu (sankantsu is already removed by default)
+            if config.yaku.toitoi in hand_yaku:
+                # same as above?
+                hand_yaku.remove(config.yaku.toitoi)
+
+        if config.yaku.chuuren_poutou in hand_yaku or config.yaku.daburu_chuuren_poutou in hand_yaku:
+            # for chuuren poutou we need to remove chinitsu
+            hand_yaku.remove(config.yaku.chinitsu)
+
+        if config.yaku.daisharin in hand_yaku:
+            # for daisharin we need to remove chinitsu, pinfu, tanyao, ryanpeiko, chiitoitsu
+            hand_yaku.remove(config.yaku.chinitsu)
+            if config.yaku.pinfu in hand_yaku:
+                hand_yaku.remove(config.yaku.pinfu)
+            hand_yaku.remove(config.yaku.tanyao)
+            if config.yaku.ryanpeiko in hand_yaku:
+                hand_yaku.remove(config.yaku.ryanpeiko)
+            if config.yaku.chiitoitsu in hand_yaku:
+                hand_yaku.remove(config.yaku.chiitoitsu)
+
+        if config.yaku.ryuisou in hand_yaku:
+            # for ryuisou we need to remove honitsu, if it is there
+            if config.yaku.honitsu in hand_yaku:
+                hand_yaku.remove(config.yaku.honitsu)

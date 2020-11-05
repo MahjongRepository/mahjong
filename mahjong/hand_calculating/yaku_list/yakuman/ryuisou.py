@@ -16,7 +16,7 @@ class Ryuuiisou(Yaku):
     def set_attributes(self):
         self.tenhou_id = 43
 
-        self.name = 'Ryuuiisou'
+        self.name = "Ryuuiisou"
 
         self.han_open = 13
         self.han_closed = 13

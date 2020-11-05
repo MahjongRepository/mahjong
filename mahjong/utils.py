@@ -1,4 +1,4 @@
-from mahjong.constants import EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, TERMINAL_INDICES, CHUN
+from mahjong.constants import CHUN, EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, TERMINAL_INDICES
 
 
 def is_aka_dora(tile, aka_enabled):
@@ -195,35 +195,37 @@ def is_tile_strictly_isolated(hand_34, tile_34):
     :param tile_34: int
     :return: bool
     """
-    hand_34 = hand_34[:]
-    # we don't need to count target tile in the hand
-    hand_34[tile_34] -= 1
-    if hand_34[tile_34] < 0:
-        hand_34[tile_34] = 0
 
-    indices = []
     if is_honor(tile_34):
-        return hand_34[tile_34] == 0
+        return hand_34[tile_34] - 1 <= 0
+
+    simplified = simplify(tile_34)
+
+    # 1 suit tile
+    if simplified == 0:
+        indices = [tile_34, tile_34 + 1, tile_34 + 2]
+    # 2 suit tile
+    elif simplified == 1:
+        indices = [tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
+    # 8 suit tile
+    elif simplified == 7:
+        indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1]
+    # 9 suit tile
+    elif simplified == 8:
+        indices = [tile_34 - 2, tile_34 - 1, tile_34]
+    # 3-7 tiles tiles
     else:
-        simplified = simplify(tile_34)
+        indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
 
-        # 1 suit tile
-        if simplified == 0:
-            indices = [tile_34, tile_34 + 1, tile_34 + 2]
-        # 2 suit tile
-        elif simplified == 1:
-            indices = [tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
-        # 8 suit tile
-        elif simplified == 7:
-            indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1]
-        # 9 suit tile
-        elif simplified == 8:
-            indices = [tile_34 - 2, tile_34 - 1, tile_34]
-        # 3-7 tiles tiles
+    isolated = True
+    for tile_index in indices:
+        # we don't want to count our tile as it is in hand already
+        if tile_index == tile_34:
+            isolated &= hand_34[tile_index] - 1 <= 0
         else:
-            indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
+            isolated &= hand_34[tile_index] == 0
 
-    return all([hand_34[x] == 0 for x in indices])
+    return isolated
 
 
 def count_tiles_by_suits(tiles_34):
@@ -233,10 +235,10 @@ def count_tiles_by_suits(tiles_34):
     :return: dict
     """
     suits = [
-        {'count': 0, 'name': 'sou',   'function': is_sou},
-        {'count': 0, 'name': 'man',   'function': is_man},
-        {'count': 0, 'name': 'pin',   'function': is_pin},
-        {'count': 0, 'name': 'honor', 'function': is_honor}
+        {"count": 0, "name": "sou", "function": is_sou},
+        {"count": 0, "name": "man", "function": is_man},
+        {"count": 0, "name": "pin", "function": is_pin},
+        {"count": 0, "name": "honor", "function": is_honor},
     ]
 
     for x in range(0, 34):
@@ -245,7 +247,7 @@ def count_tiles_by_suits(tiles_34):
             continue
 
         for item in suits:
-            if item['function'](x):
-                item['count'] += tile
+            if item["function"](x):
+                item["count"] += tile
 
     return suits

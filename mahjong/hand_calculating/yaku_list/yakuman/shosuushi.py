@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from mahjong.constants import EAST, SOUTH, WEST, NORTH
+from mahjong.constants import EAST, NORTH, SOUTH, WEST
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_pon, is_pair
+from mahjong.utils import is_pair, is_pon
 
 
 class Shousuushii(Yaku):
@@ -15,7 +15,7 @@ class Shousuushii(Yaku):
     def set_attributes(self):
         self.tenhou_id = 50
 
-        self.name = 'Shousuushii'
+        self.name = "Shousuushii"
 
         self.han_open = 13
         self.han_closed = 13

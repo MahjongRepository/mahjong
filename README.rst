@@ -1,10 +1,9 @@
 .. image:: https://github.com/MahjongRepository/mahjong/workflows/Mahjong%20lib/badge.svg
     :target: https://github.com/MahjongRepository/mahjong
 
-Python 2.7 and 3.5+ are supported.
+Python 3.5+ is supported. If you need Python 2 support you can use v1.1.11 version of the library.
 
-We support the Japanese version of mahjong only (riichi mahjong).
-
+The library contains various tools (shanten, agari, hand calculation) for the Japanese version of mahjong (riichi mahjong).
 
 Riichi mahjong hands calculation
 ================================
@@ -35,6 +34,14 @@ Counting renhou as 5 han or yakuman                                             
 Disable or enable Daisharin yakuman                                                         has_daisharin             False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
 Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)                         has_daisharin_other_suits False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable yakuman for dealing into open hands                                       has_sashikomi_yakuman     False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Limit yakuman calculation to 6 (maximum score 192000)                                       limit_to_sextuple_yakuman True
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable extra yakuman for all honors 7 pairs                                      has_daichisei             False
+------------------------------------------------------------------------------------------  ------------------------- ---------------------------
+Disable or enable paarenchan without any yaku                                               paarenchan_needs_yaku     True
 ==========================================================================================  ========================= ===========================
 
 
@@ -164,6 +171,46 @@ Shanten calculation
 
     shanten = Shanten()
     tiles = TilesConverter.string_to_34_array(man='13569', pin='123459', sou='443')
-    result = shanten.calculate_shanten(tiles)
+    result = shanten.calculate_shanten(tiles, [])
 
     print(result)
+
+
+Aotenjou scoring rules
+======================
+
+.. code-block:: python
+
+    tiles = self.TilesConverter.string_to_136_array(honors='11133555666777')
+    win_tile = self.TilesConverter.string_to_136_array(honors='3')[0]
+
+    melds = [
+        Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='1111'), opened=False),
+        Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='5555'), opened=False),
+        Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='6666'), opened=False),
+        Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='7777'), opened=False),
+    ]
+
+    result = hand.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=TilesConverter.string_to_136_array(honors='44447777'),
+        scores_calculator_factory=Aotenjou, config=HandConfig(is_riichi=True, is_tsumo=True, is_ippatsu=True, is_haitei=True, player_wind=EAST, round_wind=EAST))
+
+    print(result.han, result.fu)
+    print(result.cost['main'])
+    print(result.yaku)
+    for fu_item in result.fu_details:
+        print(fu_item)
+
+Output:
+
+::
+
+    95 160
+    50706024009129176059868128215100
+    [Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu kantsu, Tsuu iisou, Suu ankou tanki, Dora 24]
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 20, 'reason': 'base'}
+    {'fu': 2, 'reason': 'pair_wait'}
+    {'fu': 2, 'reason': 'tsumo'}

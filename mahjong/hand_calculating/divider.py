@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
-from functools import reduce
-
 import itertools
+from functools import reduce
 
 from mahjong.constants import HONOR_INDICES
 from mahjong.utils import is_chi, is_pon
 
 
 class HandDivider(object):
-
     def divide_hand(self, tiles_34, melds=None):
         """
         Return a list of possible hands.
@@ -156,8 +154,10 @@ class HandDivider(object):
         count_of_needed_combinations = int(len(indices) / 3)
 
         # simple case, we have count of sets == count of tiles
-        if count_of_needed_combinations == len(valid_combinations) and \
-                reduce(lambda z, y: z + y, valid_combinations) == indices:
+        if (
+            count_of_needed_combinations == len(valid_combinations)
+            and reduce(lambda z, y: z + y, valid_combinations) == indices
+        ):
             return [valid_combinations]
 
         # filter and remove not possible pon sets
@@ -167,8 +167,9 @@ class HandDivider(object):
                 count_of_tiles = 0
                 while count_of_sets > count_of_tiles:
                     count_of_tiles = len([x for x in indices if x == item[0]]) / 3
-                    count_of_sets = len([x for x in valid_combinations
-                                         if x[0] == item[0] and x[1] == item[1] and x[2] == item[2]])
+                    count_of_sets = len(
+                        [x for x in valid_combinations if x[0] == item[0] and x[1] == item[1] and x[2] == item[2]]
+                    )
 
                     if count_of_sets > count_of_tiles:
                         valid_combinations.remove(item)
@@ -180,8 +181,9 @@ class HandDivider(object):
                 # TODO calculate real count of possible sets
                 count_of_possible_sets = 4
                 while count_of_sets > count_of_possible_sets:
-                    count_of_sets = len([x for x in valid_combinations
-                                         if x[0] == item[0] and x[1] == item[1] and x[2] == item[2]])
+                    count_of_sets = len(
+                        [x for x in valid_combinations if x[0] == item[0] and x[1] == item[1] and x[2] == item[2]]
+                    )
 
                     if count_of_sets > count_of_possible_sets:
                         valid_combinations.remove(item)
@@ -195,9 +197,9 @@ class HandDivider(object):
         # [1, 2, 3] [4, 5, 6] [2, 3, 4] [3, 4, 5]
         # and only two of them valid in the same time [1, 2, 3] [4, 5, 6]
 
-        possible_combinations = set(itertools.permutations(
-            range(0, len(valid_combinations)), count_of_needed_combinations
-        ))
+        possible_combinations = set(
+            itertools.permutations(range(0, len(valid_combinations)), count_of_needed_combinations)
+        )
 
         combinations_results = []
         for combination in possible_combinations:

@@ -14,7 +14,7 @@ class Suuankou(Yaku):
     def set_attributes(self):
         self.tenhou_id = 41
 
-        self.name = 'Suu Ankou'
+        self.name = "Suu Ankou"
 
         self.han_open = None
         self.han_closed = 13

@@ -3,14 +3,13 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Dora(Yaku):
-
     def __init__(self, yaku_id=None):
         super(Dora, self).__init__(yaku_id)
 
     def set_attributes(self):
         self.tenhou_id = 52
 
-        self.name = 'Dora'
+        self.name = "Dora"
 
         self.han_open = 1
         self.han_closed = 1
@@ -21,4 +20,4 @@ class Dora(Yaku):
         return True
 
     def __str__(self):
-        return 'Dora {}'.format(self.han_closed)
+        return "Dora {}".format(self.han_closed)

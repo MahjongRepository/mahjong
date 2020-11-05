@@ -10,8 +10,7 @@ class HandResponse(object):
     error = None
     is_open_hand = False
 
-    def __init__(self, cost=None, han=None, fu=None, yaku=None, error=None,
-                 fu_details=None, is_open_hand=False):
+    def __init__(self, cost=None, han=None, fu=None, yaku=None, error=None, fu_details=None, is_open_hand=False):
         """
         :param cost: dict
         :param han: int
@@ -24,10 +23,10 @@ class HandResponse(object):
         self.han = han
         self.fu = fu
         self.error = error
-        self.is_open_hand = is_open_hand    # adding this field for yaku reporting
+        self.is_open_hand = is_open_hand  # adding this field for yaku reporting
 
         if fu_details:
-            self.fu_details = sorted(fu_details, key=lambda x: x['fu'], reverse=True)
+            self.fu_details = sorted(fu_details, key=lambda x: x["fu"], reverse=True)
         else:
             self.fu_details = None
 
@@ -40,4 +39,4 @@ class HandResponse(object):
         if self.error:
             return self.error
         else:
-            return '{} han, {} fu'.format(self.han, self.fu)
+            return "{} han, {} fu".format(self.han, self.fu)

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import warnings
 
 
 class Yaku(object):
@@ -36,3 +37,13 @@ class Yaku(object):
         Set id, name, han related to the yaku
         """
         raise NotImplementedError
+
+    @property
+    def english(self):
+        warnings.warn("Use .name attribute instead of .english attribute", DeprecationWarning)
+        return self.name
+
+    @property
+    def japanese(self):
+        warnings.warn("Use .name attribute instead of .japanese attribute", DeprecationWarning)
+        return self.name

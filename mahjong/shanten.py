@@ -1,10 +1,12 @@
-# -*- coding: utf-8 -*-
 import math
+from typing import List
 
+from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
 from mahjong.utils import find_isolated_tile_indices
 
 
 class Shanten(object):
+    ERROR = -2
     AGARI_STATE = -1
 
     tiles = []
@@ -16,42 +18,78 @@ class Shanten(object):
     number_isolated_tiles = 0
     min_shanten = 0
 
-    def calculate_shanten(self, tiles_34, open_sets_34=None, chiitoitsu=True, kokushi=True):
+    def calculate_shanten(
+        self, tiles_34: List[int], open_sets_34: List[List[int]], use_chiitoitsu: bool = True, use_kokushi: bool = True
+    ) -> int:
         """
-        Return the count of tiles before tempai
-        :param tiles_34: 34 tiles format array
-        :param open_sets_34: array of array of 34 tiles format
-        :param chiitoitsu: bool
-        :param kokushi: bool
-        :return: int
+        Return the minimum shanten for provided hand,
+        it will consider chiitoitsu and kokushi options if possible
+        """
+
+        # we can't have chiitoitsu or kokushi with open hand
+        if open_sets_34:
+            use_chiitoitsu = False
+            use_kokushi = False
+
+        shanten_results = [self.calculate_shanten_for_regular_hand(tiles_34, open_sets_34)]
+        if use_chiitoitsu:
+            shanten_results.append(self.calculate_shanten_for_chiitoitsu_hand(tiles_34))
+        if use_kokushi:
+            shanten_results.append(self.calculate_shanten_for_kokushi_hand(tiles_34))
+
+        return min(shanten_results)
+
+    def calculate_shanten_for_chiitoitsu_hand(self, tiles_34: List[int]) -> int:
+        """
+        Calculate the number of shanten for chiitoitsu hand
+        """
+        pairs = len([x for x in tiles_34 if x >= 2])
+        if pairs == 7:
+            return Shanten.AGARI_STATE
+        return 6 - pairs
+
+    def calculate_shanten_for_kokushi_hand(self, tiles_34: List[int]) -> int:
+        """
+        Calculate the number of shanten for kokushi musou hand
+        """
+        indices = TERMINAL_INDICES + HONOR_INDICES
+
+        completed_terminals = 0
+        for i in indices:
+            completed_terminals += tiles_34[i] >= 2
+
+        terminals = 0
+        for i in indices:
+            terminals += tiles_34[i] != 0
+
+        return 13 - terminals - (completed_terminals and 1 or 0)
+
+    def calculate_shanten_for_regular_hand(self, tiles_34: List[int], open_sets_34: List[List[int]]) -> int:
+        """
+        Calculate the number of shanten for regular hand
         """
         # we will modify them later, so we need to use a copy
         tiles_34 = tiles_34[:]
-
         self._init(tiles_34)
-
         count_of_tiles = sum(tiles_34)
 
         if count_of_tiles > 14:
-            return -2
+            return Shanten.ERROR
 
-        # With open hand we need to remove open sets from hand and replace them with isolated pon sets
+        # with open hand we need to remove open sets from hand and replace them with isolated pon sets
         # it will allow to calculate count of shanten correctly
         if open_sets_34:
             isolated_tiles = find_isolated_tile_indices(tiles_34)
-            for meld in open_sets_34:
+            for meld_tiles in open_sets_34:
                 if not isolated_tiles:
                     break
 
                 isolated_tile = isolated_tiles.pop()
 
-                tiles_34[meld[0]] -= 1
-                tiles_34[meld[1]] -= 1
-                tiles_34[meld[2]] -= 1
+                tiles_34[meld_tiles[0]] -= 1
+                tiles_34[meld_tiles[1]] -= 1
+                tiles_34[meld_tiles[2]] -= 1
                 tiles_34[isolated_tile] = 3
-
-        if not open_sets_34:
-            self.min_shanten = self._scan_chiitoitsu_and_kokushi(chiitoitsu, kokushi)
 
         self._remove_character_tiles(count_of_tiles)
 
@@ -265,11 +303,11 @@ class Shanten(object):
 
     def _increase_isolated_tile(self, k):
         self.tiles[k] -= 1
-        self.number_isolated_tiles |= (1 << k)
+        self.number_isolated_tiles |= 1 << k
 
     def _decrease_isolated_tile(self, k):
         self.tiles[k] += 1
-        self.number_isolated_tiles |= (1 << k)
+        self.number_isolated_tiles |= 1 << k
 
     def _scan_chiitoitsu_and_kokushi(self, chiitoitsu, kokushi):
         shanten = self.min_shanten
@@ -314,8 +352,8 @@ class Shanten(object):
             if self.tiles[i] == 4:
                 self.number_melds += 1
                 self.number_jidahai += 1
-                number |= (1 << (i - 27))
-                isolated |= (1 << (i - 27))
+                number |= 1 << (i - 27)
+                isolated |= 1 << (i - 27)
 
             if self.tiles[i] == 3:
                 self.number_melds += 1
@@ -324,12 +362,12 @@ class Shanten(object):
                 self.number_pairs += 1
 
             if self.tiles[i] == 1:
-                isolated |= (1 << (i - 27))
+                isolated |= 1 << (i - 27)
 
         if self.number_jidahai and (nc % 3) == 2:
             self.number_jidahai -= 1
 
         if isolated:
-            self.number_isolated_tiles |= (1 << 27)
+            self.number_isolated_tiles |= 1 << 27
             if (number | isolated) == number:
-                self.number_characters |= (1 << 27)
+                self.number_characters |= 1 << 27

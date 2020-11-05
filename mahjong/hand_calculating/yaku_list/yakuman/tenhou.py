@@ -13,7 +13,7 @@ class Tenhou(Yaku):
     def set_attributes(self):
         self.tenhou_id = 37
 
-        self.name = 'Tenhou'
+        self.name = "Tenhou"
 
         self.han_open = None
         self.han_closed = 13
