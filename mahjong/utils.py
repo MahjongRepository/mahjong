@@ -195,35 +195,37 @@ def is_tile_strictly_isolated(hand_34, tile_34):
     :param tile_34: int
     :return: bool
     """
-    hand_34 = hand_34[:]
-    # we don't need to count target tile in the hand
-    hand_34[tile_34] -= 1
-    if hand_34[tile_34] < 0:
-        hand_34[tile_34] = 0
 
-    indices = []
     if is_honor(tile_34):
-        return hand_34[tile_34] == 0
+        return hand_34[tile_34] - 1 <= 0
+
+    simplified = simplify(tile_34)
+
+    # 1 suit tile
+    if simplified == 0:
+        indices = [tile_34, tile_34 + 1, tile_34 + 2]
+    # 2 suit tile
+    elif simplified == 1:
+        indices = [tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
+    # 8 suit tile
+    elif simplified == 7:
+        indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1]
+    # 9 suit tile
+    elif simplified == 8:
+        indices = [tile_34 - 2, tile_34 - 1, tile_34]
+    # 3-7 tiles tiles
     else:
-        simplified = simplify(tile_34)
+        indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
 
-        # 1 suit tile
-        if simplified == 0:
-            indices = [tile_34, tile_34 + 1, tile_34 + 2]
-        # 2 suit tile
-        elif simplified == 1:
-            indices = [tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
-        # 8 suit tile
-        elif simplified == 7:
-            indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1]
-        # 9 suit tile
-        elif simplified == 8:
-            indices = [tile_34 - 2, tile_34 - 1, tile_34]
-        # 3-7 tiles tiles
+    isolated = True
+    for tile_index in indices:
+        # we don't want to count our tile as it is in hand already
+        if tile_index == tile_34:
+            isolated &= hand_34[tile_index] - 1 <= 0
         else:
-            indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
+            isolated &= hand_34[tile_index] == 0
 
-    return all([hand_34[x] == 0 for x in indices])
+    return isolated
 
 
 def count_tiles_by_suits(tiles_34):
