@@ -90,6 +90,20 @@ cost_dict_cn = {
     "cost_details": "【得点详情】",
     "yaku_details": "【役种详情】",
     "unavailable": "不可用",
+    "kazoe yakuman": "累计役满",
+    "kazoe sanbaiman": "累计三倍满",
+    "6x yakuman": "6倍役满（是魔鬼吗）",
+    "5x yakuman": "5倍役满（是人吗）",
+    "4x yakuman": "4倍役满（小心败人品）",
+    "3x yakuman": "3倍役满（雀神附体）",
+    "2x yakuman": "2倍役满",
+    "yakuman": "役满",
+    "sanbaiman": "三倍满",
+    "baiman": "倍满",
+    "haneman": "跳满",
+    "mangan": "满贯",
+    "kiriage mangan": "切上满贯",
+    "nagashi mangan": "流局满贯",
 }
 
 err_dict_cn = {

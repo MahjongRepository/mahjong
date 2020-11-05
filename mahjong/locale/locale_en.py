@@ -90,6 +90,20 @@ cost_dict_en = {
     "cost_details": "Point Details",
     "yaku_details": "Yaku Details",
     "unavailable": "Unavailable",
+    "kazoe yakuman": "Counted Yakuman",
+    "kazoe sanbaiman": "Counted Triple Mangan",
+    "6x yakuman": "6 Times Yakuman",
+    "5x yakuman": "5 Times Yakuman",
+    "4x yakuman": "4 Times Yakuman",
+    "3x yakuman": "3 Times Yakuman",
+    "2x yakuman": "2 Times Yakuman",
+    "yakuman": "Yakuman",
+    "sanbaiman": "Triple Mangan",
+    "baiman": "Double Mangan",
+    "haneman": "Haneman",
+    "mangan": "Mangan",
+    "kiriage mangan": "Rounded Mangan",
+    "nagashi mangan": "Nagashi Mangan",
 }
 
 err_dict_en = {

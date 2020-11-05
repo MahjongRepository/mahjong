@@ -9,7 +9,7 @@ calculator = HandCalculator()
 
 
 # useful helper with locale
-def print_hand_result(hand_result, locale='English'):   # 'Chinese' / 'Japanese'
+def print_hand_result(hand_result, locale='Chinese'):   # 'Chinese' / 'Japanese'
     reporter = TextReporter(locale=locale)
     str_dict = reporter.report(hand_result)
 
