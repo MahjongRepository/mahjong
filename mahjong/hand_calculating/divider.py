@@ -1,13 +1,23 @@
 # -*- coding: utf-8 -*-
+import hashlib
 import itertools
+import marshal
 from functools import reduce
+from typing import List
 
 from mahjong.constants import HONOR_INDICES
+from mahjong.meld import Meld
 from mahjong.utils import is_chi, is_pon
 
 
-class HandDivider(object):
-    def divide_hand(self, tiles_34, melds=None):
+class HandDivider:
+    divider_cache = None
+    cache_key = None
+
+    def __init__(self):
+        self.divider_cache = {}
+
+    def divide_hand(self, tiles_34, melds=None, use_cache=False):
         """
         Return a list of possible hands.
         :param tiles_34:
@@ -16,6 +26,11 @@ class HandDivider(object):
         """
         if not melds:
             melds = []
+
+        if use_cache:
+            self.cache_key = self._build_divider_cache_key(tiles_34, melds)
+            if self.cache_key in self.divider_cache:
+                return self.divider_cache[self.cache_key]
 
         closed_hand_tiles_34 = tiles_34[:]
 
@@ -97,7 +112,12 @@ class HandDivider(object):
                 hand.append([index] * 2)
             hands.append(hand)
 
-        return sorted(hands)
+        result = sorted(hands)
+
+        if use_cache:
+            self.divider_cache[self.cache_key] = result
+
+        return result
 
     def find_pairs(self, tiles_34, first_index=0, second_index=33):
         """
@@ -217,3 +237,11 @@ class HandDivider(object):
                     combinations_results.append(results)
 
         return combinations_results
+
+    def clear_cache(self):
+        self.divider_cache = {}
+        self.cache_key = None
+
+    def _build_divider_cache_key(self, tiles_34: List[int], melds: List[Meld]) -> str:
+        prepared_array = tiles_34 + (melds and [x.tiles for x in melds] or [])
+        return hashlib.md5(marshal.dumps(prepared_array)).hexdigest()

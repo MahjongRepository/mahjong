@@ -11,7 +11,7 @@ from mahjong.tile import TilesConverter
 from mahjong.utils import is_aka_dora, is_chi, is_pon, plus_dora
 
 
-class HandCalculator(object):
+class HandCalculator:
     config = None
 
     ERR_NO_WIN_TILE = "NWT"
@@ -25,8 +25,18 @@ class HandCalculator(object):
 
     # more possible errors, like houtei and haitei can't be together, etc
 
+    def __init__(self):
+        self.divider = HandDivider()
+
     def estimate_hand_value(
-        self, tiles, win_tile, melds=None, dora_indicators=None, config=None, scores_calculator_factory=ScoresCalculator
+        self,
+        tiles,
+        win_tile,
+        melds=None,
+        dora_indicators=None,
+        config=None,
+        scores_calculator_factory=ScoresCalculator,
+        use_hand_divider_cache=False,
     ):
         """
         :param tiles: array with 14 tiles in 136-tile format
@@ -34,6 +44,7 @@ class HandCalculator(object):
         :param melds: array with Meld objects
         :param dora_indicators: array of tiles in 136-tile format
         :param config: HandConfig object
+        :param use_hand_divider_cache: could be useful if you are calculating a lot of menchin hands
         :return: HandResponse object
         """
 
@@ -49,7 +60,7 @@ class HandCalculator(object):
         hand_yaku = []
         scores_calculator = scores_calculator_factory()
         tiles_34 = TilesConverter.to_34_array(tiles)
-        divider = HandDivider()
+
         fu_calculator = FuCalculator()
         is_aotenjou = isinstance(scores_calculator, Aotenjou)
 
@@ -93,7 +104,7 @@ class HandCalculator(object):
             self.config.yaku.daisuushi.han_closed = 13
             self.config.yaku.daisuushi.han_open = 13
 
-        hand_options = divider.divide_hand(tiles_34, melds)
+        hand_options = self.divider.divide_hand(tiles_34, melds, use_cache=use_hand_divider_cache)
 
         calculated_hands = []
         for hand in hand_options:
