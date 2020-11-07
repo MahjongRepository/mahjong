@@ -1,7 +1,7 @@
 .. image:: https://github.com/MahjongRepository/mahjong/workflows/Mahjong%20lib/badge.svg
     :target: https://github.com/MahjongRepository/mahjong
 
-Python 3.5+ is supported. If you need Python 2 support you can use v1.1.11 version of the library.
+Python 3.6+ is supported. If you need Python 2 support you can use v1.1.11 version of the library.
 
 The library contains various tools (shanten, agari, hand calculation) for the Japanese version of mahjong (riichi mahjong).
 
