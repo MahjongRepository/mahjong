@@ -2,11 +2,9 @@ import math
 from typing import List
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
-from mahjong.utils import find_isolated_tile_indices
 
 
-class Shanten(object):
-    ERROR = -2
+class Shanten:
     AGARI_STATE = -1
 
     tiles = []
@@ -18,20 +16,13 @@ class Shanten(object):
     number_isolated_tiles = 0
     min_shanten = 0
 
-    def calculate_shanten(
-        self, tiles_34: List[int], open_sets_34: List[List[int]], use_chiitoitsu: bool = True, use_kokushi: bool = True
-    ) -> int:
+    def calculate_shanten(self, tiles_34: List[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
         """
         Return the minimum shanten for provided hand,
-        it will consider chiitoitsu and kokushi options if possible
+        it will consider chiitoitsu and kokushi options if possible.
         """
 
-        # we can't have chiitoitsu or kokushi with open hand
-        if open_sets_34:
-            use_chiitoitsu = False
-            use_kokushi = False
-
-        shanten_results = [self.calculate_shanten_for_regular_hand(tiles_34, open_sets_34)]
+        shanten_results = [self.calculate_shanten_for_regular_hand(tiles_34)]
         if use_chiitoitsu:
             shanten_results.append(self.calculate_shanten_for_chiitoitsu_hand(tiles_34))
         if use_kokushi:
@@ -64,32 +55,17 @@ class Shanten(object):
 
         return 13 - terminals - (completed_terminals and 1 or 0)
 
-    def calculate_shanten_for_regular_hand(self, tiles_34: List[int], open_sets_34: List[List[int]]) -> int:
+    def calculate_shanten_for_regular_hand(self, tiles_34: List[int]) -> int:
         """
         Calculate the number of shanten for regular hand
         """
-        # we will modify them later, so we need to use a copy
+        # we will modify tiles array later, so we need to use a copy
         tiles_34 = tiles_34[:]
+
         self._init(tiles_34)
+
         count_of_tiles = sum(tiles_34)
-
-        if count_of_tiles > 14:
-            return Shanten.ERROR
-
-        # with open hand we need to remove open sets from hand and replace them with isolated pon sets
-        # it will allow to calculate count of shanten correctly
-        if open_sets_34:
-            isolated_tiles = find_isolated_tile_indices(tiles_34)
-            for meld_tiles in open_sets_34:
-                if not isolated_tiles:
-                    break
-
-                isolated_tile = isolated_tiles.pop()
-
-                tiles_34[meld_tiles[0]] -= 1
-                tiles_34[meld_tiles[1]] -= 1
-                tiles_34[meld_tiles[2]] -= 1
-                tiles_34[isolated_tile] = 3
+        assert count_of_tiles <= 14, f"Too many tiles = {count_of_tiles}"
 
         self._remove_character_tiles(count_of_tiles)
 

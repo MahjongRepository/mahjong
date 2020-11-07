@@ -10,46 +10,58 @@ class ShantenTestCase(unittest.TestCase, TestMixin):
         shanten = Shanten()
 
         tiles = self._string_to_34_array(sou="111234567", pin="11", man="567")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), Shanten.AGARI_STATE)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), Shanten.AGARI_STATE)
 
         tiles = self._string_to_34_array(sou="111345677", pin="11", man="567")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), 0)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 0)
 
         tiles = self._string_to_34_array(sou="111345677", pin="15", man="567")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), 1)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 1)
 
         tiles = self._string_to_34_array(sou="11134567", pin="15", man="1578")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), 2)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 2)
 
         tiles = self._string_to_34_array(sou="113456", pin="1358", man="1358")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), 3)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 3)
 
         tiles = self._string_to_34_array(sou="1589", pin="13588", man="1358", honors="1")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), 4)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 4)
 
         tiles = self._string_to_34_array(sou="159", pin="13588", man="1358", honors="12")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), 5)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 5)
 
         tiles = self._string_to_34_array(sou="1589", pin="258", man="1358", honors="123")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), 6)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 6)
 
         tiles = self._string_to_34_array(sou="11123456788999")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), Shanten.AGARI_STATE)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), Shanten.AGARI_STATE)
 
         tiles = self._string_to_34_array(sou="11122245679999")
-        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles, []), 0)
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 0)
 
-        tiles = self._string_to_34_array(sou="4566677", pin="1367", man="8", honors="1")
-        self.assertEqual(shanten.calculate_shanten(tiles, []), 2)
+        tiles = self._string_to_34_array(sou="4566677", pin="1367", man="8", honors="12")
+        self.assertEqual(shanten.calculate_shanten(tiles), 2)
 
-        tiles = self._string_to_34_array(sou="14", pin="3356", man="3678", honors="256")
-        self.assertEqual(shanten.calculate_shanten(tiles, []), 4)
+        tiles = self._string_to_34_array(sou="14", pin="3356", man="3678", honors="2567")
+        self.assertEqual(shanten.calculate_shanten(tiles), 4)
 
-        tiles = self._string_to_34_array(sou="1559", pin="7", man="369", honors="13567")
-        self.assertEqual(shanten.calculate_shanten(tiles, []), 5)
+        tiles = self._string_to_34_array(sou="159", pin="17", man="359", honors="123567")
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 7)
 
-        tiles = self._string_to_34_array(man="1111222235555")
-        self.assertEqual(shanten.calculate_shanten(tiles, []), 1)
+        tiles = self._string_to_34_array(man="1111222235555", honors="1")
+        self.assertEqual(shanten.calculate_shanten(tiles), 0)
+
+    def test_shanten_for_not_completed_hand(self):
+        shanten = Shanten()
+
+        tiles = self._string_to_34_array(sou="111345677", pin="1", man="567")
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 1)
+
+        tiles = self._string_to_34_array(sou="111345677", man="567")
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 1)
+
+        tiles = self._string_to_34_array(sou="111345677", man="56")
+        self.assertEqual(shanten.calculate_shanten_for_regular_hand(tiles), 0)
 
     def test_shanten_number_and_chiitoitsu(self):
         shanten = Shanten()
@@ -112,14 +124,19 @@ class ShantenTestCase(unittest.TestCase, TestMixin):
         shanten = Shanten()
 
         tiles = self._string_to_34_array(sou="44467778", pin="222567")
-        self.assertEqual(shanten.calculate_shanten(tiles, []), Shanten.AGARI_STATE)
+        self.assertEqual(shanten.calculate_shanten(tiles), Shanten.AGARI_STATE)
 
-        melds = [self._string_to_open_34_set(sou="777")]
-        self.assertEqual(shanten.calculate_shanten(tiles, melds), 0)
+        tiles = self._string_to_34_array(sou="44468", pin="222567")
+        self.assertEqual(shanten.calculate_shanten(tiles), 0)
 
-        tiles = self._string_to_34_array(sou="23455567", pin="222", man="345")
-        melds = [
-            self._string_to_open_34_set(man="345"),
-            self._string_to_open_34_set(sou="555"),
-        ]
-        self.assertEqual(shanten.calculate_shanten(tiles, melds), 0)
+        tiles = self._string_to_34_array(sou="68", pin="222567")
+        self.assertEqual(shanten.calculate_shanten(tiles), 0)
+
+        tiles = self._string_to_34_array(sou="68", pin="567")
+        self.assertEqual(shanten.calculate_shanten(tiles), 0)
+
+        tiles = self._string_to_34_array(sou="68")
+        self.assertEqual(shanten.calculate_shanten(tiles), 0)
+
+        tiles = self._string_to_34_array(sou="88")
+        self.assertEqual(shanten.calculate_shanten(tiles), Shanten.AGARI_STATE)
