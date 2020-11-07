@@ -1,37 +1,36 @@
+from typing import List
+
 from mahjong.constants import CHUN, EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, TERMINAL_INDICES
 
 
-def is_aka_dora(tile, aka_enabled):
+def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
     """
-    :param tile: int 136 tiles format
-    :param aka_enabled: depends on table rules
-    :return: boolean
+    Check if tile is aka dora
     """
-
     if not aka_enabled:
         return False
 
-    if tile in [FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU]:
+    if tile_136 in [FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU]:
         return True
 
     return False
 
 
-def plus_dora(tile, dora_indicators):
+def plus_dora(tile_136: int, dora_indicators_136: List[int], add_aka_dora: bool = False) -> int:
     """
-    :param tile: int 136 tiles format
-    :param dora_indicators: array of 136 tiles format
-    :return: int count of dora
+    Calculate the number of dora for the tile
     """
-    tile_index = tile // 4
+    tile_index = tile_136 // 4
     dora_count = 0
 
-    for dora in dora_indicators:
+    if add_aka_dora and is_aka_dora(tile_136, aka_enabled=True):
+        dora_count += 1
+
+    for dora in dora_indicators_136:
         dora //= 4
 
         # sou, pin, man
         if tile_index < EAST:
-
             # with indicator 9, dora will be 1
             if dora == 8:
                 dora = -1
