@@ -1,60 +1,60 @@
 .. image:: https://github.com/MahjongRepository/mahjong/workflows/Mahjong%20lib/badge.svg
     :target: https://github.com/MahjongRepository/mahjong
 
-This document supports multiple languages: `English <https://github.com/MahjongRepository/mahjong/blob/master/README.rst>`_  |  `简体中文 <https://github.com/MahjongRepository/mahjong/blob/master/README_CN.rst>`_
+本文档支持多语言版本：`English <https://github.com/MahjongRepository/mahjong/blob/master/README.rst>`_  |  `简体中文 <https://github.com/MahjongRepository/mahjong/blob/master/README_CN.rst>`_
 
-Python 3.6+ is supported. If you need Python 2 support you can use v1.1.11 version of the library.
+本软件包支持Python 3.6及以上版本。若您需要与Python 2兼容，请使用本软件包v1.1.11版本。
 
-The library contains various tools (shanten, agari, hand calculation) for the Japanese version of mahjong (riichi mahjong).
+本软件包包含日本麻雀（立直麻雀）各种相关计算工具（向听数计算、和牌判定、得点计算等）。
 
-Riichi mahjong hands calculation
+立直麻雀得点计算
 ================================
 
-This library can calculate hand cost (han, fu with details, yaku, and scores) for riichi mahjong (Japanese version).
+本软件包可用于计算立直麻雀手牌详情（番数、符数、役种及得点）。
 
-It supports optional features like:
+包含以下可选功能：
 
 ==========================================================================================  ========================= ===========================
-Feature                                                                                     Keyword parameter         Default value
+功能                                                                                        关键字参数                 默认值
 ==========================================================================================  ========================= ===========================
-Disable or enable open tanyao yaku                                                          has_open_tanyao           False
+有无食断（非门前清断幺九是否成立）                                                             has_open_tanyao           False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Disable or enable aka dora in the hand                                                      has_aka_dora              False
+有无红宝牌                                                                                   has_aka_dora              False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Disable or enable double yakuman (like suuanko tanki)                                       has_double_yakuman        True
+有无双倍役满役种（如四暗刻单骑）                                                               has_double_yakuman        True
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Settings for different kazoe yakuman calculation (it сan be an yakuman or a sanbaiman)      kazoe_limit               HandConstants.KAZOE_LIMITED
+非役满役种累计番数上限设置（累计役满//累计三倍满）                                               kazoe_limit               HandConstants.KAZOE_LIMITED
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Support kiriage mangan                                                                      kiriage                   False
+有无切上满贯                                                                                  kiriage                   False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting)   fu_for_open_pinfu         True
+非门清平和型食和是否+2符（总计30符）                                                           fu_for_open_pinfu         True
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Disable or enable pinfu tsumo                                                               fu_for_pinfu_tsumo        False
+平和自摸是否仍然+2符（总计30符）                                                               fu_for_pinfu_tsumo        False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Counting renhou as 5 han or yakuman                                                         renhou_as_yakuman         False
+人和是否视为役满（还是只有5番）                                                                renhou_as_yakuman         False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Disable or enable Daisharin yakuman                                                         has_daisharin             False
+是否有大车轮役种（门前清22334455667788饼）                                                     has_daisharin             False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)                         has_daisharin_other_suits False
+是否有其他花色的大车轮役种（索：大竹林，万：大数邻）                                             has_daisharin_other_suits False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Disable or enable yakuman for dealing into open hands                                       has_sashikomi_yakuman     False
+放铳开立直是否算役满                                                                          has_sashikomi_yakuman     False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Limit yakuman calculation to 6 (maximum score 192000)                                       limit_to_sextuple_yakuman True
+多倍役满是否上限为6倍 (最高得点192000)                                                        limit_to_sextuple_yakuman True
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Disable or enable extra yakuman for all honors 7 pairs                                      has_daichisei             False
+是否有大七星役满役种（字牌七对子）                                                             has_daichisei             False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Disable or enable paarenchan without any yaku                                               paarenchan_needs_yaku     True
+八连庄是否需要有役才能成立                                                                    paarenchan_needs_yaku     True
 ==========================================================================================  ========================= ===========================
 
 
-The code was validated on tenhou.net phoenix replays in total on **11,120,125 hands**.
+本软件包经过tenhou.net（天凤）**11,120,125 局**凤凰对局测试验证
 
-So, we can say that our hand calculator works the same way that tenhou.net hand calculation.
+因此，我们可以确定所提供的算法与天凤算法一致。
 
-Project repository: https://github.com/MahjongRepository/mahjong
+项目地址: https://github.com/MahjongRepository/mahjong
 
 
-How to install
+如何安装
 --------------
 
 ::
@@ -62,17 +62,17 @@ How to install
    pip install mahjong
 
 
-How to use
+如何使用
 ----------
 
-You can find more examples here: https://github.com/MahjongRepository/mahjong/blob/master/doc/examples.py
+更多示例请参阅: https://github.com/MahjongRepository/mahjong/blob/master/doc/examples.py
 
-Let's calculate how much will cost this hand:
+我们来计算一下下面这手牌的得点:
 
 .. image:: https://user-images.githubusercontent.com/475367/30796350-3d30431a-a204-11e7-99e5-aab144c82f97.png
 
 
-Tanyao hand by ron
+断幺九荣和
 ^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
@@ -96,7 +96,7 @@ Tanyao hand by ron
     for fu_item in result.fu_details:
         print(fu_item)
 
-Output:
+输出:
 
 ::
 
@@ -109,7 +109,7 @@ Output:
     {'fu': 2, 'reason': 'open_pon'}
 
 
-How about tsumo?
+如果是自摸呢?
 ^^^^^^^^^^^^^^^^
 
 .. code-block:: python
@@ -122,7 +122,7 @@ How about tsumo?
     for fu_item in result.fu_details:
         print(fu_item)
 
-Output:
+输出:
 
 ::
 
@@ -136,7 +136,7 @@ Output:
     {'fu': 2, 'reason': 'tsumo'}
 
 
-What if we add open set?
+如果有副露又会如何?
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
@@ -164,7 +164,7 @@ Output:
     {'fu': 2, 'reason': 'open_pon'}
 
 
-Shanten calculation
+向听数计算
 ===================
 
 .. code-block:: python
@@ -178,7 +178,7 @@ Shanten calculation
     print(result)
 
 
-Aotenjou scoring rules
+青天井规则
 ======================
 
 .. code-block:: python
