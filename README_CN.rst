@@ -1,7 +1,7 @@
 .. image:: https://github.com/MahjongRepository/mahjong/workflows/Mahjong%20lib/badge.svg
     :target: https://github.com/MahjongRepository/mahjong
 
-本文档支持多语言版本：`English <https://github.com/MahjongRepository/mahjong/blob/master/README.rst>`_|`简体中文 <https://github.com/MahjongRepository/mahjong/blob/master/README_CN.rst>`_
+本文档支持多语言版本：`English <https://github.com/MahjongRepository/mahjong/blob/master/README.rst>`_  |  `简体中文 <https://github.com/MahjongRepository/mahjong/blob/master/README_CN.rst>`_
 
 本软件包支持Python 3.6及以上版本。若您需要与Python 2兼容，请使用本软件包v1.1.11版本。
 
