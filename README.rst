@@ -1,7 +1,7 @@
 .. image:: https://github.com/MahjongRepository/mahjong/workflows/Mahjong%20lib/badge.svg
     :target: https://github.com/MahjongRepository/mahjong
 
-This document supports multiple languages: `English <https://github.com/MahjongRepository/mahjong/blob/master/README.rst>`_|`简体中文 <https://github.com/MahjongRepository/mahjong/blob/master/README_CN.rst>`_
+This document supports multiple languages: `English <https://github.com/MahjongRepository/mahjong/blob/master/README.rst>`_  |  `简体中文 <https://github.com/MahjongRepository/mahjong/blob/master/README_CN.rst>`_
 
 Python 3.6+ is supported. If you need Python 2 support you can use v1.1.11 version of the library.
 
