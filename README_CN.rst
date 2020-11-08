@@ -1,6 +1,8 @@
 .. image:: https://github.com/MahjongRepository/mahjong/workflows/Mahjong%20lib/badge.svg
     :target: https://github.com/MahjongRepository/mahjong
 
+本文档支持多语言版本：`English <https://github.com/MahjongRepository/mahjong/blob/master/README.rst>`_|`简体中文 <https://github.com/MahjongRepository/mahjong/blob/master/README_CN.rst>`_
+
 本软件包支持Python 3.6及以上版本。若您需要与Python 2兼容，请使用本软件包v1.1.11版本。
 
 本软件包包含日本麻雀（立直麻雀）各种相关计算工具（向听数计算、和牌判定、得点计算等）。
@@ -35,7 +37,7 @@
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
 是否有其他花色的大车轮役种（索：大竹林，万：大数邻）                                             has_daisharin_other_suits False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
-Disable or enable yakuman for dealing into open hands                                       has_sashikomi_yakuman     False
+放铳开立直是否算役满                                                                          has_sashikomi_yakuman     False
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
 多倍役满是否上限为6倍 (最高得点192000)                                                        limit_to_sextuple_yakuman True
 ------------------------------------------------------------------------------------------  ------------------------- ---------------------------
