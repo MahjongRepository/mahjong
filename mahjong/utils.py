@@ -124,6 +124,10 @@ def is_honor(tile):
     return tile >= 27
 
 
+def is_sangenpai(tile_34: int) -> bool:
+    return tile_34 >= 31
+
+
 def is_terminal(tile):
     """
     :param tile: 34 tile format
