@@ -2,7 +2,7 @@
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
 from mahjong.meld import Meld
-from mahjong.utils import contains_terminals, is_pair, is_pon, simplify
+from mahjong.utils import contains_terminals, is_pair, is_pon_or_kan, simplify
 
 
 class FuCalculator(object):
@@ -41,7 +41,6 @@ class FuCalculator(object):
         :param hand:
         :param win_tile: 136 tile format
         :param win_group: one set where win tile exists
-        :param is_tsumo:
         :param config: HandConfig object
         :param valued_tiles: dragons, player wind, round wind
         :param melds: opened sets
@@ -62,7 +61,7 @@ class FuCalculator(object):
             return [{"fu": 25, "reason": FuCalculator.BASE}], 25
 
         pair = [x for x in hand if is_pair(x)][0]
-        pon_sets = [x for x in hand if is_pon(x)]
+        pon_sets = [x for x in hand if is_pon_or_kan(x)]
 
         copied_opened_melds = [x.tiles_34 for x in melds if x.type == Meld.CHI]
         closed_chi_sets = []
@@ -108,7 +107,7 @@ class FuCalculator(object):
             open_meld = open_meld and open_meld[0] or None
 
             set_was_open = open_meld and open_meld.opened or False
-            is_kan = (open_meld and (open_meld.type == Meld.KAN or open_meld.type == Meld.SHOUMINKAN)) or False
+            is_kan_set = (open_meld and (open_meld.type == Meld.KAN or open_meld.type == Meld.SHOUMINKAN)) or False
             is_honor = set_item[0] in TERMINAL_INDICES + HONOR_INDICES
 
             # we win by ron on the third pon tile, our pon will be count as open
@@ -116,7 +115,7 @@ class FuCalculator(object):
                 set_was_open = True
 
             if is_honor:
-                if is_kan:
+                if is_kan_set:
                     if set_was_open:
                         fu_details.append({"fu": 16, "reason": FuCalculator.OPEN_TERMINAL_KAN})
                     else:
@@ -127,7 +126,7 @@ class FuCalculator(object):
                     else:
                         fu_details.append({"fu": 8, "reason": FuCalculator.CLOSED_TERMINAL_PON})
             else:
-                if is_kan:
+                if is_kan_set:
                     if set_was_open:
                         fu_details.append({"fu": 8, "reason": FuCalculator.OPEN_KAN})
                     else:

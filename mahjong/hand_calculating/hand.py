@@ -6,9 +6,8 @@ from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.hand_calculating.hand_response import HandResponse
 from mahjong.hand_calculating.scores import Aotenjou, ScoresCalculator
-from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
-from mahjong.utils import is_aka_dora, is_chi, is_pon, plus_dora
+from mahjong.utils import is_aka_dora, is_chi, is_kan, is_pon, plus_dora
 
 
 class HandCalculator:
@@ -123,6 +122,7 @@ class HandCalculator:
                 is_pinfu = len(fu_details) == 1 and not is_chiitoitsu and not is_open_hand
 
                 pon_sets = [x for x in hand if is_pon(x)]
+                kan_sets = [x for x in hand if is_kan(x)]
                 chi_sets = [x for x in hand if is_chi(x)]
 
                 if self.config.is_tsumo:
@@ -249,7 +249,7 @@ class HandCalculator:
                         hand_yaku.append(self.config.yaku.sanshoku)
 
                 # small optimization, try to detect yaku with pon required sets only if we have pon sets in hand
-                if len(pon_sets):
+                if len(pon_sets) or len(kan_sets):
                     if self.config.yaku.toitoi.is_condition_met(hand):
                         hand_yaku.append(self.config.yaku.toitoi)
 
@@ -357,11 +357,6 @@ class HandCalculator:
                 # we don't need to add dora to yakuman
                 if not yakuman_list:
                     tiles_for_dora = tiles[:]
-
-                    # we had to search for dora in kan fourth tiles as well
-                    for meld in melds:
-                        if meld.type == Meld.KAN or meld.type == Meld.SHOUMINKAN:
-                            tiles_for_dora.append(meld.tiles[3])
 
                     count_of_dora = 0
                     count_of_aka_dora = 0

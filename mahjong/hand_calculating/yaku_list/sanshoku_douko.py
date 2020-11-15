@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_man, is_pin, is_pon, is_sou, simplify
+from mahjong.utils import is_man, is_pin, is_pon_or_kan, is_sou, simplify
 
 
 class SanshokuDoukou(Yaku):
@@ -22,7 +22,7 @@ class SanshokuDoukou(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand, *args):
-        pon_sets = [i for i in hand if is_pon(i)]
+        pon_sets = [i for i in hand if is_pon_or_kan(i)]
         if len(pon_sets) < 3:
             return False
 

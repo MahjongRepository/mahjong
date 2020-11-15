@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from mahjong.constants import EAST, NORTH, SOUTH, WEST
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_pair, is_pon
+from mahjong.utils import is_pair, is_pon_or_kan
 
 
 class Shousuushii(Yaku):
@@ -23,7 +23,7 @@ class Shousuushii(Yaku):
         self.is_yakuman = True
 
     def is_condition_met(self, hand, *args):
-        pon_sets = [x for x in hand if is_pon(x)]
+        pon_sets = [x for x in hand if is_pon_or_kan(x)]
         if len(pon_sets) < 3:
             return False
 
@@ -31,7 +31,7 @@ class Shousuushii(Yaku):
         wind_pair = 0
         winds = [EAST, SOUTH, WEST, NORTH]
         for item in hand:
-            if is_pon(item) and item[0] in winds:
+            if is_pon_or_kan(item) and item[0] in winds:
                 count_of_wind_sets += 1
 
             if is_pair(item) and item[0] in winds:

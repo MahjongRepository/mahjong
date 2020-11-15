@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_chi, is_pon
+from mahjong.utils import is_chi, is_pon_or_kan
 
 
 class Sanankou(Yaku):
@@ -35,7 +35,7 @@ class Sanankou(Yaku):
         open_sets = [x.tiles_34 for x in melds if x.opened]
 
         chi_sets = [x for x in hand if (is_chi(x) and win_tile in x and x not in open_sets)]
-        pon_sets = [x for x in hand if is_pon(x)]
+        pon_sets = [x for x in hand if is_pon_or_kan(x)]
 
         closed_pon_sets = []
         for item in pon_sets:

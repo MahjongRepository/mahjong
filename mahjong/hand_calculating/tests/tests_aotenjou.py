@@ -68,7 +68,7 @@ class AotenjouCalculationTestCase(unittest.TestCase, TestMixin):
 
         # monster hand for fun
 
-        tiles = self._string_to_136_array(honors="11133555666777")
+        tiles = self._string_to_136_array(honors="111133555566667777")
         win_tile = self._string_to_136_tile(honors="3")
 
         melds = [
@@ -257,7 +257,7 @@ class AotenjouCalculationTestCase(unittest.TestCase, TestMixin):
     def test_suukantsu(self):
         hand = HandCalculator()
 
-        tiles = self._string_to_136_array(man="111", sou="444", pin="999", honors="33322")
+        tiles = self._string_to_136_array(man="1111", sou="4444", pin="9999", honors="333322")
         win_tile = self._string_to_136_tile(honors="2")
 
         melds = [

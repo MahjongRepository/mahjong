@@ -36,7 +36,7 @@ class Meld(object):
 
     @property
     def tiles_34(self):
-        return [x // 4 for x in self.tiles[:3]]
+        return [x // 4 for x in self.tiles]
 
     @property
     def CHANKAN(self):

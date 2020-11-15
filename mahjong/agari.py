@@ -26,6 +26,9 @@ class Agari(object):
                 tiles[meld[0]] -= 1
                 tiles[meld[1]] -= 1
                 tiles[meld[2]] -= 1
+                # kan
+                if len(meld) > 3:
+                    tiles[meld[3]] -= 1
                 tiles[isolated_tile] = 3
 
         j = (

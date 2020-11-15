@@ -36,7 +36,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
 
         # we had a bug with multiple dora indicators and honor sets
         # this test is working with this situation
-        tiles = self._string_to_136_array(pin="22244456799", honors="444")
+        tiles = self._string_to_136_array(pin="22244456799", honors="4444")
         win_tile = self._string_to_136_tile(pin="2")
         dora_indicators = [self._string_to_136_tile(sou="3"), self._string_to_136_tile(honors="3")]
         melds = [self._make_meld(Meld.KAN, honors="4444")]
@@ -106,7 +106,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.fu, 40)
         self.assertEqual(result.han, 1)
 
-        tiles = self._string_to_136_array(man="11156677899", honors="777")
+        tiles = self._string_to_136_array(man="11156677899", honors="7777")
         win_tile = self._string_to_136_tile(man="7")
         melds = [
             self._make_meld(Meld.KAN, honors="7777"),
@@ -205,7 +205,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.fu, 30)
         self.assertEqual(result.han, 3)
 
-        tiles = self._string_to_136_array(pin="567", sou="333444555", honors="77")
+        tiles = self._string_to_136_array(pin="567", sou="3334444555", honors="77")
         win_tile = self._string_to_136_tile(sou="3")
         melds = [self._make_meld(Meld.KAN, is_open=False, sou="4444")]
         result = hand.estimate_hand_value(tiles, win_tile, melds=melds, config=self._make_hand_config(is_riichi=True))
@@ -624,7 +624,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
     def test_is_sankantsu(self):
         hand = HandCalculator()
 
-        tiles = self._string_to_136_array(sou="111333", man="123", pin="44666")
+        tiles = self._string_to_136_array(sou="11113333", man="123", pin="446666")
 
         melds = [
             self._make_meld(Meld.KAN, sou="1111"),
@@ -1120,7 +1120,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(len(result.yaku), 2)
 
         # dora in kan
-        tiles = self._string_to_136_array(man="777", pin="34577", sou="123345")
+        tiles = self._string_to_136_array(man="7777", pin="34577", sou="123345")
         win_tile = self._string_to_136_tile(pin="7")
         melds = [self._make_meld(Meld.KAN, is_open=False, man="7777")]
 
@@ -1156,7 +1156,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
     def test_kazoe_settings(self):
         hand = HandCalculator()
 
-        tiles = self._string_to_136_array(man="22244466677788")
+        tiles = self._string_to_136_array(man="222244466677788")
         win_tile = self._string_to_136_tile(man="7")
         melds = [
             self._make_meld(Meld.KAN, man="2222", is_open=False),

@@ -84,6 +84,14 @@ def is_pon(item):
     return item[0] == item[1] == item[2]
 
 
+def is_kan(item: List[int]) -> bool:
+    return len(item) == 4
+
+
+def is_pon_or_kan(item: List[int]) -> bool:
+    return is_pon(item) or is_kan(item)
+
+
 def is_pair(item):
     """
     :param item: array of tile 34 indices

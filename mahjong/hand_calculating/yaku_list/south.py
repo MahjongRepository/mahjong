@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from mahjong.constants import SOUTH
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_pon
+from mahjong.utils import is_pon_or_kan
 
 
 class YakuhaiSouth(Yaku):
@@ -23,10 +23,10 @@ class YakuhaiSouth(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand, player_wind, round_wind, *args):
-        if len([x for x in hand if is_pon(x) and x[0] == player_wind]) == 1 and player_wind == SOUTH:
+        if len([x for x in hand if is_pon_or_kan(x) and x[0] == player_wind]) == 1 and player_wind == SOUTH:
             return True
 
-        if len([x for x in hand if is_pon(x) and x[0] == round_wind]) == 1 and round_wind == SOUTH:
+        if len([x for x in hand if is_pon_or_kan(x) and x[0] == round_wind]) == 1 and round_wind == SOUTH:
             return True
 
         return False

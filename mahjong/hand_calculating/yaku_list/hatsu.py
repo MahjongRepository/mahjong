@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from mahjong.constants import HATSU
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_pon
+from mahjong.utils import is_pon_or_kan
 
 
 class Hatsu(Yaku):
@@ -23,4 +23,4 @@ class Hatsu(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand, *args):
-        return len([x for x in hand if is_pon(x) and x[0] == HATSU]) == 1
+        return len([x for x in hand if is_pon_or_kan(x) and x[0] == HATSU]) == 1

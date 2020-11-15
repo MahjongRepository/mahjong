@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_pon
+from mahjong.utils import is_pon_or_kan
 
 
 class Suuankou(Yaku):
@@ -26,10 +26,10 @@ class Suuankou(Yaku):
         closed_hand = []
         for item in hand:
             # if we do the ron on syanpon wait our pon will be consider as open
-            if is_pon(item) and win_tile in item and not is_tsumo:
+            if is_pon_or_kan(item) and win_tile in item and not is_tsumo:
                 continue
 
             closed_hand.append(item)
 
-        count_of_pon = len([i for i in closed_hand if is_pon(i)])
+        count_of_pon = len([i for i in closed_hand if is_pon_or_kan(i)])
         return count_of_pon == 4

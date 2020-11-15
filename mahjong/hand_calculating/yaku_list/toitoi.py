@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_pon
+from mahjong.utils import is_pon_or_kan
 
 
 class Toitoi(Yaku):
@@ -21,5 +21,5 @@ class Toitoi(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand, *args):
-        count_of_pon = len([i for i in hand if is_pon(i)])
+        count_of_pon = len([i for i in hand if is_pon_or_kan(i)])
         return count_of_pon == 4

@@ -260,7 +260,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
             self.assertEqual(result.han, 26)
             self.assertEqual(len(result.yaku), 1)
 
-        tiles = self._string_to_136_array(pin="11123456678999")
+        tiles = self._string_to_136_array(pin="111234566789999")
         win_tile = self._string_to_136_tile(pin="3")
         melds = [self._make_meld(Meld.KAN, pin="9999", is_open=False)]
 
@@ -281,7 +281,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         ]
         self.assertTrue(self.config.suukantsu.is_condition_met(None, melds))
 
-        tiles = self._string_to_136_array(sou="111333", man="222", pin="44555")
+        tiles = self._string_to_136_array(sou="11113333", man="2222", pin="445555")
         win_tile = self._string_to_136_tile(pin="4")
         melds = [
             self._make_meld(Meld.KAN, sou="1111"),

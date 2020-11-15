@@ -1,9 +1,8 @@
 from mahjong.hand_calculating.hand import HandCalculator
-from mahjong.meld import Meld
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
-from mahjong.shanten import Shanten
-from mahjong.tile import TilesConverter
 from mahjong.locale.text_reporter import TextReporter
+from mahjong.tile import TilesConverter
+
 calculator = HandCalculator()
 
 
