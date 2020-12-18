@@ -108,11 +108,25 @@ cost_dict_en = {
 
 err_dict_en = {
     "Error": "Error",
-    "NWT": "Win tile not in the hand",
+    "NWT": "Win tile not in hand",
     "OHR": "Riichi can't be declared with open hand",
-    "OHD": "Daburu Riichi can't be declared with open hand",
-    "OHI": "Ippatsu can't be declared with open hand",
-    "IWR": "Ippatsu can't be declared without riichi",
+    "OHD": "Double Riichi can't be declared with open hand",
+    "IWR": "One Shot can't be declared without Riichi",
     "HNW": "Hand is not winning",
-    "NHY": "There is no yaku in the hand",
+    "NHY": "No yaku in hand",
+    "CWT": "Robbing A Kan can't be declared with self draw",
+    "RWT": "Dead Wall Draw can't be declared without self draw",
+    "HAT": "Win By Last Draw can't be declared without self draw",
+    "HOT": "Win By Last Discard can't be declared with self draw",  # A dead wall tile is not considered as "the last tile"
+    "HAR": "Win By Last Draw can't be declared with Dead Wall Draw",
+    "HOC": "Win By Last Discard can't be declared with Robbing A Kan",  # You can't make a meld in the last turn
+    "TND": "Hand Of Heaven can't be declared by non-dealer",
+    "TWT": "Hand Of Heaven can't be declared without self draw",
+    "TWM": "Hand Of Heaven can't be declared with meld",
+    "CAD": "Hand Of Earth can't be declared by dealer",
+    "CWT": "Hand Of Earth can't be declared without self draw",
+    "CWM": "Hand Of Earth can't be declared with meld",
+    "RAD": "Hand Of Man can't be declared by dealer",
+    "RWT": "Hand Of Man can't be declared with self draw",
+    "RWM": "Hand Of Man can't be declared with meld"
 }

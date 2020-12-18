@@ -16,13 +16,26 @@ class HandCalculator:
     ERR_NO_WIN_TILE = "NWT"
     ERR_OPEN_HAND_RIICHI = "OHR"
     ERR_OPEN_HAND_DOUBLE_RIICHI = "OHD"
-    ERR_OPEN_HAND_IPPATSU = "OHI"
     ERR_IPPATSU_WITHOUT_RIICHI = "IWR"
     ERR_HAND_NOT_WIN = "HNW"
     ERR_NO_HAND_YAKU = "NHY"
-    ERR_RENHOU_IMPOSSIBLE_AGARI = "RIA"
+    ERR_CHANKAN_WITH_TSUMO = "CWT"
+    ERR_RINSHAN_WITHOUT_TSUMO = "RWT"
+    ERR_HAITEI_WITHOUT_TSUMO = "HAT"
+    ERR_HOUTEI_WITH_TSUMO = "HOT"
+    ERR_HAITEI_WITH_RINSHAN = "HAR"
+    ERR_HOUTEI_WITH_CHANKAN = "HOC"
+    ERR_TENHOU_NOT_AS_DEALER = "TND"
+    ERR_TENHOU_WITHOUT_TSUMO = "TWT"
+    ERR_TENHOU_WITH_MELD = "TWM"
+    ERR_CHIIHOU_AS_DEALER = "CAD"
+    ERR_CHIIHOU_WITHOUT_TSUMO = "CWT"
+    ERR_CHIIHOU_WITH_MELD = "CWM"
+    ERR_RENHOU_AS_DEALER = "RAD"
+    ERR_RENHOU_WITH_TSUMO = "RWT"
+    ERR_RENHOU_WITH_MELD = "RWM"
 
-    # more possible errors, like houtei and haitei can't be together, etc
+    # more possible errors, like tenhou and haitei can't be together (so complicated :<)
 
     def __init__(self):
         self.divider = HandDivider()
@@ -84,14 +97,56 @@ class HandCalculator:
         if self.config.is_daburu_riichi and is_open_hand:
             return HandResponse(error=HandCalculator.ERR_OPEN_HAND_DOUBLE_RIICHI)
 
-        if self.config.is_ippatsu and is_open_hand:
-            return HandResponse(error=HandCalculator.ERR_OPEN_HAND_IPPATSU)
-
         if self.config.is_ippatsu and not self.config.is_riichi and not self.config.is_daburu_riichi:
             return HandResponse(error=HandCalculator.ERR_IPPATSU_WITHOUT_RIICHI)
 
-        if self.config.is_tsumo and self.config.is_renhou:
-            return HandResponse(error=HandCalculator.ERR_RENHOU_IMPOSSIBLE_AGARI)
+        if self.config.is_chankan and self.config.is_tsumo:
+            return HandResponse(error=HandCalculator.ERR_CHANKAN_WITH_TSUMO)
+
+        if self.config.is_rinshan and not self.config.is_tsumo:
+            return HandResponse(error=HandCalculator.ERR_RINSHAN_WITHOUT_TSUMO)
+
+        if self.config.is_haitei and not self.config.is_tsumo:
+            return HandResponse(error=HandCalculator.ERR_HAITEI_WITHOUT_TSUMO)
+
+        if self.config.is_houtei and self.config.is_tsumo:
+            return HandResponse(error=HandCalculator.ERR_HOUTEI_WITH_TSUMO)
+
+        if self.config.is_haitei and self.config.is_rinshan:
+            return HandResponse(error=HandCalculator.ERR_HAITEI_WITH_RINSHAN)
+
+        if self.config.is_houtei and self.config.is_chankan:
+            return HandResponse(error=HandCalculator.ERR_HOUTEI_WITH_CHANKAN)
+
+        # raise error only when player wind is defined (and is *not* EAST)
+        if self.config.is_tenhou and self.config.player_wind and not self.config.is_dealer:
+            return HandResponse(error=HandCalculator.ERR_TENHOU_NOT_AS_DEALER)
+
+        if self.config.is_tenhou and not self.config.is_tsumo:
+            return HandResponse(error=HandCalculator.ERR_TENHOU_WITHOUT_TSUMO)
+
+        if self.config.is_tenhou and melds:
+            return HandResponse(error=HandCalculator.ERR_TENHOU_WITH_MELD)
+
+        # raise error only when player wind is defined (and is EAST)
+        if self.config.is_chiihou and self.config.player_wind and self.config.is_dealer:
+            return HandResponse(error=HandCalculator.ERR_CHIIHOU_AS_DEALER)
+
+        if self.config.is_chiihou and not self.config.is_tsumo:
+            return HandResponse(error=HandCalculator.ERR_CHIIHOU_WITHOUT_TSUMO)
+
+        if self.config.is_chiihou and melds:
+            return HandResponse(error=HandCalculator.ERR_CHIIHOU_WITH_MELD)
+
+        # raise error only when player wind is defined (and is EAST)
+        if self.config.is_renhou and self.config.player_wind and self.config.is_dealer:
+            return HandResponse(error=HandCalculator.ERR_RENHOU_AS_DEALER)
+
+        if self.config.is_renhou and self.config.is_tsumo:
+            return HandResponse(error=HandCalculator.ERR_RENHOU_WITH_TSUMO)
+
+        if self.config.is_renhou and melds:
+            return HandResponse(error=HandCalculator.ERR_RENHOU_WITH_MELD)
 
         if not agari.is_agari(tiles_34, all_melds):
             return HandResponse(error=HandCalculator.ERR_HAND_NOT_WIN)

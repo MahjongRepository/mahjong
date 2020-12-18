@@ -111,8 +111,22 @@ err_dict_jp = {
     "NWT": "待ち牌は手にありません",
     "OHR": "副露ではリーチできません",
     "OHD": "副露ではダブルリーチできません",
-    "OHI": "副露では一発できません",
     "IWR": "リーチなくては一発できません",
     "HNW": "手はあがりません",
     "NHY": "役はありません",
+    "CWT": "Chankan can't be declared with tsumo",  # Thanks for helping me translate them :>
+    "RWT": "Rinshan Kaihou can't be declared without tsumo",
+    "HAT": "Haitei Raoyue can't be declared without tsumo",
+    "HOT": "Houtei Raoyui can't be declared with tsumo",
+    "HAR": "Haitei Raoyue can't be declared with Rinshan Kaihou",  # A dead wall tile is not considered as "the last tile"
+    "HOC": "Houtei Raoyui can't be declared with Chankan",  # You can't make a meld in the last turn
+    "TND": "Tenhou can't be declared by non-dealer",
+    "TWT": "Tenhou can't be declared without tsumo",
+    "TWM": "Tenhou can't be declared with meld",
+    "CAD": "Chiihou can't be declared by dealer",
+    "CWT": "Chiihou can't be declared without tsumo",
+    "CWM": "Chiihou can't be declared with meld",
+    "RAD": "Renhou can't be declared by dealer",
+    "RWT": "Renhou can't be declared with tsumo",
+    "RWM": "Renhou can't be declared with meld"
 }
