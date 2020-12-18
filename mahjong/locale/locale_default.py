@@ -114,8 +114,8 @@ err_dict_default = {
     "IWR": "Ippatsu can't be declared without Riichi",
     "HNW": "Hand is not winning",
     "NHY": "No yaku in hand",
-    "CWT": "Chankan can't be declared with tsumo",
-    "RWT": "Rinshan Kaihou can't be declared without tsumo",
+    "CKT": "Chankan can't be declared with tsumo",
+    "RST": "Rinshan Kaihou can't be declared without tsumo",
     "HAT": "Haitei Raoyue can't be declared without tsumo",
     "HOT": "Houtei Raoyui can't be declared with tsumo",
     "HAR": "Haitei Raoyue can't be declared with Rinshan Kaihou",  # A dead wall tile is not considered as "the last tile"

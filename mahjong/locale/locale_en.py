@@ -114,8 +114,8 @@ err_dict_en = {
     "IWR": "One Shot can't be declared without Riichi",
     "HNW": "Hand is not winning",
     "NHY": "No yaku in hand",
-    "CWT": "Robbing A Kan can't be declared with self draw",
-    "RWT": "Dead Wall Draw can't be declared without self draw",
+    "CKT": "Robbing A Kan can't be declared with self draw",
+    "RST": "Dead Wall Draw can't be declared without self draw",
     "HAT": "Win By Last Draw can't be declared without self draw",
     "HOT": "Win By Last Discard can't be declared with self draw",  # A dead wall tile is not considered as "the last tile"
     "HAR": "Win By Last Draw can't be declared with Dead Wall Draw",

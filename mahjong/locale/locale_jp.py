@@ -114,8 +114,8 @@ err_dict_jp = {
     "IWR": "リーチなくては一発できません",
     "HNW": "手はあがりません",
     "NHY": "役はありません",
-    "CWT": "Chankan can't be declared with tsumo",  # Thanks for helping me translate them :>
-    "RWT": "Rinshan Kaihou can't be declared without tsumo",
+    "CKT": "Chankan can't be declared with tsumo",  # Thanks for helping me translate them :>
+    "RST": "Rinshan Kaihou can't be declared without tsumo",
     "HAT": "Haitei Raoyue can't be declared without tsumo",
     "HOT": "Houtei Raoyui can't be declared with tsumo",
     "HAR": "Haitei Raoyue can't be declared with Rinshan Kaihou",  # A dead wall tile is not considered as "the last tile"
