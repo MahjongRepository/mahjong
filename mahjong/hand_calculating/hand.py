@@ -13,27 +13,27 @@ from mahjong.utils import is_aka_dora, is_chi, is_kan, is_pon, plus_dora
 class HandCalculator:
     config = None
 
-    ERR_NO_WIN_TILE = "NWT"
-    ERR_OPEN_HAND_RIICHI = "OHR"
-    ERR_OPEN_HAND_DOUBLE_RIICHI = "OHD"
-    ERR_IPPATSU_WITHOUT_RIICHI = "IWR"
-    ERR_HAND_NOT_WIN = "HNW"
-    ERR_NO_HAND_YAKU = "NHY"
-    ERR_CHANKAN_WITH_TSUMO = "CKT"
-    ERR_RINSHAN_WITHOUT_TSUMO = "RST"
-    ERR_HAITEI_WITHOUT_TSUMO = "HAT"
-    ERR_HOUTEI_WITH_TSUMO = "HOT"
-    ERR_HAITEI_WITH_RINSHAN = "HAR"
-    ERR_HOUTEI_WITH_CHANKAN = "HOC"
-    ERR_TENHOU_NOT_AS_DEALER = "TND"
-    ERR_TENHOU_WITHOUT_TSUMO = "TWT"
-    ERR_TENHOU_WITH_MELD = "TWM"
-    ERR_CHIIHOU_AS_DEALER = "CAD"
-    ERR_CHIIHOU_WITHOUT_TSUMO = "CWT"
-    ERR_CHIIHOU_WITH_MELD = "CWM"
-    ERR_RENHOU_AS_DEALER = "RAD"
-    ERR_RENHOU_WITH_TSUMO = "RWT"
-    ERR_RENHOU_WITH_MELD = "RWM"
+    ERR_NO_WINNING_TILE = "winning_tile_not_in_hand"
+    ERR_OPEN_HAND_RIICHI = "open_hand_riichi_not_allowed"
+    ERR_OPEN_HAND_DOUBLE_RIICHI = "open_hand_daburi_not_allowed"
+    ERR_IPPATSU_WITHOUT_RIICHI = "ippatsu_without_riichi_not_allowed"
+    ERR_HAND_NOT_WINNING = "hand_not_winning"
+    ERR_NO_YAKU = "no_yaku"
+    ERR_CHANKAN_WITH_TSUMO = "chankan_with_tsumo_not_allowed"
+    ERR_RINSHAN_WITHOUT_TSUMO = "rinshan_without_tsumo_not_allowed"
+    ERR_HAITEI_WITHOUT_TSUMO = "haitei_without_tsumo_not_allowed"
+    ERR_HOUTEI_WITH_TSUMO = "houtei_with_tsumo_not_allowed"
+    ERR_HAITEI_WITH_RINSHAN = "haitei_with_rinshan_not_allowed"
+    ERR_HOUTEI_WITH_CHANKAN = "houtei_with_chankan_not_allowed"
+    ERR_TENHOU_NOT_AS_DEALER = "tenhou_not_as_dealer_not_allowed"
+    ERR_TENHOU_WITHOUT_TSUMO = "tenhou_without_tsumo_not_allowed"
+    ERR_TENHOU_WITH_MELD = "tenhou_with_meld_not_allowed"
+    ERR_CHIIHOU_AS_DEALER = "chiihou_as_dealer_not_allowed"
+    ERR_CHIIHOU_WITHOUT_TSUMO = "chiihou_without_tsumo_not_allowed"
+    ERR_CHIIHOU_WITH_MELD = "chiihou_with_meld_not_allowed"
+    ERR_RENHOU_AS_DEALER = "renhou_as_dealer_not_allowed"
+    ERR_RENHOU_WITH_TSUMO = "renhou_with_tsumo_not_allowed"
+    ERR_RENHOU_WITH_MELD = "renhou_with_meld_not_allowed"
 
     # more possible errors, like tenhou and haitei can't be together (so complicated :<)
 
@@ -89,7 +89,7 @@ class HandCalculator:
             return HandResponse(cost, han, fu, hand_yaku)
 
         if win_tile not in tiles:
-            return HandResponse(error=HandCalculator.ERR_NO_WIN_TILE)
+            return HandResponse(error=HandCalculator.ERR_NO_WINNING_TILE)
 
         if self.config.is_riichi and is_open_hand:
             return HandResponse(error=HandCalculator.ERR_OPEN_HAND_RIICHI)
@@ -149,7 +149,7 @@ class HandCalculator:
             return HandResponse(error=HandCalculator.ERR_RENHOU_WITH_MELD)
 
         if not agari.is_agari(tiles_34, all_melds):
-            return HandResponse(error=HandCalculator.ERR_HAND_NOT_WIN)
+            return HandResponse(error=HandCalculator.ERR_HAND_NOT_WINNING)
 
         if not self.config.options.has_double_yakuman:
             self.config.yaku.daburu_kokushi.han_closed = 13
@@ -406,7 +406,7 @@ class HandCalculator:
                         han += item.han_closed
 
                 if han == 0:
-                    error = HandCalculator.ERR_NO_HAND_YAKU
+                    error = HandCalculator.ERR_NO_YAKU
                     cost = None
 
                 # we don't need to add dora to yakuman

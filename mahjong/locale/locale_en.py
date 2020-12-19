@@ -108,25 +108,27 @@ cost_dict_en = {
 
 err_dict_en = {
     "Error": "Error",
-    "NWT": "Win tile not in hand",
-    "OHR": "Riichi can't be declared with open hand",
-    "OHD": "Double Riichi can't be declared with open hand",
-    "IWR": "One Shot can't be declared without Riichi",
-    "HNW": "Hand is not winning",
-    "NHY": "No yaku in hand",
-    "CKT": "Robbing A Kan can't be declared with self draw",
-    "RST": "Dead Wall Draw can't be declared without self draw",
-    "HAT": "Win By Last Draw can't be declared without self draw",
-    "HOT": "Win By Last Discard can't be declared with self draw",  # A dead wall tile is not considered as "the last tile"
-    "HAR": "Win By Last Draw can't be declared with Dead Wall Draw",
-    "HOC": "Win By Last Discard can't be declared with Robbing A Kan",  # You can't make a meld in the last turn
-    "TND": "Hand Of Heaven can't be declared by non-dealer",
-    "TWT": "Hand Of Heaven can't be declared without self draw",
-    "TWM": "Hand Of Heaven can't be declared with meld",
-    "CAD": "Hand Of Earth can't be declared by dealer",
-    "CWT": "Hand Of Earth can't be declared without self draw",
-    "CWM": "Hand Of Earth can't be declared with meld",
-    "RAD": "Hand Of Man can't be declared by dealer",
-    "RWT": "Hand Of Man can't be declared with self draw",
-    "RWM": "Hand Of Man can't be declared with meld"
+    "winning_tile_not_in_hand": "Winning tile is not in hand",
+    "open_hand_riichi_not_allowed": "Riichi can't be declared with open hand",
+    "open_hand_daburi_not_allowed": "Double Riichi can't be declared with open hand",
+    "ippatsu_without_riichi_not_allowed": "One Shot can't be declared without Riichi",
+    "hand_not_winning": "Hand is not winning",
+    "no_yaku": "There's no yaku in hand",
+    "chankan_with_tsumo_not_allowed": "Robbing A Kan can't be declared with self draw",
+    "rinshan_without_tsumo_not_allowed": "Dead Wall Draw can't be declared without self draw",
+    "haitei_without_tsumo_not_allowed": "Win By Last Draw can't be declared without self draw",
+    "houtei_with_tsumo_not_allowed": "Win By Last Discard can't be declared with self draw",
+    # A dead wall tile is not considered as "the last tile"
+    "haitei_with_rinshan_not_allowed": "Win By Last Draw can't be declared with Dead Wall Draw",
+    # You can't make a meld in the last turn
+    "houtei_with_chankan_not_allowed": "Win By Last Discard can't be declared with Robbing A Kan",
+    "tenhou_not_as_dealer_not_allowed": "Hand Of Heaven can't be declared by non-dealer",
+    "tenhou_without_tsumo_not_allowed": "Hand Of Heaven can't be declared without self draw",
+    "tenhou_with_meld_not_allowed": "Hand Of Heaven can't be declared with meld",
+    "chiihou_as_dealer_not_allowed": "Hand Of Earth can't be declared by dealer",
+    "chiihou_without_tsumo_not_allowed": "Hand Of Earth can't be declared without self draw",
+    "chiihou_with_meld_not_allowed": "Hand Of Earth can't be declared with meld",
+    "renhou_as_dealer_not_allowed": "Hand Of Man can't be declared by dealer",
+    "renhou_with_tsumo_not_allowed": "Hand Of Man can't be declared with self draw",
+    "renhou_with_meld_not_allowed": "Hand Of Man can't be declared with meld",
 }

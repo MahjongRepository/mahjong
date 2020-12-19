@@ -108,25 +108,25 @@ cost_dict_cn = {
 
 err_dict_cn = {
     "Error": "错误",
-    "NWT": "和牌不在手牌中",
-    "OHR": "非门前清不能立直",
-    "OHD": "非门前清不能两立直",
-    "IWR": "宣告一发必须立直",
-    "HNW": "手牌不满足和牌条件",
-    "NHY": "无役不能和牌",
-    "CKT": "枪杠不能自摸",
-    "RST": "岭上开花必须自摸",
-    "HAT": "海底摸月必须自摸",
-    "HOT": "河底捞鱼不能自摸",
-    "HAR": "海底摸月与岭上开花不能共存",  # 岭上牌不是海底牌
-    "HOC": "河底捞鱼与枪杠不能共存",  # 最后一巡不能鸣牌
-    "TND": "闲家不能宣告天和",
-    "TWT": "天和必须自摸",
-    "TWM": "天和不能副露",
-    "CAD": "庄家不能宣告地和",
-    "CWT": "地和必须自摸",
-    "CWM": "地和不能副露",
-    "RAD": "庄家不能宣告人和",
-    "RWT": "人和必须荣和",
-    "RWM": "人和不能副露"
+    "winning_tile_not_in_hand": "和牌不在手牌中",
+    "open_hand_riichi_not_allowed": "非门前清不能立直",
+    "open_hand_daburi_not_allowed": "非门前清不能两立直",
+    "ippatsu_without_riichi_not_allowed": "宣告一发必须立直",
+    "hand_not_winning": "手牌不满足和牌条件",
+    "no_yaku": "无役不能和牌",
+    "chankan_with_tsumo_not_allowed": "枪杠不能自摸",
+    "rinshan_without_tsumo_not_allowed": "岭上开花必须自摸",
+    "haitei_without_tsumo_not_allowed": "海底摸月必须自摸",
+    "houtei_with_tsumo_not_allowed": "河底捞鱼不能自摸",
+    "haitei_with_rinshan_not_allowed": "海底摸月与岭上开花不能共存",  # 岭上牌不是海底牌
+    "houtei_with_chankan_not_allowed": "河底捞鱼与枪杠不能共存",  # 最后一巡不能鸣牌
+    "tenhou_not_as_dealer_not_allowed": "闲家不能宣告天和",
+    "tenhou_without_tsumo_not_allowed": "天和必须自摸",
+    "tenhou_with_meld_not_allowed": "天和不能副露",
+    "chiihou_as_dealer_not_allowed": "庄家不能宣告地和",
+    "chiihou_without_tsumo_not_allowed": "地和必须自摸",
+    "chiihou_with_meld_not_allowed": "地和不能副露",
+    "renhou_as_dealer_not_allowed": "庄家不能宣告人和",
+    "renhou_with_tsumo_not_allowed": "人和必须荣和",
+    "renhou_with_meld_not_allowed": "人和不能副露",
 }
