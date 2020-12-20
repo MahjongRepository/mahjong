@@ -15,7 +15,7 @@ class HandCalculator:
 
     ERR_NO_WINNING_TILE = "winning_tile_not_in_hand"
     ERR_OPEN_HAND_RIICHI = "open_hand_riichi_not_allowed"
-    ERR_OPEN_HAND_DOUBLE_RIICHI = "open_hand_daburi_not_allowed"
+    ERR_OPEN_HAND_DABURI = "open_hand_daburi_not_allowed"
     ERR_IPPATSU_WITHOUT_RIICHI = "ippatsu_without_riichi_not_allowed"
     ERR_HAND_NOT_WINNING = "hand_not_winning"
     ERR_NO_YAKU = "no_yaku"
@@ -91,11 +91,11 @@ class HandCalculator:
         if win_tile not in tiles:
             return HandResponse(error=HandCalculator.ERR_NO_WINNING_TILE)
 
-        if self.config.is_riichi and is_open_hand:
+        if self.config.is_riichi and not self.config.is_daburu_riichi and is_open_hand:
             return HandResponse(error=HandCalculator.ERR_OPEN_HAND_RIICHI)
 
         if self.config.is_daburu_riichi and is_open_hand:
-            return HandResponse(error=HandCalculator.ERR_OPEN_HAND_DOUBLE_RIICHI)
+            return HandResponse(error=HandCalculator.ERR_OPEN_HAND_DABURI)
 
         if self.config.is_ippatsu and not self.config.is_riichi and not self.config.is_daburu_riichi:
             return HandResponse(error=HandCalculator.ERR_IPPATSU_WITHOUT_RIICHI)
