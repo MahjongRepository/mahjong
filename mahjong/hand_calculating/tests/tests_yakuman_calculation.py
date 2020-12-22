@@ -19,10 +19,10 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou="123444", man="234456", pin="66")
         win_tile = self._string_to_136_tile(sou="4")
 
-        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_tenhou=True))
+        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_tsumo=True, is_tenhou=True))
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
-        self.assertEqual(result.fu, 40)
+        self.assertEqual(result.fu, 30)
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_chiihou(self):
@@ -31,10 +31,12 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou="123444", man="234456", pin="66")
         win_tile = self._string_to_136_tile(sou="4")
 
-        result = hand.estimate_hand_value(tiles, win_tile, config=self._make_hand_config(is_chiihou=True))
+        result = hand.estimate_hand_value(
+            tiles, win_tile, config=self._make_hand_config(is_tsumo=True, is_chiihou=True)
+        )
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)
-        self.assertEqual(result.fu, 40)
+        self.assertEqual(result.fu, 30)
         self.assertEqual(len(result.yaku), 1)
 
     def test_is_daisangen(self):
@@ -344,12 +346,31 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
     def test_sextuple_yakuman(self):
         hand = HandCalculator()
 
+        # 1112223334445z 5z tenhou & tsuisou & daisushi & suuankou tanki
         tiles = self._string_to_136_array(honors="11122233344455")
         win_tile = self._string_to_136_tile(honors="5")
 
-        config = self._make_hand_config(is_tenhou=True, disable_double_yakuman=False)
+        config = self._make_hand_config(is_tsumo=True, is_tenhou=True, disable_double_yakuman=False)
 
         result = hand.estimate_hand_value(tiles, win_tile, config=config)
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 78)
+        self.assertEqual(result.cost["main"], 96000)
+        self.assertEqual(result.cost["additional"], 48000)
+
+        # 5z -11-z -22-z -33-z -44-z 5z suukantsu & tsuisou & daisushi & suuankou tanki
+        tiles = self._string_to_136_array(honors="111122223333444455")
+        win_tile = self._string_to_136_tile(honors="5")
+
+        config = self._make_hand_config(disable_double_yakuman=False)
+        melds = [
+            self._make_meld(Meld.KAN, is_open=False, honors="1111"),
+            self._make_meld(Meld.KAN, is_open=False, honors="2222"),
+            self._make_meld(Meld.KAN, is_open=False, honors="3333"),
+            self._make_meld(Meld.KAN, is_open=False, honors="4444"),
+        ]
+
+        result = hand.estimate_hand_value(tiles, win_tile, melds=melds, config=config)
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 78)
         self.assertEqual(result.cost["main"], 192000)
@@ -479,7 +500,7 @@ class YakumanCalculationTestCase(unittest.TestCase, TestMixin):
         win_tile = self._string_to_136_tile(sou="4")
 
         result = hand.estimate_hand_value(
-            tiles, win_tile, config=self._make_hand_config(is_renhou=True, renhou_as_yakuman=True)
+            tiles, win_tile, config=self._make_hand_config(is_tsumo=False, is_renhou=True, renhou_as_yakuman=True)
         )
         self.assertEqual(result.error, None)
         self.assertEqual(result.han, 13)

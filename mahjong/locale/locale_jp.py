@@ -108,11 +108,27 @@ cost_dict_jp = {
 
 err_dict_jp = {
     "Error": "誤り",
-    "NWT": "待ち牌は手にありません",
-    "OHR": "副露ではリーチできません",
-    "OHD": "副露ではダブルリーチできません",
-    "OHI": "副露では一発できません",
-    "IWR": "リーチなくては一発できません",
-    "HNW": "手はあがりません",
-    "NHY": "役はありません",
+    "winning_tile_not_in_hand": "待ち牌は手にありません",
+    "open_hand_riichi_not_allowed": "副露ではリーチできません",
+    "open_hand_daburi_not_allowed": "副露ではダブルリーチできません",
+    "ippatsu_without_riichi_not_allowed": "リーチなくては一発できません",
+    "hand_not_winning": "手はあがりません",
+    "no_yaku": "役はありません",
+    "chankan_with_tsumo_not_allowed": "Chankan can't be declared with tsumo",  # Thanks for helping me translate them :>
+    "rinshan_without_tsumo_not_allowed": "Rinshan Kaihou can't be declared without tsumo",
+    "haitei_without_tsumo_not_allowed": "Haitei Raoyue can't be declared without tsumo",
+    "houtei_with_tsumo_not_allowed": "Houtei Raoyui can't be declared with tsumo",
+    # A dead wall tile is not considered as "the last tile"
+    "haitei_with_rinshan_not_allowed": "Haitei Raoyue can't be declared with Rinshan Kaihou",
+    # You can't make a meld in the last turn
+    "houtei_with_chankan_not_allowed": "Houtei Raoyui can't be declared with Chankan",
+    "tenhou_not_as_dealer_not_allowed": "Tenhou can't be declared by non-dealer",
+    "tenhou_without_tsumo_not_allowed": "Tenhou can't be declared without tsumo",
+    "tenhou_with_meld_not_allowed": "Tenhou can't be declared with meld",
+    "chiihou_as_dealer_not_allowed": "Chiihou can't be declared by dealer",
+    "chiihou_without_tsumo_not_allowed": "Chiihou can't be declared without tsumo",
+    "chiihou_with_meld_not_allowed": "Chiihou can't be declared with meld",
+    "renhou_as_dealer_not_allowed": "Renhou can't be declared by dealer",
+    "renhou_with_tsumo_not_allowed": "Renhou can't be declared with tsumo",
+    "renhou_with_meld_not_allowed": "Renhou can't be declared with meld",
 }
