@@ -18,6 +18,7 @@ class HandCalculator:
     ERR_OPEN_HAND_DABURI = "open_hand_daburi_not_allowed"
     ERR_IPPATSU_WITHOUT_RIICHI = "ippatsu_without_riichi_not_allowed"
     ERR_HAND_NOT_WINNING = "hand_not_winning"
+    ERR_HAND_NOT_CORRECT = "hand_not_correct"
     ERR_NO_YAKU = "no_yaku"
     ERR_CHANKAN_WITH_TSUMO = "chankan_with_tsumo_not_allowed"
     ERR_RINSHAN_WITHOUT_TSUMO = "rinshan_without_tsumo_not_allowed"
@@ -527,6 +528,9 @@ class HandCalculator:
             calculated_hands.append(
                 {"cost": cost, "error": None, "hand_yaku": hand_yaku, "han": han, "fu": fu, "fu_details": []}
             )
+
+        if not calculated_hands:
+            return HandResponse(error=HandCalculator.ERR_HAND_NOT_CORRECT)
 
         # let's use cost for most expensive hand
         calculated_hands = sorted(calculated_hands, key=lambda x: (x["han"], x["fu"]), reverse=True)

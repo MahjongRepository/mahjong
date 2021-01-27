@@ -113,6 +113,7 @@ err_dict_default = {
     "open_hand_daburi_not_allowed": "Daburu Riichi can't be declared with open hand",
     "ippatsu_without_riichi_not_allowed": "Ippatsu can't be declared without Riichi",
     "hand_not_winning": "Hand is not winning",
+    "hand_not_correct": "Input tiles don't looks like correct hand",
     "no_yaku": "There's no yaku in hand",
     "chankan_with_tsumo_not_allowed": "Chankan can't be declared with tsumo",
     "rinshan_without_tsumo_not_allowed": "Rinshan Kaihou can't be declared without tsumo",

@@ -113,6 +113,7 @@ err_dict_en = {
     "open_hand_daburi_not_allowed": "Double Riichi can't be declared with open hand",
     "ippatsu_without_riichi_not_allowed": "One Shot can't be declared without Riichi",
     "hand_not_winning": "Hand is not winning",
+    "hand_not_correct": "Input tiles don't looks like correct hand",
     "no_yaku": "There's no yaku in hand",
     "chankan_with_tsumo_not_allowed": "Robbing A Kan can't be declared with self draw",
     "rinshan_without_tsumo_not_allowed": "Dead Wall Draw can't be declared without self draw",
