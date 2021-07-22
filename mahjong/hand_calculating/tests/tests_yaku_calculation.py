@@ -417,6 +417,15 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.fu, 25)
         self.assertEqual(len(result.yaku), 1)
 
+    def test_is_chitoitsu_hand_and_identical_pairs(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(sou="11335555", man="1133", pin="11")
+        win_tile = self._string_to_136_tile(pin="1")
+
+        result = hand.estimate_hand_value(tiles, win_tile)
+        self.assertEqual(result.error, HandCalculator.ERR_HAND_NOT_WINNING)
+
     def test_is_tanyao(self):
         hand = HandCalculator()
 
