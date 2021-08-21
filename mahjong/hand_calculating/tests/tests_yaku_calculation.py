@@ -622,6 +622,19 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result.fu, 40)
         self.assertEqual(len(result.yaku), 1)
 
+    def test_is_sanshoku_douko_and_kan_in_hand(self):
+        hand = HandCalculator()
+
+        tiles = self._string_to_136_array(sou="2222", man="222", pin="22245699")
+        melds = [self._make_meld(Meld.KAN, sou="2222")]
+        win_tile = self._string_to_136_tile(pin="9")
+
+        result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
+        self.assertEqual(result.error, None)
+        self.assertEqual(result.han, 2)
+        self.assertEqual(result.fu, 40)
+        self.assertEqual(len(result.yaku), 1)
+
     def test_is_toitoi(self):
         hand = HandCalculator()
 
