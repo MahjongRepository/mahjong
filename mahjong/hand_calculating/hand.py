@@ -532,8 +532,15 @@ class HandCalculator:
         if not calculated_hands:
             return HandResponse(error=HandCalculator.ERR_HAND_NOT_CORRECT)
 
-        # let's use cost for most expensive hand
+        # find most expensive hand
         calculated_hands = sorted(calculated_hands, key=lambda x: (x["han"], x["fu"]), reverse=True)
+        # correctly sort expensive hands by fu details
+        calculated_hands = [
+            x
+            for x in calculated_hands
+            if x["han"] == calculated_hands[0]["han"] and x["fu"] == calculated_hands[0]["fu"]
+        ]
+        calculated_hands = sorted(calculated_hands, key=lambda x: sum([y["fu"] for y in x["fu_details"]]), reverse=True)
         calculated_hand = calculated_hands[0]
 
         cost = calculated_hand["cost"]
