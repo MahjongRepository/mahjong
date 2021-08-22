@@ -395,7 +395,7 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertTrue({"fu": 16, "reason": FuCalculator.OPEN_TERMINAL_KAN} in fu_details)
         self.assertEqual(fu, 40)
 
-    def test_incorrect_fu_calculation_test_case(self):
+    def test_incorrect_fu_calculation_test_case_1(self):
         calculator = HandCalculator()
 
         tiles = self._string_to_136_array(sou="11123456777", man="234")
@@ -407,3 +407,13 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertTrue({"fu": 20, "reason": FuCalculator.BASE} in result.fu_details)
         self.assertTrue({"fu": 8, "reason": FuCalculator.CLOSED_TERMINAL_PON} in result.fu_details)
         self.assertTrue({"fu": 2, "reason": FuCalculator.TSUMO} in result.fu_details)
+
+    def test_incorrect_fu_calculation_test_case_2(self):
+        calculator = HandCalculator()
+
+        tiles = self._string_to_136_array(pin="555", man="11112233444")
+        melds = [self._make_meld(Meld.CHI, man="123")]
+        win_tile = self._string_to_136_tile(man="1")
+
+        result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(is_houtei=True))
+        self.assertEqual(result.fu, 30)

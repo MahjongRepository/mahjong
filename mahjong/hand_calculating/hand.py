@@ -554,15 +554,16 @@ class HandCalculator:
 
     def _find_win_groups(self, win_tile, hand, opened_melds):
         win_tile_34 = (win_tile or 0) // 4
+        _opened_melds = opened_melds[:]
 
         # to detect win groups
         # we had to use only closed sets
         closed_set_items = []
         for x in hand:
-            if x not in opened_melds:
+            if x not in _opened_melds:
                 closed_set_items.append(x)
             else:
-                opened_melds.remove(x)
+                _opened_melds.remove(x)
 
         # for forms like 45666 and ron on 6
         # we can assume that ron was on 456 form and on 66 form
