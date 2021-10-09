@@ -3,24 +3,19 @@ from mahjong.meld import Meld
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.shanten import Shanten
 from mahjong.tile import TilesConverter
-from mahjong.locale.text_reporter import TextReporter
 
 calculator = HandCalculator()
 
 
-# useful helper with locale
-def print_hand_result(hand_result, locale='Chinese'):   # 'Chinese' / 'Japanese'
-    reporter = TextReporter(locale=locale)
-    str_dict = reporter.report(hand_result)
-
-    if hand_result.error:
-        print(str_dict['error'])
-    else:
-        print(str_dict['fu_details'])
-        print(str_dict['yaku'])
-        print(str_dict['cost'])
-
+# useful helper
+def print_hand_result(hand_result):
+    print(hand_result.han, hand_result.fu)
+    print(hand_result.cost['main'])
+    print(hand_result.yaku)
+    for fu_item in hand_result.fu_details:
+        print(fu_item)
     print('')
+
 
 ####################################################################
 # Tanyao hand by ron                                               #
@@ -84,7 +79,7 @@ dora_indicators = [
     TilesConverter.string_to_136_array(man='1')[0],
 ]
 
-config = HandConfig(is_riichi=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_SANBAIMAN))
+config = HandConfig(is_riichi=True, options=OptionalRules(kazoe=HandConfig.KAZOE_SANBAIMAN))
 result = calculator.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
 print_hand_result(result)
 
