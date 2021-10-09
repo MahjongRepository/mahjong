@@ -14,7 +14,7 @@ setup(
         "mahjong.hand_calculating.yaku_list",
         "mahjong.hand_calculating.yaku_list.yakuman",
     ],
-    version="1.2.0.dev6",
+    version="1.2.0.dev7",
     description="Mahjong hands calculation",
     long_description=long_description,
     long_description_content_type="text/markdown",
