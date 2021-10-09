@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from mahjong.agari import Agari
 from mahjong.constants import CHUN, EAST, HAKU, HATSU, NORTH, SOUTH, WEST
 from mahjong.hand_calculating.divider import HandDivider

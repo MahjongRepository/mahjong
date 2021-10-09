@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.meld import Meld
 

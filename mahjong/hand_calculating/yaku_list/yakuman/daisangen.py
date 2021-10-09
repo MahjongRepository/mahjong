@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from mahjong.constants import CHUN, HAKU, HATSU
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_pon_or_kan

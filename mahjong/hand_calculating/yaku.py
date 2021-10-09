@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 import warnings
 
 
-class Yaku(object):
+class Yaku:
     yaku_id = None
     tenhou_id = None
     name = None

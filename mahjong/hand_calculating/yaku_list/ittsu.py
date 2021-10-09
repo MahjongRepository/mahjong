@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_chi, is_man, is_pin, is_sou, simplify
 

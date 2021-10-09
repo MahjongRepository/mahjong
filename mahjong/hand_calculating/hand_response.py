@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-
-
-class HandResponse(object):
+class HandResponse:
     cost = None
     han = None
     fu = None

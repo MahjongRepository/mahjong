@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from functools import reduce
 
 from mahjong.constants import HATSU

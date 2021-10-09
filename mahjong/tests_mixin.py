@@ -4,7 +4,7 @@ from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 
 
-class TestMixin(object):
+class TestMixin:
     def _string_to_open_34_set(self, sou="", pin="", man="", honors=""):
         open_set = TilesConverter.string_to_136_array(sou=sou, pin=pin, man=man, honors=honors)
         open_set[0] //= 4

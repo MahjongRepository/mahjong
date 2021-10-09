@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 import warnings
 
 from mahjong.tile import TilesConverter
 
 
-class Meld(object):
+class Meld:
     CHI = "chi"
     PON = "pon"
     KAN = "kan"

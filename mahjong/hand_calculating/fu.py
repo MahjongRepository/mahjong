@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
 from mahjong.meld import Meld
 from mahjong.utils import contains_terminals, is_pair, is_pon_or_kan, simplify
 
 
-class FuCalculator(object):
+class FuCalculator:
     BASE = "base"
     PENCHAN = "penchan"
     KANCHAN = "kanchan"

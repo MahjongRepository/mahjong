@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU
 
 
-class Tile(object):
+class Tile:
     value = None
     is_tsumogiri = None
 
@@ -11,7 +10,7 @@ class Tile(object):
         self.is_tsumogiri = is_tsumogiri
 
 
-class TilesConverter(object):
+class TilesConverter:
     @staticmethod
     def to_one_line_string(tiles, print_aka_dora=False):
         """

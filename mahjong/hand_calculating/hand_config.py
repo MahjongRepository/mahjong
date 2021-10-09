@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 from mahjong.constants import EAST
 from mahjong.hand_calculating.yaku_config import YakuConfig
 
 
-class HandConstants(object):
+class HandConstants:
     # Hands over 26+ han don't count as double yakuman
     KAZOE_LIMITED = 0
     # Hands over 13+ is a sanbaiman
@@ -12,7 +11,7 @@ class HandConstants(object):
     KAZOE_NO_LIMIT = 2
 
 
-class OptionalRules(object):
+class OptionalRules:
     """
     All the supported optional rules
     """

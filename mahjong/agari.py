@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 from mahjong.utils import find_isolated_tile_indices
 
 
-class Agari(object):
+class Agari:
     def is_agari(self, tiles_34, open_sets_34=None):
         """
         Determine was it win or not

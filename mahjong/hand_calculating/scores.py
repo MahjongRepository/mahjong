@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 from mahjong.hand_calculating.hand_config import HandConfig
 
 
-class ScoresCalculator(object):
+class ScoresCalculator:
     def calculate_scores(self, han, fu, config, is_yakuman=False):
         """
         Calculate how much scores cost a hand with given han and fu

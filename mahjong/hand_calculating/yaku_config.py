@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from itertools import count
 
 from mahjong.hand_calculating.yaku_list import (
@@ -67,7 +66,7 @@ from mahjong.hand_calculating.yaku_list.yakuman import (
 )
 
 
-class YakuConfig(object):
+class YakuConfig:
     def __init__(self):
         id = count(0)
 

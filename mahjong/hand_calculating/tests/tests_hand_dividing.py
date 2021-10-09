@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import unittest
 
 from mahjong.hand_calculating.divider import HandDivider

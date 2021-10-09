@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from mahjong.constants import NORTH
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_pon_or_kan

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import unittest
 
 from mahjong.constants import EAST, FIVE_RED_SOU, NORTH, SOUTH, WEST
