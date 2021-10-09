@@ -3,32 +3,38 @@ Releases History
 
 1.1.11 (2020-10-28)
 -------------------
+
 - Speed up performance a bit
 - Add support for Python 3.9
 
 1.1.10 (2020-05-11)
 -------------------
+
 - Add japanese yaku names
 - Fix an issue with not correct ryuuiisou detection
-- Allow to print aka dora in `TilesConverter.to_one_line_string()` method ("0" symbol)
+- Allow to print aka dora in TilesConverter.to\_one\_line\_string()
+  method ("0" symbol)
 - Add support for Python 3.8
 
 1.1.9 (2019-07-29)
 ------------------
--  Add `TilesConverter.one_line_string_to_136_array()` and `TilesConverter.one_line_string_to_34_array()` methods
+
+- Add TilesConverter.one\_line\_string\_to\_136\_array() and TilesConverter.one\_line\_string\_to\_34\_array() methods
 
 1.1.8 (2019-07-25)
 ------------------
+
 - Fix an issue with incorrect daburu chuuren poutou calculations
 - Allow passing '0' as a red five to tiles converter
 
-
 1.1.7 (2019-04-09)
 ------------------
+
 - Introduce OptionalRules hand configuration
 
 1.1.6 (2019-02-10)
 ------------------
+
 - Fix a bug when hatsu yaku was added to the hand instead of chun
 - Fix a bug where kokushi wasn't combined with tenhou/renhou/chihou
 - Add English names to all yaku
@@ -43,12 +49,13 @@ Releases History
 1.1.4 (2018-08-31)
 ------------------
 
-- Add is_terminal() and is_dora_indicator_for_terminal() functions to the utils.py
+- Add is\_terminal() and is\_dora\_indicator\_for\_terminal()
+  functions to the utils.py
 
 1.1.3 (2018-08-22)
 ------------------
 
-- Add is_tile_strictly_isolated() function to the utils.py
+- Add is\_tile\_strictly\_isolated() function to the utils.py
 
 1.1.2 (2017-10-14)
 ------------------
@@ -77,12 +84,10 @@ Additional fixes:
 - Add file with usage examples
 - Minor project refactoring
 
-
 1.0.5 (2017-09-25)
 ------------------
 
 - Improve installation script
-
 
 1.0.4 (2017-09-25)
 ------------------
@@ -90,7 +95,7 @@ Additional fixes:
 Bug fixes:
 
 - Fix refactoring regressions with kan sets and dora calculations
-- Fix regression with sankantsu\suukantsu and called chankan
+- Fix regression with sankantsusuukantsu and called chankan
 - Closed kan can't be used in chuuren poutou
 - Fix yaku ids (some of them had incorrect numbers)
 
@@ -101,9 +106,9 @@ Features:
 - Add travis build status
 - Add usage examples to the readme
 
-
 1.0.3 (2017-09-23)
 ------------------
 
-- Hand calculation code was moved from mahjong bot package https://github.com/MahjongRepository/tenhou-python-bot
+- Hand calculation code was moved from mahjong bot package
+  <https://github.com/MahjongRepository/tenhou-python-bot>
 - This library can calculate hand cost (han, fu with details, yaku and scores) for riichi mahjong (japanese version)
