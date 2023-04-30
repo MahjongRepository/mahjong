@@ -82,7 +82,7 @@ class FuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertTrue({"fu": 2, "reason": FuCalculator.HAND_WITHOUT_FU} in fu_details)
         self.assertEqual(fu, 30)
 
-    def test_open_hand_withou_additional_fu(self):
+    def test_open_hand_without_additional_fu(self):
         fu_calculator = FuCalculator()
 
         tiles = self._string_to_136_array(sou="23478", man="234567", pin="22")
