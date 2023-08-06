@@ -39,10 +39,10 @@ class Yaku:
 
     @property
     def english(self):
-        warnings.warn("Use .name attribute instead of .english attribute", DeprecationWarning)
+        warnings.warn("Use .name attribute instead of .english attribute", DeprecationWarning, stacklevel=2)
         return self.name
 
     @property
     def japanese(self):
-        warnings.warn("Use .name attribute instead of .japanese attribute", DeprecationWarning)
+        warnings.warn("Use .name attribute instead of .japanese attribute", DeprecationWarning, stacklevel=2)
         return self.name
