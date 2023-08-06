@@ -39,5 +39,5 @@ class Meld:
 
     @property
     def CHANKAN(self):
-        warnings.warn("Use .SHOUMINKAN attribute instead of .CHANKAN attribute", DeprecationWarning)
+        warnings.warn("Use .SHOUMINKAN attribute instead of .CHANKAN attribute", DeprecationWarning, stacklevel=2)
         return self.SHOUMINKAN
