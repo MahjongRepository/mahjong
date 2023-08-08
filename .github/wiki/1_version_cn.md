@@ -36,7 +36,7 @@
 ## 如何使用
 
 更多示例请参阅:
-<https://github.com/MahjongRepository/mahjong/blob/master/doc/examples.py>
+<https://github.com/MahjongRepository/mahjong/blob/1x_version/doc/examples.py>
 
 我们来计算一下下面这手牌的得点:
 

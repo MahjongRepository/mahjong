@@ -34,7 +34,7 @@ tenhou.net hand calculation.
 
 ## How to use
 
-You can find more examples here: [https://github.com/MahjongRepository/mahjong/blob/master/doc/examples.py](example.py)
+You can find more examples here: [https://github.com/MahjongRepository/mahjong/blob/1x_version/doc/examples.py](example.py)
 
 Let's calculate how much will cost this hand:
 
