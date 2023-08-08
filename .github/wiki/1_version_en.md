@@ -87,15 +87,16 @@ for fu_item in result.fu_details:
 ```
 
 Output:
-
-    4 40
-    4000 2000
-    [Menzen Tsumo, Tanyao, San Ankou]
-    {'fu': 20, 'reason': 'base'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 2, 'reason': 'tsumo'}
+```
+4 40
+4000 2000
+[Menzen Tsumo, Tanyao, San Ankou]
+{'fu': 20, 'reason': 'base'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 2, 'reason': 'tsumo'}
+```
 
 ### What if we add open set?
 
