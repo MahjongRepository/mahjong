@@ -12,6 +12,6 @@ tests:
 
 check: format lint tests
 
-build_package:
-	rm -r build dist mahjong.egg-info
+build-package:
+	rm -rf build dist mahjong.egg-info
 	python3 setup.py sdist bdist_wheel
