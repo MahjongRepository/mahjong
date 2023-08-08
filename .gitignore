@@ -1,6 +1,8 @@
 .idea
+*.iml
+.vscode
+
 env
-env38
 
 *.py[cod]
 __pycache__
@@ -10,7 +12,6 @@ MANIFEST
 dist/*
 mahjong.egg-info
 build/*
-
 
 temp
 temp.py
