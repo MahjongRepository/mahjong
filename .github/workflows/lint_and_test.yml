@@ -2,9 +2,13 @@ name: Linters and tests
 
 on:
   push:
-    branches: [ master ]
+    paths:
+      - mahjong/**
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   lint:

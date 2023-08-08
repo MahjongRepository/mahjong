@@ -16,4 +16,3 @@ jobs:
       USER_EMAIL: ${{ secrets.GH_EMAIL }}
     secrets:
       USER_TOKEN: ${{ secrets.GH_ACTION_TOKEN }}
-
