@@ -1,4 +1,4 @@
-[![Mahjong lib](https://github.com/MahjongRepository/mahjong/actions/workflows/pythonapp.yml/badge.svg)](https://github.com/MahjongRepository/mahjong/actions/workflows/pythonapp.yml)
+[![Mahjong lib](https://github.com/MahjongRepository/mahjong/actions/workflows/lint_and_test.yml/badge.svg)](https://github.com/MahjongRepository/mahjong/actions/workflows/lint_and_test.yml)
 
 This library can calculate hand cost (han, fu with details, yaku, and scores) for riichi mahjong (Japanese version).
 
