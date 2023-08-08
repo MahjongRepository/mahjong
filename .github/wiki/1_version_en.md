@@ -111,14 +111,15 @@ for fu_item in result.fu_details:
 ```
 
 Output:
-
-    1 30
-    1000
-    [Tanyao]
-    {'fu': 20, 'reason': 'base'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 2, 'reason': 'open_pon'}
-    {'fu': 2, 'reason': 'open_pon'}
+```
+1 30
+1000
+[Tanyao]
+{'fu': 20, 'reason': 'base'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 2, 'reason': 'open_pon'}
+{'fu': 2, 'reason': 'open_pon'}
+```
 
 Shanten calculation
 ===================
