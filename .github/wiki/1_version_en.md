@@ -64,14 +64,15 @@ for fu_item in result.fu_details:
 ```
 
 Output:
-
-    1 40
-    1300
-    [Tanyao]
-    {'fu': 30, 'reason': 'base'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 2, 'reason': 'open_pon'}
+```
+1 40
+1300
+[Tanyao]
+{'fu': 30, 'reason': 'base'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 2, 'reason': 'open_pon'}
+```
 
 ### How about tsumo?
 
