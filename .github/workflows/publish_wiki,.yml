@@ -6,7 +6,6 @@ on:
       - .github/wiki/**
     branches:
       - master
-      - fix-wiki
 
 jobs:
   publish:
