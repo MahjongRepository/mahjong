@@ -1,46 +1,48 @@
-Python 3.7+ is supported.
+本软件包支持Python 3.7及以上版本
 
-If you need Python 2 support you can use v1.1.11 version of the library.
+若您需要与Python 2兼容，请使用本软件包v1.1.11版本。
 
-The library contains various tools (shanten, agari, hand calculation)
-for the Japanese version of mahjong (riichi mahjong).
+本软件包包含日本麻雀（立直麻雀）各种相关计算工具（向听数计算、和牌判定、得点计算等）。
 
-## Riichi mahjong hands calculation
+## 立直麻雀得点计算
 
-It supports optional features like:
+本软件包可用于计算立直麻雀手牌详情（番数、符数、役种及得点）。
 
-| Feature                                                                                      | Keyword parameter              | Default value |
-| -------------------------------------------------------------------------------------------- | -------------------------------|---------------|
-| Disable or enable open tanyao yaku                                                           | has_open_tanyao              | False
-| Disable or enable aka dora in the hand                                                       | has_aka_dora                 | False
-| Disable or enable double yakuman (like suuanko tanki)                                        | has_double_yakuman           | True
-| Settings for different kazoe yakuman calculation (it сan be an yakuman or a sanbaiman)       | kazoe_limit                  | HandConstants.KAZOE_LIMITED
-| Support kiriage mangan                                                                       | kiriage                      | False
-| Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting)    | fu_for_open_pinfu            | True
-| Disable or enable pinfu tsumo                                                                | fu_for_pinfu_tsumo           | False
-| Counting renhou as 5 han or yakuman                                                          | renhou_as_yakuman            | False
-| Disable or enable Daisharin yakuman                                                          | has_daisharin                | False
-| Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)                          | has_daisharin_other_suits    | False
-| Disable or enable yakuman for dealing into open hands                                        | has_sashikomi_yakuman        | False
-| Limit yakuman calculation to 6 (maximum score 192000)                                        | limit_to_sextuple_yakuman    | True
-| Disable or enable extra yakuman for all honors 7 pairs                                       | has_daichisei                | False
-| Disable or enable paarenchan without any yaku                                                | paarenchan_needs_yaku        | True
+包含以下可选功能：
 
-The code was validated on tenhou.net phoenix replays in total on
-**11,120,125 hands**.
+| 功能 关键 | 字参数 | 默认值 |
+| -------- | ---- | ----- |
+| 有无食断（非门前清断幺九是否成立） | has_open_tanyao | False
+| 有无红宝牌 | has_aka_dora | False
+| 有无双倍役满役种（如四暗刻单骑） | has_double_yakuman | True
+| 非役满役种累计番数上限设置（累计役满//累计三倍满） | kazoe_limit | HandConstants.KAZOE_LIMITED
+| 有无切上满贯 | kiriage | False
+| 非门清平和型食和是否+2符（总计30符） | fu_for_open_pinfu | True
+| 平和自摸是否仍然+2符（总计30符） | fu_for_pinfu_tsumo | False
+| 人和是否视为役满（还是只有5番） | renhou_as_yakuman | False
+| 是否有大车轮役种（门前清22334455667788饼） | has_daisharin | False
+| 是否有其他花色的大车轮役种（索：大竹林，万：大数邻） | has_daisharin_other_suits | False
+| 放铳开立直是否算役满 | has_sashikomi_yakuman | False
+| 多倍役满是否上限为6倍 (最高得点192000) | limit_to_sextuple_yakuman | True
+| 是否有大七星役满役种（字牌七对子） | has_daichisei | False
+| 八连庄是否需要有役才能成立 | paarenchan_needs_yaku | True
 
-So, we can say that our hand calculator works the same way that
-tenhou.net hand calculation.
+本软件包经过tenhou.net（天凤）\**11,120,125 局*\*凤凰对局测试验证
 
-## How to use
+因此，我们可以确定所提供的算法与天凤算法一致。
 
-You can find more examples here: [https://github.com/MahjongRepository/mahjong/blob/1x_version/doc/examples.py](example.py)
+项目地址: <https://github.com/MahjongRepository/mahjong>
 
-Let's calculate how much will cost this hand:
+## 如何使用
+
+更多示例请参阅:
+<https://github.com/MahjongRepository/mahjong/blob/1x_version/doc/examples.py>
+
+我们来计算一下下面这手牌的得点:
 
 ![image](https://user-images.githubusercontent.com/475367/30796350-3d30431a-a204-11e7-99e5-aab144c82f97.png)
 
-### Tanyao hand by ron
+### 断幺九荣和
 
 ```python
 from mahjong.hand_calculating.hand import HandCalculator
@@ -63,18 +65,17 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
-```
-1 40
-1300
-[Tanyao]
-{'fu': 30, 'reason': 'base'}
-{'fu': 4, 'reason': 'closed_pon'}
-{'fu': 4, 'reason': 'closed_pon'}
-{'fu': 2, 'reason': 'open_pon'}
-```
+输出:
 
-### How about tsumo?
+    1 40
+    1300
+    [Tanyao]
+    {'fu': 30, 'reason': 'base'}
+    {'fu': 4, 'reason': 'closed_pon'}
+    {'fu': 4, 'reason': 'closed_pon'}
+    {'fu': 2, 'reason': 'open_pon'}
+
+### 如果是自摸呢?
 
 ```python
 result = calculator.estimate_hand_value(tiles, win_tile, config=HandConfig(is_tsumo=True))
@@ -86,19 +87,18 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
-```
-4 40
-4000 2000
-[Menzen Tsumo, Tanyao, San Ankou]
-{'fu': 20, 'reason': 'base'}
-{'fu': 4, 'reason': 'closed_pon'}
-{'fu': 4, 'reason': 'closed_pon'}
-{'fu': 4, 'reason': 'closed_pon'}
-{'fu': 2, 'reason': 'tsumo'}
-```
+输出:
 
-### What if we add open set?
+    4 40
+    4000 2000
+    [Menzen Tsumo, Tanyao, San Ankou]
+    {'fu': 20, 'reason': 'base'}
+    {'fu': 4, 'reason': 'closed_pon'}
+    {'fu': 4, 'reason': 'closed_pon'}
+    {'fu': 4, 'reason': 'closed_pon'}
+    {'fu': 2, 'reason': 'tsumo'}
+
+### 如果有副露又会如何?
 
 ```python
 melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man='444'))]
@@ -113,18 +113,16 @@ for fu_item in result.fu_details:
 ```
 
 Output:
-```
-1 30
-1000
-[Tanyao]
-{'fu': 20, 'reason': 'base'}
-{'fu': 4, 'reason': 'closed_pon'}
-{'fu': 2, 'reason': 'open_pon'}
-{'fu': 2, 'reason': 'open_pon'}
-```
 
-Shanten calculation
-===================
+    1 30
+    1000
+    [Tanyao]
+    {'fu': 20, 'reason': 'base'}
+    {'fu': 4, 'reason': 'closed_pon'}
+    {'fu': 2, 'reason': 'open_pon'}
+    {'fu': 2, 'reason': 'open_pon'}
+
+### 向听数计算
 
 ```python
 from mahjong.shanten import Shanten
@@ -136,8 +134,7 @@ result = shanten.calculate_shanten(tiles)
 print(result)
 ```
 
-Aotenjou scoring rules
-======================
+### 青天井规则
 
 ```python
 tiles = self.TilesConverter.string_to_136_array(honors='11133555666777')
@@ -161,15 +158,14 @@ for fu_item in result.fu_details:
 ```
 
 Output:
-```
-95 160
-50706024009129176059868128215100
-[Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu kantsu, Tsuu iisou, Suu ankou tanki, Dora 24]
-{'fu': 32, 'reason': 'closed_terminal_kan'}
-{'fu': 32, 'reason': 'closed_terminal_kan'}
-{'fu': 32, 'reason': 'closed_terminal_kan'}
-{'fu': 32, 'reason': 'closed_terminal_kan'}
-{'fu': 20, 'reason': 'base'}
-{'fu': 2, 'reason': 'pair_wait'}
-{'fu': 2, 'reason': 'tsumo'}
-```
+
+    95 160
+    50706024009129176059868128215100
+    [Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu kantsu, Tsuu iisou, Suu ankou tanki, Dora 24]
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 32, 'reason': 'closed_terminal_kan'}
+    {'fu': 20, 'reason': 'base'}
+    {'fu': 2, 'reason': 'pair_wait'}
+    {'fu': 2, 'reason': 'tsumo'}
