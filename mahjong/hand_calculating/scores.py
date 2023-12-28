@@ -163,7 +163,6 @@ class ScoresCalculator:
 
 class Aotenjou(ScoresCalculator):
     def calculate_scores(self, han, fu, config, is_yakuman=False):
-
         base_points = fu * pow(2, 2 + han)
         rounded = (base_points + 99) // 100 * 100
         double_rounded = (2 * base_points + 99) // 100 * 100

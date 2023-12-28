@@ -51,7 +51,6 @@ class OptionalRules:
         paarenchan_needs_yaku=True,
         has_daichisei=False,
     ):
-
         self.has_open_tanyao = has_open_tanyao
         self.has_aka_dora = has_aka_dora
         self.has_double_yakuman = has_double_yakuman
@@ -121,7 +120,6 @@ class HandConfig(HandConstants):
         paarenchan=0,
         options=None,
     ):
-
         self.yaku = YakuConfig()
         self.options = options or OptionalRules()
 

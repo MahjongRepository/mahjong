@@ -8,7 +8,7 @@ lint:
 	flake8 mahjong --config .flake8
 
 tests:
-	python -m unittest discover .
+	PYTHONPATH=./mahjong pytest --cov=mahjong --cov-report=term --cov-report=html
 
 check: format lint tests
 
