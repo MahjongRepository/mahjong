@@ -26,3 +26,6 @@ line_length = 120
 multi_line_output = 3
 use_parentheses = true
 skip_glob = "migrations"
+
+[tool.pytest.ini_options]
+python_files = "tests_*.py"
