@@ -1,5 +1,5 @@
 # linters and formatters
-black==23.12.1
+black==24.3.0
 isort==5.13.2
 flake8==6.1.0
 flake8-bugbear==23.12.2
