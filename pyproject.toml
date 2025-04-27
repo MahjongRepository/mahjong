@@ -67,12 +67,5 @@ exclude = [
     "mahjong/hand_calculating/yaku_list/yakuman/__init__.py",
 ]
 
-[tool.isort]
-force_grid_wrap = 0
-include_trailing_comma = true
-multi_line_output = 3
-use_parentheses = true
-skip_glob = ["migrations"]
-
 [tool.pytest.ini_options]
 python_files = "tests_*.py"
