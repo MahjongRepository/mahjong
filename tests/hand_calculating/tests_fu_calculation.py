@@ -1,5 +1,5 @@
-from tile import TilesConverter
-from utils_for_tests import _hand, _make_meld, _string_to_136_tile
+from mahjong.tile import TilesConverter
+from tests.utils_for_tests import _hand, _make_meld, _string_to_136_tile
 
 from mahjong.constants import EAST
 from mahjong.hand_calculating.fu import FuCalculator

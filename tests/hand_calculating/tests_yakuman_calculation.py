@@ -1,4 +1,4 @@
-from utils_for_tests import _hand, _make_hand_config, _make_meld, _string_to_136_tile
+from tests.utils_for_tests import _hand, _make_hand_config, _make_meld, _string_to_136_tile
 
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
