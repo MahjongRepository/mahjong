@@ -44,8 +44,8 @@ lint = [
     "ruff>=0.11.6,<0.12",
 ]
 test = [
-    "pytest>=7.4.3,<8",
-    "pytest-cov>=4.1.0,<5",
+    "pytest>=8.3.5,<9",
+    "pytest-cov>=6.1.1,<7",
 ]
 
 [tool.ruff]
