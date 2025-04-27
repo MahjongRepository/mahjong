@@ -1,20 +1,18 @@
 format:
-	isort mahjong/*
-	black mahjong/*
+	uv run ruff format mahjong
 
 lint:
-	isort --check-only mahjong/*
-	black --check mahjong/*
-	flake8 mahjong --config .flake8
+	uv run ruff check mahjong
 
+.PHONY: tests
 tests:
-	PYTHONPATH=./mahjong pytest --cov=mahjong --cov-report=term --cov-report=html
+	uv run pytest --cov=mahjong --cov-report=term --cov-report=html
 
 check: format lint tests
 
 build-package:
 	rm -rf build dist mahjong.egg-info
-	python setup.py sdist bdist_wheel
+	uv build
 
 build-and-release: build-package
-	twine upload dist/*
+	uv publish
