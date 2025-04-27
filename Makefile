@@ -1,8 +1,8 @@
 format:
-	uv run ruff format mahjong
+	uv run ruff format
 
 lint:
-	uv run ruff check mahjong
+	uv run ruff check
 
 .PHONY: tests
 tests:
