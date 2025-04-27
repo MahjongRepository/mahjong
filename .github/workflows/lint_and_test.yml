@@ -18,13 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.10"
+          python-version: 3.10
 
       - name: Install libs
-        run: pip install -r requirements-dev.txt
+        run: uv sync
 
       - name: Lint files
         run: make lint
@@ -39,13 +39,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install libs
-        run: pip install -r requirements-dev.txt
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - name: Install the latest version of uv and set the python version
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Run python tests
+      - name: Test with python ${{ matrix.python-version }}
         run: make tests
