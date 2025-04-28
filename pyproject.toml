@@ -35,6 +35,9 @@ packages = [
     "mahjong.hand_calculating.yaku_list.yakuman",
 ]
 
+[tool.setuptools.package-data]
+mahjong = ["py.typed"]
+
 [dependency-groups]
 dev = [
     { include-group = "lint" },
