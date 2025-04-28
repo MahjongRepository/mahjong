@@ -69,7 +69,7 @@ class FuCalculator:
             else:
                 copied_opened_melds.remove(x)
 
-        is_open_hand = any([x.opened for x in melds])
+        is_open_hand = any(x.opened for x in melds)
 
         if win_group in closed_chi_sets:
             tile_index = simplify(win_tile_34)

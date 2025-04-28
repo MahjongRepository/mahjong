@@ -157,7 +157,7 @@ def contains_terminals(hand_set):
     :param hand_set: array of 34 tiles
     :return: boolean
     """
-    return any([x in TERMINAL_INDICES for x in hand_set])
+    return any(x in TERMINAL_INDICES for x in hand_set)
 
 
 def simplify(tile):
