@@ -40,9 +40,9 @@ class SanshokuDoukou(Yaku):
             for pin_item in pin_pon:
                 for man_item in man_pon:
                     # cast tile indices to 1..9 representation
-                    sou_item = set([simplify(x) for x in sou_item])
-                    pin_item = set([simplify(x) for x in pin_item])
-                    man_item = set([simplify(x) for x in man_item])
+                    sou_item = {simplify(x) for x in sou_item}
+                    pin_item = {simplify(x) for x in pin_item}
+                    man_item = {simplify(x) for x in man_item}
                     if sou_item == pin_item == man_item:
                         return True
         return False
