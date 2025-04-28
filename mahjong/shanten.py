@@ -87,7 +87,6 @@ class Shanten:
         self.min_shanten = 8
 
     def _scan(self, init_mentsu: int):
-        self.number_characters = 0
         for i in range(0, 27):
             self.number_characters |= (self.tiles[i] == 4) << i
         self.number_melds += init_mentsu
@@ -285,7 +284,7 @@ class Shanten:
 
     def _decrease_isolated_tile(self, k: int):
         self.tiles[k] += 1
-        self.number_isolated_tiles |= 1 << k
+        self.number_isolated_tiles &= ~(1 << k)
 
     def _scan_chiitoitsu_and_kokushi(self, chiitoitsu: bool, kokushi: bool):
         shanten = self.min_shanten
