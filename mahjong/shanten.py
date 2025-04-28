@@ -1,4 +1,3 @@
-import math
 from typing import List
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
@@ -71,7 +70,7 @@ class Shanten:
 
         self._remove_character_tiles(count_of_tiles)
 
-        init_mentsu = math.floor((14 - count_of_tiles) / 3)
+        init_mentsu = (14 - count_of_tiles) // 3
         self._scan(init_mentsu)
 
         return self.min_shanten
