@@ -1,4 +1,5 @@
 import warnings
+from typing import Optional
 
 from mahjong.tile import TilesConverter
 
@@ -18,7 +19,15 @@ class Meld:
     # we need it to distinguish opened and closed kan
     opened = True
 
-    def __init__(self, meld_type=None, tiles=None, opened=True, called_tile=None, who=None, from_who=None):
+    def __init__(
+        self,
+        meld_type: Optional[str] = None,
+        tiles: Optional[list[int]] = None,
+        opened: bool = True,
+        called_tile: Optional[int] = None,
+        who: Optional[int] = None,
+        from_who: Optional[int] = None,
+    ) -> None:
         self.type = meld_type
         self.tiles = tiles or []
         self.opened = opened
@@ -26,18 +35,18 @@ class Meld:
         self.who = who
         self.from_who = from_who
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "Type: {}, Tiles: {} {}".format(self.type, TilesConverter.to_one_line_string(self.tiles), self.tiles)
 
     # for calls in array
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__str__()
 
     @property
-    def tiles_34(self):
+    def tiles_34(self) -> list[int]:
         return [x // 4 for x in self.tiles]
 
     @property
-    def CHANKAN(self):
+    def CHANKAN(self) -> str:
         warnings.warn("Use .SHOUMINKAN attribute instead of .CHANKAN attribute", DeprecationWarning, stacklevel=2)
         return self.SHOUMINKAN
