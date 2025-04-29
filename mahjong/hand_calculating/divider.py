@@ -145,7 +145,7 @@ class HandDivider:
         first_index: int,
         second_index: int,
         hand_not_completed: bool = False,
-    ):
+    ) -> list[list[list[int]]]:
         """
         Find and return all valid set combinations in given suit
         :param tiles_34:
