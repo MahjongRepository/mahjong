@@ -62,7 +62,7 @@ extend-exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["B", "C", "E", "F", "W"]
+select = ["B", "C", "E", "F", "I", "W"]
 ignore = ["E203", "E266", "E501", "C901"]
 exclude = [
     "mahjong/hand_calculating/yaku_list/__init__.py",
