@@ -1,5 +1,6 @@
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
+from mahjong.hand_calculating.hand_response import HandResponse
 from mahjong.meld import Meld
 from mahjong.shanten import Shanten
 from mahjong.tile import TilesConverter
@@ -8,7 +9,7 @@ calculator = HandCalculator()
 
 
 # useful helper
-def print_hand_result(hand_result):
+def print_hand_result(hand_result: HandResponse) -> None:
     print(hand_result.han, hand_result.fu)
     print(hand_result.cost["main"])
     print(hand_result.yaku)

@@ -162,7 +162,7 @@ class HandDivider:
         if not indices:
             return []
 
-        all_possible_combinations = list(itertools.permutations(indices, 3))
+        all_possible_combinations: list[tuple[int, int, int]] = list(itertools.permutations(indices, 3))
 
         def is_valid_combination(possible_set: tuple[int, int, int]) -> bool:
             if is_chi(possible_set):
@@ -173,7 +173,7 @@ class HandDivider:
 
             return False
 
-        valid_combinations = []
+        valid_combinations: list[list[int]] = []
         for combination in all_possible_combinations:
             if is_valid_combination(combination):
                 valid_combinations.append(list(combination))
