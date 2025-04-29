@@ -7,7 +7,7 @@ from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _hand, _make_meld, _string_to_136_tile
 
 
-def _get_win_group(hand, win_tile):
+def _get_win_group(hand: list[list[int]], win_tile: int) -> list[int]:
     return [x for x in hand if win_tile // 4 in x][0]
 
 
