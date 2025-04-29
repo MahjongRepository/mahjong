@@ -1,6 +1,5 @@
-from mahjong.tile import TilesConverter
-
 from mahjong.shanten import Shanten
+from mahjong.tile import TilesConverter
 
 
 def test_shanten_number():

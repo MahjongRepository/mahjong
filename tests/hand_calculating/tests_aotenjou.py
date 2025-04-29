@@ -1,10 +1,9 @@
-from mahjong.tile import TilesConverter
-from tests.utils_for_tests import _make_hand_config, _make_meld, _string_to_136_tile
-
 from mahjong.constants import EAST
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.scores import Aotenjou
 from mahjong.meld import Meld
+from mahjong.tile import TilesConverter
+from tests.utils_for_tests import _make_hand_config, _make_meld, _string_to_136_tile
 
 
 def test_aotenjou_hands():
