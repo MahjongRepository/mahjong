@@ -3,7 +3,7 @@ from mahjong.utils import find_isolated_tile_indices, is_tile_strictly_isolated
 from tests.utils_for_tests import _string_to_34_tile
 
 
-def test_find_isolated_tiles():
+def test_find_isolated_tiles() -> None:
     hand_34 = TilesConverter.string_to_34_array(sou="1369", pin="15678", man="25", honors="124")
     isolated_tiles = find_isolated_tile_indices(hand_34)
 
@@ -43,7 +43,7 @@ def test_find_isolated_tiles():
     assert (_string_to_34_tile(honors="7") in isolated_tiles) is True
 
 
-def test_is_strictly_isolated_tile():
+def test_is_strictly_isolated_tile() -> None:
     hand_34 = TilesConverter.string_to_34_array(sou="1399", pin="1567", man="25", honors="1224")
 
     assert is_tile_strictly_isolated(hand_34, _string_to_34_tile(sou="1")) is False

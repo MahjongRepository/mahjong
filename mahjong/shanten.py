@@ -1,12 +1,10 @@
-from typing import List
-
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
 
 
 class Shanten:
     AGARI_STATE = -1
 
-    tiles: List[int] = []
+    tiles: list[int] = []
     number_melds = 0
     number_tatsu = 0
     number_pairs = 0
@@ -15,7 +13,7 @@ class Shanten:
     number_isolated_tiles = 0
     min_shanten = 0
 
-    def calculate_shanten(self, tiles_34: List[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
+    def calculate_shanten(self, tiles_34: list[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
         """
         Return the minimum shanten for provided hand,
         it will consider chiitoitsu and kokushi options if possible.
@@ -29,7 +27,7 @@ class Shanten:
 
         return min(shanten_results)
 
-    def calculate_shanten_for_chiitoitsu_hand(self, tiles_34: List[int]) -> int:
+    def calculate_shanten_for_chiitoitsu_hand(self, tiles_34: list[int]) -> int:
         """
         Calculate the number of shanten for chiitoitsu hand
         """
@@ -40,7 +38,7 @@ class Shanten:
         kinds = len([x for x in tiles_34 if x >= 1])
         return 6 - pairs + (7 - kinds if kinds < 7 else 0)
 
-    def calculate_shanten_for_kokushi_hand(self, tiles_34: List[int]) -> int:
+    def calculate_shanten_for_kokushi_hand(self, tiles_34: list[int]) -> int:
         """
         Calculate the number of shanten for kokushi musou hand
         """
@@ -56,7 +54,7 @@ class Shanten:
 
         return 13 - terminals - (completed_terminals and 1 or 0)
 
-    def calculate_shanten_for_regular_hand(self, tiles_34: List[int]) -> int:
+    def calculate_shanten_for_regular_hand(self, tiles_34: list[int]) -> int:
         """
         Calculate the number of shanten for regular hand
         """
@@ -75,7 +73,7 @@ class Shanten:
 
         return self.min_shanten
 
-    def _init(self, tiles: List[int]):
+    def _init(self, tiles: list[int]) -> None:
         self.tiles = tiles
         self.number_melds = 0
         self.number_tatsu = 0
@@ -85,13 +83,13 @@ class Shanten:
         self.number_isolated_tiles = 0
         self.min_shanten = 8
 
-    def _scan(self, init_mentsu: int):
+    def _scan(self, init_mentsu: int) -> None:
         for i in range(0, 27):
             self.number_characters |= (self.tiles[i] == 4) << i
         self.number_melds += init_mentsu
         self._run(0)
 
-    def _run(self, depth: int):
+    def _run(self, depth: int) -> None:
         if self.min_shanten == Shanten.AGARI_STATE:
             return
 
@@ -211,7 +209,7 @@ class Shanten:
                     self._run(depth + 1)
                     self._decrease_tatsu_first(depth)
 
-    def _update_result(self):
+    def _update_result(self) -> None:
         ret_shanten = 8 - self.number_melds * 2 - self.number_tatsu - self.number_pairs
         n_mentsu_kouho = self.number_melds + self.number_tatsu
         if self.number_pairs:
@@ -229,63 +227,63 @@ class Shanten:
         if ret_shanten < self.min_shanten:
             self.min_shanten = ret_shanten
 
-    def _increase_set(self, k: int):
+    def _increase_set(self, k: int) -> None:
         self.tiles[k] -= 3
         self.number_melds += 1
 
-    def _decrease_set(self, k: int):
+    def _decrease_set(self, k: int) -> None:
         self.tiles[k] += 3
         self.number_melds -= 1
 
-    def _increase_pair(self, k: int):
+    def _increase_pair(self, k: int) -> None:
         self.tiles[k] -= 2
         self.number_pairs += 1
 
-    def _decrease_pair(self, k: int):
+    def _decrease_pair(self, k: int) -> None:
         self.tiles[k] += 2
         self.number_pairs -= 1
 
-    def _increase_syuntsu(self, k: int):
+    def _increase_syuntsu(self, k: int) -> None:
         self.tiles[k] -= 1
         self.tiles[k + 1] -= 1
         self.tiles[k + 2] -= 1
         self.number_melds += 1
 
-    def _decrease_syuntsu(self, k: int):
+    def _decrease_syuntsu(self, k: int) -> None:
         self.tiles[k] += 1
         self.tiles[k + 1] += 1
         self.tiles[k + 2] += 1
         self.number_melds -= 1
 
-    def _increase_tatsu_first(self, k: int):
+    def _increase_tatsu_first(self, k: int) -> None:
         self.tiles[k] -= 1
         self.tiles[k + 1] -= 1
         self.number_tatsu += 1
 
-    def _decrease_tatsu_first(self, k: int):
+    def _decrease_tatsu_first(self, k: int) -> None:
         self.tiles[k] += 1
         self.tiles[k + 1] += 1
         self.number_tatsu -= 1
 
-    def _increase_tatsu_second(self, k: int):
+    def _increase_tatsu_second(self, k: int) -> None:
         self.tiles[k] -= 1
         self.tiles[k + 2] -= 1
         self.number_tatsu += 1
 
-    def _decrease_tatsu_second(self, k: int):
+    def _decrease_tatsu_second(self, k: int) -> None:
         self.tiles[k] += 1
         self.tiles[k + 2] += 1
         self.number_tatsu -= 1
 
-    def _increase_isolated_tile(self, k: int):
+    def _increase_isolated_tile(self, k: int) -> None:
         self.tiles[k] -= 1
         self.number_isolated_tiles |= 1 << k
 
-    def _decrease_isolated_tile(self, k: int):
+    def _decrease_isolated_tile(self, k: int) -> None:
         self.tiles[k] += 1
         self.number_isolated_tiles &= ~(1 << k)
 
-    def _remove_character_tiles(self, nc: int):
+    def _remove_character_tiles(self, nc: int) -> None:
         number = 0
         isolated = 0
 

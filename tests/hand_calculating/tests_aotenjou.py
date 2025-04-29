@@ -6,7 +6,7 @@ from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _make_hand_config, _make_meld, _string_to_136_tile
 
 
-def test_aotenjou_hands():
+def test_aotenjou_hands() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="119", man="19", pin="19", honors="1234567")
@@ -92,7 +92,7 @@ def test_aotenjou_hands():
     assert result.cost["main"] + result.cost["additional"] == 101412048018258352119736256430200
 
 
-def test_daisangen():
+def test_daisangen() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="11123", honors="555666777")
@@ -111,7 +111,7 @@ def test_daisangen():
     assert result.cost["main"] == 1509949500
 
 
-def test_shousuushii():
+def test_shousuushii() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123", honors="11122233444")
@@ -134,7 +134,7 @@ def test_shousuushii():
     assert result.cost["main"] + result.cost["additional"] == 209715200
 
 
-def test_daisuushii():
+def test_daisuushii() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="11", honors="111222333444")
@@ -157,7 +157,7 @@ def test_daisuushii():
     assert result.cost["main"] + result.cost["additional"] == 13743895347200
 
 
-def test_tsuuiisou():
+def test_tsuuiisou() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(honors="11133344455566")
@@ -180,7 +180,7 @@ def test_tsuuiisou():
     assert result.cost["main"] + result.cost["additional"] == 251658400
 
 
-def test_suuankou():
+def test_suuankou() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(man="11133355566688")
@@ -199,7 +199,7 @@ def test_suuankou():
     assert result.cost["main"] + result.cost["additional"] == 6871947673600
 
 
-def test_chinroutou():
+def test_chinroutou() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(man="111999", sou="11999", pin="111")
@@ -222,7 +222,7 @@ def test_chinroutou():
     assert result.cost["main"] + result.cost["additional"] == 26214400
 
 
-def test_chuuren_poutou():
+def test_chuuren_poutou() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(man="11112345678999")
@@ -241,7 +241,7 @@ def test_chuuren_poutou():
     assert result.cost["main"] + result.cost["additional"] == 257698037800
 
 
-def test_chuuren_poutou_inner():
+def test_chuuren_poutou_inner() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(man="11123455678999")
@@ -260,7 +260,7 @@ def test_chuuren_poutou_inner():
     assert result.cost["main"] + result.cost["additional"] == 85899346000
 
 
-def test_suukantsu():
+def test_suukantsu() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(man="1111", sou="4444", pin="9999", honors="333322")
@@ -287,7 +287,7 @@ def test_suukantsu():
     assert result.cost["main"] + result.cost["additional"] == 10485800
 
 
-def test_daisharin():
+def test_daisharin() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(pin="22334455667788")
@@ -306,7 +306,7 @@ def test_daisharin():
     assert result.cost["main"] + result.cost["additional"] == 7864400
 
 
-def test_ryuisou():
+def test_ryuisou() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="223344666888", honors="66")

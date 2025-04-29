@@ -6,7 +6,7 @@ from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _hand, _make_hand_config, _make_meld, _string_to_136_tile
 
 
-def test_is_tenhou():
+def test_is_tenhou() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -19,7 +19,7 @@ def test_is_tenhou():
     assert len(result.yaku) == 1
 
 
-def test_is_chiihou():
+def test_is_chiihou() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -32,7 +32,7 @@ def test_is_chiihou():
     assert len(result.yaku) == 1
 
 
-def test_is_daisangen():
+def test_is_daisangen() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -49,7 +49,7 @@ def test_is_daisangen():
     assert len(result.yaku) == 1
 
 
-def test_is_shosuushi():
+def test_is_shosuushi() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -66,7 +66,7 @@ def test_is_shosuushi():
     assert len(result.yaku) == 1
 
 
-def test_is_daisuushi():
+def test_is_daisuushi() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -83,7 +83,7 @@ def test_is_daisuushi():
     assert len(result.yaku) == 1
 
 
-def test_is_tsuisou():
+def test_is_tsuisou() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -106,7 +106,7 @@ def test_is_tsuisou():
     assert len(result.yaku) == 1
 
 
-def test_is_tsuisou_and_daichisei():
+def test_is_tsuisou_and_daichisei() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(honors="11223344556677")
@@ -118,7 +118,7 @@ def test_is_tsuisou_and_daichisei():
     assert len(result.yaku) == 2
 
 
-def test_is_chinroto():
+def test_is_chinroto() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -135,7 +135,7 @@ def test_is_chinroto():
     assert len(result.yaku) == 1
 
 
-def test_is_kokushi():
+def test_is_kokushi() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -161,7 +161,7 @@ def test_is_kokushi():
     assert len(result.yaku) == 1
 
 
-def test_is_ryuisou():
+def test_is_ryuisou() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -178,7 +178,7 @@ def test_is_ryuisou():
     assert len(result.yaku) == 1
 
 
-def test_is_suuankou():
+def test_is_suuankou() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -219,7 +219,7 @@ def test_is_suuankou():
     assert len(result.yaku) == 1
 
 
-def test_is_chuuren_poutou():
+def test_is_chuuren_poutou() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -284,7 +284,7 @@ def test_is_chuuren_poutou():
     assert len(result.yaku) == 1
 
 
-def test_is_suukantsu():
+def test_is_suukantsu() -> None:
     hand = HandCalculator()
     config = YakuConfig()
 
@@ -312,7 +312,7 @@ def test_is_suukantsu():
     assert len(result.yaku) == 1
 
 
-def test_disabled_double_yakuman():
+def test_disabled_double_yakuman() -> None:
     hand = HandCalculator()
 
     # kokushi
@@ -358,7 +358,7 @@ def test_disabled_double_yakuman():
     assert len(result.yaku) == 1
 
 
-def test_sextuple_yakuman():
+def test_sextuple_yakuman() -> None:
     hand = HandCalculator()
 
     # 1112223334445z 5z tenhou & tsuisou & daisushi & suuankou tanki
@@ -391,7 +391,7 @@ def test_sextuple_yakuman():
     assert result.cost["main"] == 192000
 
 
-def test_kokushi_musou_multiple_yakuman():
+def test_kokushi_musou_multiple_yakuman() -> None:
     hand_calculator = HandCalculator()
 
     # kokushi test
@@ -510,7 +510,7 @@ def test_kokushi_musou_multiple_yakuman():
     assert hand_calculation.han == 52
 
 
-def test_is_renhou_yakuman():
+def test_is_renhou_yakuman() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -524,7 +524,7 @@ def test_is_renhou_yakuman():
     assert len(result.yaku) == 1
 
 
-def test_is_not_daisharin():
+def test_is_not_daisharin() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(pin="22334455667788")
@@ -536,7 +536,7 @@ def test_is_not_daisharin():
     assert len(result.yaku) == 4
 
 
-def test_is_daisharin():
+def test_is_daisharin() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(pin="22334455667788")
@@ -549,7 +549,7 @@ def test_is_daisharin():
     assert result.yaku[0].name == "Daisharin"
 
 
-def test_is_not_daichikurin():
+def test_is_not_daichikurin() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="22334455667788")
@@ -561,7 +561,7 @@ def test_is_not_daichikurin():
     assert len(result.yaku) == 4
 
 
-def test_is_daichikurin():
+def test_is_daichikurin() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="22334455667788")
@@ -576,7 +576,7 @@ def test_is_daichikurin():
     assert result.yaku[0].name == "Daichikurin"
 
 
-def test_is_not_daisuurin():
+def test_is_not_daisuurin() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(man="22334455667788")
@@ -588,7 +588,7 @@ def test_is_not_daisuurin():
     assert len(result.yaku) == 4
 
 
-def test_is_daisuurin():
+def test_is_daisuurin() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(man="22334455667788")
@@ -603,7 +603,7 @@ def test_is_daisuurin():
     assert result.yaku[0].name == "Daisuurin"
 
 
-def test_is_open_riichi_sashikomi():
+def test_is_open_riichi_sashikomi() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -619,7 +619,7 @@ def test_is_open_riichi_sashikomi():
     assert len(result.yaku) == 1
 
 
-def test_septuple_yakuman_disabled():
+def test_septuple_yakuman_disabled() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(honors="11122233344455")
@@ -635,7 +635,7 @@ def test_septuple_yakuman_disabled():
     assert result.cost["main"] == 192000
 
 
-def test_septuple_yakuman_enabled():
+def test_septuple_yakuman_enabled() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(honors="11122233344455")
@@ -658,7 +658,7 @@ def test_septuple_yakuman_enabled():
     assert result.cost["main"] == 224000
 
 
-def test_paarenchan_no_yaku_disallowed():
+def test_paarenchan_no_yaku_disallowed() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(pin="12367778", sou="678", man="456")
@@ -667,7 +667,7 @@ def test_paarenchan_no_yaku_disallowed():
     assert result.error is not None, None
 
 
-def test_paarenchan_no_yaku_allowed():
+def test_paarenchan_no_yaku_allowed() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(pin="12367778", sou="678", man="456")
@@ -679,7 +679,7 @@ def test_paarenchan_no_yaku_allowed():
     assert result.han == 13
 
 
-def test_paarenchan():
+def test_paarenchan() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(pin="111222777", sou="44455")

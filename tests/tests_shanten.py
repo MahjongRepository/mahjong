@@ -2,7 +2,7 @@ from mahjong.shanten import Shanten
 from mahjong.tile import TilesConverter
 
 
-def test_shanten_number():
+def test_shanten_number() -> None:
     shanten = Shanten()
 
     tiles = TilesConverter.string_to_34_array(sou="111234567", pin="11", man="567")
@@ -57,7 +57,7 @@ def test_shanten_number():
     assert shanten.calculate_shanten_for_regular_hand(tiles) == 2
 
 
-def test_shanten_for_not_completed_hand():
+def test_shanten_for_not_completed_hand() -> None:
     shanten = Shanten()
 
     tiles = TilesConverter.string_to_34_array(sou="111345677", pin="1", man="567")
@@ -91,7 +91,7 @@ def test_shanten_for_not_completed_hand():
     assert shanten.calculate_shanten_for_regular_hand(tiles) == 3
 
 
-def test_shanten_number_and_chiitoitsu():
+def test_shanten_number_and_chiitoitsu() -> None:
     shanten = Shanten()
 
     tiles = TilesConverter.string_to_34_array(sou="114477", pin="114477", man="77")
@@ -122,7 +122,7 @@ def test_shanten_number_and_chiitoitsu():
     assert shanten.calculate_shanten_for_chiitoitsu_hand(tiles) == 1
 
 
-def test_shanten_number_and_kokushi():
+def test_shanten_number_and_kokushi() -> None:
     shanten = Shanten()
 
     tiles = TilesConverter.string_to_34_array(sou="19", pin="19", man="19", honors="12345677")
@@ -153,7 +153,7 @@ def test_shanten_number_and_kokushi():
     assert shanten.calculate_shanten_for_kokushi_hand(tiles) == 7
 
 
-def test_shanten_number_and_open_sets():
+def test_shanten_number_and_open_sets() -> None:
     shanten = Shanten()
 
     tiles = TilesConverter.string_to_34_array(sou="44467778", pin="222567")
