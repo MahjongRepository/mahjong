@@ -1,11 +1,14 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.hand_calculating.yaku import Yaku
 
 
 class DaburuKokushiMusou(Yaku):
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(DaburuKokushiMusou, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 48
 
         self.name = "Kokushi Musou Juusanmen Matchi"
@@ -15,6 +18,6 @@ class DaburuKokushiMusou(Yaku):
 
         self.is_yakuman = True
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         # was it here or not is controlling by superior code
         return True

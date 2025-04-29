@@ -1,3 +1,6 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.constants import CHUN, HAKU, HATSU
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_pair, is_pon_or_kan
@@ -8,10 +11,10 @@ class Shosangen(Yaku):
     Hand with two dragon pon sets and one dragon pair
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(Shosangen, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 30
 
         self.name = "Shou Sangen"
@@ -21,7 +24,7 @@ class Shosangen(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         dragons = [CHUN, HAKU, HATSU]
         count_of_conditions = 0
         for item in hand:

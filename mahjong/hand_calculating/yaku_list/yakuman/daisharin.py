@@ -1,4 +1,6 @@
+from collections.abc import Collection, Sequence
 from functools import reduce
+from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_man, is_pin, is_sou, simplify
@@ -13,10 +15,10 @@ class Daisharin(Yaku):
     Optionally can be of any suit
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(Daisharin, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.set_pin()
 
         self.han_open = None
@@ -24,16 +26,16 @@ class Daisharin(Yaku):
 
         self.is_yakuman = True
 
-    def set_pin(self):
+    def set_pin(self) -> None:
         self.name = "Daisharin"
 
-    def set_man(self):
+    def set_man(self) -> None:
         self.name = "Daisuurin"
 
-    def set_sou(self):
+    def set_sou(self) -> None:
         self.name = "Daichikurin"
 
-    def rename(self, hand):
+    def rename(self, hand: Sequence[Sequence[int]]) -> None:
         # rename this yakuman depending on tiles used
         if is_sou(hand[0][0]):
             self.set_sou()
@@ -42,7 +44,7 @@ class Daisharin(Yaku):
         else:
             self.set_man()
 
-    def is_condition_met(self, hand, allow_other_sets, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], allow_other_sets: bool, *args) -> bool:
         sou_sets = 0
         pin_sets = 0
         man_sets = 0

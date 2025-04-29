@@ -1,3 +1,6 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.hand_calculating.yaku import Yaku
 
 
@@ -6,10 +9,10 @@ class AkaDora(Yaku):
     Red five
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(AkaDora, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 54
 
         self.name = "Aka Dora"
@@ -19,8 +22,8 @@ class AkaDora(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         return True
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "Aka Dora {}".format(self.han_closed)

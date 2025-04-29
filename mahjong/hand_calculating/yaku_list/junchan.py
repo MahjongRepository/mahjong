@@ -1,3 +1,6 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.constants import TERMINAL_INDICES
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_chi
@@ -10,10 +13,10 @@ class Junchan(Yaku):
     Honours are not allowed
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(Junchan, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 33
 
         self.name = "Junchan"
@@ -23,8 +26,8 @@ class Junchan(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, *args):
-        def tile_in_indices(item_set, indices_array):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        def tile_in_indices(item_set: Sequence[int], indices_array: list[int]) -> bool:
             for x in item_set:
                 if x in indices_array:
                     return True

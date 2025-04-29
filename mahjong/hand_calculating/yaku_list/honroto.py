@@ -1,4 +1,6 @@
+from collections.abc import Collection, Sequence
 from functools import reduce
+from typing import Optional
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
 from mahjong.hand_calculating.yaku import Yaku
@@ -9,10 +11,10 @@ class Honroto(Yaku):
     All tiles are terminals or honours
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(Honroto, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 31
 
         self.name = "Honroutou"
@@ -22,7 +24,7 @@ class Honroto(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         indices = reduce(lambda z, y: z + y, hand)
         result = HONOR_INDICES + TERMINAL_INDICES
         return all(x in result for x in indices)
