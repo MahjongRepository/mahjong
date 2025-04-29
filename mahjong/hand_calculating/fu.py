@@ -1,4 +1,7 @@
+from typing import Any, Optional
+
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
+from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.meld import Meld
 from mahjong.utils import contains_terminals, is_pair, is_pon_or_kan, simplify
 
@@ -27,13 +30,13 @@ class FuCalculator:
 
     def calculate_fu(
         self,
-        hand,
-        win_tile,
-        win_group,
-        config,
-        valued_tiles=None,
-        melds=None,
-    ):
+        hand: list[list[int]],
+        win_tile: int,
+        win_group: list[int],
+        config: HandConfig,
+        valued_tiles: Optional[list[int]] = None,
+        melds: Optional[list[Meld]] = None,
+    ) -> tuple[list[dict[str, Any]], int]:
         """
         Calculate hand fu with explanations
         :param hand:
@@ -152,7 +155,7 @@ class FuCalculator:
 
         return fu_details, self.round_fu(fu_details)
 
-    def round_fu(self, fu_details):
+    def round_fu(self, fu_details: list[dict[str, Any]]) -> int:
         # 22 -> 30 and etc.
         fu = sum([x["fu"] for x in fu_details])
         return (fu + 9) // 10 * 10
