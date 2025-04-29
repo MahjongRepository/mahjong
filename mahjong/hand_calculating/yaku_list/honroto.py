@@ -1,5 +1,5 @@
 from collections.abc import Collection, Sequence
-from functools import reduce
+from itertools import chain
 from typing import Optional
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
@@ -25,6 +25,6 @@ class Honroto(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        indices = reduce(lambda z, y: z + y, hand)
+        indices = chain.from_iterable(hand)
         result = HONOR_INDICES + TERMINAL_INDICES
         return all(x in result for x in indices)

@@ -1,5 +1,5 @@
 from collections.abc import Collection, Sequence
-from functools import reduce
+from itertools import chain
 from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
@@ -44,7 +44,7 @@ class ChuurenPoutou(Yaku):
         if not only_one_suit or honor_sets > 0:
             return False
 
-        indices = reduce(lambda z, y: z + y, hand)
+        indices = list(chain.from_iterable(hand))
         # cast tile indices to 0..8 representation
         indices = [simplify(x) for x in indices]
 

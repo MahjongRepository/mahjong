@@ -1,5 +1,5 @@
 from collections.abc import Collection, Sequence
-from functools import reduce
+from itertools import chain
 from typing import Optional
 
 from mahjong.constants import HATSU
@@ -26,5 +26,5 @@ class Ryuuiisou(Yaku):
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         green_indices = [19, 20, 21, 23, 25, HATSU]
-        indices = reduce(lambda z, y: z + y, hand)
+        indices = chain.from_iterable(hand)
         return all(x in green_indices for x in indices)

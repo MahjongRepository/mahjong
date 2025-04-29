@@ -1,5 +1,5 @@
 from collections.abc import Collection, Sequence
-from functools import reduce
+from itertools import chain
 from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
@@ -68,7 +68,7 @@ class Daisharin(Yaku):
             # if we are not allowing other sets than pins
             return False
 
-        indices = reduce(lambda z, y: z + y, hand)
+        indices = list(chain.from_iterable(hand))
         # cast tile indices to 0..8 representation
         indices = [simplify(x) for x in indices]
 
