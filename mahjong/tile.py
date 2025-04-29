@@ -1,3 +1,4 @@
+from collections.abc import Collection, Sequence
 from typing import Any, Optional
 
 from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU
@@ -14,7 +15,7 @@ class Tile:
 
 class TilesConverter:
     @staticmethod
-    def to_one_line_string(tiles: list[int], print_aka_dora: bool = False) -> str:
+    def to_one_line_string(tiles: Collection[int], print_aka_dora: bool = False) -> str:
         """
         Convert 136 tiles array to the one line string
         Example of output with print_aka_dora=False: 1244579m3p57z
@@ -48,7 +49,7 @@ class TilesConverter:
         return man + pin + sou + honors  # type: ignore
 
     @staticmethod
-    def to_34_array(tiles: list[int]) -> list[int]:
+    def to_34_array(tiles: Collection[int]) -> list[int]:
         """
         Convert 136 array to the 34 tiles array
         """
@@ -59,7 +60,7 @@ class TilesConverter:
         return results
 
     @staticmethod
-    def to_136_array(tiles: list[int]) -> list[int]:
+    def to_136_array(tiles: Sequence[int]) -> list[int]:
         """
         Convert 34 array to the 136 tiles array
         """
@@ -148,7 +149,7 @@ class TilesConverter:
         return results
 
     @staticmethod
-    def find_34_tile_in_136_array(tile34: Optional[int], tiles: list[int]) -> Optional[int]:
+    def find_34_tile_in_136_array(tile34: Optional[int], tiles: Collection[int]) -> Optional[int]:
         """
         Our shanten calculator will operate with 34 tiles format,
         after calculations we need to find calculated 34 tile
