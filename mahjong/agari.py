@@ -1,8 +1,10 @@
+from typing import Optional
+
 from mahjong.utils import find_isolated_tile_indices
 
 
 class Agari:
-    def is_agari(self, tiles_34, open_sets_34=None):
+    def is_agari(self, tiles_34: list[int], open_sets_34: Optional[list[list[int]]] = None) -> bool:
         """
         Determine was it win or not
         :param tiles_34: 34 tiles format array
@@ -139,7 +141,7 @@ class Agari:
 
         return False
 
-    def _is_mentsu(self, m):
+    def _is_mentsu(self, m: int) -> bool:
         a = m & 7
         b = 0
         c = 0
@@ -177,7 +179,7 @@ class Agari:
 
         return a == 0 or a == 3
 
-    def _is_atama_mentsu(self, nn, m):
+    def _is_atama_mentsu(self, nn: int, m: int) -> bool:
         if nn == 0:
             if (m & (7 << 6)) >= (2 << 6) and self._is_mentsu(m - (2 << 6)):
                 return True
@@ -201,7 +203,7 @@ class Agari:
                 return True
         return False
 
-    def _to_meld(self, tiles, d):
+    def _to_meld(self, tiles: list[int], d: int) -> int:
         result = 0
         for i in range(0, 9):
             result |= tiles[d + i] << i * 3
