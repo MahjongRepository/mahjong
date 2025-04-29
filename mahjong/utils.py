@@ -1,3 +1,5 @@
+from collections.abc import Collection, Sequence
+
 from mahjong.constants import CHUN, EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, TERMINAL_INDICES
 
 
@@ -14,7 +16,7 @@ def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
     return False
 
 
-def plus_dora(tile_136: int, dora_indicators_136: list[int], add_aka_dora: bool = False) -> int:
+def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora: bool = False) -> int:
     """
     Calculate the number of dora for the tile
     """
@@ -60,7 +62,7 @@ def plus_dora(tile_136: int, dora_indicators_136: list[int], add_aka_dora: bool 
     return dora_count
 
 
-def is_chi(item: list[int]) -> bool:
+def is_chi(item: Sequence[int]) -> bool:
     """
     :param item: array of tile 34 indices
     :return: boolean
@@ -71,7 +73,7 @@ def is_chi(item: list[int]) -> bool:
     return item[0] == item[1] - 1 == item[2] - 2
 
 
-def is_pon(item: list[int]) -> bool:
+def is_pon(item: Sequence[int]) -> bool:
     """
     :param item: array of tile 34 indices
     :return: boolean
@@ -82,15 +84,15 @@ def is_pon(item: list[int]) -> bool:
     return item[0] == item[1] == item[2]
 
 
-def is_kan(item: list[int]) -> bool:
+def is_kan(item: Sequence[int]) -> bool:
     return len(item) == 4
 
 
-def is_pon_or_kan(item: list[int]) -> bool:
+def is_pon_or_kan(item: Sequence[int]) -> bool:
     return is_pon(item) or is_kan(item)
 
 
-def is_pair(item: list[int]) -> bool:
+def is_pair(item: Sequence[int]) -> bool:
     """
     :param item: array of tile 34 indices
     :return: boolean
@@ -150,7 +152,7 @@ def is_dora_indicator_for_terminal(tile: int) -> bool:
     return tile == 7 or tile == 8 or tile == 16 or tile == 17 or tile == 25 or tile == 26
 
 
-def contains_terminals(hand_set: list[int]) -> bool:
+def contains_terminals(hand_set: Collection[int]) -> bool:
     """
     :param hand_set: array of 34 tiles
     :return: boolean
@@ -166,7 +168,7 @@ def simplify(tile: int) -> int:
     return tile - 9 * (tile // 9)
 
 
-def find_isolated_tile_indices(hand_34: list[int]) -> list[int]:
+def find_isolated_tile_indices(hand_34: Sequence[int]) -> list[int]:
     """
     Tiles that don't have -1, 0 and +1 neighbors
     :param hand_34: array of tiles in 34 tile format
@@ -197,7 +199,7 @@ def find_isolated_tile_indices(hand_34: list[int]) -> list[int]:
     return isolated_indices
 
 
-def is_tile_strictly_isolated(hand_34: list[int], tile_34: int) -> bool:
+def is_tile_strictly_isolated(hand_34: Sequence[int], tile_34: int) -> bool:
     """
     Tile is strictly isolated if it doesn't have -2, -1, 0, +1, +2 neighbors
     :param hand_34: array of tiles in 34 tile format
@@ -237,7 +239,7 @@ def is_tile_strictly_isolated(hand_34: list[int], tile_34: int) -> bool:
     return isolated
 
 
-def count_tiles_by_suits(tiles_34: list[int]) -> list[dict]:
+def count_tiles_by_suits(tiles_34: Sequence[int]) -> list[dict]:
     """
     Separate tiles by suits and count them
     :param tiles_34: array of tiles to count

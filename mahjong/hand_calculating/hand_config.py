@@ -1,3 +1,5 @@
+from typing import Optional
+
 from mahjong.constants import EAST
 from mahjong.hand_calculating.yaku_config import YakuConfig
 
@@ -36,21 +38,21 @@ class OptionalRules:
 
     def __init__(
         self,
-        has_open_tanyao=False,
-        has_aka_dora=False,
-        has_double_yakuman=True,
-        kazoe_limit=HandConstants.KAZOE_LIMITED,
-        kiriage=False,
-        fu_for_open_pinfu=True,
-        fu_for_pinfu_tsumo=False,
-        renhou_as_yakuman=False,
-        has_daisharin=False,
-        has_daisharin_other_suits=False,
-        has_sashikomi_yakuman=False,
-        limit_to_sextuple_yakuman=True,
-        paarenchan_needs_yaku=True,
-        has_daichisei=False,
-    ):
+        has_open_tanyao: bool = False,
+        has_aka_dora: bool = False,
+        has_double_yakuman: bool = True,
+        kazoe_limit: int = HandConstants.KAZOE_LIMITED,
+        kiriage: bool = False,
+        fu_for_open_pinfu: bool = True,
+        fu_for_pinfu_tsumo: bool = False,
+        renhou_as_yakuman: bool = False,
+        has_daisharin: bool = False,
+        has_daisharin_other_suits: bool = False,
+        has_sashikomi_yakuman: bool = False,
+        limit_to_sextuple_yakuman: bool = True,
+        paarenchan_needs_yaku: bool = True,
+        has_daichisei: bool = False,
+    ) -> None:
         self.has_open_tanyao = has_open_tanyao
         self.has_aka_dora = has_aka_dora
         self.has_double_yakuman = has_double_yakuman
@@ -100,26 +102,26 @@ class HandConfig(HandConstants):
 
     def __init__(
         self,
-        is_tsumo=False,
-        is_riichi=False,
-        is_ippatsu=False,
-        is_rinshan=False,
-        is_chankan=False,
-        is_haitei=False,
-        is_houtei=False,
-        is_daburu_riichi=False,
-        is_nagashi_mangan=False,
-        is_tenhou=False,
-        is_renhou=False,
-        is_chiihou=False,
-        is_open_riichi=False,
-        player_wind=None,
-        round_wind=None,
-        kyoutaku_number=0,
-        tsumi_number=0,
-        paarenchan=0,
-        options=None,
-    ):
+        is_tsumo: bool = False,
+        is_riichi: bool = False,
+        is_ippatsu: bool = False,
+        is_rinshan: bool = False,
+        is_chankan: bool = False,
+        is_haitei: bool = False,
+        is_houtei: bool = False,
+        is_daburu_riichi: bool = False,
+        is_nagashi_mangan: bool = False,
+        is_tenhou: bool = False,
+        is_renhou: bool = False,
+        is_chiihou: bool = False,
+        is_open_riichi: bool = False,
+        player_wind: Optional[int] = None,
+        round_wind: Optional[int] = None,
+        kyoutaku_number: int = 0,
+        tsumi_number: int = 0,
+        paarenchan: int = 0,
+        options: Optional[OptionalRules] = None,
+    ) -> None:
         self.yaku = YakuConfig()
         self.options = options or OptionalRules()
 

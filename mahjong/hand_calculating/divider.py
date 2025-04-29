@@ -2,7 +2,7 @@ import hashlib
 import itertools
 import marshal
 from functools import reduce
-from typing import List
+from typing import Optional
 
 from mahjong.constants import HONOR_INDICES
 from mahjong.meld import Meld
@@ -13,10 +13,15 @@ class HandDivider:
     divider_cache = None
     cache_key = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.divider_cache = {}
 
-    def divide_hand(self, tiles_34, melds=None, use_cache=False):
+    def divide_hand(
+        self,
+        tiles_34: list[int],
+        melds: Optional[list[Meld]] = None,
+        use_cache: bool = False,
+    ) -> list[list[list[int]]]:
         """
         Return a list of possible hands.
         :param tiles_34:
@@ -42,7 +47,7 @@ class HandDivider:
         pair_indices = self.find_pairs(closed_hand_tiles_34)
 
         # let's try to find all possible hand options
-        hands = []
+        hands: list[list[list[int]]] = []
         for pair_index in pair_indices:
             local_tiles_34 = tiles_34[:]
 
@@ -84,7 +89,7 @@ class HandDivider:
 
             # let's find all possible hand from our valid sets
             for s in itertools.product(*arrays):
-                hand = []
+                hand: list[list[int]] = []
                 for item in list(s):
                     if isinstance(item[0], list):
                         for x in item:
@@ -118,7 +123,7 @@ class HandDivider:
 
         return result
 
-    def find_pairs(self, tiles_34, first_index=0, second_index=33):
+    def find_pairs(self, tiles_34: list[int], first_index: int = 0, second_index: int = 33) -> list[int]:
         """
         Find all possible pairs in the hand and return their indices
         :return: array of pair indices
@@ -134,7 +139,13 @@ class HandDivider:
 
         return pair_indices
 
-    def find_valid_combinations(self, tiles_34, first_index, second_index, hand_not_completed=False):
+    def find_valid_combinations(
+        self,
+        tiles_34: list[int],
+        first_index: int,
+        second_index: int,
+        hand_not_completed: bool = False,
+    ):
         """
         Find and return all valid set combinations in given suit
         :param tiles_34:
@@ -153,7 +164,7 @@ class HandDivider:
 
         all_possible_combinations = list(itertools.permutations(indices, 3))
 
-        def is_valid_combination(possible_set):
+        def is_valid_combination(possible_set: tuple[int, int, int]) -> bool:
             if is_chi(possible_set):
                 return True
 
@@ -237,10 +248,10 @@ class HandDivider:
 
         return combinations_results
 
-    def clear_cache(self):
+    def clear_cache(self) -> None:
         self.divider_cache = {}
         self.cache_key = None
 
-    def _build_divider_cache_key(self, tiles_34: List[int], melds: List[Meld]) -> str:
+    def _build_divider_cache_key(self, tiles_34: list[int], melds: list[Meld]) -> str:
         prepared_array = tiles_34 + (melds and [x.tiles for x in melds] or [])
         return hashlib.md5(marshal.dumps(prepared_array)).hexdigest()
