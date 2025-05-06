@@ -162,9 +162,9 @@ for fu_item in result.fu_details:
 
 Output:
 ```
-95 160
-50706024009129176059868128215100
-[Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu kantsu, Tsuu iisou, Suu ankou tanki, Dora 24]
+103 160
+12980742146337069071326240823050300
+[Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu Kantsu, Tsuu Iisou, Suu Ankou Tanki, Dora 32]
 {'fu': 32, 'reason': 'closed_terminal_kan'}
 {'fu': 32, 'reason': 'closed_terminal_kan'}
 {'fu': 32, 'reason': 'closed_terminal_kan'}
