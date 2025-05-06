@@ -140,7 +140,7 @@ Aotenjou scoring rules
 ======================
 
 ```python
-tiles = self.TilesConverter.string_to_136_array(honors='11133555666777')
+tiles = self.TilesConverter.string_to_136_array(honors='111133555566667777')
 win_tile = self.TilesConverter.string_to_136_array(honors='3')[0]
 
 melds = [
