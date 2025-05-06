@@ -137,8 +137,8 @@ print(result)
 ### 青天井规则
 
 ```python
-tiles = self.TilesConverter.string_to_136_array(honors='111133555566667777')
-win_tile = self.TilesConverter.string_to_136_array(honors='3')[0]
+tiles = TilesConverter.string_to_136_array(honors='111133555566667777')
+win_tile = TilesConverter.string_to_136_array(honors='3')[0]
 
 melds = [
     Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='1111'), opened=False),
