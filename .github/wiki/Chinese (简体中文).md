@@ -112,7 +112,7 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
+输出:
 
     1 30
     1000
@@ -157,7 +157,7 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
+输出:
 
     103 160
     12980742146337069071326240823050300
