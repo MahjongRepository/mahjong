@@ -1,7 +1,0 @@
-[flake8]
-ignore = E203, E266, E501, W503
-max-line-length = 120
-select = B,C,E,F,W,T4,B9
-exclude =
-    mahjong/hand_calculating/yaku_list/__init__.py,
-    mahjong/hand_calculating/yaku_list/yakuman/__init__.py

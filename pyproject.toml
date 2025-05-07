@@ -1,31 +1,71 @@
-[tool.black]
+[project]
+name = "mahjong"
+version = "1.2.1"
+description = "Mahjong hands calculation"
+authors = [
+    { name = "Alexey Lisikhin", email = "alexey@nihisil.com" },
+]
+license = "MIT"
+license-files = ["LICENSE.txt"]
+readme = "README.md"
+requires-python = ">= 3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/MahjongRepository/mahjong"
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = [
+    "mahjong",
+    "mahjong.hand_calculating",
+    "mahjong.hand_calculating.yaku_list",
+    "mahjong.hand_calculating.yaku_list.yakuman",
+]
+
+[dependency-groups]
+dev = [
+    { include-group = "lint" },
+    { include-group = "test" },
+]
+lint = [
+    "ruff>=0.11.6,<0.12",
+]
+test = [
+    "pytest>=7.4.3,<8",
+    "pytest-cov>=4.1.0,<5",
+]
+
+[tool.ruff]
+target-version = "py38"
 line-length = 120
-target-version = ['py38']
-exclude = '''
-/(
-    \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
+extend-exclude = [
+    "build",
 
-  # Project related excludes
-  | migrations
-)/
-'''
+    # Project related excludes
+    "migrations",
+]
 
-[tool.isort]
-force_grid_wrap = 0
-include_trailing_comma = true
-line_length = 120
-multi_line_output = 3
-use_parentheses = true
-skip_glob = "migrations"
+[tool.ruff.lint]
+select = ["B", "C", "E", "F", "W", "T"]
+ignore = ["E203", "E266", "E501"]
+exclude = [
+    "mahjong/hand_calculating/yaku_list/__init__.py",
+    "mahjong/hand_calculating/yaku_list/yakuman/__init__.py",
+]
 
 [tool.pytest.ini_options]
 python_files = "tests_*.py"
