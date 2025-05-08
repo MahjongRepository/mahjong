@@ -1,4 +1,4 @@
-Python 3.8+ is supported.
+Python 3.9+ is supported.
 
 If you need Python 2 support you can use v1.1.11 version of the library.
 
