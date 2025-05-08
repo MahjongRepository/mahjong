@@ -64,10 +64,9 @@ extend-exclude = [
 [tool.ruff.lint]
 select = ["ANN", "B", "C", "E", "F", "I", "W"]
 ignore = ["ANN002", "ANN003", "E203", "E266", "E501", "C901"]
-exclude = [
-    "mahjong/hand_calculating/yaku_list/__init__.py",
-    "mahjong/hand_calculating/yaku_list/yakuman/__init__.py",
-]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
 
 [tool.pytest.ini_options]
 python_files = "tests_*.py"
