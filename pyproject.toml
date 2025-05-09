@@ -8,13 +8,12 @@ authors = [
 license = "MIT"
 license-files = ["LICENSE.txt"]
 readme = "README.md"
-requires-python = ">= 3.8"
+requires-python = ">= 3.9"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -36,6 +35,9 @@ packages = [
     "mahjong.hand_calculating.yaku_list.yakuman",
 ]
 
+[tool.setuptools.package-data]
+mahjong = ["py.typed"]
+
 [dependency-groups]
 dev = [
     { include-group = "lint" },
@@ -45,12 +47,12 @@ lint = [
     "ruff>=0.11.6,<0.12",
 ]
 test = [
-    "pytest>=7.4.3,<8",
-    "pytest-cov>=4.1.0,<5",
+    "pytest>=8.3.5,<9",
+    "pytest-cov>=6.1.1,<7",
 ]
 
 [tool.ruff]
-target-version = "py38"
+target-version = "py39"
 line-length = 120
 extend-exclude = [
     "build",
