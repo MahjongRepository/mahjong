@@ -37,7 +37,9 @@ class Shanten:
         pairs = len([x for x in tiles_34 if x >= 2])
         if pairs == 7:
             return Shanten.AGARI_STATE
-        return 6 - pairs
+
+        kinds = len([x for x in tiles_34 if x >= 1])
+        return 6 - pairs + (7 - kinds if kinds < 7 else 0)
 
     def calculate_shanten_for_kokushi_hand(self, tiles_34: List[int]) -> int:
         """

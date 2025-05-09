@@ -89,6 +89,9 @@ def test_shanten_number_and_chiitoitsu():
     tiles = TilesConverter.string_to_34_array(sou="124367", pin="13479", man="76", honors="1")
     assert shanten.calculate_shanten_for_chiitoitsu_hand(tiles) == 6
 
+    tiles = TilesConverter.string_to_34_array(sou="66677888", pin="55", man="2255")
+    assert shanten.calculate_shanten_for_chiitoitsu_hand(tiles) == 1
+
 
 def test_shanten_number_and_kokushi():
     shanten = Shanten()
