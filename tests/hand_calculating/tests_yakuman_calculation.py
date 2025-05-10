@@ -407,9 +407,9 @@ def test_kokushi_musou_multiple_yakuman():
     assert hand_calculation.error is None
     assert len(hand_calculation.yaku) == 1
     assert hand_config.yaku.kokushi in hand_calculation.yaku
-    assert not (hand_config.yaku.daburu_kokushi in hand_calculation.yaku)
-    assert not (hand_config.yaku.tenhou in hand_calculation.yaku)
-    assert not (hand_config.yaku.chiihou in hand_calculation.yaku)
+    assert hand_config.yaku.daburu_kokushi not in hand_calculation.yaku
+    assert hand_config.yaku.tenhou not in hand_calculation.yaku
+    assert hand_config.yaku.chiihou not in hand_calculation.yaku
     assert hand_calculation.han == 13
 
     hand_config = HandConfig(is_tsumo=True, is_tenhou=True, is_chiihou=False)
@@ -419,9 +419,9 @@ def test_kokushi_musou_multiple_yakuman():
     assert hand_calculation.error is None
     assert len(hand_calculation.yaku) == 2
     assert hand_config.yaku.kokushi in hand_calculation.yaku
-    assert not (hand_config.yaku.daburu_kokushi in hand_calculation.yaku)
+    assert hand_config.yaku.daburu_kokushi not in hand_calculation.yaku
     assert hand_config.yaku.tenhou in hand_calculation.yaku
-    assert not (hand_config.yaku.chiihou in hand_calculation.yaku)
+    assert hand_config.yaku.chiihou not in hand_calculation.yaku
     assert hand_calculation.han == 26
 
     hand_config = HandConfig(is_tsumo=True, is_tenhou=False, is_chiihou=True)
@@ -431,8 +431,8 @@ def test_kokushi_musou_multiple_yakuman():
     assert hand_calculation.error is None
     assert len(hand_calculation.yaku) == 2
     assert hand_config.yaku.kokushi in hand_calculation.yaku
-    assert not (hand_config.yaku.daburu_kokushi in hand_calculation.yaku)
-    assert not (hand_config.yaku.tenhou in hand_calculation.yaku)
+    assert hand_config.yaku.daburu_kokushi not in hand_calculation.yaku
+    assert hand_config.yaku.tenhou not in hand_calculation.yaku
     assert hand_config.yaku.chiihou in hand_calculation.yaku
     assert hand_calculation.han == 26
 
@@ -447,10 +447,10 @@ def test_kokushi_musou_multiple_yakuman():
 
     assert hand_calculation.error is None
     assert len(hand_calculation.yaku) == 1
-    assert not (hand_config.yaku.kokushi in hand_calculation.yaku)
+    assert hand_config.yaku.kokushi not in hand_calculation.yaku
     assert hand_config.yaku.daburu_kokushi in hand_calculation.yaku
-    assert not (hand_config.yaku.tenhou in hand_calculation.yaku)
-    assert not (hand_config.yaku.chiihou in hand_calculation.yaku)
+    assert hand_config.yaku.tenhou not in hand_calculation.yaku
+    assert hand_config.yaku.chiihou not in hand_calculation.yaku
     assert hand_calculation.han == 26
 
     hand_config = HandConfig(is_tsumo=True, is_tenhou=True, is_chiihou=False)
@@ -459,10 +459,10 @@ def test_kokushi_musou_multiple_yakuman():
 
     assert hand_calculation.error is None
     assert len(hand_calculation.yaku) == 2
-    assert not (hand_config.yaku.kokushi in hand_calculation.yaku)
+    assert hand_config.yaku.kokushi not in hand_calculation.yaku
     assert hand_config.yaku.daburu_kokushi in hand_calculation.yaku
     assert hand_config.yaku.tenhou in hand_calculation.yaku
-    assert not (hand_config.yaku.chiihou in hand_calculation.yaku)
+    assert hand_config.yaku.chiihou not in hand_calculation.yaku
     assert hand_calculation.han == 39
 
     hand_config = HandConfig(is_tsumo=True, is_tenhou=False, is_chiihou=True)
@@ -471,9 +471,9 @@ def test_kokushi_musou_multiple_yakuman():
 
     assert hand_calculation.error is None
     assert len(hand_calculation.yaku) == 2
-    assert not (hand_config.yaku.kokushi in hand_calculation.yaku)
+    assert hand_config.yaku.kokushi not in hand_calculation.yaku
     assert hand_config.yaku.daburu_kokushi in hand_calculation.yaku
-    assert not (hand_config.yaku.tenhou in hand_calculation.yaku)
+    assert hand_config.yaku.tenhou not in hand_calculation.yaku
     assert hand_config.yaku.chiihou in hand_calculation.yaku
     assert hand_calculation.han == 39
 
@@ -483,11 +483,11 @@ def test_kokushi_musou_multiple_yakuman():
 
     assert hand_calculation.error is None
     assert len(hand_calculation.yaku) == 2
-    assert not (hand_config.yaku.kokushi in hand_calculation.yaku)
+    assert hand_config.yaku.kokushi not in hand_calculation.yaku
     assert hand_config.yaku.daburu_kokushi in hand_calculation.yaku
     assert hand_config.yaku.renhou_yakuman in hand_calculation.yaku
-    assert not (hand_config.yaku.tenhou in hand_calculation.yaku)
-    assert not (hand_config.yaku.chiihou in hand_calculation.yaku)
+    assert hand_config.yaku.tenhou not in hand_calculation.yaku
+    assert hand_config.yaku.chiihou not in hand_calculation.yaku
     assert hand_calculation.han == 39
 
     hand_config = HandConfig(
@@ -502,12 +502,12 @@ def test_kokushi_musou_multiple_yakuman():
 
     assert hand_calculation.error is None
     assert len(hand_calculation.yaku) == 3
-    assert not (hand_config.yaku.kokushi in hand_calculation.yaku)
+    assert hand_config.yaku.kokushi not in hand_calculation.yaku
     assert hand_config.yaku.daburu_kokushi in hand_calculation.yaku
     assert hand_config.yaku.renhou_yakuman in hand_calculation.yaku
     assert hand_config.yaku.sashikomi in hand_calculation.yaku
-    assert not (hand_config.yaku.tenhou in hand_calculation.yaku)
-    assert not (hand_config.yaku.chiihou in hand_calculation.yaku)
+    assert hand_config.yaku.tenhou not in hand_calculation.yaku
+    assert hand_config.yaku.chiihou not in hand_calculation.yaku
     assert hand_calculation.han == 52
 
 
