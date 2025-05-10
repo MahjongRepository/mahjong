@@ -48,6 +48,15 @@ def test_shanten_number():
     tiles = TilesConverter.string_to_34_array(man="1111222235555", honors="1")
     assert shanten.calculate_shanten(tiles) == 0
 
+    tiles = TilesConverter.string_to_34_array(honors="11112222333444")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 1
+
+    tiles = TilesConverter.string_to_34_array(man="11", honors="111122223333")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 2
+
+    tiles = TilesConverter.string_to_34_array(man="23", honors="111122223333")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 2
+
 
 def test_shanten_for_not_completed_hand():
     shanten = Shanten()
@@ -60,6 +69,27 @@ def test_shanten_for_not_completed_hand():
 
     tiles = TilesConverter.string_to_34_array(sou="111345677", man="56")
     assert shanten.calculate_shanten_for_regular_hand(tiles) == 0
+
+    tiles = TilesConverter.string_to_34_array(man="123456789", honors="1111")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 1
+
+    tiles = TilesConverter.string_to_34_array(man="123456789", pin="1111")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 1
+
+    tiles = TilesConverter.string_to_34_array(sou="112233", pin="123", man="1111")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 1
+
+    tiles = TilesConverter.string_to_34_array(honors="1111222333444")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 1
+
+    tiles = TilesConverter.string_to_34_array(man="11", honors="11112222333")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 2
+
+    tiles = TilesConverter.string_to_34_array(man="23", honors="11112222333")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 2
+
+    tiles = TilesConverter.string_to_34_array(honors="1111222233334")
+    assert shanten.calculate_shanten_for_regular_hand(tiles) == 3
 
 
 def test_shanten_number_and_chiitoitsu():
