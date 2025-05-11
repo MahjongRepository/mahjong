@@ -35,7 +35,7 @@ class FuCalculator:
         win_tile: int,
         win_group: Sequence[int],
         config: HandConfig,
-        valued_tiles: Optional[Collection[int]] = None,
+        valued_tiles: Optional[Sequence[int]] = None,
         melds: Optional[Collection[Meld]] = None,
     ) -> tuple[list[dict[str, Any]], int]:
         """
@@ -105,8 +105,8 @@ class FuCalculator:
             fu_details.append({"fu": 2, "reason": FuCalculator.PAIR_WAIT})
 
         for set_item in pon_sets:
-            open_meld = [x for x in melds if set_item == x.tiles_34]
-            open_meld = open_meld and open_meld[0] or None
+            open_melds = [x for x in melds if set_item == x.tiles_34]
+            open_meld = open_melds[0] if open_melds else None
 
             set_was_open = open_meld and open_meld.opened or False
             is_kan_set = (open_meld and (open_meld.type == Meld.KAN or open_meld.type == Meld.SHOUMINKAN)) or False
