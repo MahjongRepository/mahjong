@@ -1,4 +1,5 @@
 import warnings
+from collections.abc import Sequence
 from typing import Optional
 
 from mahjong.tile import TilesConverter
@@ -22,14 +23,14 @@ class Meld:
     def __init__(
         self,
         meld_type: Optional[str] = None,
-        tiles: Optional[list[int]] = None,
+        tiles: Optional[Sequence[int]] = None,
         opened: bool = True,
         called_tile: Optional[int] = None,
         who: Optional[int] = None,
         from_who: Optional[int] = None,
     ) -> None:
         self.type = meld_type
-        self.tiles = tiles or []
+        self.tiles = list(tiles) if tiles else []
         self.opened = opened
         self.called_tile = called_tile
         self.who = who

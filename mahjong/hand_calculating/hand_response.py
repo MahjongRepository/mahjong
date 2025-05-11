@@ -1,3 +1,4 @@
+from collections.abc import Collection
 from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
@@ -17,7 +18,7 @@ class HandResponse:
         cost: Optional[dict] = None,
         han: Optional[int] = None,
         fu: Optional[int] = None,
-        yaku: Optional[list[Yaku]] = None,
+        yaku: Optional[Collection[Yaku]] = None,
         error: Optional[str] = None,
         fu_details: Optional[dict] = None,
         is_open_hand: bool = False,
