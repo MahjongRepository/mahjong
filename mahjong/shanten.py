@@ -1,4 +1,3 @@
-import math
 from typing import List
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
@@ -71,7 +70,7 @@ class Shanten:
 
         self._remove_character_tiles(count_of_tiles)
 
-        init_mentsu = math.floor((14 - count_of_tiles) / 3)
+        init_mentsu = (14 - count_of_tiles) // 3
         self._scan(init_mentsu)
 
         return self.min_shanten
@@ -285,41 +284,6 @@ class Shanten:
     def _decrease_isolated_tile(self, k: int):
         self.tiles[k] += 1
         self.number_isolated_tiles &= ~(1 << k)
-
-    def _scan_chiitoitsu_and_kokushi(self, chiitoitsu: bool, kokushi: bool):
-        shanten = self.min_shanten
-
-        indices = [0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33]
-
-        completed_terminals = 0
-        for i in indices:
-            completed_terminals += self.tiles[i] >= 2
-
-        terminals = 0
-        for i in indices:
-            terminals += self.tiles[i] != 0
-
-        indices = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25]
-
-        completed_pairs = completed_terminals
-        for i in indices:
-            completed_pairs += self.tiles[i] >= 2
-
-        pairs = terminals
-        for i in indices:
-            pairs += self.tiles[i] != 0
-
-        if chiitoitsu:
-            ret_shanten = 6 - completed_pairs + (pairs < 7 and 7 - pairs or 0)
-            if ret_shanten < shanten:
-                shanten = ret_shanten
-
-        if kokushi:
-            ret_shanten = 13 - terminals - (completed_terminals and 1 or 0)
-            if ret_shanten < shanten:
-                shanten = ret_shanten
-
-        return shanten
 
     def _remove_character_tiles(self, nc: int):
         number = 0
