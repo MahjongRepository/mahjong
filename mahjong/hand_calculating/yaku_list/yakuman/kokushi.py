@@ -23,7 +23,7 @@ class KokushiMusou(Yaku):
 
         self.is_yakuman = True
 
-    def is_condition_met(self, hand: Collection[Sequence[int]], tiles_34: Sequence[int], *args) -> bool:
+    def is_condition_met(self, hand: Optional[Collection[Sequence[int]]], tiles_34: Sequence[int], *args) -> bool:
         if (
             tiles_34[0]
             * tiles_34[8]

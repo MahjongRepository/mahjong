@@ -1,3 +1,4 @@
+from collections.abc import Collection, Sequence
 from typing import Any, Optional
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
@@ -30,12 +31,12 @@ class FuCalculator:
 
     def calculate_fu(
         self,
-        hand: list[list[int]],
+        hand: Collection[Sequence[int]],
         win_tile: int,
-        win_group: list[int],
+        win_group: Sequence[int],
         config: HandConfig,
-        valued_tiles: Optional[list[int]] = None,
-        melds: Optional[list[Meld]] = None,
+        valued_tiles: Optional[Collection[int]] = None,
+        melds: Optional[Collection[Meld]] = None,
     ) -> tuple[list[dict[str, Any]], int]:
         """
         Calculate hand fu with explanations
@@ -68,9 +69,9 @@ class FuCalculator:
         closed_chi_sets = []
         for x in hand:
             if x not in copied_opened_melds:
-                closed_chi_sets.append(x)
+                closed_chi_sets.append(list(x))
             else:
-                copied_opened_melds.remove(x)
+                copied_opened_melds.remove(list(x))
 
         is_open_hand = any(x.opened for x in melds)
 
@@ -155,7 +156,7 @@ class FuCalculator:
 
         return fu_details, self.round_fu(fu_details)
 
-    def round_fu(self, fu_details: list[dict[str, Any]]) -> int:
+    def round_fu(self, fu_details: Collection[dict[str, Any]]) -> int:
         # 22 -> 30 and etc.
         fu = sum([x["fu"] for x in fu_details])
         return (fu + 9) // 10 * 10

@@ -415,7 +415,7 @@ class HandCalculator:
 
                 # we don't need to add dora to yakuman
                 if not yakuman_list:
-                    tiles_for_dora = tiles[:]
+                    tiles_for_dora = list(tiles)
 
                     count_of_dora = 0
                     count_of_aka_dora = 0
@@ -503,7 +503,7 @@ class HandCalculator:
                 else:
                     fu = 40
 
-                tiles_for_dora = tiles[:]
+                tiles_for_dora = list(tiles)
 
                 count_of_dora = 0
                 count_of_aka_dora = 0
