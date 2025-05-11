@@ -1,9 +1,8 @@
-from mahjong.tile import TilesConverter
-from tests.utils_for_tests import _make_meld, _string_to_136_tile
-
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.meld import Meld
+from mahjong.tile import TilesConverter
+from tests.utils_for_tests import _make_meld, _string_to_136_tile
 
 
 def _string(hand):

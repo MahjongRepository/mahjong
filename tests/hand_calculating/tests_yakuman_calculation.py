@@ -1,10 +1,9 @@
-from tests.utils_for_tests import _hand, _make_hand_config, _make_meld, _string_to_136_tile
-
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.hand_calculating.yaku_config import YakuConfig
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
+from tests.utils_for_tests import _hand, _make_hand_config, _make_meld, _string_to_136_tile
 
 
 def test_is_tenhou():

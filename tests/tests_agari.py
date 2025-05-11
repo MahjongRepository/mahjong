@@ -1,7 +1,6 @@
+from mahjong.agari import Agari
 from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _string_to_open_34_set
-
-from mahjong.agari import Agari
 
 
 def test_is_agari():

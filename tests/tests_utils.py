@@ -1,7 +1,6 @@
-from tests.utils_for_tests import _string_to_34_tile
-
 from mahjong.tile import TilesConverter
 from mahjong.utils import find_isolated_tile_indices, is_tile_strictly_isolated
+from tests.utils_for_tests import _string_to_34_tile
 
 
 def test_find_isolated_tiles():

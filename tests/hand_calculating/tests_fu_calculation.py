@@ -1,11 +1,10 @@
-from mahjong.tile import TilesConverter
-from tests.utils_for_tests import _hand, _make_meld, _string_to_136_tile
-
 from mahjong.constants import EAST
 from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.meld import Meld
+from mahjong.tile import TilesConverter
+from tests.utils_for_tests import _hand, _make_meld, _string_to_136_tile
 
 
 def _get_win_group(hand, win_tile):
