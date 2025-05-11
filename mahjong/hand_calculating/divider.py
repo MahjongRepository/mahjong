@@ -91,7 +91,7 @@ class HandDivider:
             # let's find all possible hand from our valid sets
             for s in itertools.product(*arrays):
                 hand: list[list[int]] = []
-                for item in list(s):
+                for item in s:
                     if isinstance(item[0], list):
                         for x in item:
                             hand.append(x)
