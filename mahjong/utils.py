@@ -1,4 +1,4 @@
-from typing import List
+from collections.abc import Collection, Sequence
 
 from mahjong.constants import CHUN, EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, TERMINAL_INDICES
 
@@ -16,7 +16,7 @@ def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
     return False
 
 
-def plus_dora(tile_136: int, dora_indicators_136: List[int], add_aka_dora: bool = False) -> int:
+def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora: bool = False) -> int:
     """
     Calculate the number of dora for the tile
     """
@@ -62,7 +62,7 @@ def plus_dora(tile_136: int, dora_indicators_136: List[int], add_aka_dora: bool 
     return dora_count
 
 
-def is_chi(item):
+def is_chi(item: Sequence[int]) -> bool:
     """
     :param item: array of tile 34 indices
     :return: boolean
@@ -73,7 +73,7 @@ def is_chi(item):
     return item[0] == item[1] - 1 == item[2] - 2
 
 
-def is_pon(item):
+def is_pon(item: Sequence[int]) -> bool:
     """
     :param item: array of tile 34 indices
     :return: boolean
@@ -84,15 +84,15 @@ def is_pon(item):
     return item[0] == item[1] == item[2]
 
 
-def is_kan(item: List[int]) -> bool:
+def is_kan(item: Sequence[int]) -> bool:
     return len(item) == 4
 
 
-def is_pon_or_kan(item: List[int]) -> bool:
+def is_pon_or_kan(item: Sequence[int]) -> bool:
     return is_pon(item) or is_kan(item)
 
 
-def is_pair(item):
+def is_pair(item: Sequence[int]) -> bool:
     """
     :param item: array of tile 34 indices
     :return: boolean
@@ -100,7 +100,7 @@ def is_pair(item):
     return len(item) == 2
 
 
-def is_man(tile):
+def is_man(tile: int) -> bool:
     """
     :param tile: 34 tile format
     :return: boolean
@@ -108,7 +108,7 @@ def is_man(tile):
     return tile <= 8
 
 
-def is_pin(tile):
+def is_pin(tile: int) -> bool:
     """
     :param tile: 34 tile format
     :return: boolean
@@ -116,7 +116,7 @@ def is_pin(tile):
     return 8 < tile <= 17
 
 
-def is_sou(tile):
+def is_sou(tile: int) -> bool:
     """
     :param tile: 34 tile format
     :return: boolean
@@ -124,7 +124,7 @@ def is_sou(tile):
     return 17 < tile <= 26
 
 
-def is_honor(tile):
+def is_honor(tile: int) -> bool:
     """
     :param tile: 34 tile format
     :return: boolean
@@ -136,7 +136,7 @@ def is_sangenpai(tile_34: int) -> bool:
     return tile_34 >= 31
 
 
-def is_terminal(tile):
+def is_terminal(tile: int) -> bool:
     """
     :param tile: 34 tile format
     :return: boolean
@@ -144,7 +144,7 @@ def is_terminal(tile):
     return tile in TERMINAL_INDICES
 
 
-def is_dora_indicator_for_terminal(tile):
+def is_dora_indicator_for_terminal(tile: int) -> bool:
     """
     :param tile: 34 tile format
     :return: boolean
@@ -152,7 +152,7 @@ def is_dora_indicator_for_terminal(tile):
     return tile == 7 or tile == 8 or tile == 16 or tile == 17 or tile == 25 or tile == 26
 
 
-def contains_terminals(hand_set):
+def contains_terminals(hand_set: Collection[int]) -> bool:
     """
     :param hand_set: array of 34 tiles
     :return: boolean
@@ -160,7 +160,7 @@ def contains_terminals(hand_set):
     return any(x in TERMINAL_INDICES for x in hand_set)
 
 
-def simplify(tile):
+def simplify(tile: int) -> int:
     """
     :param tile: 34 tile format
     :return: tile: 0-8 presentation
@@ -168,7 +168,7 @@ def simplify(tile):
     return tile - 9 * (tile // 9)
 
 
-def find_isolated_tile_indices(hand_34):
+def find_isolated_tile_indices(hand_34: Sequence[int]) -> list[int]:
     """
     Tiles that don't have -1, 0 and +1 neighbors
     :param hand_34: array of tiles in 34 tile format
@@ -199,7 +199,7 @@ def find_isolated_tile_indices(hand_34):
     return isolated_indices
 
 
-def is_tile_strictly_isolated(hand_34, tile_34):
+def is_tile_strictly_isolated(hand_34: Sequence[int], tile_34: int) -> bool:
     """
     Tile is strictly isolated if it doesn't have -2, -1, 0, +1, +2 neighbors
     :param hand_34: array of tiles in 34 tile format
@@ -239,7 +239,7 @@ def is_tile_strictly_isolated(hand_34, tile_34):
     return isolated
 
 
-def count_tiles_by_suits(tiles_34):
+def count_tiles_by_suits(tiles_34: Sequence[int]) -> list[dict]:
     """
     Separate tiles by suits and count them
     :param tiles_34: array of tiles to count
@@ -258,7 +258,7 @@ def count_tiles_by_suits(tiles_34):
             continue
 
         for item in suits:
-            if item["function"](x):
-                item["count"] += tile
+            if item["function"](x):  # type: ignore
+                item["count"] += tile  # type: ignore
 
     return suits

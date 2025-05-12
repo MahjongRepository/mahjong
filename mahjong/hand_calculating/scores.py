@@ -1,8 +1,12 @@
+from collections.abc import MutableSequence, MutableSet
+from typing import Any, Union
+
 from mahjong.hand_calculating.hand_config import HandConfig
+from mahjong.hand_calculating.yaku import Yaku
 
 
 class ScoresCalculator:
-    def calculate_scores(self, han, fu, config, is_yakuman=False):
+    def calculate_scores(self, han: int, fu: int, config: HandConfig, is_yakuman: bool = False) -> dict[str, Any]:
         """
         Calculate how much scores cost a hand with given han and fu
         :param han: int
@@ -162,8 +166,8 @@ class ScoresCalculator:
 
 
 class Aotenjou(ScoresCalculator):
-    def calculate_scores(self, han, fu, config, is_yakuman=False):
-        base_points = fu * pow(2, 2 + han)
+    def calculate_scores(self, han: int, fu: int, config: HandConfig, is_yakuman: bool = False) -> dict[str, int]:
+        base_points: int = fu * pow(2, 2 + han)
         rounded = (base_points + 99) // 100 * 100
         double_rounded = (2 * base_points + 99) // 100 * 100
         four_rounded = (4 * base_points + 99) // 100 * 100
@@ -174,7 +178,11 @@ class Aotenjou(ScoresCalculator):
         else:
             return {"main": config.is_dealer and six_rounded or four_rounded, "additional": 0}
 
-    def aotenjou_filter_yaku(self, hand_yaku, config):
+    def aotenjou_filter_yaku(
+        self,
+        hand_yaku: Union[MutableSequence[Yaku], MutableSet[Yaku]],
+        config: HandConfig,
+    ) -> None:
         # in aotenjou yakumans are normal yaku
         # but we need to filter lower yaku that are precursors to yakumans
         if config.yaku.daisangen in hand_yaku:

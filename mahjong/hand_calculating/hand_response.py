@@ -1,3 +1,9 @@
+from collections.abc import Collection
+from typing import Optional
+
+from mahjong.hand_calculating.yaku import Yaku
+
+
 class HandResponse:
     cost = None
     han = None
@@ -7,7 +13,16 @@ class HandResponse:
     error = None
     is_open_hand = False
 
-    def __init__(self, cost=None, han=None, fu=None, yaku=None, error=None, fu_details=None, is_open_hand=False):
+    def __init__(
+        self,
+        cost: Optional[dict] = None,
+        han: Optional[int] = None,
+        fu: Optional[int] = None,
+        yaku: Optional[Collection[Yaku]] = None,
+        error: Optional[str] = None,
+        fu_details: Optional[dict] = None,
+        is_open_hand: bool = False,
+    ) -> None:
         """
         :param cost: dict
         :param han: int
@@ -32,7 +47,7 @@ class HandResponse:
         else:
             self.yaku = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.error:
             return self.error
         else:

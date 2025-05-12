@@ -1,3 +1,6 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_chi
 
@@ -7,10 +10,10 @@ class Iipeiko(Yaku):
     Hand with two identical chi
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(Iipeiko, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 9
 
         self.name = "Iipeiko"
@@ -20,7 +23,7 @@ class Iipeiko(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         chi_sets = [i for i in hand if is_chi(i)]
 
         count_of_identical_chi = 0

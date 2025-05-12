@@ -3,7 +3,7 @@ from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _string_to_open_34_set
 
 
-def test_is_agari():
+def test_is_agari() -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou="123456789", pin="123", man="33")
@@ -25,7 +25,7 @@ def test_is_agari():
     assert agari.is_agari(tiles)
 
 
-def test_is_not_agari():
+def test_is_not_agari() -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou="123456789", pin="12345")
@@ -38,7 +38,7 @@ def test_is_not_agari():
     assert not agari.is_agari(tiles)
 
 
-def test_is_chitoitsu_agari():
+def test_is_chitoitsu_agari() -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou="1133557799", pin="1199")
@@ -51,7 +51,7 @@ def test_is_chitoitsu_agari():
     assert agari.is_agari(tiles)
 
 
-def test_is_kokushi_musou_agari():
+def test_is_kokushi_musou_agari() -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou="19", pin="19", man="199", honors="1234567")
@@ -70,7 +70,7 @@ def test_is_kokushi_musou_agari():
     assert not agari.is_agari(tiles)
 
 
-def test_is_agari_and_open_hand():
+def test_is_agari_and_open_hand() -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou="23455567", pin="222", man="345")

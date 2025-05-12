@@ -7,11 +7,11 @@ from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _hand, _make_meld, _string_to_136_tile
 
 
-def _get_win_group(hand, win_tile):
+def _get_win_group(hand: list[list[int]], win_tile: int) -> list[int]:
     return [x for x in hand if win_tile // 4 in x][0]
 
 
-def test_chitoitsu_fu():
+def test_chitoitsu_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -30,7 +30,7 @@ def test_chitoitsu_fu():
     assert fu == 25
 
 
-def test_open_hand_base():
+def test_open_hand_base() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -46,7 +46,7 @@ def test_open_hand_base():
     assert fu == 30
 
 
-def test_fu_based_on_win_group():
+def test_fu_based_on_win_group() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -65,7 +65,7 @@ def test_fu_based_on_win_group():
     assert fu == 40
 
 
-def test_open_hand_without_additional_fu():
+def test_open_hand_without_additional_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -81,7 +81,7 @@ def test_open_hand_without_additional_fu():
     assert fu == 30
 
 
-def test_open_hand_without_additional_fu_2():
+def test_open_hand_without_additional_fu_2() -> None:
     fu_calculator = FuCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="23478", man="234567", pin="22")
@@ -96,7 +96,7 @@ def test_open_hand_without_additional_fu_2():
     assert fu == 20
 
 
-def test_tsumo_hand_base():
+def test_tsumo_hand_base() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig(is_tsumo=True)
 
@@ -108,7 +108,7 @@ def test_tsumo_hand_base():
     assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
 
 
-def test_tsumo_hand_and_pinfu():
+def test_tsumo_hand_and_pinfu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig(is_tsumo=True)
 
@@ -122,7 +122,7 @@ def test_tsumo_hand_and_pinfu():
     assert fu == 20
 
 
-def test_tsumo_hand_and_disabled_pinfu():
+def test_tsumo_hand_and_disabled_pinfu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig(is_tsumo=True, options=OptionalRules(fu_for_pinfu_tsumo=True))
 
@@ -137,7 +137,7 @@ def test_tsumo_hand_and_disabled_pinfu():
     assert fu == 30
 
 
-def test_tsumo_hand_and_not_pinfu():
+def test_tsumo_hand_and_not_pinfu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig(is_tsumo=True)
 
@@ -151,7 +151,7 @@ def test_tsumo_hand_and_not_pinfu():
     assert fu == 30
 
 
-def test_penchan_fu():
+def test_penchan_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -178,7 +178,7 @@ def test_penchan_fu():
     assert fu == 40
 
 
-def test_kanchan_fu():
+def test_kanchan_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -193,7 +193,7 @@ def test_kanchan_fu():
     assert fu == 40
 
 
-def test_valued_pair_fu():
+def test_valued_pair_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -225,7 +225,7 @@ def test_valued_pair_fu():
     assert fu == 40
 
 
-def test_pair_wait_fu():
+def test_pair_wait_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -240,7 +240,7 @@ def test_pair_wait_fu():
     assert fu == 40
 
 
-def test_closed_pon_fu():
+def test_closed_pon_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -266,7 +266,7 @@ def test_closed_pon_fu():
     assert fu == 40
 
 
-def test_closed_terminal_pon_fu():
+def test_closed_terminal_pon_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -292,7 +292,7 @@ def test_closed_terminal_pon_fu():
     assert fu == 40
 
 
-def test_closed_honor_pon_fu():
+def test_closed_honor_pon_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -318,7 +318,7 @@ def test_closed_honor_pon_fu():
     assert fu == 40
 
 
-def test_open_terminal_pon_fu():
+def test_open_terminal_pon_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -334,7 +334,7 @@ def test_open_terminal_pon_fu():
     assert fu == 30
 
 
-def test_closed_kan_fu():
+def test_closed_kan_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -350,7 +350,7 @@ def test_closed_kan_fu():
     assert fu == 50
 
 
-def test_open_kan_fu():
+def test_open_kan_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -366,7 +366,7 @@ def test_open_kan_fu():
     assert fu == 30
 
 
-def test_closed_terminal_kan_fu():
+def test_closed_terminal_kan_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -382,7 +382,7 @@ def test_closed_terminal_kan_fu():
     assert fu == 70
 
 
-def test_open_terminal_kan_fu():
+def test_open_terminal_kan_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -398,7 +398,7 @@ def test_open_terminal_kan_fu():
     assert fu == 40
 
 
-def test_incorrect_fu_calculation_test_case_1():
+def test_incorrect_fu_calculation_test_case_1() -> None:
     calculator = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="11123456777", man="234")
@@ -412,7 +412,7 @@ def test_incorrect_fu_calculation_test_case_1():
     assert {"fu": 2, "reason": FuCalculator.TSUMO} in result.fu_details
 
 
-def test_incorrect_fu_calculation_test_case_2():
+def test_incorrect_fu_calculation_test_case_2() -> None:
     calculator = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(pin="555", man="11112233444")

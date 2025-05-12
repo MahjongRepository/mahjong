@@ -1,4 +1,8 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.hand_calculating.yaku import Yaku
+from mahjong.meld import Meld
 from mahjong.utils import is_chi, is_pon_or_kan
 
 
@@ -7,10 +11,10 @@ class Sanankou(Yaku):
     Three closed pon sets, the other sets need not to be closed
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(Sanankou, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 29
 
         self.name = "San Ankou"
@@ -20,7 +24,13 @@ class Sanankou(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, win_tile, melds, is_tsumo):
+    def is_condition_met(
+        self,
+        hand: Collection[Sequence[int]],
+        win_tile: int,
+        melds: Collection[Meld],
+        is_tsumo: bool,
+    ) -> bool:
         """
         Three closed pon sets, the other sets need not to be closed
         :param hand: list of hand's sets

@@ -5,14 +5,14 @@ from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _make_meld, _string_to_136_tile
 
 
-def _string(hand):
+def _string(hand: list[list[int]]) -> list[str]:
     results = []
     for set_item in hand:
         results.append(TilesConverter.to_one_line_string([x * 4 for x in set_item]))
     return results
 
 
-def test_simple_hand_dividing():
+def test_simple_hand_dividing() -> None:
     hand = HandDivider()
 
     tiles_34 = TilesConverter.string_to_34_array(man="234567", sou="23455", honors="777")
@@ -21,7 +21,7 @@ def test_simple_hand_dividing():
     assert _string(result[0]) == ["234m", "567m", "234s", "55s", "777z"]
 
 
-def test_second_simple_hand_dividing():
+def test_second_simple_hand_dividing() -> None:
     hand = HandDivider()
 
     tiles_34 = TilesConverter.string_to_34_array(man="123", pin="123", sou="123", honors="11222")
@@ -30,7 +30,7 @@ def test_second_simple_hand_dividing():
     assert _string(result[0]) == ["123m", "123p", "123s", "11z", "222z"]
 
 
-def test_hand_with_pairs_dividing():
+def test_hand_with_pairs_dividing() -> None:
     hand = HandDivider()
 
     tiles_34 = TilesConverter.string_to_34_array(man="23444", pin="344556", sou="333")
@@ -39,7 +39,7 @@ def test_hand_with_pairs_dividing():
     assert _string(result[0]) == ["234m", "44m", "345p", "456p", "333s"]
 
 
-def test_one_suit_hand_dividing():
+def test_one_suit_hand_dividing() -> None:
     hand = HandDivider()
 
     tiles_34 = TilesConverter.string_to_34_array(man="11122233388899")
@@ -49,7 +49,7 @@ def test_one_suit_hand_dividing():
     assert _string(result[1]) == ["123m", "123m", "123m", "888m", "99m"]
 
 
-def test_second_one_suit_hand_dividing():
+def test_second_one_suit_hand_dividing() -> None:
     hand = HandDivider()
 
     tiles_34 = TilesConverter.string_to_34_array(sou="111123666789", honors="11")
@@ -58,7 +58,7 @@ def test_second_one_suit_hand_dividing():
     assert _string(result[0]) == ["111s", "123s", "666s", "789s", "11z"]
 
 
-def test_third_one_suit_hand_dividing():
+def test_third_one_suit_hand_dividing() -> None:
     hand = HandDivider()
 
     tiles_34 = TilesConverter.string_to_34_array(pin="234777888999", honors="22")
@@ -71,7 +71,7 @@ def test_third_one_suit_hand_dividing():
     assert _string(result[0]) == ["234p", "789p", "789p", "789p", "22z"]
 
 
-def test_chitoitsu_like_hand_dividing():
+def test_chitoitsu_like_hand_dividing() -> None:
     hand = HandDivider()
 
     tiles_34 = TilesConverter.string_to_34_array(man="112233", pin="99", sou="445566")
@@ -81,7 +81,7 @@ def test_chitoitsu_like_hand_dividing():
     assert _string(result[1]) == ["123m", "123m", "99p", "456s", "456s"]
 
 
-def test_fix_not_correct_kan_handling():
+def test_fix_not_correct_kan_handling() -> None:
     # Hand calculator crashed because it wasn't able to split hand
 
     hand = HandCalculator()

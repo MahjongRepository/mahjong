@@ -1,3 +1,6 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_man, is_pin, is_pon_or_kan, is_sou, simplify
 
@@ -7,10 +10,10 @@ class SanshokuDoukou(Yaku):
     Three pon sets consisting of the same numbers in all three suits
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(SanshokuDoukou, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 26
 
         self.name = "Sanshoku Doukou"
@@ -20,14 +23,14 @@ class SanshokuDoukou(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         pon_sets = [i for i in hand if is_pon_or_kan(i)]
         if len(pon_sets) < 3:
             return False
 
-        sou_pon = []
-        pin_pon = []
-        man_pon = []
+        sou_pon: list[Collection[int]] = []
+        pin_pon: list[Collection[int]] = []
+        man_pon: list[Collection[int]] = []
         for item in pon_sets:
             if is_sou(item[0]):
                 sou_pon.append(item)

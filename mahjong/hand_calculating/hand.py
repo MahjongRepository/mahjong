@@ -1,3 +1,6 @@
+from collections.abc import Collection
+from typing import Optional
+
 from mahjong.agari import Agari
 from mahjong.constants import CHUN, EAST, HAKU, HATSU, NORTH, SOUTH, WEST
 from mahjong.hand_calculating.divider import HandDivider
@@ -5,6 +8,7 @@ from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.hand_calculating.hand_response import HandResponse
 from mahjong.hand_calculating.scores import Aotenjou, ScoresCalculator
+from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 from mahjong.utils import is_aka_dora, is_chi, is_kan, is_pon, plus_dora
 
@@ -37,19 +41,19 @@ class HandCalculator:
 
     # more possible errors, like tenhou and haitei can't be together (so complicated :<)
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.divider = HandDivider()
 
     def estimate_hand_value(
         self,
-        tiles,
-        win_tile,
-        melds=None,
-        dora_indicators=None,
-        config=None,
-        scores_calculator_factory=ScoresCalculator,
-        use_hand_divider_cache=False,
-    ):
+        tiles: Collection[int],
+        win_tile: int,
+        melds: Optional[Collection[Meld]] = None,
+        dora_indicators: Optional[Collection[int]] = None,
+        config: Optional[HandConfig] = None,
+        scores_calculator_factory: type[ScoresCalculator] = ScoresCalculator,
+        use_hand_divider_cache: bool = False,
+    ) -> HandResponse:
         """
         :param tiles: array with 14 tiles in 136-tile format
         :param win_tile: 136 format tile that caused win (ron or tsumo)
@@ -411,7 +415,7 @@ class HandCalculator:
 
                 # we don't need to add dora to yakuman
                 if not yakuman_list:
-                    tiles_for_dora = tiles[:]
+                    tiles_for_dora = list(tiles)
 
                     count_of_dora = 0
                     count_of_aka_dora = 0
@@ -499,7 +503,7 @@ class HandCalculator:
                 else:
                     fu = 40
 
-                tiles_for_dora = tiles[:]
+                tiles_for_dora = list(tiles)
 
                 count_of_dora = 0
                 count_of_aka_dora = 0
@@ -551,7 +555,7 @@ class HandCalculator:
 
         return HandResponse(cost, han, fu, hand_yaku, error, fu_details, is_open_hand)
 
-    def _find_win_groups(self, win_tile, hand, opened_melds):
+    def _find_win_groups(self, win_tile: int, hand: list[list[int]], opened_melds: list[list[int]]) -> list[list[int]]:
         win_tile_34 = (win_tile or 0) // 4
         _opened_melds = opened_melds[:]
 

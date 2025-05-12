@@ -5,7 +5,7 @@ from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _make_hand_config, _make_meld, _string_to_136_tile
 
 
-def test_no_winning_tile():
+def test_no_winning_tile() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -15,7 +15,7 @@ def test_no_winning_tile():
     assert result.error == "winning_tile_not_in_hand"
 
 
-def test_open_hand_riichi():
+def test_open_hand_riichi() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -26,7 +26,7 @@ def test_open_hand_riichi():
     assert result.error == "open_hand_riichi_not_allowed"
 
 
-def test_open_hand_daburi():
+def test_open_hand_daburi() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -39,7 +39,7 @@ def test_open_hand_daburi():
     assert result.error == "open_hand_daburi_not_allowed"
 
 
-def test_ippatsu_without_riichi():
+def test_ippatsu_without_riichi() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -49,7 +49,7 @@ def test_ippatsu_without_riichi():
     assert result.error == "ippatsu_without_riichi_not_allowed"
 
 
-def test_hand_not_winning():
+def test_hand_not_winning() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123344", man="234456", pin="66")
@@ -59,7 +59,7 @@ def test_hand_not_winning():
     assert result.error == "hand_not_winning"
 
 
-def test_no_yaku():
+def test_no_yaku() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -70,7 +70,7 @@ def test_no_yaku():
     assert result.error == "no_yaku"
 
 
-def test_chankan_with_tsumo():
+def test_chankan_with_tsumo() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -80,7 +80,7 @@ def test_chankan_with_tsumo():
     assert result.error == "chankan_with_tsumo_not_allowed"
 
 
-def test_rinshan_without_tsumo():
+def test_rinshan_without_tsumo() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -90,7 +90,7 @@ def test_rinshan_without_tsumo():
     assert result.error == "rinshan_without_tsumo_not_allowed"
 
 
-def test_haitei_without_tsumo():
+def test_haitei_without_tsumo() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -100,7 +100,7 @@ def test_haitei_without_tsumo():
     assert result.error == "haitei_without_tsumo_not_allowed"
 
 
-def test_houtei_with_tsumo():
+def test_houtei_with_tsumo() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -110,7 +110,7 @@ def test_houtei_with_tsumo():
     assert result.error == "houtei_with_tsumo_not_allowed"
 
 
-def test_haitei_with_rinshan():
+def test_haitei_with_rinshan() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -122,7 +122,7 @@ def test_haitei_with_rinshan():
     assert result.error == "haitei_with_rinshan_not_allowed"
 
 
-def test_houtei_with_chankan():
+def test_houtei_with_chankan() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -134,7 +134,7 @@ def test_houtei_with_chankan():
     assert result.error == "houtei_with_chankan_not_allowed"
 
 
-def test_tenhou_not_as_dealer():
+def test_tenhou_not_as_dealer() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -151,7 +151,7 @@ def test_tenhou_not_as_dealer():
     assert result.error == "tenhou_not_as_dealer_not_allowed"
 
 
-def test_tenhou_without_tsumo():
+def test_tenhou_without_tsumo() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -161,7 +161,7 @@ def test_tenhou_without_tsumo():
     assert result.error == "tenhou_without_tsumo_not_allowed"
 
 
-def test_tenhou_with_meld():
+def test_tenhou_with_meld() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="1234444", man="234456", pin="66")
@@ -174,7 +174,7 @@ def test_tenhou_with_meld():
     assert result.error == "tenhou_with_meld_not_allowed"
 
 
-def test_chiihou_as_dealer():
+def test_chiihou_as_dealer() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -191,7 +191,7 @@ def test_chiihou_as_dealer():
     assert result.error == "chiihou_as_dealer_not_allowed"
 
 
-def test_chiihou_without_tsumo():
+def test_chiihou_without_tsumo() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -201,7 +201,7 @@ def test_chiihou_without_tsumo():
     assert result.error == "chiihou_without_tsumo_not_allowed"
 
 
-def test_chiihou_with_meld():
+def test_chiihou_with_meld() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="1234444", man="234456", pin="66")
@@ -214,7 +214,7 @@ def test_chiihou_with_meld():
     assert result.error == "chiihou_with_meld_not_allowed"
 
 
-def test_renhou_as_dealer():
+def test_renhou_as_dealer() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -231,7 +231,7 @@ def test_renhou_as_dealer():
     assert result.error == "renhou_as_dealer_not_allowed"
 
 
-def test_renhou_with_tsumo():
+def test_renhou_with_tsumo() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
@@ -241,7 +241,7 @@ def test_renhou_with_tsumo():
     assert result.error == "renhou_with_tsumo_not_allowed"
 
 
-def test_renhou_with_meld():
+def test_renhou_with_meld() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="1234444", man="234456", pin="66")

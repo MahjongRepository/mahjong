@@ -1,4 +1,6 @@
-from functools import reduce
+from collections.abc import Collection, Sequence
+from itertools import chain
+from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_man, is_pin, is_sou, simplify
@@ -9,10 +11,10 @@ class ChuurenPoutou(Yaku):
     The hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit.
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(ChuurenPoutou, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 45
 
         self.name = "Chuuren Poutou"
@@ -22,7 +24,7 @@ class ChuurenPoutou(Yaku):
 
         self.is_yakuman = True
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         sou_sets = 0
         pin_sets = 0
         man_sets = 0
@@ -42,7 +44,7 @@ class ChuurenPoutou(Yaku):
         if not only_one_suit or honor_sets > 0:
             return False
 
-        indices = reduce(lambda z, y: z + y, hand)
+        indices = list(chain.from_iterable(hand))
         # cast tile indices to 0..8 representation
         indices = [simplify(x) for x in indices]
 

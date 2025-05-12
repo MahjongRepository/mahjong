@@ -1,4 +1,8 @@
+from collections.abc import Collection, Sequence
+from typing import Any, Optional
+
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
+from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.meld import Meld
 from mahjong.utils import contains_terminals, is_pair, is_pon_or_kan, simplify
 
@@ -27,13 +31,13 @@ class FuCalculator:
 
     def calculate_fu(
         self,
-        hand,
-        win_tile,
-        win_group,
-        config,
-        valued_tiles=None,
-        melds=None,
-    ):
+        hand: Collection[Sequence[int]],
+        win_tile: int,
+        win_group: Sequence[int],
+        config: HandConfig,
+        valued_tiles: Optional[Sequence[int]] = None,
+        melds: Optional[Collection[Meld]] = None,
+    ) -> tuple[list[dict[str, Any]], int]:
         """
         Calculate hand fu with explanations
         :param hand:
@@ -65,9 +69,9 @@ class FuCalculator:
         closed_chi_sets = []
         for x in hand:
             if x not in copied_opened_melds:
-                closed_chi_sets.append(x)
+                closed_chi_sets.append(list(x))
             else:
-                copied_opened_melds.remove(x)
+                copied_opened_melds.remove(list(x))
 
         is_open_hand = any(x.opened for x in melds)
 
@@ -101,8 +105,8 @@ class FuCalculator:
             fu_details.append({"fu": 2, "reason": FuCalculator.PAIR_WAIT})
 
         for set_item in pon_sets:
-            open_meld = [x for x in melds if set_item == x.tiles_34]
-            open_meld = open_meld and open_meld[0] or None
+            open_melds = [x for x in melds if set_item == x.tiles_34]
+            open_meld = open_melds[0] if open_melds else None
 
             set_was_open = open_meld and open_meld.opened or False
             is_kan_set = (open_meld and (open_meld.type == Meld.KAN or open_meld.type == Meld.SHOUMINKAN)) or False
@@ -152,7 +156,7 @@ class FuCalculator:
 
         return fu_details, self.round_fu(fu_details)
 
-    def round_fu(self, fu_details):
+    def round_fu(self, fu_details: Collection[dict[str, Any]]) -> int:
         # 22 -> 30 and etc.
         fu = sum([x["fu"] for x in fu_details])
         return (fu + 9) // 10 * 10

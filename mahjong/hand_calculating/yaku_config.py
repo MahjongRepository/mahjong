@@ -67,7 +67,7 @@ from mahjong.hand_calculating.yaku_list.yakuman import (
 
 
 class YakuConfig:
-    def __init__(self):
+    def __init__(self) -> None:
         id = count(0)
 
         # Yaku situations

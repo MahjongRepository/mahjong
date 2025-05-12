@@ -1,3 +1,6 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_chi, is_man, is_pin, is_sou, simplify
 
@@ -7,10 +10,10 @@ class Sanshoku(Yaku):
     The same chi in three suits
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(Sanshoku, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 25
 
         self.name = "Sanshoku Doujun"
@@ -20,7 +23,7 @@ class Sanshoku(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         chi_sets = [i for i in hand if is_chi(i)]
         if len(chi_sets) < 3:
             return False

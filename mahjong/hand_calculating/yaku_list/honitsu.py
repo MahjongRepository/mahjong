@@ -1,3 +1,6 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.constants import HONOR_INDICES
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_man, is_pin, is_sou
@@ -8,10 +11,10 @@ class Honitsu(Yaku):
     The hand contains tiles from a single suit plus honours
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(Honitsu, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 34
         self.name = "Honitsu"
 
@@ -20,7 +23,7 @@ class Honitsu(Yaku):
 
         self.is_yakuman = False
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         honor_sets = 0
         sou_sets = 0
         pin_sets = 0

@@ -1,3 +1,6 @@
+from collections.abc import Collection, Sequence
+from typing import Any, Optional
+
 from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU
 
 
@@ -5,14 +8,14 @@ class Tile:
     value = None
     is_tsumogiri = None
 
-    def __init__(self, value, is_tsumogiri):
+    def __init__(self, value: Any, is_tsumogiri: Any) -> None:  # noqa: ANN401
         self.value = value
         self.is_tsumogiri = is_tsumogiri
 
 
 class TilesConverter:
     @staticmethod
-    def to_one_line_string(tiles, print_aka_dora=False):
+    def to_one_line_string(tiles: Collection[int], print_aka_dora: bool = False) -> str:
         """
         Convert 136 tiles array to the one line string
         Example of output with print_aka_dora=False: 1244579m3p57z
@@ -31,22 +34,22 @@ class TilesConverter:
         honors = [t for t in tiles if t >= 108]
         honors = [t - 108 for t in honors]
 
-        def words(suits, red_five, suffix):
+        def words(suits: list[int], red_five: int, suffix: str) -> str:
             return (
                 suits
                 and "".join(["0" if i == red_five and print_aka_dora else str((i // 4) + 1) for i in suits]) + suffix
                 or ""
             )
 
-        sou = words(sou, FIVE_RED_SOU - 72, "s")
-        pin = words(pin, FIVE_RED_PIN - 36, "p")
-        man = words(man, FIVE_RED_MAN, "m")
-        honors = words(honors, -1 - 108, "z")
+        sou = words(sou, FIVE_RED_SOU - 72, "s")  # type: ignore
+        pin = words(pin, FIVE_RED_PIN - 36, "p")  # type: ignore
+        man = words(man, FIVE_RED_MAN, "m")  # type: ignore
+        honors = words(honors, -1 - 108, "z")  # type: ignore
 
-        return man + pin + sou + honors
+        return man + pin + sou + honors  # type: ignore
 
     @staticmethod
-    def to_34_array(tiles):
+    def to_34_array(tiles: Collection[int]) -> list[int]:
         """
         Convert 136 array to the 34 tiles array
         """
@@ -57,11 +60,11 @@ class TilesConverter:
         return results
 
     @staticmethod
-    def to_136_array(tiles):
+    def to_136_array(tiles: Sequence[int]) -> list[int]:
         """
         Convert 34 array to the 136 tiles array
         """
-        temp = []
+        temp: list[int] = []
         results = []
         for x in range(0, 34):
             if tiles[x]:
@@ -79,7 +82,13 @@ class TilesConverter:
         return results
 
     @staticmethod
-    def string_to_136_array(sou=None, pin=None, man=None, honors=None, has_aka_dora=False):
+    def string_to_136_array(
+        sou: Optional[str] = None,
+        pin: Optional[str] = None,
+        man: Optional[str] = None,
+        honors: Optional[str] = None,
+        has_aka_dora: bool = False,
+    ) -> list[int]:
         """
         Method to convert one line string tiles format to the 136 array.
         You can pass r or 0 instead of 5 for it to become a red five from
@@ -88,7 +97,7 @@ class TilesConverter:
         We need it to increase readability of our tests
         """
 
-        def _split_string(string, offset, red=None):
+        def _split_string(string: Optional[str], offset: int, red: Optional[int] = None) -> list[int]:
             data = []
             temp = []
 
@@ -97,6 +106,7 @@ class TilesConverter:
 
             for i in string:
                 if (i == "r" or i == "0") and has_aka_dora:
+                    assert red is not None
                     temp.append(red)
                     data.append(red)
                 else:
@@ -124,7 +134,12 @@ class TilesConverter:
         return results
 
     @staticmethod
-    def string_to_34_array(sou=None, pin=None, man=None, honors=None):
+    def string_to_34_array(
+        sou: Optional[str] = None,
+        pin: Optional[str] = None,
+        man: Optional[str] = None,
+        honors: Optional[str] = None,
+    ) -> list[int]:
         """
         Method to convert one line string tiles format to the 34 array
         We need it to increase readability of our tests
@@ -134,7 +149,7 @@ class TilesConverter:
         return results
 
     @staticmethod
-    def find_34_tile_in_136_array(tile34, tiles):
+    def find_34_tile_in_136_array(tile34: Optional[int], tiles: Collection[int]) -> Optional[int]:
         """
         Our shanten calculator will operate with 34 tiles format,
         after calculations we need to find calculated 34 tile
@@ -159,7 +174,7 @@ class TilesConverter:
         return found_tile
 
     @staticmethod
-    def one_line_string_to_136_array(string, has_aka_dora=False):
+    def one_line_string_to_136_array(string: str, has_aka_dora: bool = False) -> list[int]:
         """
         Method to convert one line string tiles format to the 136 array, like
         "123s456p789m11222z". 's' stands for sou, 'p' stands for pin,
@@ -192,7 +207,7 @@ class TilesConverter:
         return TilesConverter.string_to_136_array(sou, pin, man, honors, has_aka_dora)
 
     @staticmethod
-    def one_line_string_to_34_array(string, has_aka_dora=False):
+    def one_line_string_to_34_array(string: str, has_aka_dora: bool = False) -> list[int]:
         """
         Method to convert one line string tiles format to the 34 array, like
         "123s456p789m11222z". 's' stands for sou, 'p' stands for pin,

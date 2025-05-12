@@ -1,8 +1,10 @@
+from collections.abc import Collection, Sequence
+
 from mahjong.hand_calculating.yaku import Yaku
 
 
 class Chiihou(Yaku):
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 38
         self.name = "Chiihou"
 
@@ -11,5 +13,5 @@ class Chiihou(Yaku):
 
         self.is_yakuman = True
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         return True

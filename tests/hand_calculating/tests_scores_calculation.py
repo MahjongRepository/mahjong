@@ -3,7 +3,7 @@ from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.hand_calculating.scores import ScoresCalculator
 
 
-def test_calculate_scores_and_ron():
+def test_calculate_scores_and_ron() -> None:
     hand = ScoresCalculator()
     config = HandConfig(options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
 
@@ -56,7 +56,7 @@ def test_calculate_scores_and_ron():
     assert result["main"] == 192000
 
 
-def test_calculate_scores_and_ron_by_dealer():
+def test_calculate_scores_and_ron_by_dealer() -> None:
     hand = ScoresCalculator()
     config = HandConfig(player_wind=EAST, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
 
@@ -103,7 +103,7 @@ def test_calculate_scores_and_ron_by_dealer():
     assert result["main"] == 288000
 
 
-def test_calculate_scores_and_tsumo():
+def test_calculate_scores_and_tsumo() -> None:
     hand = ScoresCalculator()
     config = HandConfig(is_tsumo=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
 
@@ -164,7 +164,7 @@ def test_calculate_scores_and_tsumo():
     assert result["additional"] == 48000
 
 
-def test_calculate_scores_and_tsumo_by_dealer():
+def test_calculate_scores_and_tsumo_by_dealer() -> None:
     hand = ScoresCalculator()
     config = HandConfig(player_wind=EAST, is_tsumo=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
 
@@ -221,7 +221,7 @@ def test_calculate_scores_and_tsumo_by_dealer():
     assert result["additional"] == 96000
 
 
-def test_calculate_scores_with_bonus():
+def test_calculate_scores_with_bonus() -> None:
     hand = ScoresCalculator()
 
     config = HandConfig(player_wind=EAST, is_tsumo=True, tsumi_number=2, kyoutaku_number=3)
@@ -261,7 +261,7 @@ def test_calculate_scores_with_bonus():
     assert result["total"] == 13500
 
 
-def test_kiriage_mangan():
+def test_kiriage_mangan() -> None:
     hand = ScoresCalculator()
 
     config = HandConfig(options=OptionalRules(kiriage=True))

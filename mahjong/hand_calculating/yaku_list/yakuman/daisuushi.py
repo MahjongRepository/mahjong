@@ -1,3 +1,6 @@
+from collections.abc import Collection, Sequence
+from typing import Optional
+
 from mahjong.constants import EAST, NORTH, SOUTH, WEST
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_pon_or_kan
@@ -8,10 +11,10 @@ class DaiSuushii(Yaku):
     The hand contains four sets of winds
     """
 
-    def __init__(self, yaku_id=None):
+    def __init__(self, yaku_id: Optional[int] = None) -> None:
         super(DaiSuushii, self).__init__(yaku_id)
 
-    def set_attributes(self):
+    def set_attributes(self) -> None:
         self.tenhou_id = 49
 
         self.name = "Dai Suushii"
@@ -21,7 +24,7 @@ class DaiSuushii(Yaku):
 
         self.is_yakuman = True
 
-    def is_condition_met(self, hand, *args):
+    def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         """
         The hand contains four sets of winds
         :param hand: list of hand's sets
