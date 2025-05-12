@@ -1,4 +1,4 @@
-Python 3.8+ is supported.
+Python 3.9+ is supported.
 
 If you need Python 2 support you can use v1.1.11 version of the library.
 
@@ -140,8 +140,8 @@ Aotenjou scoring rules
 ======================
 
 ```python
-tiles = self.TilesConverter.string_to_136_array(honors='11133555666777')
-win_tile = self.TilesConverter.string_to_136_array(honors='3')[0]
+tiles = TilesConverter.string_to_136_array(honors='111133555566667777')
+win_tile = TilesConverter.string_to_136_array(honors='3')[0]
 
 melds = [
     Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='1111'), opened=False),
@@ -150,7 +150,7 @@ melds = [
     Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='7777'), opened=False),
 ]
 
-result = hand.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=TilesConverter.string_to_136_array(honors='44447777'),
+result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=TilesConverter.string_to_136_array(honors='44447777'),
     scores_calculator_factory=Aotenjou, config=HandConfig(is_riichi=True, is_tsumo=True, is_ippatsu=True, is_haitei=True, player_wind=EAST, round_wind=EAST))
 
 print(result.han, result.fu)
@@ -162,9 +162,9 @@ for fu_item in result.fu_details:
 
 Output:
 ```
-95 160
-50706024009129176059868128215100
-[Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu kantsu, Tsuu iisou, Suu ankou tanki, Dora 24]
+103 160
+12980742146337069071326240823050300
+[Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu Kantsu, Tsuu Iisou, Suu Ankou Tanki, Dora 32]
 {'fu': 32, 'reason': 'closed_terminal_kan'}
 {'fu': 32, 'reason': 'closed_terminal_kan'}
 {'fu': 32, 'reason': 'closed_terminal_kan'}

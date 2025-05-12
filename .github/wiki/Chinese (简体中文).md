@@ -1,4 +1,4 @@
-本软件包支持Python 3.8及以上版本
+本软件包支持Python 3.9及以上版本
 
 若您需要与Python 2兼容，请使用本软件包v1.1.11版本。
 
@@ -112,7 +112,7 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
+输出:
 
     1 30
     1000
@@ -137,8 +137,8 @@ print(result)
 ### 青天井规则
 
 ```python
-tiles = self.TilesConverter.string_to_136_array(honors='11133555666777')
-win_tile = self.TilesConverter.string_to_136_array(honors='3')[0]
+tiles = TilesConverter.string_to_136_array(honors='111133555566667777')
+win_tile = TilesConverter.string_to_136_array(honors='3')[0]
 
 melds = [
     Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='1111'), opened=False),
@@ -147,7 +147,7 @@ melds = [
     Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='7777'), opened=False),
 ]
 
-result = hand.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=TilesConverter.string_to_136_array(honors='44447777'),
+result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=TilesConverter.string_to_136_array(honors='44447777'),
     scores_calculator_factory=Aotenjou, config=HandConfig(is_riichi=True, is_tsumo=True, is_ippatsu=True, is_haitei=True, player_wind=EAST, round_wind=EAST))
 
 print(result.han, result.fu)
@@ -157,11 +157,11 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
+输出:
 
-    95 160
-    50706024009129176059868128215100
-    [Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu kantsu, Tsuu iisou, Suu ankou tanki, Dora 24]
+    103 160
+    12980742146337069071326240823050300
+    [Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu Kantsu, Tsuu Iisou, Suu Ankou Tanki, Dora 32]
     {'fu': 32, 'reason': 'closed_terminal_kan'}
     {'fu': 32, 'reason': 'closed_terminal_kan'}
     {'fu': 32, 'reason': 'closed_terminal_kan'}
