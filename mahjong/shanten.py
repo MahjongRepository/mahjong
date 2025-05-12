@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
 
 
@@ -13,7 +15,7 @@ class Shanten:
     number_isolated_tiles = 0
     min_shanten = 0
 
-    def calculate_shanten(self, tiles_34: list[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
+    def calculate_shanten(self, tiles_34: Sequence[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
         """
         Return the minimum shanten for provided hand,
         it will consider chiitoitsu and kokushi options if possible.
@@ -27,7 +29,7 @@ class Shanten:
 
         return min(shanten_results)
 
-    def calculate_shanten_for_chiitoitsu_hand(self, tiles_34: list[int]) -> int:
+    def calculate_shanten_for_chiitoitsu_hand(self, tiles_34: Sequence[int]) -> int:
         """
         Calculate the number of shanten for chiitoitsu hand
         """
@@ -38,7 +40,7 @@ class Shanten:
         kinds = len([x for x in tiles_34 if x >= 1])
         return 6 - pairs + (7 - kinds if kinds < 7 else 0)
 
-    def calculate_shanten_for_kokushi_hand(self, tiles_34: list[int]) -> int:
+    def calculate_shanten_for_kokushi_hand(self, tiles_34: Sequence[int]) -> int:
         """
         Calculate the number of shanten for kokushi musou hand
         """
@@ -54,12 +56,12 @@ class Shanten:
 
         return 13 - terminals - (completed_terminals and 1 or 0)
 
-    def calculate_shanten_for_regular_hand(self, tiles_34: list[int]) -> int:
+    def calculate_shanten_for_regular_hand(self, tiles_34: Sequence[int]) -> int:
         """
         Calculate the number of shanten for regular hand
         """
         # we will modify tiles array later, so we need to use a copy
-        tiles_34 = tiles_34[:]
+        tiles_34 = list(tiles_34)
 
         self._init(tiles_34)
 
