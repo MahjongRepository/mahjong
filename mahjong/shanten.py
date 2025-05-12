@@ -47,11 +47,9 @@ class Shanten:
         indices = TERMINAL_INDICES + HONOR_INDICES
 
         completed_terminals = 0
-        for i in indices:
-            completed_terminals += tiles_34[i] >= 2
-
         terminals = 0
         for i in indices:
+            completed_terminals += tiles_34[i] >= 2
             terminals += tiles_34[i] != 0
 
         return 13 - terminals - (completed_terminals and 1 or 0)
