@@ -27,7 +27,9 @@ jobs:
         run: |
           git config --global user.name "$USER_NAME"
           git config --global user.email "$USER_EMAIL"
-          git clone https://${{ secrets.GH_ACTION_TOKEN }}@github.com/${{ github.repository }}.wiki.git $TEMP_CLONE_WIKI_FOLDER
+          git clone https://github.com/${{ github.repository }}.wiki.git $TEMP_CLONE_WIKI_FOLDER
+          cd $TEMP_CLONE_WIKI_FOLDER
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GH_ACTION_TOKEN }}@github.com/${{ github.repository }}.wiki.git
 
       - name: Sync wiki content
         run: |
@@ -38,7 +40,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git add .
             git commit -m "Update Wiki content from ${{ github.sha }}"
-            git push https://${{ secrets.GH_ACTION_TOKEN }}@github.com/${{ github.repository }}.wiki.git master
+            git push origin master
           else
             echo "No changes to push"
           fi
