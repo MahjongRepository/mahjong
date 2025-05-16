@@ -9,22 +9,22 @@ for the Japanese version of mahjong (riichi mahjong).
 
 It supports optional features like:
 
-| Feature                                                                                      | Keyword parameter              | Default value |
-| -------------------------------------------------------------------------------------------- | -------------------------------|---------------|
-| Disable or enable open tanyao yaku                                                           | has_open_tanyao              | False
-| Disable or enable aka dora in the hand                                                       | has_aka_dora                 | False
-| Disable or enable double yakuman (like suuanko tanki)                                        | has_double_yakuman           | True
-| Settings for different kazoe yakuman calculation (it сan be an yakuman or a sanbaiman)       | kazoe_limit                  | HandConstants.KAZOE_LIMITED
-| Support kiriage mangan                                                                       | kiriage                      | False
-| Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting)    | fu_for_open_pinfu            | True
-| Disable or enable pinfu tsumo                                                                | fu_for_pinfu_tsumo           | False
-| Counting renhou as 5 han or yakuman                                                          | renhou_as_yakuman            | False
-| Disable or enable Daisharin yakuman                                                          | has_daisharin                | False
-| Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)                          | has_daisharin_other_suits    | False
-| Disable or enable yakuman for dealing into open hands                                        | has_sashikomi_yakuman        | False
-| Limit yakuman calculation to 6 (maximum score 192000)                                        | limit_to_sextuple_yakuman    | True
-| Disable or enable extra yakuman for all honors 7 pairs                                       | has_daichisei                | False
-| Disable or enable paarenchan without any yaku                                                | paarenchan_needs_yaku        | True
+| Feature                                                                                   | Keyword parameter         | Default value               |
+|-------------------------------------------------------------------------------------------|---------------------------|-----------------------------|
+| Disable or enable open tanyao yaku                                                        | has_open_tanyao           | False                       |
+| Disable or enable aka dora in the hand                                                    | has_aka_dora              | False                       |
+| Disable or enable double yakuman (like suuanko tanki)                                     | has_double_yakuman        | True                        |
+| Settings for different kazoe yakuman calculation (it сan be an yakuman or a sanbaiman)    | kazoe_limit               | HandConstants.KAZOE_LIMITED |
+| Support kiriage mangan                                                                    | kiriage                   | False                       |
+| Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting) | fu_for_open_pinfu         | True                        |
+| Disable or enable pinfu tsumo                                                             | fu_for_pinfu_tsumo        | False                       |
+| Counting renhou as 5 han or yakuman                                                       | renhou_as_yakuman         | False                       |
+| Disable or enable Daisharin yakuman                                                       | has_daisharin             | False                       |
+| Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)                       | has_daisharin_other_suits | False                       |
+| Disable or enable yakuman for dealing into open hands                                     | has_sashikomi_yakuman     | False                       |
+| Limit yakuman calculation to 6 (maximum score 192000)                                     | limit_to_sextuple_yakuman | True                        |
+| Disable or enable extra yakuman for all honors 7 pairs                                    | has_daichisei             | False                       |
+| Disable or enable paarenchan without any yaku                                             | paarenchan_needs_yaku     | True                        |
 
 The code was validated on tenhou.net phoenix replays in total on
 **11,120,125 hands**.
