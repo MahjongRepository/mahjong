@@ -38,7 +38,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git add .
             git commit -m "Update Wiki content from ${{ github.sha }}"
-            git push origin master
+            git push https://${{ secrets.GH_ACTION_TOKEN }}@github.com/${{ github.repository }}.wiki.git master
           else
             echo "No changes to push"
           fi
