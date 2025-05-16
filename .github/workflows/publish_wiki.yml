@@ -1,0 +1,46 @@
+name: Publish Wiki
+
+on:
+  push:
+    paths:
+      - .github/wiki/**
+    branches:
+      - master
+
+env:
+  USER_NAME: github-wiki-workflow
+  USER_EMAIL: alexey@nihisil.com
+  WIKI_FOLDER: .github/wiki
+  TEMP_CLONE_WIKI_FOLDER: tmp_wiki
+
+jobs:
+  publish:
+    name: Publish Github Wiki
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_ACTION_TOKEN }}
+
+      - name: Clone wiki repository
+        run: |
+          git config --global user.name "$USER_NAME"
+          git config --global user.email "$USER_EMAIL"
+          git clone https://${{ secrets.GH_ACTION_TOKEN }}@github.com/${{ github.repository }}.wiki.git $TEMP_CLONE_WIKI_FOLDER
+
+      - name: Sync wiki content
+        run: |
+          rsync -av --delete $WIKI_FOLDER/ $TEMP_CLONE_WIKI_FOLDER/ --exclude .git
+          cd $TEMP_CLONE_WIKI_FOLDER
+          
+          # Check if there are changes
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "Update Wiki content from ${{ github.sha }}"
+            git push origin master
+          else
+            echo "No changes to push"
+          fi
