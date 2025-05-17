@@ -1,0 +1,2 @@
+exclude tests/*
+recursive-exclude tests *
