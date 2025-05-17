@@ -15,4 +15,4 @@ build-package:
 	uv build
 
 build-and-release: build-package
-	uv publish
+	uv publish --token <token>
