@@ -12,9 +12,18 @@ class Shanten:
     number_tatsu = 0
     number_pairs = 0
     number_jidahai = 0
-    number_characters = 0
+    _flag_four_copies = 0
     _flag_isolated_tiles = 0
     min_shanten = 0
+
+    @property
+    def number_characters(self) -> int:
+        warnings.warn(
+            "`number_characters` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self._flag_four_copies
 
     @property
     def number_isolated_tiles(self) -> int:
@@ -89,13 +98,13 @@ class Shanten:
         self.number_tatsu = 0
         self.number_pairs = 0
         self.number_jidahai = 0
-        self.number_characters = 0
+        self._flag_four_copies = 0
         self._flag_isolated_tiles = 0
         self.min_shanten = 8
 
     def _scan(self, init_mentsu: int) -> None:
         for i in range(0, 27):
-            self.number_characters |= (self.tiles[i] == 4) << i
+            self._flag_four_copies |= (self.tiles[i] == 4) << i
         self.number_melds += init_mentsu
         self._run(0)
 
@@ -224,8 +233,8 @@ class Shanten:
         n_mentsu_kouho = self.number_melds + self.number_tatsu
         if self.number_pairs:
             n_mentsu_kouho += self.number_pairs - 1
-        elif self.number_characters and self._flag_isolated_tiles:
-            if (self.number_characters | self._flag_isolated_tiles) == self.number_characters:
+        elif self._flag_four_copies and self._flag_isolated_tiles:
+            if (self._flag_four_copies | self._flag_isolated_tiles) == self._flag_four_copies:
                 ret_shanten += 1
 
         if n_mentsu_kouho > 4:
@@ -319,4 +328,4 @@ class Shanten:
         if isolated:
             self._flag_isolated_tiles |= 1 << 27
             if (number | isolated) == number:
-                self.number_characters |= 1 << 27
+                self._flag_four_copies |= 1 << 27
