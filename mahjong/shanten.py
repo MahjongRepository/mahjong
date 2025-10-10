@@ -303,14 +303,14 @@ class Shanten:
         self._flag_isolated_tiles &= ~(1 << k)
 
     def _remove_character_tiles(self, nc: int) -> None:
-        number = 0
+        four_copies = 0
         isolated = 0
 
         for i in range(27, 34):
             if self.tiles[i] == 4:
                 self.number_melds += 1
                 self.number_jidahai += 1
-                number |= 1 << (i - 27)
+                four_copies |= 1 << (i - 27)
                 isolated |= 1 << (i - 27)
 
             if self.tiles[i] == 3:
@@ -327,5 +327,5 @@ class Shanten:
 
         if isolated:
             self._flag_isolated_tiles |= 1 << 27
-            if (number | isolated) == number:
+            if (four_copies | isolated) == four_copies:
                 self._flag_four_copies |= 1 << 27
