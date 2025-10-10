@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v6
@@ -37,7 +37,7 @@ jobs:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "pypy3.9", "pypy3.10", "pypy3.11"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install the latest version of uv and set the python version
         uses: astral-sh/setup-uv@v6
