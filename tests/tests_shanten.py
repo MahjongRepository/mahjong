@@ -173,3 +173,23 @@ def test_shanten_number_and_open_sets() -> None:
 
     tiles = TilesConverter.string_to_34_array(sou="88")
     assert shanten.calculate_shanten(tiles) == Shanten.AGARI_STATE
+
+
+def test_calculate_shanten_can_call_as_static_method() -> None:
+    tiles = TilesConverter.string_to_34_array(sou="4566677", pin="1367", man="8", honors="12")
+    assert Shanten.calculate_shanten(tiles) == 2
+
+
+def test_calculate_shanten_for_regular_hand_can_call_as_static_method() -> None:
+    tiles = TilesConverter.string_to_34_array(sou="111234567", pin="11", man="567")
+    assert Shanten.calculate_shanten_for_regular_hand(tiles) == Shanten.AGARI_STATE
+
+
+def test_calculate_shanten_for_chiitoitsu_hand_can_call_as_static_method() -> None:
+    tiles = TilesConverter.string_to_34_array(sou="114477", pin="114477", man="77")
+    assert Shanten.calculate_shanten_for_chiitoitsu_hand(tiles) == Shanten.AGARI_STATE
+
+
+def test_calculate_shanten_for_kokushi_hand_can_call_as_static_method() -> None:
+    tiles = TilesConverter.string_to_34_array(sou="19", pin="19", man="19", honors="12345677")
+    assert Shanten.calculate_shanten_for_kokushi_hand(tiles) == Shanten.AGARI_STATE
