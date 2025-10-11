@@ -25,6 +25,15 @@ class Shanten:
         )
         return self._tiles
 
+    @tiles.setter
+    def tiles(self, value: list[int]) -> None:
+        warnings.warn(
+            "`tiles` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        self._tiles = value
+
     @property
     def number_melds(self) -> int:
         warnings.warn(
@@ -33,6 +42,15 @@ class Shanten:
             stacklevel=2,
         )
         return self._number_melds
+
+    @number_melds.setter
+    def number_melds(self, value: int) -> None:
+        warnings.warn(
+            "`number_melds` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        self._number_melds = value
 
     @property
     def number_tatsu(self) -> int:
@@ -43,6 +61,15 @@ class Shanten:
         )
         return self._number_tatsu
 
+    @number_tatsu.setter
+    def number_tatsu(self, value: int) -> None:
+        warnings.warn(
+            "`number_tatsu` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        self._number_tatsu = value
+
     @property
     def number_pairs(self) -> int:
         warnings.warn(
@@ -51,6 +78,15 @@ class Shanten:
             stacklevel=2,
         )
         return self._number_pairs
+
+    @number_pairs.setter
+    def number_pairs(self, value: int) -> None:
+        warnings.warn(
+            "`number_pairs` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        self._number_pairs = value
 
     @property
     def number_jidahai(self) -> int:
@@ -61,6 +97,15 @@ class Shanten:
         )
         return self._number_jidahai
 
+    @number_jidahai.setter
+    def number_jidahai(self, value: int) -> None:
+        warnings.warn(
+            "`number_jidahai` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        self._number_jidahai = value
+
     @property
     def number_characters(self) -> int:
         warnings.warn(
@@ -69,6 +114,15 @@ class Shanten:
             stacklevel=2,
         )
         return self._flag_four_copies
+
+    @number_characters.setter
+    def number_characters(self, value: int) -> None:
+        warnings.warn(
+            "`number_characters` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        self._flag_four_copies = value
 
     @property
     def number_isolated_tiles(self) -> int:
@@ -79,6 +133,15 @@ class Shanten:
         )
         return self._flag_isolated_tiles
 
+    @number_isolated_tiles.setter
+    def number_isolated_tiles(self, value: int) -> None:
+        warnings.warn(
+            "`number_isolated_tiles` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        self._flag_isolated_tiles = value
+
     @property
     def min_shanten(self) -> int:
         warnings.warn(
@@ -87,6 +150,15 @@ class Shanten:
             stacklevel=2,
         )
         return self._min_shanten
+
+    @min_shanten.setter
+    def min_shanten(self, value: int) -> None:
+        warnings.warn(
+            "`min_shanten` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        self._min_shanten = value
 
     def calculate_shanten(self, tiles_34: Sequence[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
         """
