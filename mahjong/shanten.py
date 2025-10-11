@@ -1,3 +1,4 @@
+import warnings
 from collections.abc import Sequence
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
@@ -11,9 +12,27 @@ class Shanten:
     number_tatsu = 0
     number_pairs = 0
     number_jidahai = 0
-    number_characters = 0
-    number_isolated_tiles = 0
+    _flag_four_copies = 0
+    _flag_isolated_tiles = 0
     min_shanten = 0
+
+    @property
+    def number_characters(self) -> int:
+        warnings.warn(
+            "`number_characters` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self._flag_four_copies
+
+    @property
+    def number_isolated_tiles(self) -> int:
+        warnings.warn(
+            "`number_isolated_tiles` is deprecated. This attribute reflects internal state and should not be used.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self._flag_isolated_tiles
 
     def calculate_shanten(self, tiles_34: Sequence[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
         """
@@ -79,13 +98,13 @@ class Shanten:
         self.number_tatsu = 0
         self.number_pairs = 0
         self.number_jidahai = 0
-        self.number_characters = 0
-        self.number_isolated_tiles = 0
+        self._flag_four_copies = 0
+        self._flag_isolated_tiles = 0
         self.min_shanten = 8
 
     def _scan(self, init_mentsu: int) -> None:
         for i in range(0, 27):
-            self.number_characters |= (self.tiles[i] == 4) << i
+            self._flag_four_copies |= (self.tiles[i] == 4) << i
         self.number_melds += init_mentsu
         self._run(0)
 
@@ -214,8 +233,8 @@ class Shanten:
         n_mentsu_kouho = self.number_melds + self.number_tatsu
         if self.number_pairs:
             n_mentsu_kouho += self.number_pairs - 1
-        elif self.number_characters and self.number_isolated_tiles:
-            if (self.number_characters | self.number_isolated_tiles) == self.number_characters:
+        elif self._flag_four_copies and self._flag_isolated_tiles:
+            if (self._flag_four_copies | self._flag_isolated_tiles) == self._flag_four_copies:
                 ret_shanten += 1
 
         if n_mentsu_kouho > 4:
@@ -277,21 +296,21 @@ class Shanten:
 
     def _increase_isolated_tile(self, k: int) -> None:
         self.tiles[k] -= 1
-        self.number_isolated_tiles |= 1 << k
+        self._flag_isolated_tiles |= 1 << k
 
     def _decrease_isolated_tile(self, k: int) -> None:
         self.tiles[k] += 1
-        self.number_isolated_tiles &= ~(1 << k)
+        self._flag_isolated_tiles &= ~(1 << k)
 
     def _remove_character_tiles(self, nc: int) -> None:
-        number = 0
+        four_copies = 0
         isolated = 0
 
         for i in range(27, 34):
             if self.tiles[i] == 4:
                 self.number_melds += 1
                 self.number_jidahai += 1
-                number |= 1 << (i - 27)
+                four_copies |= 1 << (i - 27)
                 isolated |= 1 << (i - 27)
 
             if self.tiles[i] == 3:
@@ -307,6 +326,6 @@ class Shanten:
             self.number_jidahai -= 1
 
         if isolated:
-            self.number_isolated_tiles |= 1 << 27
-            if (number | isolated) == number:
-                self.number_characters |= 1 << 27
+            self._flag_isolated_tiles |= 1 << 27
+            if (four_copies | isolated) == four_copies:
+                self._flag_four_copies |= 1 << 27
