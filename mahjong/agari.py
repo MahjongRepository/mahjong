@@ -5,7 +5,8 @@ from mahjong.utils import find_isolated_tile_indices
 
 
 class Agari:
-    def is_agari(self, tiles_34: Sequence[int], open_sets_34: Optional[Collection[Sequence[int]]] = None) -> bool:
+    @staticmethod
+    def is_agari(tiles_34: Sequence[int], open_sets_34: Optional[Collection[Sequence[int]]] = None) -> bool:
         """
         Determine was it win or not
         :param tiles_34: 34 tiles format array
@@ -102,47 +103,48 @@ class Agari:
             return False
 
         nn0 = (n00 * 1 + n01 * 2) % 3
-        m0 = self._to_meld(tiles, 0)
+        m0 = Agari._to_meld(tiles, 0)
         nn1 = (n10 * 1 + n11 * 2) % 3
-        m1 = self._to_meld(tiles, 9)
+        m1 = Agari._to_meld(tiles, 9)
         nn2 = (n20 * 1 + n21 * 2) % 3
-        m2 = self._to_meld(tiles, 18)
+        m2 = Agari._to_meld(tiles, 18)
 
         if j & 4:
             return (
                 not (n0 | nn0 | n1 | nn1 | n2 | nn2)
-                and self._is_mentsu(m0)
-                and self._is_mentsu(m1)
-                and self._is_mentsu(m2)
+                and Agari._is_mentsu(m0)
+                and Agari._is_mentsu(m1)
+                and Agari._is_mentsu(m2)
             )
 
         if n0 == 2:
             return (
                 not (n1 | nn1 | n2 | nn2)
-                and self._is_mentsu(m1)
-                and self._is_mentsu(m2)
-                and self._is_atama_mentsu(nn0, m0)
+                and Agari._is_mentsu(m1)
+                and Agari._is_mentsu(m2)
+                and Agari._is_atama_mentsu(nn0, m0)
             )
 
         if n1 == 2:
             return (
                 not (n2 | nn2 | n0 | nn0)
-                and self._is_mentsu(m2)
-                and self._is_mentsu(m0)
-                and self._is_atama_mentsu(nn1, m1)
+                and Agari._is_mentsu(m2)
+                and Agari._is_mentsu(m0)
+                and Agari._is_atama_mentsu(nn1, m1)
             )
 
         if n2 == 2:
             return (
                 not (n0 | nn0 | n1 | nn1)
-                and self._is_mentsu(m0)
-                and self._is_mentsu(m1)
-                and self._is_atama_mentsu(nn2, m2)
+                and Agari._is_mentsu(m0)
+                and Agari._is_mentsu(m1)
+                and Agari._is_atama_mentsu(nn2, m2)
             )
 
         return False
 
-    def _is_mentsu(self, m: int) -> bool:
+    @staticmethod
+    def _is_mentsu(m: int) -> bool:
         a = m & 7
         b = 0
         c = 0
@@ -180,31 +182,33 @@ class Agari:
 
         return a == 0 or a == 3
 
-    def _is_atama_mentsu(self, nn: int, m: int) -> bool:
+    @staticmethod
+    def _is_atama_mentsu(nn: int, m: int) -> bool:
         if nn == 0:
-            if (m & (7 << 6)) >= (2 << 6) and self._is_mentsu(m - (2 << 6)):
+            if (m & (7 << 6)) >= (2 << 6) and Agari._is_mentsu(m - (2 << 6)):
                 return True
-            if (m & (7 << 15)) >= (2 << 15) and self._is_mentsu(m - (2 << 15)):
+            if (m & (7 << 15)) >= (2 << 15) and Agari._is_mentsu(m - (2 << 15)):
                 return True
-            if (m & (7 << 24)) >= (2 << 24) and self._is_mentsu(m - (2 << 24)):
+            if (m & (7 << 24)) >= (2 << 24) and Agari._is_mentsu(m - (2 << 24)):
                 return True
         elif nn == 1:
-            if (m & (7 << 3)) >= (2 << 3) and self._is_mentsu(m - (2 << 3)):
+            if (m & (7 << 3)) >= (2 << 3) and Agari._is_mentsu(m - (2 << 3)):
                 return True
-            if (m & (7 << 12)) >= (2 << 12) and self._is_mentsu(m - (2 << 12)):
+            if (m & (7 << 12)) >= (2 << 12) and Agari._is_mentsu(m - (2 << 12)):
                 return True
-            if (m & (7 << 21)) >= (2 << 21) and self._is_mentsu(m - (2 << 21)):
+            if (m & (7 << 21)) >= (2 << 21) and Agari._is_mentsu(m - (2 << 21)):
                 return True
         elif nn == 2:
-            if (m & (7 << 0)) >= (2 << 0) and self._is_mentsu(m - (2 << 0)):
+            if (m & (7 << 0)) >= (2 << 0) and Agari._is_mentsu(m - (2 << 0)):
                 return True
-            if (m & (7 << 9)) >= (2 << 9) and self._is_mentsu(m - (2 << 9)):
+            if (m & (7 << 9)) >= (2 << 9) and Agari._is_mentsu(m - (2 << 9)):
                 return True
-            if (m & (7 << 18)) >= (2 << 18) and self._is_mentsu(m - (2 << 18)):
+            if (m & (7 << 18)) >= (2 << 18) and Agari._is_mentsu(m - (2 << 18)):
                 return True
         return False
 
-    def _to_meld(self, tiles: list[int], d: int) -> int:
+    @staticmethod
+    def _to_meld(tiles: list[int], d: int) -> int:
         result = 0
         for i in range(0, 9):
             result |= tiles[d + i] << i * 3
