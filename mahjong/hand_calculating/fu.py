@@ -29,8 +29,8 @@ class FuCalculator:
     CLOSED_TERMINAL_KAN = "closed_terminal_kan"
     OPEN_TERMINAL_KAN = "open_terminal_kan"
 
+    @staticmethod
     def calculate_fu(
-        self,
         hand: Collection[Sequence[int]],
         win_tile: int,
         win_group: Sequence[int],
@@ -154,9 +154,10 @@ class FuCalculator:
         else:
             fu_details.append({"fu": 30, "reason": FuCalculator.BASE})
 
-        return fu_details, self.round_fu(fu_details)
+        return fu_details, FuCalculator.round_fu(fu_details)
 
-    def round_fu(self, fu_details: Collection[dict[str, Any]]) -> int:
+    @staticmethod
+    def round_fu(fu_details: Collection[dict[str, Any]]) -> int:
         # 22 -> 30 and etc.
         fu = sum([x["fu"] for x in fu_details])
         return (fu + 9) // 10 * 10
