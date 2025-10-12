@@ -95,3 +95,10 @@ def test_fix_not_correct_kan_handling() -> None:
     ]
 
     hand.estimate_hand_value(tiles, win_tile, melds=melds)
+
+
+def test_divide_hand_can_call_as_static_method() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="234567", sou="23455", honors="777")
+    result = HandDivider.divide_hand(tiles_34)
+    assert len(result) == 1
+    assert _string(result[0]) == ["234m", "567m", "234s", "55s", "777z"]
