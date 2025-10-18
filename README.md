@@ -38,7 +38,7 @@ To set up the project locally for development:
 2. Setup env using [uv](https://github.com/astral-sh/uv):
 
     ```bash
-    uv venv
+    uv sync
     ```
 
 3. Run tests to verify setup:
