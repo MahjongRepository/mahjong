@@ -14,5 +14,6 @@ build-package:
 	rm -rf build dist mahjong.egg-info
 	uv build
 
+# make build-and-release token=your_pypi_token
 build-and-release: build-package
-	uv publish --token <token>
+	uv publish --token $(token)
