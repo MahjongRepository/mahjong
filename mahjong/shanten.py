@@ -1,4 +1,3 @@
-import warnings
 from collections.abc import Sequence
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
@@ -7,174 +6,23 @@ from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
 class Shanten:
     AGARI_STATE = -1
 
-    _tiles: list[int] = []
-    _number_melds = 0
-    _number_tatsu = 0
-    _number_pairs = 0
-    _number_jidahai = 0
-    _flag_four_copies = 0
-    _flag_isolated_tiles = 0
-    _min_shanten = 0
-
-    @property
-    def tiles(self) -> list[int]:
-        warnings.warn(
-            "`tiles` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._tiles
-
-    @tiles.setter
-    def tiles(self, value: list[int]) -> None:
-        warnings.warn(
-            "`tiles` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        self._tiles = value
-
-    @property
-    def number_melds(self) -> int:
-        warnings.warn(
-            "`number_melds` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._number_melds
-
-    @number_melds.setter
-    def number_melds(self, value: int) -> None:
-        warnings.warn(
-            "`number_melds` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        self._number_melds = value
-
-    @property
-    def number_tatsu(self) -> int:
-        warnings.warn(
-            "`number_tatsu` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._number_tatsu
-
-    @number_tatsu.setter
-    def number_tatsu(self, value: int) -> None:
-        warnings.warn(
-            "`number_tatsu` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        self._number_tatsu = value
-
-    @property
-    def number_pairs(self) -> int:
-        warnings.warn(
-            "`number_pairs` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._number_pairs
-
-    @number_pairs.setter
-    def number_pairs(self, value: int) -> None:
-        warnings.warn(
-            "`number_pairs` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        self._number_pairs = value
-
-    @property
-    def number_jidahai(self) -> int:
-        warnings.warn(
-            "`number_jidahai` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._number_jidahai
-
-    @number_jidahai.setter
-    def number_jidahai(self, value: int) -> None:
-        warnings.warn(
-            "`number_jidahai` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        self._number_jidahai = value
-
-    @property
-    def number_characters(self) -> int:
-        warnings.warn(
-            "`number_characters` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._flag_four_copies
-
-    @number_characters.setter
-    def number_characters(self, value: int) -> None:
-        warnings.warn(
-            "`number_characters` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        self._flag_four_copies = value
-
-    @property
-    def number_isolated_tiles(self) -> int:
-        warnings.warn(
-            "`number_isolated_tiles` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._flag_isolated_tiles
-
-    @number_isolated_tiles.setter
-    def number_isolated_tiles(self, value: int) -> None:
-        warnings.warn(
-            "`number_isolated_tiles` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        self._flag_isolated_tiles = value
-
-    @property
-    def min_shanten(self) -> int:
-        warnings.warn(
-            "`min_shanten` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._min_shanten
-
-    @min_shanten.setter
-    def min_shanten(self, value: int) -> None:
-        warnings.warn(
-            "`min_shanten` is deprecated. This attribute reflects internal state and should not be used.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        self._min_shanten = value
-
-    def calculate_shanten(self, tiles_34: Sequence[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
+    @staticmethod
+    def calculate_shanten(tiles_34: Sequence[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
         """
         Return the minimum shanten for provided hand,
         it will consider chiitoitsu and kokushi options if possible.
         """
 
-        shanten_results = [self.calculate_shanten_for_regular_hand(tiles_34)]
+        shanten_results = [Shanten.calculate_shanten_for_regular_hand(tiles_34)]
         if use_chiitoitsu:
-            shanten_results.append(self.calculate_shanten_for_chiitoitsu_hand(tiles_34))
+            shanten_results.append(Shanten.calculate_shanten_for_chiitoitsu_hand(tiles_34))
         if use_kokushi:
-            shanten_results.append(self.calculate_shanten_for_kokushi_hand(tiles_34))
+            shanten_results.append(Shanten.calculate_shanten_for_kokushi_hand(tiles_34))
 
         return min(shanten_results)
 
-    def calculate_shanten_for_chiitoitsu_hand(self, tiles_34: Sequence[int]) -> int:
+    @staticmethod
+    def calculate_shanten_for_chiitoitsu_hand(tiles_34: Sequence[int]) -> int:
         """
         Calculate the number of shanten for chiitoitsu hand
         """
@@ -185,7 +33,8 @@ class Shanten:
         kinds = len([x for x in tiles_34 if x >= 1])
         return 6 - pairs + (7 - kinds if kinds < 7 else 0)
 
-    def calculate_shanten_for_kokushi_hand(self, tiles_34: Sequence[int]) -> int:
+    @staticmethod
+    def calculate_shanten_for_kokushi_hand(tiles_34: Sequence[int]) -> int:
         """
         Calculate the number of shanten for kokushi musou hand
         """
@@ -199,16 +48,28 @@ class Shanten:
 
         return 13 - terminals - (completed_terminals and 1 or 0)
 
-    def calculate_shanten_for_regular_hand(self, tiles_34: Sequence[int]) -> int:
+    @staticmethod
+    def calculate_shanten_for_regular_hand(tiles_34: Sequence[int]) -> int:
         """
         Calculate the number of shanten for regular hand
         """
+        return _RegularShanten(tiles_34).calculate()
+
+
+class _RegularShanten:
+    def __init__(self, tiles_34: Sequence[int]) -> None:
         # we will modify tiles array later, so we need to use a copy
-        tiles_34 = list(tiles_34)
+        self._tiles = list(tiles_34)
+        self._number_melds = 0
+        self._number_tatsu = 0
+        self._number_pairs = 0
+        self._number_jidahai = 0
+        self._flag_four_copies = 0
+        self._flag_isolated_tiles = 0
+        self._min_shanten = 8
 
-        self._init(tiles_34)
-
-        count_of_tiles = sum(tiles_34)
+    def calculate(self) -> int:
+        count_of_tiles = sum(self._tiles)
         assert count_of_tiles <= 14, f"Too many tiles = {count_of_tiles}"
 
         self._remove_character_tiles(count_of_tiles)
@@ -217,16 +78,6 @@ class Shanten:
         self._scan(init_mentsu)
 
         return self._min_shanten
-
-    def _init(self, tiles: list[int]) -> None:
-        self._tiles = tiles
-        self._number_melds = 0
-        self._number_tatsu = 0
-        self._number_pairs = 0
-        self._number_jidahai = 0
-        self._flag_four_copies = 0
-        self._flag_isolated_tiles = 0
-        self._min_shanten = 8
 
     def _scan(self, init_mentsu: int) -> None:
         for i in range(0, 27):
