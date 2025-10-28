@@ -69,12 +69,10 @@ class HandCalculator:
 
         config = config or _DEFAULT_CONFIG
 
-        agari = Agari()
         hand_yaku = []
         scores_calculator = scores_calculator_factory()
         tiles_34 = TilesConverter.to_34_array(tiles)
 
-        fu_calculator = FuCalculator()
         is_aotenjou = isinstance(scores_calculator, Aotenjou)
 
         opened_melds = [x.tiles_34 for x in melds if x.opened]
@@ -149,7 +147,7 @@ class HandCalculator:
         if config.is_renhou and melds:
             return HandResponse(error=HandCalculator.ERR_RENHOU_WITH_MELD)
 
-        if not agari.is_agari(tiles_34, all_melds):
+        if not Agari.is_agari(tiles_34, all_melds):
             return HandResponse(error=HandCalculator.ERR_HAND_NOT_WINNING)
 
         if not config.options.has_double_yakuman:
@@ -173,7 +171,7 @@ class HandCalculator:
                 hand_yaku = []
                 han = 0
 
-                fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, win_group, config, valued_tiles, melds)
+                fu_details, fu = FuCalculator.calculate_fu(hand, win_tile, win_group, config, valued_tiles, melds)
 
                 is_pinfu = len(fu_details) == 1 and not is_chiitoitsu and not is_open_hand
 
