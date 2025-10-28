@@ -157,7 +157,7 @@ class HandCalculator:
             config.yaku.daisuushi.han_closed = 13
             config.yaku.daisuushi.han_open = 13
 
-        hand_options = HandDivider().divide_hand(tiles_34, melds, use_cache=use_hand_divider_cache)
+        hand_options = HandDivider.divide_hand(tiles_34, melds, use_cache=use_hand_divider_cache)
 
         calculated_hands = []
         for hand in hand_options:
