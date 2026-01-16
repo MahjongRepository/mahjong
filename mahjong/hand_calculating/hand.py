@@ -41,8 +41,11 @@ class HandCalculator:
 
     # more possible errors, like tenhou and haitei can't be together (so complicated :<)
 
-    @staticmethod
+    def __init__(self) -> None:
+        self.divider = HandDivider()
+
     def estimate_hand_value(
+        self,
         tiles: Collection[int],
         win_tile: int,
         melds: Optional[Collection[Meld]] = None,
@@ -157,7 +160,7 @@ class HandCalculator:
             config.yaku.daisuushi.han_closed = 13
             config.yaku.daisuushi.han_open = 13
 
-        hand_options = HandDivider().divide_hand(tiles_34, melds, use_cache=use_hand_divider_cache)
+        hand_options = self.divider.divide_hand(tiles_34, melds, use_cache=use_hand_divider_cache)
 
         calculated_hands = []
         for hand in hand_options:
