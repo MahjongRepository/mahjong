@@ -15,7 +15,7 @@ class HandDivider:
     cache_key = None
 
     def __init__(self) -> None:
-        self.divider_cache = {}
+        self.divider_cache: dict[str, list[list[list[int]]]] = {}
 
     def divide_hand(
         self,
