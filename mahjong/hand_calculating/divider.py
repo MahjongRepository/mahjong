@@ -1,4 +1,6 @@
+import hashlib
 import itertools
+import marshal
 from collections.abc import Collection, Sequence
 from functools import reduce
 from typing import Optional
@@ -9,8 +11,14 @@ from mahjong.utils import is_chi, is_pon
 
 
 class HandDivider:
-    @staticmethod
+    divider_cache = None
+    cache_key = None
+
+    def __init__(self) -> None:
+        self.divider_cache = {}
+
     def divide_hand(
+        self,
         tiles_34: Sequence[int],
         melds: Optional[Collection[Meld]] = None,
         use_cache: bool = False,
@@ -24,6 +32,11 @@ class HandDivider:
         if not melds:
             melds = []
 
+        if use_cache:
+            self.cache_key = self._build_divider_cache_key(tiles_34, melds)
+            if self.cache_key in self.divider_cache:
+                return self.divider_cache[self.cache_key]
+
         closed_hand_tiles_34 = list(tiles_34)
 
         # small optimization, we can't have a pair in open part of the hand,
@@ -32,7 +45,7 @@ class HandDivider:
         for open_item in open_tile_indices:
             closed_hand_tiles_34[open_item] -= 1
 
-        pair_indices = HandDivider.find_pairs(closed_hand_tiles_34)
+        pair_indices = self.find_pairs(closed_hand_tiles_34)
 
         # let's try to find all possible hand options
         hands: list[list[list[int]]] = []
@@ -46,13 +59,13 @@ class HandDivider:
             local_tiles_34[pair_index] -= 2
 
             # 0 - 8 man tiles
-            man = HandDivider.find_valid_combinations(local_tiles_34, 0, 8)
+            man = self.find_valid_combinations(local_tiles_34, 0, 8)
 
             # 9 - 17 pin tiles
-            pin = HandDivider.find_valid_combinations(local_tiles_34, 9, 17)
+            pin = self.find_valid_combinations(local_tiles_34, 9, 17)
 
             # 18 - 26 sou tiles
-            sou = HandDivider.find_valid_combinations(local_tiles_34, 18, 26)
+            sou = self.find_valid_combinations(local_tiles_34, 18, 26)
 
             honor: list = []
             for x in HONOR_INDICES:
@@ -106,10 +119,12 @@ class HandDivider:
 
         result = sorted(hands)
 
+        if use_cache:
+            self.divider_cache[self.cache_key] = result
+
         return result
 
-    @staticmethod
-    def find_pairs(tiles_34: Sequence[int], first_index: int = 0, second_index: int = 33) -> list[int]:
+    def find_pairs(self, tiles_34: Sequence[int], first_index: int = 0, second_index: int = 33) -> list[int]:
         """
         Find all possible pairs in the hand and return their indices
         :return: array of pair indices
@@ -125,8 +140,8 @@ class HandDivider:
 
         return pair_indices
 
-    @staticmethod
     def find_valid_combinations(
+        self,
         tiles_34: Sequence[int],
         first_index: int,
         second_index: int,
@@ -233,3 +248,11 @@ class HandDivider:
                     combinations_results.append(results)
 
         return combinations_results
+
+    def clear_cache(self) -> None:
+        self.divider_cache = {}
+        self.cache_key = None
+
+    def _build_divider_cache_key(self, tiles_34: Sequence[int], melds: Collection[Meld]) -> str:
+        prepared_array = list(tiles_34) + [x.tiles for x in melds] if melds else list(tiles_34)
+        return hashlib.md5(marshal.dumps(prepared_array)).hexdigest()
