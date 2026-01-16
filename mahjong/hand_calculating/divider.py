@@ -124,7 +124,8 @@ class HandDivider:
 
         return result
 
-    def find_pairs(self, tiles_34: Sequence[int], first_index: int = 0, second_index: int = 33) -> list[int]:
+    @staticmethod
+    def find_pairs(tiles_34: Sequence[int], first_index: int = 0, second_index: int = 33) -> list[int]:
         """
         Find all possible pairs in the hand and return their indices
         :return: array of pair indices
@@ -140,8 +141,8 @@ class HandDivider:
 
         return pair_indices
 
+    @staticmethod
     def find_valid_combinations(
-        self,
         tiles_34: Sequence[int],
         first_index: int,
         second_index: int,
@@ -253,6 +254,7 @@ class HandDivider:
         self.divider_cache = {}
         self.cache_key = None
 
-    def _build_divider_cache_key(self, tiles_34: Sequence[int], melds: Collection[Meld]) -> str:
+    @staticmethod
+    def _build_divider_cache_key(tiles_34: Sequence[int], melds: Collection[Meld]) -> str:
         prepared_array = list(tiles_34) + [x.tiles for x in melds] if melds else list(tiles_34)
         return hashlib.md5(marshal.dumps(prepared_array)).hexdigest()
