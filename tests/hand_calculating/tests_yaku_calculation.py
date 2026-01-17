@@ -614,7 +614,7 @@ def test_is_sanshoku_douko() -> None:
     assert not config.sanshoku_douko.is_condition_met(_hand(tiles))
 
     tiles = TilesConverter.string_to_136_array(sou="222", man="222", pin="22245699")
-    melds = [_make_meld(Meld.CHI, sou="222")]
+    melds = [_make_meld(Meld.PON, sou="222")]
     win_tile = _string_to_136_tile(pin="9")
 
     result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
