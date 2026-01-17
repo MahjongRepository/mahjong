@@ -1,23 +1,34 @@
 from collections.abc import Collection, Sequence
 from dataclasses import dataclass
 from enum import Enum
-from functools import lru_cache
+from functools import lru_cache, total_ordering
 from typing import Literal, Optional, TypeAlias
 
 from mahjong.meld import Meld
 
 
 class _BlockType(Enum):
-    SEQUENCE = "sequence"
-    TRIPLET = "triplet"
-    PAIR = "pair"
-    QUAD = "quad"
+    QUAD = 0
+    TRIPLET = 1
+    SEQUENCE = 2
+    PAIR = 3
 
 
+@total_ordering
 @dataclass(frozen=True)
 class _Block:
     ty: _BlockType
     tile_34: int
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, _Block):
+            return NotImplemented
+        return (self.tile_34, self.ty.value) == (other.tile_34, other.ty.value)
+
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, _Block):
+            return NotImplemented
+        return (self.tile_34, self.ty.value) < (other.tile_34, other.ty.value)
 
     @classmethod
     def from_meld(cls, meld: Meld) -> "_Block":
@@ -35,14 +46,14 @@ class _Block:
 
     @property
     def tiles_34(self) -> list[int]:
-        if self.ty == _BlockType.SEQUENCE:
-            return [self.tile_34, self.tile_34 + 1, self.tile_34 + 2]
+        if self.ty == _BlockType.QUAD:
+            return [self.tile_34, self.tile_34, self.tile_34, self.tile_34]
         elif self.ty == _BlockType.TRIPLET:
             return [self.tile_34, self.tile_34, self.tile_34]
+        elif self.ty == _BlockType.SEQUENCE:
+            return [self.tile_34, self.tile_34 + 1, self.tile_34 + 2]
         elif self.ty == _BlockType.PAIR:
             return [self.tile_34, self.tile_34]
-        elif self.ty == _BlockType.QUAD:
-            return [self.tile_34, self.tile_34, self.tile_34, self.tile_34]
         else:
             msg = f"invalid block type: {self.ty}"
             raise RuntimeError(msg)
@@ -94,6 +105,11 @@ class HandDivider:
         honors = HandDivider._decompose_honors_hand(hand[27:34])
 
         combinations: list[list[_Block]] = []
+
+        chiitoitsu = HandDivider._decompose_chiitoitsu(hand)
+        if chiitoitsu:
+            combinations.append(chiitoitsu)
+
         for man in man_combinations:
             for pin in pin_combinations:
                 for sou in sou_combinations:
@@ -107,9 +123,18 @@ class HandDivider:
                     if len(all_blocks) != 5:
                         continue
 
+                    all_blocks.sort()
                     combinations.append(all_blocks)
 
         return tuple(tuple(b for b in blocks) for blocks in combinations)
+
+    @staticmethod
+    def _decompose_chiitoitsu(pure_hand: list[int]) -> list[_Block]:
+        blocks: list[_Block] = []
+        for i, count in enumerate(pure_hand):
+            if count == 2:
+                blocks.append(_Block(_BlockType.PAIR, i))
+        return blocks if len(blocks) == 7 else []
 
     @staticmethod
     def _decompose_single_color_hand(single_color_hand: list[int], suit: Literal[0, 9, 18]) -> list[list[_Block]]:
@@ -141,9 +166,7 @@ class HandDivider:
         suit: Literal[0, 9, 18],
     ) -> list[list[_Block]]:
         if i == 9:
-            if sum(single_color_hand) == 0:
-                return [blocks]
-            return []
+            return [blocks] if sum(single_color_hand) == 0 else []
 
         if single_color_hand[i] == 0:
             return HandDivider._decompose_single_color_hand_without_pair(single_color_hand, blocks, i + 1, suit)
