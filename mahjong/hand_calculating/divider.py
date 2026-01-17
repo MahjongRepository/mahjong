@@ -10,8 +10,8 @@ from mahjong.meld import Meld
 class _BlockType(Enum):
     QUAD = 0
     TRIPLET = 1
-    SEQUENCE = 2
-    PAIR = 3
+    PAIR = 2
+    SEQUENCE = 3
 
 
 @total_ordering
@@ -50,10 +50,10 @@ class _Block:
             return [self.tile_34, self.tile_34, self.tile_34, self.tile_34]
         elif self.ty == _BlockType.TRIPLET:
             return [self.tile_34, self.tile_34, self.tile_34]
-        elif self.ty == _BlockType.SEQUENCE:
-            return [self.tile_34, self.tile_34 + 1, self.tile_34 + 2]
         elif self.ty == _BlockType.PAIR:
             return [self.tile_34, self.tile_34]
+        elif self.ty == _BlockType.SEQUENCE:
+            return [self.tile_34, self.tile_34 + 1, self.tile_34 + 2]
         else:
             msg = f"invalid block type: {self.ty}"
             raise RuntimeError(msg)
@@ -126,6 +126,7 @@ class HandDivider:
                     all_blocks.sort()
                     combinations.append(all_blocks)
 
+        combinations.sort()
         return tuple(tuple(b for b in blocks) for blocks in combinations)
 
     @staticmethod
