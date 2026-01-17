@@ -784,7 +784,7 @@ def test_is_chanta() -> None:
     tiles = TilesConverter.string_to_34_array(sou="111", man="111999", honors="22333")
     assert not config.chantai.is_condition_met(_hand(tiles))
 
-    tiles = TilesConverter.string_to_34_array(sou="111999", man="111999", pin="11999")
+    tiles = TilesConverter.string_to_34_array(sou="111999", man="111999", pin="11")
     assert not config.chantai.is_condition_met(_hand(tiles))
 
     tiles = TilesConverter.string_to_136_array(sou="123", man="123789", honors="22333")
@@ -814,7 +814,7 @@ def test_is_junchan() -> None:
     tiles = TilesConverter.string_to_34_array(sou="111", man="111999", honors="22333")
     assert not config.junchan.is_condition_met(_hand(tiles))
 
-    tiles = TilesConverter.string_to_34_array(sou="111999", man="111999", pin="11999")
+    tiles = TilesConverter.string_to_34_array(sou="111999", man="111999", pin="11")
     assert not config.junchan.is_condition_met(_hand(tiles))
 
     tiles = TilesConverter.string_to_136_array(sou="789", man="123789", pin="12399")
