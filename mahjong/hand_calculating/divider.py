@@ -67,7 +67,6 @@ class HandDivider:
     def divide_hand(
         tiles_34: Sequence[int],
         melds: Optional[Collection[Meld]] = None,
-        use_cache: bool = False,
     ) -> list[list[list[int]]]:
         """
         Return a list of possible hands.

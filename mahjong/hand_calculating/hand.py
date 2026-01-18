@@ -49,7 +49,6 @@ class HandCalculator:
         dora_indicators: Optional[Collection[int]] = None,
         config: Optional[HandConfig] = None,
         scores_calculator_factory: type[ScoresCalculator] = ScoresCalculator,
-        use_hand_divider_cache: bool = False,
     ) -> HandResponse:
         """
         :param tiles: array with 14 tiles in 136-tile format
@@ -157,7 +156,7 @@ class HandCalculator:
             config.yaku.daisuushi.han_closed = 13
             config.yaku.daisuushi.han_open = 13
 
-        hand_options = HandDivider.divide_hand(tiles_34, melds, use_cache=use_hand_divider_cache)
+        hand_options = HandDivider.divide_hand(tiles_34, melds)
 
         calculated_hands = []
         for hand in hand_options:
