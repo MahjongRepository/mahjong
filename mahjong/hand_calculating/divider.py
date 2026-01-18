@@ -5,6 +5,7 @@ from functools import lru_cache, total_ordering
 from typing import Literal, Optional, TypeAlias
 
 from mahjong.meld import Meld
+from mahjong.utils import is_chi, is_kan, is_pon
 
 
 class _BlockType(Enum):
@@ -32,16 +33,15 @@ class _Block:
 
     @classmethod
     def from_meld(cls, meld: Meld) -> "_Block":
-        if meld.type == Meld.CHI:
-            return _Block(_BlockType.SEQUENCE, min(meld.tiles_34))
-        elif meld.type == Meld.PON:
-            return _Block(_BlockType.TRIPLET, meld.tiles_34[0])
-        elif meld.type == Meld.KAN:
-            return _Block(_BlockType.QUAD, meld.tiles_34[0])
-        elif meld.type == Meld.SHOUMINKAN:
-            return _Block(_BlockType.QUAD, meld.tiles_34[0])
+        tiles_34 = meld.tiles_34
+        if is_chi(tiles_34):
+            return cls(_BlockType.SEQUENCE, tiles_34[0])
+        elif is_pon(tiles_34):
+            return cls(_BlockType.TRIPLET, tiles_34[0])
+        elif is_kan(tiles_34):
+            return cls(_BlockType.QUAD, tiles_34[0])
         else:
-            msg = f"invalid meld type: {meld.type}"
+            msg = f"invalid meld type: {meld.type}, tiles: {tiles_34}"
             raise RuntimeError(msg)
 
     @property
