@@ -74,9 +74,9 @@ class HandDivider:
         :param melds: list of Meld objects
         :return:
         """
-        melds_ = HandDivider._melds_to_blocks(melds)
-        pure_hand = HandDivider._get_pure_hand(tiles_34, melds_)
-        combinations = HandDivider._divide_hand_impl(pure_hand, melds_)
+        meld_blocks = HandDivider._melds_to_blocks(melds)
+        pure_hand = HandDivider._get_pure_hand(tiles_34, meld_blocks)
+        combinations = HandDivider._divide_hand_impl(pure_hand, meld_blocks)
         return [[b.tiles_34 for b in blocks] for blocks in combinations]
 
     @staticmethod
