@@ -279,3 +279,10 @@ def test_kiriage_mangan() -> None:
 
     result = hand.calculate_scores(han=3, fu=60, config=config)
     assert result["main"] == 12000
+
+
+def test_calculate_scores_can_call_as_static_method() -> None:
+    config = HandConfig(options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
+
+    result = ScoresCalculator.calculate_scores(han=1, fu=30, config=config)
+    assert result["main"] == 1000

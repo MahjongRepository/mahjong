@@ -421,3 +421,16 @@ def test_incorrect_fu_calculation_test_case_2() -> None:
 
     result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(is_houtei=True))
     assert result.fu == 30
+
+
+def test_calculate_fu_can_call_as_static_method() -> None:
+    config = HandConfig()
+
+    tiles = TilesConverter.string_to_136_array(sou="112244", man="115599", pin="6")
+    win_tile = _string_to_136_tile(pin="6")
+    hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
+
+    fu_details, fu = FuCalculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
+    assert 1 == len(fu_details)
+    assert {"fu": 25, "reason": FuCalculator.BASE} in fu_details
+    assert fu == 25
