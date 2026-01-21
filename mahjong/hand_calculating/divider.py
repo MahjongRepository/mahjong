@@ -2,7 +2,7 @@ from collections.abc import Collection, Sequence
 from dataclasses import dataclass
 from enum import Enum
 from functools import lru_cache, total_ordering
-from typing import Literal, Optional, TypeAlias
+from typing import Literal, Optional
 
 from mahjong.meld import Meld
 from mahjong.utils import is_chi, is_kan, is_pon
@@ -59,7 +59,7 @@ class _Block:
             raise RuntimeError(msg)
 
 
-_Blocks: TypeAlias = tuple[_Block, ...]
+_Blocks = tuple[_Block, ...]
 
 
 class HandDivider:
