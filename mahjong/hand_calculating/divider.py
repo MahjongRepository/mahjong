@@ -145,9 +145,9 @@ class HandDivider:
                 if single_color_hand[pair] < 2:
                     continue
 
-                hand = list(single_color_hand)
-                hand[pair] -= 2
-                comb = HandDivider._decompose_single_color_hand_without_pair(hand, [], 0, suit)
+                single_color_hand[pair] -= 2
+                comb = HandDivider._decompose_single_color_hand_without_pair(single_color_hand, [], 0, suit)
+                single_color_hand[pair] += 2
 
                 if not comb:
                     continue
@@ -174,20 +174,32 @@ class HandDivider:
         combinations: list[list[_Block]] = []
 
         if i < 7 and single_color_hand[i] >= 1 and single_color_hand[i + 1] >= 1 and single_color_hand[i + 2] >= 1:
-            new_hand = list(single_color_hand)
-            new_hand[i] -= 1
-            new_hand[i + 1] -= 1
-            new_hand[i + 2] -= 1
+            single_color_hand[i] -= 1
+            single_color_hand[i + 1] -= 1
+            single_color_hand[i + 2] -= 1
             new_blocks = [*blocks, _Block(_BlockType.SEQUENCE, suit + i)]
-            new_combination = HandDivider._decompose_single_color_hand_without_pair(new_hand, new_blocks, i, suit)
+            new_combination = HandDivider._decompose_single_color_hand_without_pair(
+                single_color_hand,
+                new_blocks,
+                i,
+                suit,
+            )
             combinations.extend(new_combination)
+            single_color_hand[i + 2] += 1
+            single_color_hand[i + 1] += 1
+            single_color_hand[i] += 1
 
         if single_color_hand[i] >= 3:
-            new_hand = list(single_color_hand)
-            new_hand[i] -= 3
+            single_color_hand[i] -= 3
             new_blocks = [*blocks, _Block(_BlockType.TRIPLET, suit + i)]
-            new_combination = HandDivider._decompose_single_color_hand_without_pair(new_hand, new_blocks, i + 1, suit)
+            new_combination = HandDivider._decompose_single_color_hand_without_pair(
+                single_color_hand,
+                new_blocks,
+                i + 1,
+                suit,
+            )
             combinations.extend(new_combination)
+            single_color_hand[i] += 3
 
         return combinations
 
