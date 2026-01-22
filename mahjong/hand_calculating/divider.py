@@ -118,7 +118,7 @@ class HandDivider:
                     if (not all_blocks) or num_pair != 1:
                         continue
 
-                    all_blocks.extend(list(melds))
+                    all_blocks.extend(melds)
                     if len(all_blocks) != 5:
                         continue
 
