@@ -115,7 +115,7 @@ class HandDivider:
                     all_blocks = [*man, *pin, *sou, *honors]
 
                     num_pair = sum(block.ty == _BlockType.PAIR for block in all_blocks)
-                    if (not all_blocks) or num_pair != 1:
+                    if num_pair != 1:
                         continue
 
                     all_blocks.extend(melds)
