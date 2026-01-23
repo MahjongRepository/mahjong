@@ -126,7 +126,7 @@ class HandDivider:
                     combinations.append(all_blocks)
 
         combinations.sort()
-        return tuple(tuple(b for b in blocks) for blocks in combinations)
+        return tuple(tuple(blocks) for blocks in combinations)
 
     @staticmethod
     def _decompose_chiitoitsu(pure_hand: list[int]) -> list[_Block]:
