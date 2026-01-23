@@ -1,4 +1,3 @@
-import warnings
 from collections.abc import Sequence
 from typing import Optional
 
@@ -46,8 +45,3 @@ class Meld:
     @property
     def tiles_34(self) -> list[int]:
         return [x // 4 for x in self.tiles]
-
-    @property
-    def CHANKAN(self) -> str:
-        warnings.warn("Use .SHOUMINKAN attribute instead of .CHANKAN attribute", DeprecationWarning, stacklevel=2)
-        return self.SHOUMINKAN
