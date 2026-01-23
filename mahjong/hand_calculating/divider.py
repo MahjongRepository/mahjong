@@ -1,27 +1,72 @@
-import hashlib
-import itertools
-import marshal
 from collections.abc import Collection, Sequence
-from functools import reduce
-from typing import Optional
+from dataclasses import dataclass
+from enum import Enum
+from functools import lru_cache, total_ordering
+from typing import Literal, Optional
 
-from mahjong.constants import HONOR_INDICES
 from mahjong.meld import Meld
-from mahjong.utils import is_chi, is_pon
+from mahjong.utils import is_chi, is_kan, is_pon
+
+
+class _BlockType(Enum):
+    QUAD = 0
+    TRIPLET = 1
+    PAIR = 2
+    SEQUENCE = 3
+
+
+@total_ordering
+@dataclass(frozen=True)
+class _Block:
+    ty: _BlockType
+    tile_34: int
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, _Block):
+            return NotImplemented
+        return (self.tile_34, self.ty.value) == (other.tile_34, other.ty.value)
+
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, _Block):
+            return NotImplemented
+        return (self.tile_34, self.ty.value) < (other.tile_34, other.ty.value)
+
+    @classmethod
+    def from_meld(cls, meld: Meld) -> "_Block":
+        tiles_34 = meld.tiles_34
+        if is_chi(tiles_34):
+            return cls(_BlockType.SEQUENCE, tiles_34[0])
+        elif is_pon(tiles_34):
+            return cls(_BlockType.TRIPLET, tiles_34[0])
+        elif is_kan(tiles_34):
+            return cls(_BlockType.QUAD, tiles_34[0])
+        else:
+            msg = f"invalid meld type: {meld.type}, tiles: {tiles_34}"
+            raise RuntimeError(msg)
+
+    @property
+    def tiles_34(self) -> list[int]:
+        if self.ty == _BlockType.QUAD:
+            return [self.tile_34, self.tile_34, self.tile_34, self.tile_34]
+        elif self.ty == _BlockType.TRIPLET:
+            return [self.tile_34, self.tile_34, self.tile_34]
+        elif self.ty == _BlockType.PAIR:
+            return [self.tile_34, self.tile_34]
+        elif self.ty == _BlockType.SEQUENCE:
+            return [self.tile_34, self.tile_34 + 1, self.tile_34 + 2]
+        else:
+            msg = f"invalid block type: {self.ty}"
+            raise RuntimeError(msg)
+
+
+_Blocks = tuple[_Block, ...]
 
 
 class HandDivider:
-    divider_cache = None
-    cache_key = None
-
-    def __init__(self) -> None:
-        self.divider_cache: dict[str, list[list[list[int]]]] = {}
-
+    @staticmethod
     def divide_hand(
-        self,
         tiles_34: Sequence[int],
         melds: Optional[Collection[Meld]] = None,
-        use_cache: bool = False,
     ) -> list[list[list[int]]]:
         """
         Return a list of possible hands.
@@ -29,232 +74,151 @@ class HandDivider:
         :param melds: list of Meld objects
         :return:
         """
+        meld_blocks = HandDivider._melds_to_blocks(melds)
+        pure_hand = HandDivider._get_pure_hand(tiles_34, meld_blocks)
+        combinations = HandDivider._divide_hand_impl(pure_hand, meld_blocks)
+        return [[b.tiles_34 for b in blocks] for blocks in combinations]
+
+    @staticmethod
+    def _melds_to_blocks(melds: Optional[Collection[Meld]] = None) -> tuple[_Block, ...]:
         if not melds:
-            melds = []
-
-        if use_cache:
-            self.cache_key = self._build_divider_cache_key(tiles_34, melds)
-            if self.cache_key in self.divider_cache:
-                return self.divider_cache[self.cache_key]
-
-        closed_hand_tiles_34 = list(tiles_34)
-
-        # small optimization, we can't have a pair in open part of the hand,
-        # so we don't need to try find pairs in open sets
-        open_tile_indices = list(itertools.chain.from_iterable(x.tiles_34 for x in melds)) if melds else []
-        for open_item in open_tile_indices:
-            closed_hand_tiles_34[open_item] -= 1
-
-        pair_indices = self.find_pairs(closed_hand_tiles_34)
-
-        # let's try to find all possible hand options
-        hands: list[list[list[int]]] = []
-        for pair_index in pair_indices:
-            local_tiles_34 = list(tiles_34)
-
-            # we don't need to combine already open sets
-            for open_item in open_tile_indices:
-                local_tiles_34[open_item] -= 1
-
-            local_tiles_34[pair_index] -= 2
-
-            # 0 - 8 man tiles
-            man = self.find_valid_combinations(local_tiles_34, 0, 8)
-
-            # 9 - 17 pin tiles
-            pin = self.find_valid_combinations(local_tiles_34, 9, 17)
-
-            # 18 - 26 sou tiles
-            sou = self.find_valid_combinations(local_tiles_34, 18, 26)
-
-            honor: list = []
-            for x in HONOR_INDICES:
-                if local_tiles_34[x] == 3:
-                    honor.append([x] * 3)
-
-            if honor:
-                honor = [honor]
-
-            arrays = [[[pair_index] * 2]]
-            if sou:
-                arrays.append(sou)
-            if man:
-                arrays.append(man)
-            if pin:
-                arrays.append(pin)
-            if honor:
-                arrays.append(honor)
-
-            for meld in melds:
-                arrays.append([meld.tiles_34])
-
-            # let's find all possible hand from our valid sets
-            for s in itertools.product(*arrays):
-                hand: list[list[int]] = []
-                for item in s:
-                    if isinstance(item[0], list):
-                        for x in item:
-                            hand.append(x)
-                    else:
-                        hand.append(item)
-
-                hand = sorted(hand, key=lambda a: a[0])
-                if len(hand) == 5:
-                    hands.append(hand)
-
-        # small optimization, let's remove hand duplicates
-        unique_hands = []
-        for hand in hands:
-            hand = sorted(hand, key=lambda x: (x[0], x[1]))
-            if hand not in unique_hands:
-                unique_hands.append(hand)
-
-        hands = unique_hands
-
-        if len(pair_indices) == 7:
-            hand = []
-            for index in pair_indices:
-                hand.append([index] * 2)
-            hands.append(hand)
-
-        result = sorted(hands)
-
-        if use_cache:
-            self.divider_cache[self.cache_key] = result
-
-        return result
+            return ()
+        return tuple(_Block.from_meld(m) for m in melds)
 
     @staticmethod
-    def find_pairs(tiles_34: Sequence[int], first_index: int = 0, second_index: int = 33) -> list[int]:
-        """
-        Find all possible pairs in the hand and return their indices
-        :return: array of pair indices
-        """
-        pair_indices = []
-        for x in range(first_index, second_index + 1):
-            # ignore pon of honor tiles, because it can't be a part of pair
-            if x in HONOR_INDICES and tiles_34[x] != 2:
+    def _get_pure_hand(tiles_34: Sequence[int], melds: tuple[_Block, ...]) -> tuple[int, ...]:
+        pure_hand_list = list(tiles_34)
+        for meld in melds:
+            for index in meld.tiles_34:
+                pure_hand_list[index] -= 1
+
+        return tuple(pure_hand_list)
+
+    @staticmethod
+    @lru_cache(maxsize=128)
+    def _divide_hand_impl(pure_hand: tuple[int, ...], melds: tuple[_Block, ...]) -> tuple[_Blocks, ...]:
+        hand = list(pure_hand)
+        man_combinations = HandDivider._decompose_single_color_hand(hand[0:9], 0)
+        pin_combinations = HandDivider._decompose_single_color_hand(hand[9:18], 9)
+        sou_combinations = HandDivider._decompose_single_color_hand(hand[18:27], 18)
+        honors = HandDivider._decompose_honors_hand(hand[27:34])
+
+        combinations: list[list[_Block]] = []
+
+        chiitoitsu = HandDivider._decompose_chiitoitsu(hand)
+        if chiitoitsu:
+            combinations.append(chiitoitsu)
+
+        for man in man_combinations:
+            for pin in pin_combinations:
+                for sou in sou_combinations:
+                    all_blocks = [*man, *pin, *sou, *honors]
+
+                    num_pair = sum(block.ty == _BlockType.PAIR for block in all_blocks)
+                    if num_pair != 1:
+                        continue
+
+                    all_blocks.extend(melds)
+                    if len(all_blocks) != 5:
+                        continue
+
+                    all_blocks.sort()
+                    combinations.append(all_blocks)
+
+        combinations.sort()
+        return tuple(tuple(b for b in blocks) for blocks in combinations)
+
+    @staticmethod
+    def _decompose_chiitoitsu(pure_hand: list[int]) -> list[_Block]:
+        blocks: list[_Block] = []
+        for i, count in enumerate(pure_hand):
+            if count == 2:
+                blocks.append(_Block(_BlockType.PAIR, i))
+        return blocks if len(blocks) == 7 else []
+
+    @staticmethod
+    def _decompose_single_color_hand(single_color_hand: list[int], suit: Literal[0, 9, 18]) -> list[list[_Block]]:
+        combinations = HandDivider._decompose_single_color_hand_without_pair(single_color_hand, [], 0, suit)
+
+        if not combinations:
+            for pair in range(9):
+                if single_color_hand[pair] < 2:
+                    continue
+
+                single_color_hand[pair] -= 2
+                blocks = [_Block(_BlockType.PAIR, suit + pair)]
+                comb = HandDivider._decompose_single_color_hand_without_pair(single_color_hand, blocks, 0, suit)
+                single_color_hand[pair] += 2
+
+                if not comb:
+                    continue
+
+                combinations.extend(comb)
+
+        return combinations
+
+    @staticmethod
+    def _decompose_single_color_hand_without_pair(
+        single_color_hand: list[int],
+        blocks: list[_Block],
+        i: int,
+        suit: Literal[0, 9, 18],
+    ) -> list[list[_Block]]:
+        if i == 9:
+            return [blocks] if sum(single_color_hand) == 0 else []
+
+        if single_color_hand[i] == 0:
+            return HandDivider._decompose_single_color_hand_without_pair(single_color_hand, blocks, i + 1, suit)
+
+        combinations: list[list[_Block]] = []
+
+        if i < 7 and single_color_hand[i] >= 1 and single_color_hand[i + 1] >= 1 and single_color_hand[i + 2] >= 1:
+            single_color_hand[i] -= 1
+            single_color_hand[i + 1] -= 1
+            single_color_hand[i + 2] -= 1
+            new_blocks = [*blocks, _Block(_BlockType.SEQUENCE, suit + i)]
+            new_combination = HandDivider._decompose_single_color_hand_without_pair(
+                single_color_hand,
+                new_blocks,
+                i,
+                suit,
+            )
+            combinations.extend(new_combination)
+            single_color_hand[i + 2] += 1
+            single_color_hand[i + 1] += 1
+            single_color_hand[i] += 1
+
+        if single_color_hand[i] >= 3:
+            single_color_hand[i] -= 3
+            new_blocks = [*blocks, _Block(_BlockType.TRIPLET, suit + i)]
+            new_combination = HandDivider._decompose_single_color_hand_without_pair(
+                single_color_hand,
+                new_blocks,
+                i + 1,
+                suit,
+            )
+            combinations.extend(new_combination)
+            single_color_hand[i] += 3
+
+        return combinations
+
+    @staticmethod
+    def _decompose_honors_hand(honors_hand: list[int]) -> list[_Block]:
+        has_pair = False
+        blocks: list[_Block] = []
+        for i, count in enumerate(honors_hand):
+            if count == 0:
                 continue
+            elif count in (1, 4):
+                return []
+            elif count == 2:
+                if has_pair:
+                    return []
+                blocks.append(_Block(_BlockType.PAIR, 27 + i))
+                has_pair = True
+            elif count == 3:
+                blocks.append(_Block(_BlockType.TRIPLET, 27 + i))
+            else:
+                return []
 
-            if tiles_34[x] >= 2:
-                pair_indices.append(x)
-
-        return pair_indices
-
-    @staticmethod
-    def find_valid_combinations(
-        tiles_34: Sequence[int],
-        first_index: int,
-        second_index: int,
-        hand_not_completed: bool = False,
-    ) -> list[list[list[int]]]:
-        """
-        Find and return all valid set combinations in given suit
-        :param tiles_34:
-        :param first_index:
-        :param second_index:
-        :param hand_not_completed: in that mode we can return just possible shi or pon sets
-        :return: list of valid combinations
-        """
-        indices = []
-        for x in range(first_index, second_index + 1):
-            if tiles_34[x] > 0:
-                indices.extend([x] * tiles_34[x])
-
-        if not indices:
-            return []
-
-        all_possible_combinations: list[tuple[int, int, int]] = list(itertools.permutations(indices, 3))
-
-        def is_valid_combination(possible_set: tuple[int, int, int]) -> bool:
-            if is_chi(possible_set):
-                return True
-
-            if is_pon(possible_set):
-                return True
-
-            return False
-
-        valid_combinations: list[list[int]] = []
-        for combination in all_possible_combinations:
-            if is_valid_combination(combination):
-                valid_combinations.append(list(combination))
-
-        if not valid_combinations:
-            return []
-
-        count_of_needed_combinations = int(len(indices) / 3)
-
-        # simple case, we have count of sets == count of tiles
-        if (
-            count_of_needed_combinations == len(valid_combinations)
-            and reduce(lambda z, y: z + y, valid_combinations) == indices
-        ):
-            return [valid_combinations]
-
-        # filter and remove not possible pon sets
-        for item in valid_combinations:
-            if is_pon(item):
-                count_of_sets = 1
-                count_of_tiles = 0
-                while count_of_sets > count_of_tiles:
-                    count_of_tiles = len([x for x in indices if x == item[0]]) / 3
-                    count_of_sets = len(
-                        [x for x in valid_combinations if x[0] == item[0] and x[1] == item[1] and x[2] == item[2]]
-                    )
-
-                    if count_of_sets > count_of_tiles:
-                        valid_combinations.remove(item)
-
-        # filter and remove not possible chi sets
-        for item in valid_combinations:
-            if is_chi(item):
-                count_of_sets = 5
-                # TODO calculate real count of possible sets
-                count_of_possible_sets = 4
-                while count_of_sets > count_of_possible_sets:
-                    count_of_sets = len(
-                        [x for x in valid_combinations if x[0] == item[0] and x[1] == item[1] and x[2] == item[2]]
-                    )
-
-                    if count_of_sets > count_of_possible_sets:
-                        valid_combinations.remove(item)
-
-        # lit of chi\pon sets for not completed hand
-        if hand_not_completed:
-            return [valid_combinations]
-
-        # hard case - we can build a lot of sets from our tiles
-        # for example we have 123456 tiles and we can build sets:
-        # [1, 2, 3] [4, 5, 6] [2, 3, 4] [3, 4, 5]
-        # and only two of them valid in the same time [1, 2, 3] [4, 5, 6]
-
-        possible_combinations = set(
-            itertools.permutations(range(0, len(valid_combinations)), count_of_needed_combinations)
-        )
-
-        combinations_results = []
-        for combination in possible_combinations:
-            result = []
-            for item in combination:
-                result += valid_combinations[item]
-            result = sorted(result)
-
-            if result == indices:
-                results = []
-                for item in combination:
-                    results.append(valid_combinations[item])
-                results = sorted(results, key=lambda z: z[0])
-                if results not in combinations_results:
-                    combinations_results.append(results)
-
-        return combinations_results
-
-    def clear_cache(self) -> None:
-        self.divider_cache = {}
-        self.cache_key = None
-
-    @staticmethod
-    def _build_divider_cache_key(tiles_34: Sequence[int], melds: Collection[Meld]) -> str:
-        prepared_array = list(tiles_34) + [x.tiles for x in melds] if melds else list(tiles_34)
-        return hashlib.md5(marshal.dumps(prepared_array)).hexdigest()
+        return blocks
