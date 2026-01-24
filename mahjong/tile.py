@@ -24,29 +24,21 @@ class TilesConverter:
         tiles = sorted(tiles)
 
         man = [t for t in tiles if t < 36]
-
-        pin = [t for t in tiles if 36 <= t < 72]
-        pin = [t - 36 for t in pin]
-
-        sou = [t for t in tiles if 72 <= t < 108]
-        sou = [t - 72 for t in sou]
-
-        honors = [t for t in tiles if t >= 108]
-        honors = [t - 108 for t in honors]
+        pin = [t - 36 for t in tiles if 36 <= t < 72]
+        sou = [t - 72 for t in tiles if 72 <= t < 108]
+        honors = [t - 108 for t in tiles if t >= 108]
 
         def words(suits: list[int], red_five: int, suffix: str) -> str:
-            return (
-                suits
-                and "".join(["0" if i == red_five and print_aka_dora else str((i // 4) + 1) for i in suits]) + suffix
-                or ""
-            )
+            if not suits:
+                return ""
+            return "".join(["0" if i == red_five and print_aka_dora else str((i // 4) + 1) for i in suits]) + suffix
 
-        sou = words(sou, FIVE_RED_SOU - 72, "s")  # type: ignore
-        pin = words(pin, FIVE_RED_PIN - 36, "p")  # type: ignore
-        man = words(man, FIVE_RED_MAN, "m")  # type: ignore
-        honors = words(honors, -1 - 108, "z")  # type: ignore
+        man_words = words(man, FIVE_RED_MAN, "m")
+        pin_words = words(pin, FIVE_RED_PIN - 36, "p")
+        sou_words = words(sou, FIVE_RED_SOU - 72, "s")
+        honors_words = words(honors, -1 - 108, "z")
 
-        return man + pin + sou + honors  # type: ignore
+        return man_words + pin_words + sou_words + honors_words
 
     @staticmethod
     def to_34_array(tiles: Collection[int]) -> list[int]:
