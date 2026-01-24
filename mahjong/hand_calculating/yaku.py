@@ -3,12 +3,12 @@ from typing import Optional
 
 
 class Yaku:
-    yaku_id: Optional[int] = None
-    tenhou_id: Optional[int] = None
-    name: Optional[str] = None
-    han_open: Optional[int] = None
-    han_closed: Optional[int] = None
-    is_yakuman: Optional[bool] = None
+    yaku_id: Optional[int]
+    tenhou_id: Optional[int]
+    name: Optional[str]
+    han_open: Optional[int]
+    han_closed: Optional[int]
+    is_yakuman: Optional[bool]
 
     def __init__(self, yaku_id: Optional[int] = None) -> None:
         self.tenhou_id = None
