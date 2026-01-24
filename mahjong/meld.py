@@ -11,13 +11,13 @@ class Meld:
     SHOUMINKAN = "shouminkan"
     NUKI = "nuki"
 
-    who: Optional[int]
-    tiles: list[int]
     type: Optional[str]
-    from_who: Optional[int]
-    called_tile: Optional[int]
+    tiles: list[int]
     # we need it to distinguish opened and closed kan
     opened: bool
+    called_tile: Optional[int]
+    who: Optional[int]
+    from_who: Optional[int]
 
     def __init__(
         self,
