@@ -18,23 +18,23 @@ class OptionalRules:
     All the supported optional rules
     """
 
-    has_open_tanyao = False
-    has_aka_dora = False
-    has_double_yakuman = True
+    has_open_tanyao: bool
+    has_aka_dora: bool
+    has_double_yakuman: bool
     # not implemented! tenhou does not support double yakuman for a single yaku
-    kazoe_limit = HandConstants.KAZOE_LIMITED
-    kiriage = False
+    kazoe_limit: int
+    kiriage: bool
     # if false, 1-20 hand will be possible
-    fu_for_open_pinfu = True
+    fu_for_open_pinfu: bool
     # if true, pinfu tsumo will be disabled
-    fu_for_pinfu_tsumo = False
-    renhou_as_yakuman = False
-    has_daisharin = False
-    has_daisharin_other_suits = False
-    has_daichisei = False
-    has_sashikomi_yakuman = False
-    limit_to_sextuple_yakuman = True
-    paarenchan_needs_yaku = True
+    fu_for_pinfu_tsumo: bool
+    renhou_as_yakuman: bool
+    has_daisharin: bool
+    has_daisharin_other_suits: bool
+    has_daichisei: bool
+    has_sashikomi_yakuman: bool
+    limit_to_sextuple_yakuman: bool
+    paarenchan_needs_yaku: bool
 
     def __init__(
         self,
