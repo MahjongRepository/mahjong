@@ -74,31 +74,31 @@ class HandConfig(HandConstants):
     Special class to pass various settings to the hand calculator object
     """
 
-    yaku = None
-    options = None
+    yaku: YakuConfig
+    options: OptionalRules
 
-    is_tsumo = False
-    is_riichi = False
-    is_ippatsu = False
-    is_rinshan = False
-    is_chankan = False
-    is_haitei = False
-    is_houtei = False
-    is_daburu_riichi = False
-    is_nagashi_mangan = False
-    is_tenhou = False
-    is_renhou = False
-    is_chiihou = False
-    is_open_riichi = False
+    is_tsumo: bool
+    is_riichi: bool
+    is_ippatsu: bool
+    is_rinshan: bool
+    is_chankan: bool
+    is_haitei: bool
+    is_houtei: bool
+    is_daburu_riichi: bool
+    is_nagashi_mangan: bool
+    is_tenhou: bool
+    is_renhou: bool
+    is_chiihou: bool
+    is_open_riichi: bool
 
-    is_dealer = False
-    player_wind = None
-    round_wind = None
+    is_dealer: bool
+    player_wind: Optional[int]
+    round_wind: Optional[int]
     # for optional yakuman paarenchan above 0 means that dealer has paarenchan possibility
-    paarenchan = 0
+    paarenchan: int
 
-    kyoutaku_number = 0  # 1000-point
-    tsumi_number = 0  # 100-point
+    kyoutaku_number: int  # 1000-point
+    tsumi_number: int  # 100-point
 
     def __init__(
         self,
