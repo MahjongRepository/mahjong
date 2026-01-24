@@ -1,4 +1,3 @@
-import warnings
 from collections.abc import Collection, Sequence
 from typing import Optional
 
@@ -38,13 +37,3 @@ class Yaku:
         Set id, name, han related to the yaku
         """
         raise NotImplementedError
-
-    @property
-    def english(self) -> str:
-        warnings.warn("Use .name attribute instead of .english attribute", DeprecationWarning, stacklevel=2)
-        return self.name
-
-    @property
-    def japanese(self) -> str:
-        warnings.warn("Use .name attribute instead of .japanese attribute", DeprecationWarning, stacklevel=2)
-        return self.name
