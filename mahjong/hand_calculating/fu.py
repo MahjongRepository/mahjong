@@ -35,7 +35,7 @@ class FuCalculator:
         win_tile: int,
         win_group: Sequence[int],
         config: HandConfig,
-        valued_tiles: Optional[Sequence[int]] = None,
+        valued_tiles: Optional[Sequence[Optional[int]]] = None,
         melds: Optional[Collection[Meld]] = None,
     ) -> tuple[list[dict[str, Any]], int]:
         """
