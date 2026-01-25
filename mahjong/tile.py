@@ -5,8 +5,8 @@ from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU
 
 
 class Tile:
-    value = None
-    is_tsumogiri = None
+    value: Any
+    is_tsumogiri: Any
 
     def __init__(self, value: Any, is_tsumogiri: Any) -> None:  # noqa: ANN401
         self.value = value

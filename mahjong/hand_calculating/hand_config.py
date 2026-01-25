@@ -18,23 +18,23 @@ class OptionalRules:
     All the supported optional rules
     """
 
-    has_open_tanyao = False
-    has_aka_dora = False
-    has_double_yakuman = True
+    has_open_tanyao: bool
+    has_aka_dora: bool
+    has_double_yakuman: bool
     # not implemented! tenhou does not support double yakuman for a single yaku
-    kazoe_limit = HandConstants.KAZOE_LIMITED
-    kiriage = False
+    kazoe_limit: int
+    kiriage: bool
     # if false, 1-20 hand will be possible
-    fu_for_open_pinfu = True
+    fu_for_open_pinfu: bool
     # if true, pinfu tsumo will be disabled
-    fu_for_pinfu_tsumo = False
-    renhou_as_yakuman = False
-    has_daisharin = False
-    has_daisharin_other_suits = False
-    has_daichisei = False
-    has_sashikomi_yakuman = False
-    limit_to_sextuple_yakuman = True
-    paarenchan_needs_yaku = True
+    fu_for_pinfu_tsumo: bool
+    renhou_as_yakuman: bool
+    has_daisharin: bool
+    has_daisharin_other_suits: bool
+    has_daichisei: bool
+    has_sashikomi_yakuman: bool
+    limit_to_sextuple_yakuman: bool
+    paarenchan_needs_yaku: bool
 
     def __init__(
         self,
@@ -74,31 +74,31 @@ class HandConfig(HandConstants):
     Special class to pass various settings to the hand calculator object
     """
 
-    yaku = None
-    options = None
+    yaku: YakuConfig
+    options: OptionalRules
 
-    is_tsumo = False
-    is_riichi = False
-    is_ippatsu = False
-    is_rinshan = False
-    is_chankan = False
-    is_haitei = False
-    is_houtei = False
-    is_daburu_riichi = False
-    is_nagashi_mangan = False
-    is_tenhou = False
-    is_renhou = False
-    is_chiihou = False
-    is_open_riichi = False
+    is_tsumo: bool
+    is_riichi: bool
+    is_ippatsu: bool
+    is_rinshan: bool
+    is_chankan: bool
+    is_haitei: bool
+    is_houtei: bool
+    is_daburu_riichi: bool
+    is_nagashi_mangan: bool
+    is_tenhou: bool
+    is_renhou: bool
+    is_chiihou: bool
+    is_open_riichi: bool
 
-    is_dealer = False
-    player_wind = None
-    round_wind = None
+    is_dealer: bool
+    player_wind: Optional[int]
+    round_wind: Optional[int]
     # for optional yakuman paarenchan above 0 means that dealer has paarenchan possibility
-    paarenchan = 0
+    paarenchan: int
 
-    kyoutaku_number = 0  # 1000-point
-    tsumi_number = 0  # 100-point
+    kyoutaku_number: int  # 1000-point
+    tsumi_number: int  # 100-point
 
     def __init__(
         self,

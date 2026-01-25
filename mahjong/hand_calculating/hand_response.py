@@ -5,13 +5,13 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class HandResponse:
-    cost = None
-    han = None
-    fu = None
-    fu_details = None
-    yaku = None
-    error = None
-    is_open_hand = False
+    cost: Optional[dict]
+    han: Optional[int]
+    fu: Optional[int]
+    fu_details: Optional[list[dict]]
+    yaku: Optional[list[Yaku]]
+    error: Optional[str]
+    is_open_hand: bool
 
     def __init__(
         self,
