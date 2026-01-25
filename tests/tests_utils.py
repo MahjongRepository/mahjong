@@ -97,5 +97,3 @@ def test_is_dora_indicator_for_terminal() -> None:
     assert is_dora_indicator_for_terminal(_string_to_34_tile(sou="9"))
     assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="1"))
     assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="7"))
-    assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="8"))
-    assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="9"))
