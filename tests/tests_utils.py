@@ -1,5 +1,5 @@
 from mahjong.tile import TilesConverter
-from mahjong.utils import find_isolated_tile_indices, is_tile_strictly_isolated
+from mahjong.utils import find_isolated_tile_indices, is_dora_indicator_for_terminal, is_tile_strictly_isolated
 from tests.utils_for_tests import _string_to_34_tile
 
 
@@ -80,3 +80,22 @@ def test_is_strictly_isolated_tile() -> None:
     assert is_tile_strictly_isolated(hand_34, _string_to_34_tile(honors="5")) is True
     assert is_tile_strictly_isolated(hand_34, _string_to_34_tile(honors="6")) is True
     assert is_tile_strictly_isolated(hand_34, _string_to_34_tile(honors="7")) is True
+
+
+def test_is_dora_indicator_for_terminal() -> None:
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(man="1"))
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(man="7"))
+    assert is_dora_indicator_for_terminal(_string_to_34_tile(man="8"))
+    assert is_dora_indicator_for_terminal(_string_to_34_tile(man="9"))
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(pin="1"))
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(pin="7"))
+    assert is_dora_indicator_for_terminal(_string_to_34_tile(pin="8"))
+    assert is_dora_indicator_for_terminal(_string_to_34_tile(pin="9"))
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(sou="1"))
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(sou="7"))
+    assert is_dora_indicator_for_terminal(_string_to_34_tile(sou="8"))
+    assert is_dora_indicator_for_terminal(_string_to_34_tile(sou="9"))
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="1"))
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="7"))
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="8"))
+    assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="9"))
