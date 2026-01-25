@@ -20,7 +20,7 @@ class HandResponse:
         fu: Optional[int] = None,
         yaku: Optional[Collection[Yaku]] = None,
         error: Optional[str] = None,
-        fu_details: Optional[dict] = None,
+        fu_details: Optional[list[dict]] = None,
         is_open_hand: bool = False,
     ) -> None:
         """
