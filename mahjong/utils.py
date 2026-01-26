@@ -165,7 +165,7 @@ def simplify(tile: int) -> int:
     :param tile: 34 tile format
     :return: tile: 0-8 presentation
     """
-    return tile - 9 * (tile // 9)
+    return tile % 9
 
 
 def find_isolated_tile_indices(hand_34: Sequence[int]) -> list[int]:

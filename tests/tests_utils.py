@@ -1,5 +1,10 @@
 from mahjong.tile import TilesConverter
-from mahjong.utils import find_isolated_tile_indices, is_dora_indicator_for_terminal, is_tile_strictly_isolated
+from mahjong.utils import (
+    find_isolated_tile_indices,
+    is_dora_indicator_for_terminal,
+    is_tile_strictly_isolated,
+    simplify,
+)
 from tests.utils_for_tests import _string_to_34_tile
 
 
@@ -97,3 +102,40 @@ def test_is_dora_indicator_for_terminal() -> None:
     assert is_dora_indicator_for_terminal(_string_to_34_tile(sou="9"))
     assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="1"))
     assert not is_dora_indicator_for_terminal(_string_to_34_tile(honors="7"))
+
+
+def test_simplify() -> None:
+    assert simplify(_string_to_34_tile(sou="1")) == 0
+    assert simplify(_string_to_34_tile(sou="2")) == 1
+    assert simplify(_string_to_34_tile(sou="3")) == 2
+    assert simplify(_string_to_34_tile(sou="4")) == 3
+    assert simplify(_string_to_34_tile(sou="5")) == 4
+    assert simplify(_string_to_34_tile(sou="6")) == 5
+    assert simplify(_string_to_34_tile(sou="7")) == 6
+    assert simplify(_string_to_34_tile(sou="8")) == 7
+    assert simplify(_string_to_34_tile(sou="9")) == 8
+    assert simplify(_string_to_34_tile(pin="1")) == 0
+    assert simplify(_string_to_34_tile(pin="2")) == 1
+    assert simplify(_string_to_34_tile(pin="3")) == 2
+    assert simplify(_string_to_34_tile(pin="4")) == 3
+    assert simplify(_string_to_34_tile(pin="5")) == 4
+    assert simplify(_string_to_34_tile(pin="6")) == 5
+    assert simplify(_string_to_34_tile(pin="7")) == 6
+    assert simplify(_string_to_34_tile(pin="8")) == 7
+    assert simplify(_string_to_34_tile(pin="9")) == 8
+    assert simplify(_string_to_34_tile(man="1")) == 0
+    assert simplify(_string_to_34_tile(man="2")) == 1
+    assert simplify(_string_to_34_tile(man="3")) == 2
+    assert simplify(_string_to_34_tile(man="4")) == 3
+    assert simplify(_string_to_34_tile(man="5")) == 4
+    assert simplify(_string_to_34_tile(man="6")) == 5
+    assert simplify(_string_to_34_tile(man="7")) == 6
+    assert simplify(_string_to_34_tile(man="8")) == 7
+    assert simplify(_string_to_34_tile(man="9")) == 8
+    assert simplify(_string_to_34_tile(honors="1")) == 0
+    assert simplify(_string_to_34_tile(honors="2")) == 1
+    assert simplify(_string_to_34_tile(honors="3")) == 2
+    assert simplify(_string_to_34_tile(honors="4")) == 3
+    assert simplify(_string_to_34_tile(honors="5")) == 4
+    assert simplify(_string_to_34_tile(honors="6")) == 5
+    assert simplify(_string_to_34_tile(honors="7")) == 6
