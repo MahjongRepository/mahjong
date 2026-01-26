@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pytest
 
 from mahjong.agari import Agari
@@ -10,20 +8,15 @@ from tests.utils_for_tests import _string_to_open_34_set
 @pytest.mark.parametrize(
     ("sou", "pin", "man", "honors"),
     [
-        ("123456789", "123", "33", None),
-        ("123456789", "11123", None, None),
-        ("123456789", None, None, "11777"),
-        ("12345556778899", None, None, None),
-        ("11123456788999", None, None, None),
+        ("123456789", "123", "33", ""),
+        ("123456789", "11123", "", ""),
+        ("123456789", "", "", "11777"),
+        ("12345556778899", "", "", ""),
+        ("11123456788999", "", "", ""),
         ("233334", "789", "345", "55"),
     ],
 )
-def test_is_agari(
-    sou: Optional[str],
-    pin: Optional[str],
-    man: Optional[str],
-    honors: Optional[str],
-) -> None:
+def test_is_agari(sou: str, pin: str, man: str, honors: str) -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
@@ -33,17 +26,12 @@ def test_is_agari(
 @pytest.mark.parametrize(
     ("sou", "pin", "man", "honors"),
     [
-        ("123456789", "12345", None, None),
-        ("111222444", "11145", None, None),
-        ("11122233356888", None, None, None),
+        ("123456789", "12345", "", ""),
+        ("111222444", "11145", "", ""),
+        ("11122233356888", "", "", ""),
     ],
 )
-def test_is_not_agari(
-    sou: Optional[str],
-    pin: Optional[str],
-    man: Optional[str],
-    honors: Optional[str],
-) -> None:
+def test_is_not_agari(sou: str, pin: str, man: str, honors: str) -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
@@ -53,17 +41,12 @@ def test_is_not_agari(
 @pytest.mark.parametrize(
     ("sou", "pin", "man", "honors"),
     [
-        ("1133557799", "1199", None, None),
+        ("1133557799", "1199", "", ""),
         ("2244", "1199", "11", "2277"),
-        (None, None, "11223344556677", None),
+        ("", "", "11223344556677", ""),
     ],
 )
-def test_is_chitoitsu_agari(
-    sou: Optional[str],
-    pin: Optional[str],
-    man: Optional[str],
-    honors: Optional[str],
-) -> None:
+def test_is_chitoitsu_agari(sou: str, pin: str, man: str, honors: str) -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
@@ -78,12 +61,7 @@ def test_is_chitoitsu_agari(
         ("19", "19", "19", "12345677"),
     ],
 )
-def test_is_kokushi_musou_agari(
-    sou: Optional[str],
-    pin: Optional[str],
-    man: Optional[str],
-    honors: Optional[str],
-) -> None:
+def test_is_kokushi_musou_agari(sou: str, pin: str, man: str, honors: str) -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
@@ -97,12 +75,7 @@ def test_is_kokushi_musou_agari(
         ("19", "19", "19", "11134567"),
     ],
 )
-def test_is_not_kokushi_musou_agari(
-    sou: Optional[str],
-    pin: Optional[str],
-    man: Optional[str],
-    honors: Optional[str],
-) -> None:
+def test_is_not_kokushi_musou_agari(sou: str, pin: str, man: str, honors: str) -> None:
     agari = Agari()
 
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
