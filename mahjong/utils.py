@@ -149,7 +149,7 @@ def is_dora_indicator_for_terminal(tile: int) -> bool:
     :param tile: 34 tile format
     :return: boolean
     """
-    return tile == 7 or tile == 8 or tile == 16 or tile == 17 or tile == 25 or tile == 26
+    return tile in {7, 8, 16, 17, 25, 26}
 
 
 def contains_terminals(hand_set: Collection[int]) -> bool:
