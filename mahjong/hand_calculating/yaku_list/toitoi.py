@@ -23,5 +23,5 @@ class Toitoi(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        count_of_pon = len([i for i in hand if is_pon_or_kan(i)])
+        count_of_pon = sum(1 for item in hand if is_pon_or_kan(item))
         return count_of_pon == 4

@@ -1,10 +1,10 @@
 from collections.abc import Collection, Sequence
 from typing import Any, Optional
 
-from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
+from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.meld import Meld
-from mahjong.utils import contains_terminals, is_pair, is_pon_or_kan, simplify
+from mahjong.utils import contains_terminals, is_pon_or_kan, simplify
 
 
 class FuCalculator:
@@ -62,8 +62,13 @@ class FuCalculator:
         if len(hand) == 7:
             return [{"fu": 25, "reason": FuCalculator.BASE}], 25
 
-        pair = [x for x in hand if is_pair(x)][0]
-        pon_sets = [x for x in hand if is_pon_or_kan(x)]
+        pair = None
+        pon_sets = []
+        for x in hand:
+            if len(x) == 2:
+                pair = x
+            elif is_pon_or_kan(x):
+                pon_sets.append(x)
 
         copied_opened_melds = [x.tiles_34 for x in melds if x.type == Meld.CHI]
         closed_chi_sets = []
@@ -101,7 +106,7 @@ class FuCalculator:
             fu_details.append({"fu": 4, "reason": FuCalculator.DOUBLE_VALUED_PAIR})
 
         # pair wait
-        if is_pair(win_group):
+        if len(win_group) == 2:
             fu_details.append({"fu": 2, "reason": FuCalculator.PAIR_WAIT})
 
         for set_item in pon_sets:
@@ -110,7 +115,7 @@ class FuCalculator:
 
             set_was_open = open_meld and open_meld.opened or False
             is_kan_set = (open_meld and (open_meld.type == Meld.KAN or open_meld.type == Meld.SHOUMINKAN)) or False
-            is_honor = set_item[0] in TERMINAL_INDICES + HONOR_INDICES
+            is_honor = set_item[0] in TERMINAL_AND_HONOR_INDICES
 
             # we win by ron on the third pon tile, our pon will be count as open
             if not config.is_tsumo and set_item == win_group:
@@ -159,5 +164,5 @@ class FuCalculator:
     @staticmethod
     def round_fu(fu_details: Collection[dict[str, Any]]) -> int:
         # 22 -> 30 and etc.
-        fu = sum([x["fu"] for x in fu_details])
+        fu = sum(x["fu"] for x in fu_details)
         return (fu + 9) // 10 * 10

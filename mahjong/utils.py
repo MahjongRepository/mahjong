@@ -1,6 +1,6 @@
 from collections.abc import Collection, Sequence
 
-from mahjong.constants import CHUN, EAST, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, TERMINAL_INDICES
+from mahjong.constants import AKA_DORA, EAST, TERMINAL_INDICES
 
 
 def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
@@ -10,10 +10,7 @@ def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
     if not aka_enabled:
         return False
 
-    if tile_136 in [FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU]:
-        return True
-
-    return False
+    return tile_136 in AKA_DORA
 
 
 def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora: bool = False) -> int:
@@ -69,8 +66,7 @@ def is_chi(item: Sequence[int]) -> bool:
     """
     if len(item) != 3:
         return False
-
-    return item[0] == item[1] - 1 == item[2] - 2
+    return item[0] + 1 == item[1] and item[1] + 1 == item[2]
 
 
 def is_pon(item: Sequence[int]) -> bool:
@@ -80,7 +76,6 @@ def is_pon(item: Sequence[int]) -> bool:
     """
     if len(item) != 3:
         return False
-
     return item[0] == item[1] == item[2]
 
 
@@ -89,7 +84,12 @@ def is_kan(item: Sequence[int]) -> bool:
 
 
 def is_pon_or_kan(item: Sequence[int]) -> bool:
-    return is_pon(item) or is_kan(item)
+    length = len(item)
+    if length == 4:
+        return True
+    if length == 3:
+        return item[0] == item[1] == item[2]
+    return False
 
 
 def is_pair(item: Sequence[int]) -> bool:
@@ -98,6 +98,39 @@ def is_pair(item: Sequence[int]) -> bool:
     :return: boolean
     """
     return len(item) == 2
+
+
+def has_pon_or_kan_of(hand: Collection[Sequence[int]], tile_index: int) -> bool:
+    """
+    Check if hand contains a pon or kan of the specified tile
+    """
+    for item in hand:
+        if item[0] != tile_index:
+            continue
+        length = len(item)
+        if length == 4 or (length == 3 and item[1] == tile_index):
+            return True
+    return False
+
+
+def classify_hand_suits(hand: Collection[Sequence[int]]) -> tuple[int, int]:
+    """
+    Classify hand by suits using bitmask.
+    Returns (suit_mask, honor_count) where suit_mask: 1=sou, 2=pin, 4=man
+    """
+    suit_mask = 0
+    honor_count = 0
+    for item in hand:
+        first = item[0]
+        if first >= 27:
+            honor_count += 1
+        elif first >= 18:
+            suit_mask |= 1
+        elif first >= 9:
+            suit_mask |= 2
+        else:
+            suit_mask |= 4
+    return suit_mask, honor_count
 
 
 def is_man(tile: int) -> bool:
@@ -176,25 +209,29 @@ def find_isolated_tile_indices(hand_34: Sequence[int]) -> list[int]:
     """
     isolated_indices = []
 
-    for x in range(0, CHUN + 1):
-        # for honor tiles we don't need to check nearby tiles
-        if is_honor(x) and hand_34[x] == 0:
-            isolated_indices.append(x)
-        else:
-            simplified = simplify(x)
-
-            # 1 suit tile
-            if simplified == 0:
-                if hand_34[x] == 0 and hand_34[x + 1] == 0:
+    # check suited tiles (man: 0-8, pin: 9-17, sou: 18-26) in groups of 9
+    for suit_start in (0, 9, 18):
+        for i in range(9):
+            x = suit_start + i
+            if hand_34[x] != 0:
+                continue
+            # 1 suit tile (index 0): check only right neighbor
+            if i == 0:
+                if hand_34[x + 1] == 0:
                     isolated_indices.append(x)
-            # 9 suit tile
-            elif simplified == 8:
-                if hand_34[x] == 0 and hand_34[x - 1] == 0:
+            # 9 suit tile (index 8): check only left neighbor
+            elif i == 8:
+                if hand_34[x - 1] == 0:
                     isolated_indices.append(x)
-            # 2-8 tiles tiles
+            # 2-8 tiles: check both neighbors
             else:
-                if hand_34[x] == 0 and hand_34[x - 1] == 0 and hand_34[x + 1] == 0:
+                if hand_34[x - 1] == 0 and hand_34[x + 1] == 0:
                     isolated_indices.append(x)
+
+    # honor tiles (27-33) - no neighbor check needed
+    for x in range(27, 34):
+        if hand_34[x] == 0:
+            isolated_indices.append(x)
 
     return isolated_indices
 
@@ -206,37 +243,35 @@ def is_tile_strictly_isolated(hand_34: Sequence[int], tile_34: int) -> bool:
     :param tile_34: int
     :return: bool
     """
-
+    # honor tiles have no neighbors to check
     if is_honor(tile_34):
-        return hand_34[tile_34] - 1 <= 0
+        return hand_34[tile_34] <= 1
 
     simplified = simplify(tile_34)
 
-    # 1 suit tile
+    # the tile itself should have at most 1 (the one we're checking)
+    if hand_34[tile_34] > 1:
+        return False
+
+    # 1 suit tile: check +1, +2
     if simplified == 0:
-        indices = [tile_34, tile_34 + 1, tile_34 + 2]
-    # 2 suit tile
-    elif simplified == 1:
-        indices = [tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
-    # 8 suit tile
-    elif simplified == 7:
-        indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1]
-    # 9 suit tile
-    elif simplified == 8:
-        indices = [tile_34 - 2, tile_34 - 1, tile_34]
-    # 3-7 tiles tiles
-    else:
-        indices = [tile_34 - 2, tile_34 - 1, tile_34, tile_34 + 1, tile_34 + 2]
-
-    isolated = True
-    for tile_index in indices:
-        # we don't want to count our tile as it is in hand already
-        if tile_index == tile_34:
-            isolated &= hand_34[tile_index] - 1 <= 0
-        else:
-            isolated &= hand_34[tile_index] == 0
-
-    return isolated
+        return hand_34[tile_34 + 1] == 0 and hand_34[tile_34 + 2] == 0
+    # 2 suit tile: check -1, +1, +2
+    if simplified == 1:
+        return hand_34[tile_34 - 1] == 0 and hand_34[tile_34 + 1] == 0 and hand_34[tile_34 + 2] == 0
+    # 8 suit tile: check -2, -1, +1
+    if simplified == 7:
+        return hand_34[tile_34 - 2] == 0 and hand_34[tile_34 - 1] == 0 and hand_34[tile_34 + 1] == 0
+    # 9 suit tile: check -2, -1
+    if simplified == 8:
+        return hand_34[tile_34 - 2] == 0 and hand_34[tile_34 - 1] == 0
+    # 3-7 tiles: check -2, -1, +1, +2
+    return (
+        hand_34[tile_34 - 2] == 0
+        and hand_34[tile_34 - 1] == 0
+        and hand_34[tile_34 + 1] == 0
+        and hand_34[tile_34 + 2] == 0
+    )
 
 
 def count_tiles_by_suits(tiles_34: Sequence[int]) -> list[dict]:

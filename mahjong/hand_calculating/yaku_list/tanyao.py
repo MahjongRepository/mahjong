@@ -2,7 +2,7 @@ from collections.abc import Collection, Sequence
 from itertools import chain
 from typing import Optional
 
-from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
+from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 from mahjong.hand_calculating.yaku import Yaku
 
 
@@ -26,5 +26,4 @@ class Tanyao(Yaku):
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         indices = chain.from_iterable(hand)
-        result = TERMINAL_INDICES + HONOR_INDICES
-        return not any(x in result for x in indices)
+        return not any(x in TERMINAL_AND_HONOR_INDICES for x in indices)

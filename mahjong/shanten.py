@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
+from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 
 
 class Shanten:
@@ -38,7 +38,7 @@ class Shanten:
         """
         Calculate the number of shanten for kokushi musou hand
         """
-        indices = TERMINAL_INDICES + HONOR_INDICES
+        indices = TERMINAL_AND_HONOR_INDICES
 
         completed_terminals = 0
         terminals = 0

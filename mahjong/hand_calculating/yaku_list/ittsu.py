@@ -2,7 +2,6 @@ from collections.abc import Collection, Sequence
 from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_chi, is_man, is_pin, is_sou, simplify
 
 
 class Ittsu(Yaku):
@@ -24,34 +23,41 @@ class Ittsu(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        chi_sets = [i for i in hand if is_chi(i)]
-        if len(chi_sets) < 3:
-            return False
+        # bitmask per suit: bit 0 = chi at 0, bit 1 = chi at 3, bit 2 = chi at 6
+        sou_mask = 0
+        pin_mask = 0
+        man_mask = 0
+        chi_count = 0
 
-        sou_chi = []
-        pin_chi = []
-        man_chi = []
-        for item in chi_sets:
-            if is_sou(item[0]):
-                sou_chi.append(item)
-            elif is_pin(item[0]):
-                pin_chi.append(item)
-            elif is_man(item[0]):
-                man_chi.append(item)
-
-        sets = [sou_chi, pin_chi, man_chi]
-
-        for suit_item in sets:
-            if len(suit_item) < 3:
+        for item in hand:
+            if item.__len__() != 3:
+                continue
+            first = item[0]
+            # check if it's a chi (consecutive tiles)
+            if first + 1 != item[1] or first + 2 != item[2]:
                 continue
 
-            casted_sets = []
+            chi_count += 1
+            simplified = first % 9
+            # only care about starting positions 0, 3, 6
+            if simplified == 0:
+                bit = 1
+            elif simplified == 3:
+                bit = 2
+            elif simplified == 6:
+                bit = 4
+            else:
+                continue
 
-            for set_item in suit_item:
-                # cast tiles indices to 0..8 representation
-                casted_sets.append([simplify(set_item[0]), simplify(set_item[1]), simplify(set_item[2])])
+            if first >= 18:  # sou
+                sou_mask |= bit
+            elif first >= 9:  # pin
+                pin_mask |= bit
+            else:  # man
+                man_mask |= bit
 
-            if [0, 1, 2] in casted_sets and [3, 4, 5] in casted_sets and [6, 7, 8] in casted_sets:
-                return True
+        if chi_count < 3:
+            return False
 
-        return False
+        # ittsu requires all three (mask == 7)
+        return sou_mask == 7 or pin_mask == 7 or man_mask == 7
