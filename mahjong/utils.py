@@ -100,15 +100,15 @@ def is_pair(item: Sequence[int]) -> bool:
     return len(item) == 2
 
 
-def has_pon_or_kan_of(hand: Collection[Sequence[int]], tile_index: int) -> bool:
+def has_pon_or_kan_of(hand: Collection[Sequence[int]], tile: int) -> bool:
     """
     Check if hand contains a pon or kan of the specified tile
     """
     for item in hand:
-        if item[0] != tile_index:
+        if item[0] != tile:
             continue
         length = len(item)
-        if length == 4 or (length == 3 and item[1] == tile_index):
+        if length == 4 or (length == 3 and item[1] == tile):
             return True
     return False
 

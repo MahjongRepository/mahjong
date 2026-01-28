@@ -27,17 +27,13 @@ class Sanshoku(Yaku):
         sou_mask = 0
         pin_mask = 0
         man_mask = 0
-        chi_count = 0
 
         for item in hand:
-            if len(item) != 3:
-                continue
             first = item[0]
             # check if it's a chi (consecutive tiles)
-            if first + 1 != item[1] or first + 2 != item[2]:
+            if first + 1 != item[1]:
                 continue
 
-            chi_count += 1
             simplified = first % 9
             bit = 1 << simplified
 
@@ -47,9 +43,6 @@ class Sanshoku(Yaku):
                 pin_mask |= bit
             else:  # man
                 man_mask |= bit
-
-        if chi_count < 3:
-            return False
 
         # sanshoku requires same chi in all three suits
         return (sou_mask & pin_mask & man_mask) != 0

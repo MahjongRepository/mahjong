@@ -27,17 +27,12 @@ class Ittsu(Yaku):
         sou_mask = 0
         pin_mask = 0
         man_mask = 0
-        chi_count = 0
 
         for item in hand:
-            if len(item) != 3:
-                continue
             first = item[0]
             # check if it's a chi (consecutive tiles)
-            if first + 1 != item[1] or first + 2 != item[2]:
+            if first + 1 != item[1]:
                 continue
-
-            chi_count += 1
             simplified = first % 9
             # only care about starting positions 0, 3, 6
             if simplified == 0:
@@ -55,9 +50,6 @@ class Ittsu(Yaku):
                 pin_mask |= bit
             else:  # man
                 man_mask |= bit
-
-        if chi_count < 3:
-            return False
 
         # ittsu requires all three (mask == 7)
         return sou_mask == 7 or pin_mask == 7 or man_mask == 7

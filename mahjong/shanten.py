@@ -38,11 +38,9 @@ class Shanten:
         """
         Calculate the number of shanten for kokushi musou hand
         """
-        indices = TERMINAL_AND_HONOR_INDICES
-
         completed_terminals = 0
         terminals = 0
-        for i in indices:
+        for i in TERMINAL_AND_HONOR_INDICES:
             completed_terminals += tiles_34[i] >= 2
             terminals += tiles_34[i] != 0
 

@@ -6,6 +6,16 @@ from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 
 
+def _string_to_34_tiles(
+    sou: Optional[str] = "",
+    pin: Optional[str] = "",
+    man: Optional[str] = "",
+    honors: Optional[str] = "",
+) -> list[int]:
+    tiles = TilesConverter.string_to_136_array(sou=sou, pin=pin, man=man, honors=honors)
+    return [t // 4 for t in tiles]
+
+
 def _string_to_open_34_set(
     sou: Optional[str] = "",
     pin: Optional[str] = "",
