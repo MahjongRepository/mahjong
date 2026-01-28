@@ -30,7 +30,7 @@ class Ittsu(Yaku):
         chi_count = 0
 
         for item in hand:
-            if item.__len__() != 3:
+            if len(item) != 3:
                 continue
             first = item[0]
             # check if it's a chi (consecutive tiles)
