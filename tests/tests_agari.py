@@ -1,72 +1,84 @@
+import pytest
+
 from mahjong.agari import Agari
 from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _string_to_open_34_set
 
 
-def test_is_agari() -> None:
+@pytest.mark.parametrize(
+    ("sou", "pin", "man", "honors"),
+    [
+        ("123456789", "123", "33", ""),
+        ("123456789", "11123", "", ""),
+        ("123456789", "", "", "11777"),
+        ("12345556778899", "", "", ""),
+        ("11123456788999", "", "", ""),
+        ("233334", "789", "345", "55"),
+    ],
+)
+def test_is_agari(sou: str, pin: str, man: str, honors: str) -> None:
     agari = Agari()
 
-    tiles = TilesConverter.string_to_34_array(sou="123456789", pin="123", man="33")
-    assert agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(sou="123456789", pin="11123")
-    assert agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(sou="123456789", honors="11777")
-    assert agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(sou="12345556778899")
-    assert agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(sou="11123456788999")
-    assert agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(sou="233334", pin="789", man="345", honors="55")
+    tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
     assert agari.is_agari(tiles)
 
 
-def test_is_not_agari() -> None:
+@pytest.mark.parametrize(
+    ("sou", "pin", "man", "honors"),
+    [
+        ("123456789", "12345", "", ""),
+        ("111222444", "11145", "", ""),
+        ("11122233356888", "", "", ""),
+    ],
+)
+def test_is_not_agari(sou: str, pin: str, man: str, honors: str) -> None:
     agari = Agari()
 
-    tiles = TilesConverter.string_to_34_array(sou="123456789", pin="12345")
-    assert not agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(sou="111222444", pin="11145")
-    assert not agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(sou="11122233356888")
+    tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
     assert not agari.is_agari(tiles)
 
 
-def test_is_chitoitsu_agari() -> None:
+@pytest.mark.parametrize(
+    ("sou", "pin", "man", "honors"),
+    [
+        ("1133557799", "1199", "", ""),
+        ("2244", "1199", "11", "2277"),
+        ("", "", "11223344556677", ""),
+    ],
+)
+def test_is_chitoitsu_agari(sou: str, pin: str, man: str, honors: str) -> None:
     agari = Agari()
 
-    tiles = TilesConverter.string_to_34_array(sou="1133557799", pin="1199")
-    assert agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(sou="2244", pin="1199", man="11", honors="2277")
-    assert agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(man="11223344556677")
+    tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
     assert agari.is_agari(tiles)
 
 
-def test_is_kokushi_musou_agari() -> None:
+@pytest.mark.parametrize(
+    ("sou", "pin", "man", "honors"),
+    [
+        ("19", "19", "199", "1234567"),
+        ("19", "19", "19", "11234567"),
+        ("19", "19", "19", "12345677"),
+    ],
+)
+def test_is_kokushi_musou_agari(sou: str, pin: str, man: str, honors: str) -> None:
     agari = Agari()
 
-    tiles = TilesConverter.string_to_34_array(sou="19", pin="19", man="199", honors="1234567")
+    tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
     assert agari.is_agari(tiles)
 
-    tiles = TilesConverter.string_to_34_array(sou="19", pin="19", man="19", honors="11234567")
-    assert agari.is_agari(tiles)
 
-    tiles = TilesConverter.string_to_34_array(sou="19", pin="19", man="19", honors="12345677")
-    assert agari.is_agari(tiles)
+@pytest.mark.parametrize(
+    ("sou", "pin", "man", "honors"),
+    [
+        ("129", "19", "19", "1234567"),
+        ("19", "19", "19", "11134567"),
+    ],
+)
+def test_is_not_kokushi_musou_agari(sou: str, pin: str, man: str, honors: str) -> None:
+    agari = Agari()
 
-    tiles = TilesConverter.string_to_34_array(sou="129", pin="19", man="19", honors="1234567")
-    assert not agari.is_agari(tiles)
-
-    tiles = TilesConverter.string_to_34_array(sou="19", pin="19", man="19", honors="11134567")
+    tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
     assert not agari.is_agari(tiles)
 
 

@@ -4,6 +4,7 @@ from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 
 
 class Shanten:
+    TENPAI_STATE = 0
     AGARI_STATE = -1
 
     @staticmethod
