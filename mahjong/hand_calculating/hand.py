@@ -192,19 +192,18 @@ class HandCalculator:
                 if is_chiitoitsu:
                     hand_yaku.append(config.yaku.chiitoitsu)
 
-                is_daisharin = config.yaku.daisharin.is_condition_met(hand, config.options.has_daisharin_other_suits)
-                if config.options.has_daisharin and is_daisharin:
-                    config.yaku.daisharin.rename(hand)
-                    hand_yaku.append(config.yaku.daisharin)
+                if config.options.has_daisharin:
+                    is_daisharin = config.yaku.daisharin.is_condition_met(
+                        hand, config.options.has_daisharin_other_suits
+                    )
+                    if is_daisharin:
+                        config.yaku.daisharin.rename(hand)
+                        hand_yaku.append(config.yaku.daisharin)
 
                 if config.options.has_daichisei and config.yaku.daichisei.is_condition_met(hand):
                     hand_yaku.append(config.yaku.daichisei)
 
-                is_tanyao = config.yaku.tanyao.is_condition_met(hand)
-                if is_open_hand and not config.options.has_open_tanyao:
-                    is_tanyao = False
-
-                if is_tanyao:
+                if (not is_open_hand or config.options.has_open_tanyao) and config.yaku.tanyao.is_condition_met(hand):
                     hand_yaku.append(config.yaku.tanyao)
 
                 if config.is_riichi and not config.is_daburu_riichi:
@@ -253,20 +252,22 @@ class HandCalculator:
                 if config.is_chiihou:
                     hand_yaku.append(config.yaku.chiihou)
 
-                if config.yaku.honitsu.is_condition_met(hand):
-                    hand_yaku.append(config.yaku.honitsu)
-
+                # chinitsu and honitsu are mutually exclusive
                 if config.yaku.chinitsu.is_condition_met(hand):
                     hand_yaku.append(config.yaku.chinitsu)
+                elif config.yaku.honitsu.is_condition_met(hand):
+                    hand_yaku.append(config.yaku.honitsu)
 
-                if config.yaku.tsuisou.is_condition_met(hand):
-                    hand_yaku.append(config.yaku.tsuisou)
+                # tsuisou, honroto, chinroto require no chi sets (chi involves suited middle tiles)
+                if not chi_sets:
+                    if config.yaku.tsuisou.is_condition_met(hand):
+                        hand_yaku.append(config.yaku.tsuisou)
 
-                if config.yaku.honroto.is_condition_met(hand):
-                    hand_yaku.append(config.yaku.honroto)
+                    if config.yaku.honroto.is_condition_met(hand):
+                        hand_yaku.append(config.yaku.honroto)
 
-                if config.yaku.chinroto.is_condition_met(hand):
-                    hand_yaku.append(config.yaku.chinroto)
+                    if config.yaku.chinroto.is_condition_met(hand):
+                        hand_yaku.append(config.yaku.chinroto)
 
                 if config.yaku.ryuisou.is_condition_met(hand):
                     hand_yaku.append(config.yaku.ryuisou)
@@ -277,7 +278,7 @@ class HandCalculator:
                     hand_yaku.append(config.yaku.paarenchan)
 
                 # small optimization, try to detect yaku with chi required sets only if we have chi sets in hand
-                if len(chi_sets):
+                if chi_sets:
                     if config.yaku.chantai.is_condition_met(hand):
                         hand_yaku.append(config.yaku.chantai)
 
@@ -297,7 +298,7 @@ class HandCalculator:
                         hand_yaku.append(config.yaku.sanshoku)
 
                 # small optimization, try to detect yaku with pon required sets only if we have pon sets in hand
-                if len(pon_sets) or len(kan_sets):
+                if pon_sets or kan_sets:
                     if config.yaku.toitoi.is_condition_met(hand):
                         hand_yaku.append(config.yaku.toitoi)
 
@@ -357,7 +358,7 @@ class HandCalculator:
                         hand_yaku.append(config.yaku.daisuushi)
 
                     # closed kan can't be used in chuuren_poutou
-                    if not len(melds) and config.yaku.chuuren_poutou.is_condition_met(hand):
+                    if not melds and config.yaku.chuuren_poutou.is_condition_met(hand):
                         if tiles_34[win_tile // 4] == 2 or tiles_34[win_tile // 4] == 4:
                             hand_yaku.append(config.yaku.daburu_chuuren_poutou)
                         else:
