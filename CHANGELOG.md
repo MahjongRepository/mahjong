@@ -13,29 +13,19 @@ A redesigned hand decomposition algorithm and a more streamlined yaku detection 
 (TODO)
 
 ### Major methods converted to `staticmethod`
-Several evaluation methods have been converted to staticmethods.
-
-#### List of staticmethods
-
-- `mahjong.hand_calculating.divider.HandDivider`
-  - `divide_hand()`
-- `mahjong.hand_calculating.fu.FuCalculator`
-  - `calculate_fu()`
-  - `round_fu()`
-- `mahjong.hand_calculating.hand.HandCalculator`
-  - `estimate_hand_value()`
-- `mahjong.hand_calculating.scores.ScoresCalculator`
-  - `calculate_scores()`
-- `mahjong.hand_calculating.scores.Aotenjou`
-  - `calculate_scores()`
-  - `aotenjou_filter_yaku()`
-- `mahjong.agari.Agari`
-  - `is_agari()`
-- `mahjong.shanten.Shanten`
-  - `calculate_shanten()`
-  - `calculate_shanten_for_chiitoitsu_hand()`
-  - `calculate_shanten_for_kokushi_hand()`
-  - `calculate_shanten_for_regular_hand()`
+The following methods are now available as static methods:
+- `mahjong.hand_calculating.divider.HandDivider.divide_hand()`
+- `mahjong.hand_calculating.fu.FuCalculator.calculate_fu()`
+- `mahjong.hand_calculating.fu.FuCalculator.round_fu()`
+- `mahjong.hand_calculating.hand.HandCalculator.estimate_hand_value()`
+- `mahjong.hand_calculating.scores.ScoresCalculator.calculate_scores()`
+- `mahjong.hand_calculating.scores.Aotenjou.calculate_scores()`
+- `mahjong.hand_calculating.scores.Aotenjou.aotenjou_filter_yaku()`
+- `mahjong.agari.Agari.is_agari()`
+- `mahjong.shanten.Shanten.calculate_shanten()`
+- `mahjong.shanten.Shanten.calculate_shanten_for_chiitoitsu_hand()`
+- `mahjong.shanten.Shanten.calculate_shanten_for_kokushi_hand()`
+- `mahjong.shanten.Shanten.calculate_shanten_for_regular_hand()`
 
 ## Breaking changes
 
