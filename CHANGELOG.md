@@ -27,7 +27,7 @@ The following methods have been converted to static methods:
 - Constants in `constants.py` have been converted from lists to frozensets for O(1) lookup performance. This affects `TERMINAL_INDICES`, `HONOR_INDICES`, `WINDS` and `AKA_DORA_LIST`. Code using list-specific operations (indexing, concatenation) will need updates.
 
 ### Internal behavior changes that may affect you if you rely on specific implementation details
-- Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku.xxx` values may be affected.
+- Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
 - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
 
 ## What's Changed
