@@ -2,7 +2,6 @@ from collections.abc import Collection, Sequence
 from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_chi, is_man, is_pin, is_sou, simplify
 
 
 class Sanshoku(Yaku):
@@ -24,28 +23,26 @@ class Sanshoku(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        chi_sets = [i for i in hand if is_chi(i)]
-        if len(chi_sets) < 3:
-            return False
+        # bitmask per suit: bit i = chi starting at simplified position i
+        sou_mask = 0
+        pin_mask = 0
+        man_mask = 0
 
-        sou_chi = []
-        pin_chi = []
-        man_chi = []
-        for item in chi_sets:
-            if is_sou(item[0]):
-                sou_chi.append(item)
-            elif is_pin(item[0]):
-                pin_chi.append(item)
-            elif is_man(item[0]):
-                man_chi.append(item)
+        for item in hand:
+            first = item[0]
+            # check if it's a chi (consecutive tiles)
+            if first + 1 != item[1]:
+                continue
 
-        for sou_item in sou_chi:
-            for pin_item in pin_chi:
-                for man_item in man_chi:
-                    # cast tile indices to 0..8 representation
-                    sou_item = [simplify(x) for x in sou_item]
-                    pin_item = [simplify(x) for x in pin_item]
-                    man_item = [simplify(x) for x in man_item]
-                    if sou_item == pin_item == man_item:
-                        return True
-        return False
+            simplified = first % 9
+            bit = 1 << simplified
+
+            if first >= 18:  # sou
+                sou_mask |= bit
+            elif first >= 9:  # pin
+                pin_mask |= bit
+            else:  # man
+                man_mask |= bit
+
+        # sanshoku requires same chi in all three suits
+        return (sou_mask & pin_mask & man_mask) != 0

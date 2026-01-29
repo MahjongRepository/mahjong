@@ -26,12 +26,6 @@ class Chantai(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        def tile_in_indices(item_set: Sequence[int], indices_array: list[int]) -> bool:
-            for x in item_set:
-                if x in indices_array:
-                    return True
-            return False
-
         honor_sets = 0
         terminal_sets = 0
         count_of_chi = 0
@@ -39,10 +33,10 @@ class Chantai(Yaku):
             if is_chi(item):
                 count_of_chi += 1
 
-            if tile_in_indices(item, TERMINAL_INDICES):
+            first = item[0]
+            if first in TERMINAL_INDICES or item[-1] in TERMINAL_INDICES:
                 terminal_sets += 1
-
-            if tile_in_indices(item, HONOR_INDICES):
+            elif first in HONOR_INDICES:
                 honor_sets += 1
 
         if count_of_chi == 0:

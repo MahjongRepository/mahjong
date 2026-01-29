@@ -1,9 +1,8 @@
 from collections.abc import Collection, Sequence
 from typing import Optional
 
-from mahjong.constants import HONOR_INDICES
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_man, is_pin, is_sou
+from mahjong.utils import classify_hand_suits
 
 
 class Honitsu(Yaku):
@@ -24,22 +23,5 @@ class Honitsu(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        honor_sets = 0
-        sou_sets = 0
-        pin_sets = 0
-        man_sets = 0
-        for item in hand:
-            if item[0] in HONOR_INDICES:
-                honor_sets += 1
-
-            if is_sou(item[0]):
-                sou_sets += 1
-            elif is_pin(item[0]):
-                pin_sets += 1
-            elif is_man(item[0]):
-                man_sets += 1
-
-        sets = [sou_sets, pin_sets, man_sets]
-        only_one_suit = len([x for x in sets if x != 0]) == 1
-
-        return only_one_suit and honor_sets != 0
+        suit_mask, honor_count = classify_hand_suits(hand)
+        return suit_mask in (1, 2, 4) and honor_count > 0

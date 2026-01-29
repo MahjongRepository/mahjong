@@ -1,13 +1,76 @@
 import pytest
 
+from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, HAKU
 from mahjong.tile import TilesConverter
 from mahjong.utils import (
+    classify_hand_suits,
     find_isolated_tile_indices,
+    has_pon_or_kan_of,
+    is_aka_dora,
     is_dora_indicator_for_terminal,
     is_tile_strictly_isolated,
     simplify,
 )
-from tests.utils_for_tests import _string_to_34_tile
+from tests.utils_for_tests import _string_to_34_tile, _string_to_34_tiles
+
+
+@pytest.mark.parametrize(
+    ("tile_136", "expected"),
+    [
+        (FIVE_RED_MAN, True),
+        (FIVE_RED_PIN, True),
+        (FIVE_RED_SOU, True),
+        (FIVE_RED_MAN + 1, False),
+        (FIVE_RED_PIN + 1, False),
+        (FIVE_RED_SOU + 1, False),
+        (HAKU, False),
+    ],
+)
+def test_is_aka_dora_with_aka_enabled(tile_136: int, expected: bool) -> None:
+    assert is_aka_dora(tile_136, aka_enabled=True) == expected
+
+
+@pytest.mark.parametrize(
+    "tile_136",
+    [
+        FIVE_RED_MAN,
+        FIVE_RED_PIN,
+        FIVE_RED_SOU,
+    ],
+)
+def test_is_aka_dora_with_aka_disabled(tile_136: int) -> None:
+    assert is_aka_dora(tile_136, aka_enabled=False) is False
+
+
+@pytest.mark.parametrize(
+    ("hand", "tile", "expected"),
+    [
+        ([_string_to_34_tiles(man="111")], _string_to_34_tile(man="1"), True),  # pon
+        ([_string_to_34_tiles(man="1111")], _string_to_34_tile(man="1"), True),  # kan
+        ([_string_to_34_tiles(man="123")], _string_to_34_tile(man="1"), False),  # chi
+        ([_string_to_34_tiles(man="11")], _string_to_34_tile(man="1"), False),  # pair
+    ],
+)
+def test_has_pon_or_kan_of(hand: list[list[int]], tile: int, expected: bool) -> None:
+    assert has_pon_or_kan_of(hand, tile) == expected
+
+
+@pytest.mark.parametrize(
+    ("hand", "expected"),
+    [
+        ([_string_to_34_tiles(man="111")], (4, 0)),  # pon of man
+        ([_string_to_34_tiles(pin="111")], (2, 0)),  # pon of pin
+        ([_string_to_34_tiles(sou="111")], (1, 0)),  # pon of sou
+        ([_string_to_34_tiles(honors="111")], (0, 1)),  # pon of east
+        ([_string_to_34_tiles(man="123"), _string_to_34_tiles(pin="123")], (6, 0)),  # chi of man + chi of pin
+        (
+            [_string_to_34_tiles(sou="123"), _string_to_34_tiles(honors="111"), _string_to_34_tiles(honors="55")],
+            (1, 2),
+        ),  # sou chi + 2 honor groups
+    ],
+)
+def test_classify_hand_suits(hand: list[list[int]], expected: tuple[int, int]) -> None:
+    assert classify_hand_suits(hand) == expected
 
 
 @pytest.mark.parametrize(

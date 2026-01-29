@@ -21,3 +21,5 @@ temp.py
 htmlcov
 
 uv.lock
+
+benchmark

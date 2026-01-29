@@ -27,19 +27,14 @@ class Junchan(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        def tile_in_indices(item_set: Sequence[int], indices_array: list[int]) -> bool:
-            for x in item_set:
-                if x in indices_array:
-                    return True
-            return False
-
         terminal_sets = 0
         count_of_chi = 0
         for item in hand:
             if is_chi(item):
                 count_of_chi += 1
 
-            if tile_in_indices(item, TERMINAL_INDICES):
+            # inline set membership check - only need first or last tile
+            if item[0] in TERMINAL_INDICES or item[-1] in TERMINAL_INDICES:
                 terminal_sets += 1
 
         if count_of_chi == 0:

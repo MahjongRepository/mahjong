@@ -1,9 +1,8 @@
 from collections.abc import Collection, Sequence
-from itertools import chain
 from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_man, is_pin, is_sou, simplify
+from mahjong.utils import classify_hand_suits, is_pin, is_sou
 
 
 class Daisharin(Yaku):
@@ -36,7 +35,6 @@ class Daisharin(Yaku):
         self.name = "Daichikurin"
 
     def rename(self, hand: Sequence[Sequence[int]]) -> None:
-        # rename this yakuman depending on tiles used
         if is_sou(hand[0][0]):
             self.set_sou()
         elif is_pin(hand[0][0]):
@@ -45,36 +43,24 @@ class Daisharin(Yaku):
             self.set_man()
 
     def is_condition_met(self, hand: Collection[Sequence[int]], allow_other_sets: bool, *args) -> bool:
-        sou_sets = 0
-        pin_sets = 0
-        man_sets = 0
-        honor_sets = 0
+        suit_mask, honor_count = classify_hand_suits(hand)
+
+        if honor_count > 0 or suit_mask not in (1, 2, 4):
+            return False
+
+        # if not allowing other suits, must be pin (suit_mask == 2)
+        if not allow_other_sets and suit_mask != 2:
+            return False
+
+        # count simplified tile values - daisharin needs pairs of 2-3-4-5-6-7-8
+        counts = [0] * 9
         for item in hand:
-            if is_sou(item[0]):
-                sou_sets += 1
-            elif is_pin(item[0]):
-                pin_sets += 1
-            elif is_man(item[0]):
-                man_sets += 1
-            else:
-                honor_sets += 1
+            for tile in item:
+                counts[tile % 9] += 1
 
-        sets = [sou_sets, pin_sets, man_sets]
-        only_one_suit = len([x for x in sets if x != 0]) == 1
-        if not only_one_suit or honor_sets > 0:
-            return False
-
-        if not allow_other_sets and pin_sets == 0:
-            # if we are not allowing other sets than pins
-            return False
-
-        indices = list(chain.from_iterable(hand))
-        # cast tile indices to 0..8 representation
-        indices = [simplify(x) for x in indices]
-
-        # check for pairs
-        for x in range(1, 8):
-            if len([y for y in indices if y == x]) != 2:
+        # each of 2-8 (indices 1-7) must appear exactly twice
+        for i in range(1, 8):
+            if counts[i] != 2:
                 return False
 
         return True

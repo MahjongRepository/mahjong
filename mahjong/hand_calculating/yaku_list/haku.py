@@ -3,7 +3,7 @@ from typing import Optional
 
 from mahjong.constants import HAKU
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_pon_or_kan
+from mahjong.utils import has_pon_or_kan_of
 
 
 class Haku(Yaku):
@@ -25,4 +25,4 @@ class Haku(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        return len([x for x in hand if is_pon_or_kan(x) and x[0] == HAKU]) == 1
+        return has_pon_or_kan_of(hand, HAKU)
