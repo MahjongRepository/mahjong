@@ -38,6 +38,7 @@ The following methods are now available as static methods:
   - `HandDivider.divider_cache`
   - `HandDivider.cache_key`
   - `HandCalculator.config`
+  - `HandCalculator.divider`
   - `Shanten.tiles`
   - `Shanten.number_melds`
   - `Shanten.number_tatsu`
