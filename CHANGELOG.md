@@ -17,8 +17,25 @@ Several evaluation methods have been converted to static methods.
 
 The following methods have been converted to static methods:
 
-- `(modue.ClassName)`
-  - `method_name()`
+- `mahjong.hand_calculating.divider.HandDivider`
+  - `divide_hand()`
+- `mahjong.hand_calculating.fu.FuCalculator`
+  - `calculate_fu()`
+  - `round_fu()`
+- `mahjong.hand_calculating.hand.HandCalculator`
+  - `estimate_hand_value()`
+- `mahjong.hand_calculating.scores.ScoresCalculator`
+  - `calculate_scores()`
+- `mahjong.hand_calculating.scores.Aotenjou`
+  - `calculate_scores()`
+  - `aotenjou_filter_yaku()`
+- `mahjong.agari.Agari`
+  - `is_agari()`
+- `mahjong.shanten.Shanten`
+  - `calculate_shanten()`
+  - `calculate_shanten_for_chiitoitsu_hand()`
+  - `calculate_shanten_for_kokushi_hand()`
+  - `calculate_shanten_for_regular_hand()`
 
 ## Breaking changes
 
