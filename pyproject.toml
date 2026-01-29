@@ -63,8 +63,31 @@ extend-exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["ANN", "B", "C", "E", "F", "I", "W"]
-ignore = ["ANN002", "ANN003", "E203", "E266", "E501", "C901"]
+select = ["ALL"]
+ignore = [
+    "D", # pydocstyle
+
+    "ANN002",  # missing-type-args
+    "ANN003",  # missing-type-kwargs
+    "PLR0911", # too-many-return-statements
+    "PLR0912", # too-many-branches
+    "PLR0913", # too-many-arguments
+    "PLR0915", # too-many-statements
+]
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 120
+ignore-overlong-task-comments = true
+
+[tool.ruff.lint.extend-per-file-ignores]
+"./doc/*" = [
+    "T201",    # print
+    "INP001",  # implicit-namespace-package
+]
+"./tests/*" = [
+    "S101",    # assert
+    "PLR2004", # magic-value-comparison
+]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
