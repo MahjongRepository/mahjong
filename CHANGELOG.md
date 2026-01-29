@@ -12,7 +12,7 @@ Releases History
 
 ### Internal behavior changes that may affect you if you rely on specific implementation details
 - Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku.xxx` values may be affected.
-- Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two identical triplets of the same tile.
+- Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
 
 ## What's Changed
 - Placeholder. It would be filled on release automatically
