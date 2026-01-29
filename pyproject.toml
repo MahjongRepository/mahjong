@@ -63,8 +63,74 @@ extend-exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["ANN", "B", "C", "E", "F", "I", "W"]
-ignore = ["ANN002", "ANN003", "E203", "E266", "E501", "C901"]
+select = ["ALL"]
+ignore = [
+    "D", # pydocstyle
+
+    "C901",    # complex-structure
+    "ANN002",  # missing-type-args
+    "ANN003",  # missing-type-kwargs
+    "PLR0911", # too-many-return-statements
+    "PLR0912", # too-many-branches
+    "PLR0913", # too-many-arguments
+    "PLR0915", # too-many-statements
+    "PLR2004", # magic-value-comparison
+
+    "FBT001", # boolean-type-hint-positional-argument
+    "FBT002", # boolean-default-value-positional-argument
+    "FBT003", # boolean-positional-value-in-call
+
+    # Will be fixed later
+    "FURB105",
+    "COM812",
+    "FBT003",
+    "PLC1802",
+    "PIE808",
+    "PLR1714",
+    "UP009",
+    "PLW1641",
+    "RET505",
+    "RET507",
+    "SIM114",
+    "RUF021",
+    "PLR5501",
+    "SIM102",
+    "SIM108",
+    "RET504",
+    "SIM300",
+    "RUF040",
+    "PLW2901",
+    "PERF401",
+    "RUF005",
+    "RUF059",
+    "RUF015",
+    "PGH003",
+    "S101",
+    "PLR1730",
+    "RET502",
+    "RET503",
+    "UP032",
+    "ARG002",
+    "UP008",
+    "SIM110",
+    "SIM103",
+    "RUF002",
+    "A001",
+    "ARG004",
+]
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 120
+ignore-overlong-task-comments = true
+
+[tool.ruff.lint.extend-per-file-ignores]
+"./doc/*" = [
+    "T201",    # print
+    "INP001",  # implicit-namespace-package
+]
+"./tests/*" = [
+    "S101",    # assert
+]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
