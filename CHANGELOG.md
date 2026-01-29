@@ -37,7 +37,7 @@ Releases History
  
 ## Bug fixes
 * fix: Correct miscalculation of shanten number for Seven Pairs (chiitoitsu, 七対子)
-* fix: Correct miscalculation of shanten number for general
+* fix: Correct miscalculation of shanten number for general form
 
 ## Other changes
 * migrate the project to a modern Python stack: uv and ruff
@@ -51,6 +51,7 @@ Releases History
 * Adjust warning configs
 
 ## Chores
+* Remove Python 3.6 support
 * Fix typo in the test name
 * Move wiki files to md files for easier diffs
 
@@ -59,7 +60,7 @@ Releases History
 
 This release contains many improvements and bug fixes. The new version was tested over millions of real hanchans and many bugs were fixed.
 
-# Incompatibility highlight:
+## Incompatibility highlight:
 * Python 2 support was dropped
 * Changes in interfaces, please refer `doc/example.py` for usage examples. For example now all four tiles should be in hand tiles when you have kan melds.
 
@@ -136,11 +137,11 @@ This release contains many improvements and bug fixes. The new version was teste
 1.1.0 (Oct 7, 2017)
 ------------------
 
-# Breaking changes:
+## Breaking changes:
 
 * Interface of hand calculator was changed. New interface will allow to easy support different game rules
 
-# Additional fixes:
+## Additional fixes:
 
 * Refactor hand divider. Allow to pass melds objects instead of arrays
 * Add file with usage examples
