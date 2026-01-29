@@ -31,7 +31,11 @@ The following methods are now available as static methods:
 
 ### Things that likely require your code changes
 - Dropped support for Python 3.9 (because it is EOL). Python 3.10 or later is required.
-- Constants in `constants.py` have been converted from lists to frozensets for O(1) lookup performance. This affects `TERMINAL_INDICES`, `HONOR_INDICES`, `WINDS` and `AKA_DORA_LIST`. Code using list-specific operations (indexing, concatenation) will need updates.
+- The following constants in `constants.py` have been converted from lists to frozensets for O(1) lookup performance. Code using list-specific operations (such as indexing or concatenation) will need updates.
+  - `TERMINAL_INDICES`
+  - `WINDS`
+  - `HONOR_INDICES`
+  - `AKA_DORA_LIST`
 - Removed deprecated `Meld.CHANKAN`. Use `Meld.SHOUMINKAN` instead.
 - Removed deprecated `Yaku.english` and `Yaku.japanese`. Use `Yaku.name` instead.
 - The following class and instance attributes have been removed as part of internal cleanup related to the transition of several methods to staticmethods. These attributes were not intended for public use.
