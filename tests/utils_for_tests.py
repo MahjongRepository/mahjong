@@ -1,5 +1,3 @@
-from typing import Optional
-
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.meld import Meld
@@ -7,20 +5,20 @@ from mahjong.tile import TilesConverter
 
 
 def _string_to_34_tiles(
-    sou: Optional[str] = "",
-    pin: Optional[str] = "",
-    man: Optional[str] = "",
-    honors: Optional[str] = "",
+    sou: str | None = "",
+    pin: str | None = "",
+    man: str | None = "",
+    honors: str | None = "",
 ) -> list[int]:
     tiles = TilesConverter.string_to_136_array(sou=sou, pin=pin, man=man, honors=honors)
     return [t // 4 for t in tiles]
 
 
 def _string_to_open_34_set(
-    sou: Optional[str] = "",
-    pin: Optional[str] = "",
-    man: Optional[str] = "",
-    honors: Optional[str] = "",
+    sou: str | None = "",
+    pin: str | None = "",
+    man: str | None = "",
+    honors: str | None = "",
 ) -> list[int]:
     open_set = TilesConverter.string_to_136_array(sou=sou, pin=pin, man=man, honors=honors)
     open_set[0] //= 4
@@ -30,10 +28,10 @@ def _string_to_open_34_set(
 
 
 def _string_to_34_tile(
-    sou: Optional[str] = "",
-    pin: Optional[str] = "",
-    man: Optional[str] = "",
-    honors: Optional[str] = "",
+    sou: str | None = "",
+    pin: str | None = "",
+    man: str | None = "",
+    honors: str | None = "",
 ) -> int:
     item = TilesConverter.string_to_136_array(sou=sou, pin=pin, man=man, honors=honors)
     item[0] //= 4
@@ -41,10 +39,10 @@ def _string_to_34_tile(
 
 
 def _string_to_136_tile(
-    sou: Optional[str] = "",
-    pin: Optional[str] = "",
-    man: Optional[str] = "",
-    honors: Optional[str] = "",
+    sou: str | None = "",
+    pin: str | None = "",
+    man: str | None = "",
+    honors: str | None = "",
 ) -> int:
     return TilesConverter.string_to_136_array(sou=sou, pin=pin, man=man, honors=honors)[0]
 
@@ -57,10 +55,10 @@ def _hand(tiles: list[int], hand_index: int = 0) -> list[list[int]]:
 def _make_meld(
     meld_type: str,
     is_open: bool = True,
-    man: Optional[str] = "",
-    pin: Optional[str] = "",
-    sou: Optional[str] = "",
-    honors: Optional[str] = "",
+    man: str | None = "",
+    pin: str | None = "",
+    sou: str | None = "",
+    honors: str | None = "",
 ) -> Meld:
     tiles = TilesConverter.string_to_136_array(man=man, pin=pin, sou=sou, honors=honors)
     meld = Meld(meld_type=meld_type, tiles=tiles, opened=is_open, called_tile=tiles[0], who=0)
@@ -80,8 +78,8 @@ def _make_hand_config(
     is_tenhou: bool = False,
     is_renhou: bool = False,
     is_chiihou: bool = False,
-    player_wind: Optional[int] = None,
-    round_wind: Optional[int] = None,
+    player_wind: int | None = None,
+    round_wind: int | None = None,
     has_open_tanyao: bool = False,
     has_aka_dora: bool = False,
     disable_double_yakuman: bool = False,

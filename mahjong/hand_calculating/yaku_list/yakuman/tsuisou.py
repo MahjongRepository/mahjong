@@ -1,6 +1,5 @@
 from collections.abc import Collection, Sequence
 from itertools import chain
-from typing import Optional
 
 from mahjong.constants import HONOR_INDICES
 from mahjong.hand_calculating.yaku import Yaku
@@ -11,7 +10,7 @@ class Tsuuiisou(Yaku):
     Hand composed entirely of honour tiles
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Tsuuiisou, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import classify_hand_suits, is_pin, is_sou
@@ -14,7 +13,7 @@ class Daisharin(Yaku):
     Optionally can be of any suit
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Daisharin, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

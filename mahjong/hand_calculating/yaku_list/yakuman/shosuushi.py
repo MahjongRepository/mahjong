@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.constants import EAST, NORTH, SOUTH, WEST
 from mahjong.hand_calculating.yaku import Yaku
@@ -11,7 +10,7 @@ class Shousuushii(Yaku):
     The hand contains three sets of winds and a pair of the remaining wind
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Shousuushii, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

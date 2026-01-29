@@ -1,6 +1,5 @@
 from collections.abc import Collection, Sequence
 from itertools import chain
-from typing import Optional
 
 from mahjong.constants import HONOR_INDICES
 from mahjong.hand_calculating.yaku import Yaku
@@ -11,7 +10,7 @@ class Daichisei(Yaku):
     Yaku situation
     """
 
-    def __init__(self, yaku_id: Optional[int]) -> None:
+    def __init__(self, yaku_id: int | None) -> None:
         super(Daichisei, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

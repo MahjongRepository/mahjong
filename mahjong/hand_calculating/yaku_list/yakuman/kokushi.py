@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 
@@ -10,7 +9,7 @@ class KokushiMusou(Yaku):
     any tile that matches anything else in the hand.
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(KokushiMusou, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:
@@ -23,7 +22,7 @@ class KokushiMusou(Yaku):
 
         self.is_yakuman = True
 
-    def is_condition_met(self, hand: Optional[Collection[Sequence[int]]], tiles_34: Sequence[int], *args) -> bool:
+    def is_condition_met(self, hand: Collection[Sequence[int]] | None, tiles_34: Sequence[int], *args) -> bool:
         if (
             tiles_34[0]
             * tiles_34[8]

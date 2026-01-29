@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import classify_hand_suits
@@ -10,7 +9,7 @@ class Honitsu(Yaku):
     The hand contains tiles from a single suit plus honours
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Honitsu, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

@@ -1,16 +1,15 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 
 class Yaku:
-    yaku_id: Optional[int]
-    tenhou_id: Optional[int]
-    name: Optional[str]
-    han_open: Optional[int]
-    han_closed: Optional[int]
-    is_yakuman: Optional[bool]
+    yaku_id: int | None
+    tenhou_id: int | None
+    name: str | None
+    han_open: int | None
+    han_closed: int | None
+    is_yakuman: bool | None
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         self.tenhou_id = None
         self.yaku_id = yaku_id
 

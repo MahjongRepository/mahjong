@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_pon_or_kan
@@ -10,7 +9,7 @@ class Toitoi(Yaku):
     The hand consists of all pon sets (and of course a pair), no sequences.
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Toitoi, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

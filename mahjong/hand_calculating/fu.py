@@ -1,5 +1,5 @@
 from collections.abc import Collection, Sequence
-from typing import Any, Optional
+from typing import Any
 
 from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 from mahjong.hand_calculating.hand_config import HandConfig
@@ -35,8 +35,8 @@ class FuCalculator:
         win_tile: int,
         win_group: Sequence[int],
         config: HandConfig,
-        valued_tiles: Optional[Sequence[Optional[int]]] = None,
-        melds: Optional[Collection[Meld]] = None,
+        valued_tiles: Sequence[int | None] | None = None,
+        melds: Collection[Meld] | None = None,
     ) -> tuple[list[dict[str, Any]], int]:
         """
         Calculate hand fu with explanations
