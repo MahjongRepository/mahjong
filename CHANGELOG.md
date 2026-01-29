@@ -4,6 +4,22 @@ Releases History
 2.0.0 (TBD)
 -------------------
 
+## Highlights
+
+### Faster hand calculation
+A redesigned hand decomposition algorithm and a more streamlined yaku detection process have reduced the overall hand calculation time to roughly 1/3 of the previous version.
+
+#### Benchmark
+(TODO)
+
+### Major methods converted to `staticmethod`
+Several evaluation methods have been converted to static methods.
+
+The following methods have been converted to static methods:
+
+- `(modue.ClassName)`
+  - `method_name()`
+
 ## Breaking changes
 
 ### Things that likely require your code changes
