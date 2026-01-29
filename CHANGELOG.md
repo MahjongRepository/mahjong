@@ -33,6 +33,7 @@ The following methods are now available as static methods:
 - Dropped support for Python 3.9 (because it is EOL). Python 3.10 or later is required.
 - Constants in `constants.py` have been converted from lists to frozensets for O(1) lookup performance. This affects `TERMINAL_INDICES`, `HONOR_INDICES`, `WINDS` and `AKA_DORA_LIST`. Code using list-specific operations (indexing, concatenation) will need updates.
 - Removed deprecated `Meld.CHANKAN`. Use `Meld.SHOUMINKAN` instead.
+- Removed deprecated `Yaku.english` and `Yaku.japanese`. Use `Yaku.name` instead.
 
 ### Internal behavior changes that may affect you if you rely on specific implementation details
 - Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
