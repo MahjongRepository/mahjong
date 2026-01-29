@@ -13,9 +13,9 @@ A redesigned hand decomposition algorithm and a more streamlined yaku detection 
 (TODO)
 
 ### Major methods converted to `staticmethod`
-Several evaluation methods have been converted to static methods.
+Several evaluation methods have been converted to staticmethods.
 
-The following methods have been converted to static methods:
+#### List of staticmethods
 
 - `mahjong.hand_calculating.divider.HandDivider`
   - `divide_hand()`
