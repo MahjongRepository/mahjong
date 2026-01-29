@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.constants import HONOR_INDICES, TERMINAL_INDICES
 from mahjong.hand_calculating.yaku import Yaku
@@ -12,7 +11,7 @@ class Chantai(Yaku):
     a terminal or honour tile. Must contain at least one sequence (123 or 789)
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Chantai, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

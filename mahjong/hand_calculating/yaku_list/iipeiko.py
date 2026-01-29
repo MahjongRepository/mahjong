@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_chi
@@ -10,7 +9,7 @@ class Iipeiko(Yaku):
     Hand with two identical chi
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Iipeiko, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

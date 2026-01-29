@@ -1,5 +1,5 @@
 from collections.abc import MutableSequence, MutableSet
-from typing import Any, Union
+from typing import Any
 
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.hand_calculating.yaku import Yaku
@@ -181,7 +181,7 @@ class Aotenjou(ScoresCalculator):
             return {"main": config.is_dealer and six_rounded or four_rounded, "additional": 0}
 
     @staticmethod
-    def aotenjou_filter_yaku(hand_yaku: Union[MutableSequence[Yaku], MutableSet[Yaku]], config: HandConfig) -> None:
+    def aotenjou_filter_yaku(hand_yaku: MutableSequence[Yaku] | MutableSet[Yaku], config: HandConfig) -> None:
         # in aotenjou yakumans are normal yaku
         # but we need to filter lower yaku that are precursors to yakumans
         if config.yaku.daisangen in hand_yaku:

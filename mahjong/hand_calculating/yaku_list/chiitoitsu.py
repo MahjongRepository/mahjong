@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 
@@ -9,7 +8,7 @@ class Chiitoitsu(Yaku):
     Hand contains only pairs
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Chiitoitsu, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

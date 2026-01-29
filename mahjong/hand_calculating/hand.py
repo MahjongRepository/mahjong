@@ -1,5 +1,4 @@
 from collections.abc import Collection
-from typing import Optional
 
 from mahjong.agari import Agari
 from mahjong.constants import CHUN, EAST, HAKU, HATSU, NORTH, SOUTH, WEST
@@ -45,9 +44,9 @@ class HandCalculator:
     def estimate_hand_value(
         tiles: Collection[int],
         win_tile: int,
-        melds: Optional[Collection[Meld]] = None,
-        dora_indicators: Optional[Collection[int]] = None,
-        config: Optional[HandConfig] = None,
+        melds: Collection[Meld] | None = None,
+        dora_indicators: Collection[int] | None = None,
+        config: HandConfig | None = None,
         scores_calculator_factory: type[ScoresCalculator] = ScoresCalculator,
     ) -> HandResponse:
         """

@@ -1,11 +1,10 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 
 
 class OpenRiichi(Yaku):
-    def __init__(self, yaku_id: Optional[int]) -> None:
+    def __init__(self, yaku_id: int | None) -> None:
         super(OpenRiichi, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

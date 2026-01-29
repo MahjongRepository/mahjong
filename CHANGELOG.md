@@ -7,6 +7,7 @@ Releases History
 ## Breaking changes
 
 ### Things that likely require your code changes
+- Dropped support for Python 3.9 (because it is EOL). Python 3.10 or later is required.
 - Constants in `constants.py` have been converted from lists to frozensets for O(1) lookup performance. This affects `TERMINAL_INDICES`, `HONOR_INDICES`, `WINDS` and `AKA_DORA_LIST`. Code using list-specific operations (indexing, concatenation) will need updates.
 
 ### Internal behavior changes that may affect you if you rely on specific implementation details

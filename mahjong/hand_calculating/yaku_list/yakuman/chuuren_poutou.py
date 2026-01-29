@@ -1,6 +1,5 @@
 from collections.abc import Collection, Sequence
 from itertools import chain
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_man, is_pin, is_sou, simplify
@@ -11,7 +10,7 @@ class ChuurenPoutou(Yaku):
     The hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit.
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(ChuurenPoutou, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

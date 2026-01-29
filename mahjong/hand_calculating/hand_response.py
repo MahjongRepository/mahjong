@@ -1,26 +1,25 @@
 from collections.abc import Collection
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 
 
 class HandResponse:
-    cost: Optional[dict]
-    han: Optional[int]
-    fu: Optional[int]
-    fu_details: Optional[list[dict]]
-    yaku: Optional[list[Yaku]]
-    error: Optional[str]
+    cost: dict | None
+    han: int | None
+    fu: int | None
+    fu_details: list[dict] | None
+    yaku: list[Yaku] | None
+    error: str | None
     is_open_hand: bool
 
     def __init__(
         self,
-        cost: Optional[dict] = None,
-        han: Optional[int] = None,
-        fu: Optional[int] = None,
-        yaku: Optional[Collection[Yaku]] = None,
-        error: Optional[str] = None,
-        fu_details: Optional[list[dict]] = None,
+        cost: dict | None = None,
+        han: int | None = None,
+        fu: int | None = None,
+        yaku: Collection[Yaku] | None = None,
+        error: str | None = None,
+        fu_details: list[dict] | None = None,
         is_open_hand: bool = False,
     ) -> None:
         """

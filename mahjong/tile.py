@@ -1,5 +1,5 @@
 from collections.abc import Collection, Sequence
-from typing import Any, Optional
+from typing import Any
 
 from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU
 
@@ -65,10 +65,10 @@ class TilesConverter:
 
     @staticmethod
     def string_to_136_array(
-        sou: Optional[str] = None,
-        pin: Optional[str] = None,
-        man: Optional[str] = None,
-        honors: Optional[str] = None,
+        sou: str | None = None,
+        pin: str | None = None,
+        man: str | None = None,
+        honors: str | None = None,
         has_aka_dora: bool = False,
     ) -> list[int]:
         """
@@ -79,7 +79,7 @@ class TilesConverter:
         We need it to increase readability of our tests
         """
 
-        def _split_string(string: Optional[str], offset: int, red: Optional[int] = None) -> list[int]:
+        def _split_string(string: str | None, offset: int, red: int | None = None) -> list[int]:
             data = []
             temp = []
 
@@ -117,10 +117,10 @@ class TilesConverter:
 
     @staticmethod
     def string_to_34_array(
-        sou: Optional[str] = None,
-        pin: Optional[str] = None,
-        man: Optional[str] = None,
-        honors: Optional[str] = None,
+        sou: str | None = None,
+        pin: str | None = None,
+        man: str | None = None,
+        honors: str | None = None,
     ) -> list[int]:
         """
         Method to convert one line string tiles format to the 34 array
@@ -131,7 +131,7 @@ class TilesConverter:
         return results
 
     @staticmethod
-    def find_34_tile_in_136_array(tile34: Optional[int], tiles: Collection[int]) -> Optional[int]:
+    def find_34_tile_in_136_array(tile34: int | None, tiles: Collection[int]) -> int | None:
         """
         Our shanten calculator will operate with 34 tiles format,
         after calculations we need to find calculated 34 tile

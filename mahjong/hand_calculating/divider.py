@@ -2,7 +2,7 @@ from collections.abc import Collection, Sequence
 from dataclasses import dataclass
 from enum import Enum
 from functools import lru_cache, total_ordering
-from typing import Literal, Optional
+from typing import Literal
 
 from mahjong.meld import Meld
 from mahjong.utils import is_chi, is_kan, is_pon
@@ -46,17 +46,15 @@ class _Block:
 
     @property
     def tiles_34(self) -> list[int]:
-        if self.ty == _BlockType.QUAD:
-            return [self.tile_34, self.tile_34, self.tile_34, self.tile_34]
-        elif self.ty == _BlockType.TRIPLET:
-            return [self.tile_34, self.tile_34, self.tile_34]
-        elif self.ty == _BlockType.PAIR:
-            return [self.tile_34, self.tile_34]
-        elif self.ty == _BlockType.SEQUENCE:
-            return [self.tile_34, self.tile_34 + 1, self.tile_34 + 2]
-        else:
-            msg = f"invalid block type: {self.ty}"
-            raise RuntimeError(msg)
+        match self.ty:
+            case _BlockType.QUAD:
+                return [self.tile_34, self.tile_34, self.tile_34, self.tile_34]
+            case _BlockType.TRIPLET:
+                return [self.tile_34, self.tile_34, self.tile_34]
+            case _BlockType.PAIR:
+                return [self.tile_34, self.tile_34]
+            case _BlockType.SEQUENCE:
+                return [self.tile_34, self.tile_34 + 1, self.tile_34 + 2]
 
 
 _Blocks = tuple[_Block, ...]
@@ -66,7 +64,7 @@ class HandDivider:
     @staticmethod
     def divide_hand(
         tiles_34: Sequence[int],
-        melds: Optional[Collection[Meld]] = None,
+        melds: Collection[Meld] | None = None,
     ) -> list[list[list[int]]]:
         """
         Return a list of possible hands.
@@ -80,7 +78,7 @@ class HandDivider:
         return [[b.tiles_34 for b in blocks] for blocks in combinations]
 
     @staticmethod
-    def _melds_to_blocks(melds: Optional[Collection[Meld]] = None) -> tuple[_Block, ...]:
+    def _melds_to_blocks(melds: Collection[Meld] | None = None) -> tuple[_Block, ...]:
         if not melds:
             return ()
         return tuple(_Block.from_meld(m) for m in melds)

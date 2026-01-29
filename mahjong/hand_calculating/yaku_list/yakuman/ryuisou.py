@@ -1,6 +1,5 @@
 from collections.abc import Collection, Sequence
 from itertools import chain
-from typing import Optional
 
 from mahjong.constants import HATSU
 from mahjong.hand_calculating.yaku import Yaku
@@ -11,7 +10,7 @@ class Ryuuiisou(Yaku):
     Hand composed entirely of green tiles. Green tiles are: green dragons and 2, 3, 4, 6 and 8 of sou.
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Ryuuiisou, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:

@@ -1,5 +1,4 @@
 from collections.abc import Sequence
-from typing import Optional
 
 from mahjong.tile import TilesConverter
 
@@ -11,22 +10,22 @@ class Meld:
     SHOUMINKAN = "shouminkan"
     NUKI = "nuki"
 
-    type: Optional[str]
+    type: str | None
     tiles: list[int]
     # we need it to distinguish opened and closed kan
     opened: bool
-    called_tile: Optional[int]
-    who: Optional[int]
-    from_who: Optional[int]
+    called_tile: int | None
+    who: int | None
+    from_who: int | None
 
     def __init__(
         self,
-        meld_type: Optional[str] = None,
-        tiles: Optional[Sequence[int]] = None,
+        meld_type: str | None = None,
+        tiles: Sequence[int] | None = None,
         opened: bool = True,
-        called_tile: Optional[int] = None,
-        who: Optional[int] = None,
-        from_who: Optional[int] = None,
+        called_tile: int | None = None,
+        who: int | None = None,
+        from_who: int | None = None,
     ) -> None:
         self.type = meld_type
         self.tiles = list(tiles) if tiles else []

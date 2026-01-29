@@ -8,13 +8,12 @@ authors = [
 license = "MIT"
 license-files = ["LICENSE.txt"]
 readme = "README.md"
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -46,15 +45,15 @@ dev = [
     { include-group = "test" },
 ]
 lint = [
-    "ruff>=0.11.6,<0.12",
+    "ruff>=0.14.14,<0.15",
 ]
 test = [
-    "pytest>=8.3.5,<9",
-    "pytest-cov>=6.1.1,<7",
+    "pytest>=9.0.2,<10",
+    "pytest-cov>=7.0.0,<8",
 ]
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py310"
 line-length = 120
 extend-exclude = [
     "build",
@@ -70,5 +69,5 @@ ignore = ["ANN002", "ANN003", "E203", "E266", "E501", "C901"]
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
 
-[tool.pytest.ini_options]
-python_files = "tests_*.py"
+[tool.pytest]
+python_files = ["tests_*.py"]

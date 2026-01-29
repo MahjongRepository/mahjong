@@ -1,12 +1,11 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.utils import find_isolated_tile_indices
 
 
 class Agari:
     @staticmethod
-    def is_agari(tiles_34: Sequence[int], open_sets_34: Optional[Collection[Sequence[int]]] = None) -> bool:
+    def is_agari(tiles_34: Sequence[int], open_sets_34: Collection[Sequence[int]] | None = None) -> bool:
         """
         Determine was it win or not
         :param tiles_34: 34 tiles format array

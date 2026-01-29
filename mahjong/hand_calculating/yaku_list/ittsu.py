@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.hand_calculating.yaku import Yaku
 
@@ -9,7 +8,7 @@ class Ittsu(Yaku):
     Three sets of same suit: 1-2-3, 4-5-6, 7-8-9
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Ittsu, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:
@@ -35,14 +34,15 @@ class Ittsu(Yaku):
                 continue
             simplified = first % 9
             # only care about starting positions 0, 3, 6
-            if simplified == 0:
-                bit = 1
-            elif simplified == 3:
-                bit = 2
-            elif simplified == 6:
-                bit = 4
-            else:
-                continue
+            match simplified:
+                case 0:
+                    bit = 1
+                case 3:
+                    bit = 2
+                case 6:
+                    bit = 4
+                case _:
+                    continue
 
             if first >= 18:  # sou
                 sou_mask |= bit

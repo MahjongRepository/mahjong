@@ -1,5 +1,3 @@
-from typing import Optional
-
 from mahjong.constants import EAST
 from mahjong.hand_calculating.yaku_config import YakuConfig
 
@@ -92,8 +90,8 @@ class HandConfig(HandConstants):
     is_open_riichi: bool
 
     is_dealer: bool
-    player_wind: Optional[int]
-    round_wind: Optional[int]
+    player_wind: int | None
+    round_wind: int | None
     # for optional yakuman paarenchan above 0 means that dealer has paarenchan possibility
     paarenchan: int
 
@@ -115,12 +113,12 @@ class HandConfig(HandConstants):
         is_renhou: bool = False,
         is_chiihou: bool = False,
         is_open_riichi: bool = False,
-        player_wind: Optional[int] = None,
-        round_wind: Optional[int] = None,
+        player_wind: int | None = None,
+        round_wind: int | None = None,
         kyoutaku_number: int = 0,
         tsumi_number: int = 0,
         paarenchan: int = 0,
-        options: Optional[OptionalRules] = None,
+        options: OptionalRules | None = None,
     ) -> None:
         self.yaku = YakuConfig()
         self.options = options or OptionalRules()

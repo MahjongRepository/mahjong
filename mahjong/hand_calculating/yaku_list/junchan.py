@@ -1,5 +1,4 @@
 from collections.abc import Collection, Sequence
-from typing import Optional
 
 from mahjong.constants import TERMINAL_INDICES
 from mahjong.hand_calculating.yaku import Yaku
@@ -13,7 +12,7 @@ class Junchan(Yaku):
     Honours are not allowed
     """
 
-    def __init__(self, yaku_id: Optional[int] = None) -> None:
+    def __init__(self, yaku_id: int | None = None) -> None:
         super(Junchan, self).__init__(yaku_id)
 
     def set_attributes(self) -> None:
