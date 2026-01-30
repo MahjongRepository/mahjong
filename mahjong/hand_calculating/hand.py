@@ -184,10 +184,6 @@ class HandCalculator:
                 if is_pinfu:
                     hand_yaku.append(config.yaku.pinfu)
 
-                # let's skip hand that looks like chitoitsu, but it contains open sets
-                if is_chiitoitsu and is_open_hand:
-                    continue
-
                 if is_chiitoitsu:
                     hand_yaku.append(config.yaku.chiitoitsu)
 
@@ -429,9 +425,6 @@ class HandCalculator:
                 if not is_aotenjou and (config.options.limit_to_sextuple_yakuman and han > 78):
                     han = 78
 
-                if fu == 0 and is_aotenjou:
-                    fu = 40
-
                 if not error:
                     cost = scores_calculator.calculate_scores(han, fu, config, len(yakuman_list) > 0)
 
@@ -478,10 +471,7 @@ class HandCalculator:
             # calculate han
             han = 0
             for item in hand_yaku:
-                if is_open_hand and item.han_open:
-                    han += item.han_open
-                else:
-                    han += item.han_closed
+                han += item.han_closed
 
             fu = 0
             if is_aotenjou:
@@ -493,26 +483,14 @@ class HandCalculator:
                 tiles_for_dora = list(tiles)
 
                 count_of_dora = 0
-                count_of_aka_dora = 0
-
                 for tile in tiles_for_dora:
                     count_of_dora += plus_dora(tile, dora_indicators)
-
-                for tile in tiles_for_dora:
-                    if is_aka_dora(tile, config.options.has_aka_dora):
-                        count_of_aka_dora += 1
 
                 if count_of_dora:
                     config.yaku.dora.han_open = count_of_dora
                     config.yaku.dora.han_closed = count_of_dora
                     hand_yaku.append(config.yaku.dora)
                     han += count_of_dora
-
-                if count_of_aka_dora:
-                    config.yaku.aka_dora.han_open = count_of_aka_dora
-                    config.yaku.aka_dora.han_closed = count_of_aka_dora
-                    hand_yaku.append(config.yaku.aka_dora)
-                    han += count_of_aka_dora
 
             cost = scores_calculator.calculate_scores(han, fu, config, len(hand_yaku) > 0)
             calculated_hands.append(

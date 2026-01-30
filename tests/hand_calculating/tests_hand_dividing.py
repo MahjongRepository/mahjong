@@ -1,8 +1,10 @@
-from mahjong.hand_calculating.divider import HandDivider
+import pytest
+
+from mahjong.hand_calculating.divider import HandDivider, _Block, _BlockType
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
-from tests.utils_for_tests import _make_meld, _string_to_136_tile
+from tests.utils_for_tests import _make_meld, _string_to_34_tile, _string_to_136_tile
 
 
 def _string(hand: list[list[int]]) -> list[str]:
@@ -95,3 +97,38 @@ def test_fix_not_correct_kan_handling() -> None:
     ]
 
     hand.estimate_hand_value(tiles, win_tile, melds=melds)
+
+
+@pytest.mark.parametrize(
+    "other",
+    [42, "string", 3.14, None],
+    ids=["int", "str", "float", "None"],
+)
+def test_block_eq_with_non_block_returns_not_implemented(other: object) -> None:
+    block = _Block(_BlockType.TRIPLET, _string_to_34_tile(man="1"))
+    assert block.__eq__(other) is NotImplemented
+
+
+@pytest.mark.parametrize(
+    "other",
+    [42, "string", 3.14, None],
+    ids=["int", "str", "float", "None"],
+)
+def test_block_lt_with_non_block_returns_not_implemented(other: object) -> None:
+    block = _Block(_BlockType.TRIPLET, _string_to_34_tile(man="1"))
+    assert block.__lt__(other) is NotImplemented
+
+
+def test_block_from_meld_with_invalid_meld_type_raises_runtime_error() -> None:
+    # nuki meld has a single tile, which fails is_chi (len != 3),
+    # is_pon (len != 3), and is_kan (len != 4)
+    meld = Meld(meld_type=Meld.NUKI, tiles=TilesConverter.string_to_136_array(man="1"))
+    with pytest.raises(RuntimeError, match="invalid meld type"):
+        _Block.from_meld(meld)
+
+
+def test_divide_hand_skips_combinations_with_wrong_block_count() -> None:
+    # 5 melds + 1 pair = 6 blocks, which != 5
+    tiles_34 = TilesConverter.string_to_34_array(man="123789", pin="123789", sou="111", honors="11")
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []

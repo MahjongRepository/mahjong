@@ -137,3 +137,13 @@ ignore-overlong-task-comments = true
 
 [tool.pytest]
 python_files = ["tests_*.py"]
+addopts = ["-p", "no:warnings", "--no-header", "--tb=short", "-qq", "--cov", "--cov-report=term:skip-covered"]
+
+[tool.coverage.run]
+source = ["mahjong"]
+omit = ["**/tests/*", "**/test_*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 100

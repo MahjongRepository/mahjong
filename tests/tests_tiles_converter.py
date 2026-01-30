@@ -1,5 +1,5 @@
 from mahjong.constants import FIVE_RED_PIN
-from mahjong.tile import TilesConverter
+from mahjong.tile import Tile, TilesConverter
 
 
 def test_convert_to_one_line_string() -> None:
@@ -81,3 +81,14 @@ def test_one_line_string_to_34_array() -> None:
     tiles = TilesConverter.to_136_array(tiles)
     new_string = TilesConverter.to_one_line_string(tiles)
     assert initial_string == new_string
+
+
+def test_tile_instantiation() -> None:
+    tile = Tile(value=0, is_tsumogiri=False)
+    assert tile.value == 0
+    assert tile.is_tsumogiri is False
+
+
+def test_find_34_tile_in_136_array_returns_none_for_out_of_range_tile() -> None:
+    result = TilesConverter.find_34_tile_in_136_array(34, [0, 1, 2, 3])
+    assert result is None

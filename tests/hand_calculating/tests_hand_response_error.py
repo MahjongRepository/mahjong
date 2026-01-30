@@ -1,5 +1,8 @@
+import pytest
+
 from mahjong.constants import EAST, SOUTH
 from mahjong.hand_calculating.hand import HandCalculator
+from mahjong.hand_calculating.hand_response import HandResponse
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _make_hand_config, _make_meld, _string_to_136_tile
@@ -252,3 +255,42 @@ def test_renhou_with_meld() -> None:
         tiles, win_tile, melds=melds, config=_make_hand_config(is_tsumo=False, is_renhou=True)
     )
     assert result.error == "renhou_with_meld_not_allowed"
+
+
+def test_win_tile_only_in_opened_meld() -> None:
+    """
+    Verify that a hand where the win tile exists only in an opened meld
+    returns hand_not_correct instead of crashing.
+    """
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(man="111234", pin="456", sou="789", honors="11")
+    win_tile = tiles[0]
+
+    meld = Meld(meld_type=Meld.PON, tiles=tiles[0:3], opened=True, called_tile=tiles[0], who=0)
+    result = hand.estimate_hand_value(tiles, win_tile, melds=[meld])
+    assert result.error == "hand_not_correct"
+
+
+@pytest.mark.parametrize(
+    ("error_string",),
+    [
+        ("hand_not_winning",),
+        ("no_yaku",),
+        ("winning_tile_not_in_hand",),
+    ],
+)
+def test_str_returns_error_when_error_is_set(error_string: str) -> None:
+    result = HandResponse(error=error_string)
+    assert str(result) == error_string
+
+
+def test_str_returns_han_and_fu_for_valid_hand() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
+    win_tile = _string_to_136_tile(sou="4")
+
+    result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_riichi=True))
+    assert result.error is None
+    assert str(result) == f"{result.han} han, {result.fu} fu"

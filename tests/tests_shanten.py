@@ -36,6 +36,11 @@ def test_calculate_shanten(sou: str, pin: str, man: str, honors: str, shanten_nu
         ("", "", "", "11112222333444", 1),
         ("", "", "11", "111122223333", 2),
         ("", "", "23", "111122223333", 2),
+        # hand where three consecutive tiles each have 3 copies with neighbors >= 2,
+        # triggering double syuntsu extraction in _run
+        ("1111", "", "333444555", "", 1),
+        # hand with an honor pair, triggering pair counting in _remove_character_tiles
+        ("111234567", "11", "", "77", 0),
     ],
 )
 def test_calculate_shanten_for_regular_hand(sou: str, pin: str, man: str, honors: str, shanten_number: int) -> None:

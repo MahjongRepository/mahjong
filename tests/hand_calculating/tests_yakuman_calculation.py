@@ -1,3 +1,4 @@
+from mahjong.constants import EAST
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.hand_calculating.yaku_config import YakuConfig
@@ -693,3 +694,79 @@ def test_paarenchan() -> None:
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(paarenchan=4, is_tsumo=True))
     assert result.error is None, None
     assert result.han == 65
+
+
+def test_sextuple_yakuman_limit() -> None:
+    """
+    Verify that sextuple yakuman limit caps han at 78.
+    Uses the septuple yakuman hand (renhou + tsuisou + daisuushi + suuankou_tanki + sashikomi)
+    with limit_to_sextuple_yakuman=True (the default).
+    """
+    hand = HandCalculator()
+
+    # same hand as test_septuple_yakuman_enabled but with default sextuple limit
+    tiles = TilesConverter.string_to_136_array(honors="11122233344455")
+    win_tile = _string_to_136_tile(honors="5")
+
+    config = _make_hand_config(
+        is_tsumo=False,
+        is_riichi=True,
+        is_open_riichi=True,
+        is_renhou=True,
+        disable_double_yakuman=False,
+        renhou_as_yakuman=True,
+        has_sashikomi_yakuman=True,
+        limit_to_sextuple_yakuman=True,
+    )
+
+    result = hand.estimate_hand_value(tiles, win_tile, config=config)
+    assert result.error is None
+    assert result.han == 78
+
+
+def test_kokushi_sashikomi_with_daburu_riichi_and_open_riichi() -> None:
+    """
+    Verify kokushi + sashikomi via daburu_riichi + open_riichi on ron.
+    """
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
+    win_tile = _string_to_136_tile(honors="7")
+
+    config = _make_hand_config(
+        is_tsumo=False,
+        is_daburu_riichi=True,
+        is_open_riichi=True,
+        player_wind=EAST,
+        round_wind=EAST,
+        has_sashikomi_yakuman=True,
+    )
+
+    result = hand.estimate_hand_value(tiles, win_tile, config=config)
+    assert result.error is None
+    assert config.yaku.daburu_kokushi in result.yaku
+    assert config.yaku.sashikomi in result.yaku
+    assert result.han == 39
+
+
+def test_kokushi_with_paarenchan() -> None:
+    """
+    Verify kokushi hand combined with paarenchan yakuman.
+    """
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
+    win_tile = _string_to_136_tile(honors="7")
+
+    config = _make_hand_config(
+        is_tsumo=False,
+        paarenchan=1,
+        player_wind=EAST,
+        round_wind=EAST,
+    )
+
+    result = hand.estimate_hand_value(tiles, win_tile, config=config)
+    assert result.error is None
+    assert config.yaku.daburu_kokushi in result.yaku
+    assert config.yaku.paarenchan in result.yaku
+    assert result.han == 39
