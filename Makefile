@@ -6,7 +6,7 @@ lint:
 
 .PHONY: tests
 tests:
-	uv run pytest --cov=mahjong --cov-report=term --cov-report=html
+	uv run pytest
 
 check: format lint tests
 

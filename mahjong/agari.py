@@ -132,15 +132,12 @@ class Agari:
                 and Agari._is_atama_mentsu(nn1, m1)
             )
 
-        if n2 == 2:
-            return (
-                not (n0 | nn0 | n1 | nn1)
-                and Agari._is_mentsu(m0)
-                and Agari._is_mentsu(m1)
-                and Agari._is_atama_mentsu(nn2, m2)
-            )
-
-        return False
+        return (
+            not (n0 | nn0 | n1 | nn1)
+            and Agari._is_mentsu(m0)
+            and Agari._is_mentsu(m1)
+            and Agari._is_atama_mentsu(nn2, m2)
+        )
 
     @staticmethod
     def _is_mentsu(m: int) -> bool:

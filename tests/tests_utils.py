@@ -4,14 +4,18 @@ from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, HAKU
 from mahjong.tile import TilesConverter
 from mahjong.utils import (
     classify_hand_suits,
+    count_tiles_by_suits,
     find_isolated_tile_indices,
     has_pon_or_kan_of,
     is_aka_dora,
     is_dora_indicator_for_terminal,
+    is_sangenpai,
+    is_terminal,
     is_tile_strictly_isolated,
+    plus_dora,
     simplify,
 )
-from tests.utils_for_tests import _string_to_34_tile, _string_to_34_tiles
+from tests.utils_for_tests import _string_to_34_tile, _string_to_34_tiles, _string_to_136_tile
 
 
 @pytest.mark.parametrize(
@@ -251,3 +255,86 @@ def test_is_dora_indicator_for_terminal(sou: str, pin: str, man: str, honors: st
 def test_simplify(sou: str, pin: str, man: str, honors: str, simplified: int) -> None:
     tile_34 = _string_to_34_tile(sou=sou, pin=pin, man=man, honors=honors)
     assert simplify(tile_34) == simplified
+
+
+@pytest.mark.parametrize(
+    ("tile_136", "dora_indicators_136", "add_aka_dora", "expected"),
+    [
+        # aka dora: FIVE_RED_MAN counts as dora when add_aka_dora is enabled
+        (FIVE_RED_MAN, [], True, 1),
+        # aka dora disabled: FIVE_RED_MAN does not count as dora
+        (FIVE_RED_MAN, [], False, 0),
+        # 9m indicator wraps dora to 1m
+        (_string_to_136_tile(man="1"), [_string_to_136_tile(man="9")], False, 1),
+        # 9p indicator wraps dora to 1p
+        (_string_to_136_tile(pin="1"), [_string_to_136_tile(pin="9")], False, 1),
+        # 9s indicator wraps dora to 1s
+        (_string_to_136_tile(sou="1"), [_string_to_136_tile(sou="9")], False, 1),
+        # chun indicator wraps dora to haku
+        (_string_to_136_tile(honors="5"), [_string_to_136_tile(honors="7")], False, 1),
+        # north indicator wraps dora to east
+        (_string_to_136_tile(honors="1"), [_string_to_136_tile(honors="4")], False, 1),
+        # no match: tile=2m, indicator=9m => dora is 1m, not 2m
+        (_string_to_136_tile(man="2"), [_string_to_136_tile(man="9")], False, 0),
+    ],
+)
+def test_plus_dora(tile_136: int, dora_indicators_136: list[int], add_aka_dora: bool, expected: int) -> None:
+    assert plus_dora(tile_136, dora_indicators_136, add_aka_dora=add_aka_dora) == expected
+
+
+@pytest.mark.parametrize(
+    ("tile_34", "expected"),
+    [
+        (_string_to_34_tile(honors="5"), True),
+        (_string_to_34_tile(honors="6"), True),
+        (_string_to_34_tile(honors="7"), True),
+        (_string_to_34_tile(honors="4"), False),
+        (_string_to_34_tile(honors="1"), False),
+        (_string_to_34_tile(man="5"), False),
+    ],
+)
+def test_is_sangenpai(tile_34: int, expected: bool) -> None:
+    assert is_sangenpai(tile_34) == expected
+
+
+@pytest.mark.parametrize(
+    ("tile_34", "expected"),
+    [
+        (_string_to_34_tile(man="1"), True),
+        (_string_to_34_tile(man="9"), True),
+        (_string_to_34_tile(pin="1"), True),
+        (_string_to_34_tile(pin="9"), True),
+        (_string_to_34_tile(sou="1"), True),
+        (_string_to_34_tile(sou="9"), True),
+        (_string_to_34_tile(man="5"), False),
+        (_string_to_34_tile(pin="5"), False),
+        (_string_to_34_tile(sou="5"), False),
+        (_string_to_34_tile(honors="1"), False),
+    ],
+)
+def test_is_terminal(tile_34: int, expected: bool) -> None:
+    assert is_terminal(tile_34) == expected
+
+
+def test_count_tiles_by_suits() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="123", pin="456", sou="789", honors="1")
+    result = count_tiles_by_suits(tiles_34)
+
+    assert result[0]["name"] == "sou"
+    assert result[0]["count"] == 3
+    assert result[1]["name"] == "man"
+    assert result[1]["count"] == 3
+    assert result[2]["name"] == "pin"
+    assert result[2]["count"] == 3
+    assert result[3]["name"] == "honor"
+    assert result[3]["count"] == 1
+
+
+def test_count_tiles_by_suits_empty_hand() -> None:
+    tiles_34 = TilesConverter.string_to_34_array()
+    result = count_tiles_by_suits(tiles_34)
+
+    assert result[0]["count"] == 0
+    assert result[1]["count"] == 0
+    assert result[2]["count"] == 0
+    assert result[3]["count"] == 0

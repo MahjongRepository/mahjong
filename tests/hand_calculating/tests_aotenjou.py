@@ -323,3 +323,45 @@ def test_ryuisou() -> None:
     assert result.fu == 40
     assert len(result.yaku) == 3
     assert result.cost["main"] + result.cost["additional"] == 20971600
+
+
+def test_aotenjou_kokushi_tsumo() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
+    win_tile = TilesConverter.string_to_136_array(honors="7")[0]
+
+    result = hand.estimate_hand_value(
+        tiles,
+        win_tile,
+        scores_calculator_factory=Aotenjou,
+        config=_make_hand_config(is_tsumo=True, player_wind=EAST, round_wind=EAST),
+    )
+    assert result.error is None
+    assert result.han == 26
+    assert result.fu == 30
+    assert len(result.yaku) == 1
+    assert result.cost["main"] + result.cost["additional"] == 32212254800
+
+
+def test_aotenjou_kokushi_with_dora() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
+    win_tile = TilesConverter.string_to_136_array(honors="7")[0]
+
+    # 8m indicator makes 9m a dora; kokushi hand includes 9m
+    dora_indicators = TilesConverter.string_to_136_array(man="8")
+
+    result = hand.estimate_hand_value(
+        tiles,
+        win_tile,
+        dora_indicators=dora_indicators,
+        scores_calculator_factory=Aotenjou,
+        config=_make_hand_config(player_wind=EAST, round_wind=EAST),
+    )
+    assert result.error is None
+    assert result.han == 27
+    assert result.fu == 40
+    assert len(result.yaku) == 2
+    assert result.cost["main"] == 128849018900

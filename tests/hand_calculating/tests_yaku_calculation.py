@@ -1,7 +1,11 @@
+import pytest
+
 from mahjong.constants import EAST, FIVE_RED_SOU, NORTH, SOUTH, WEST
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
+from mahjong.hand_calculating.yaku import Yaku
 from mahjong.hand_calculating.yaku_config import YakuConfig
+from mahjong.hand_calculating.yaku_list.tsumo import Tsumo
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _hand, _make_hand_config, _make_meld, _string_to_136_tile
@@ -1314,3 +1318,37 @@ def test_aka_dora() -> None:
     hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
     assert hand_calculation.error is None
     assert hand_calculation.han == 6
+
+
+class TestYakuBaseClass:
+    """
+    Test the abstract Yaku base class methods
+    """
+
+    def test_str_returns_name(self) -> None:
+        tsumo = Tsumo()
+        assert str(tsumo) == "Menzen Tsumo"
+
+    def test_repr_returns_name(self) -> None:
+        tsumo = Tsumo()
+        assert repr(tsumo) == "Menzen Tsumo"
+
+    def test_set_attributes_raises_not_implemented(self) -> None:
+        with pytest.raises(NotImplementedError):
+            Yaku()
+
+    def test_is_condition_met_raises_not_implemented(self) -> None:
+        class _YakuWithAttributes(Yaku):
+            """
+            Partial yaku subclass that only implements set_attributes
+            """
+
+            def set_attributes(self) -> None:
+                self.name = "Test"
+                self.han_open = None
+                self.han_closed = 1
+                self.is_yakuman = False
+
+        yaku = _YakuWithAttributes()
+        with pytest.raises(NotImplementedError):
+            yaku.is_condition_met([])
