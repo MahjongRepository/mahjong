@@ -8,11 +8,9 @@ class Tsumo(Yaku):
     Yaku situation
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(Tsumo, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 0
+        self.yaku_id = 0
+
         self.name = "Menzen Tsumo"
 
         self.han_open = None

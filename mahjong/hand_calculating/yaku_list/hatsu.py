@@ -10,11 +10,8 @@ class Hatsu(Yaku):
     Pon of green dragons
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(Hatsu, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 19
+        self.yaku_id = 16
 
         self.name = "Yakuhai (hatsu)"
 

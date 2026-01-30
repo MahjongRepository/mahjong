@@ -8,11 +8,8 @@ class Chankan(Yaku):
     Yaku situation
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(Chankan, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 3
+        self.yaku_id = 4
 
         self.name = "Chankan"
 

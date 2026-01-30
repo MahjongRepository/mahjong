@@ -9,11 +9,8 @@ class Ryanpeikou(Yaku):
     The hand contains two different Iipeikou’s
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(Ryanpeikou, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 32
+        self.yaku_id = 36
 
         self.name = "Ryanpeikou"
 

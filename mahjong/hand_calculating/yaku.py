@@ -2,17 +2,13 @@ from collections.abc import Collection, Sequence
 
 
 class Yaku:
-    yaku_id: int | None
-    tenhou_id: int | None
+    yaku_id: int
     name: str | None
     han_open: int | None
     han_closed: int | None
     is_yakuman: bool | None
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        self.tenhou_id = None
-        self.yaku_id = yaku_id
-
+    def __init__(self) -> None:
         self.set_attributes()
 
     def __str__(self) -> str:

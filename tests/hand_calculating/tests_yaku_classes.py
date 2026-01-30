@@ -31,41 +31,41 @@ from tests.utils_for_tests import _string_to_34_tiles
 
 
 @pytest.mark.parametrize(
-    ("yaku_class", "yaku_id"),
+    "yaku_class",
     [
-        (Chankan, None),
-        (DaburuOpenRiichi, 1),
-        (DaburuRiichi, None),
-        (Haitei, None),
-        (Houtei, None),
-        (Ippatsu, None),
-        (NagashiMangan, None),
-        (OpenRiichi, 1),
-        (Pinfu, None),
-        (Renhou, None),
-        (Riichi, None),
-        (Rinshan, None),
-        (Tsumo, None),
-        (YakuhaiOfPlace, None),
-        (YakuhaiOfRound, None),
-        (Chiihou, None),
-        (DaburuChuurenPoutou, None),
-        (DaburuKokushiMusou, None),
-        (RenhouYakuman, None),
-        (Sashikomi, 1),
-        (SuuankouTanki, None),
-        (Tenhou, None),
-        (AkaDora, None),
-        (Dora, None),
-        (Paarenchan, 1),
+        Chankan,
+        DaburuOpenRiichi,
+        DaburuRiichi,
+        Haitei,
+        Houtei,
+        Ippatsu,
+        NagashiMangan,
+        OpenRiichi,
+        Pinfu,
+        Renhou,
+        Riichi,
+        Rinshan,
+        Tsumo,
+        YakuhaiOfPlace,
+        YakuhaiOfRound,
+        Chiihou,
+        DaburuChuurenPoutou,
+        DaburuKokushiMusou,
+        RenhouYakuman,
+        Sashikomi,
+        SuuankouTanki,
+        Tenhou,
+        AkaDora,
+        Dora,
+        Paarenchan,
     ],
-    ids=lambda val: val.__name__ if isinstance(val, type) else str(val),
+    ids=lambda val: val.__name__,
 )
-def test_situational_yaku_is_condition_met_returns_true(yaku_class: type, yaku_id: int | None) -> None:
+def test_situational_yaku_is_condition_met_returns_true(yaku_class: type) -> None:
     """
     Verify situational yaku classes return True from is_condition_met.
     """
-    yaku = yaku_class(yaku_id)
+    yaku = yaku_class()
     assert yaku.is_condition_met(None) is True
 
 
@@ -89,7 +89,7 @@ def test_paarenchan_str() -> None:
     """
     Verify Paarenchan string representation includes count.
     """
-    yaku = Paarenchan(yaku_id=1)
+    yaku = Paarenchan()
     assert str(yaku) == "Paarenchan 0"
 
 
@@ -97,7 +97,7 @@ def test_paarenchan_str_after_set_count() -> None:
     """
     Verify Paarenchan string representation after setting paarenchan count.
     """
-    yaku = Paarenchan(yaku_id=1)
+    yaku = Paarenchan()
     yaku.set_paarenchan_count(3)
     assert str(yaku) == "Paarenchan 3"
 

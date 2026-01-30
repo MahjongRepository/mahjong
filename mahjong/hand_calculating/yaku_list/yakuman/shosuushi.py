@@ -10,11 +10,8 @@ class Shousuushii(Yaku):
     The hand contains three sets of winds and a pair of the remaining wind
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(Shousuushii, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 50
+        self.yaku_id = 104
 
         self.name = "Shousuushii"
 

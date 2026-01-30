@@ -8,11 +8,8 @@ class Sanshoku(Yaku):
     The same chi in three suits
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(Sanshoku, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 25
+        self.yaku_id = 24
 
         self.name = "Sanshoku Doujun"
 
