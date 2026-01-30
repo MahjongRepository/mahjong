@@ -1,3 +1,5 @@
+import pytest
+
 from mahjong.constants import EAST
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
@@ -283,6 +285,18 @@ def test_is_chuuren_poutou() -> None:
     assert result.han == 6
     assert result.fu == 70
     assert len(result.yaku) == 1
+
+
+@pytest.mark.parametrize(
+    "tiles",
+    [
+        TilesConverter.string_to_34_array(man="11112233488999"),
+        TilesConverter.string_to_34_array(pin="11123444678999"),
+    ],
+)
+def test_is_not_chuuren_poutou(tiles: list[int]) -> None:
+    config = YakuConfig()
+    assert not config.chuuren_poutou.is_condition_met(_hand(tiles))
 
 
 def test_is_suukantsu() -> None:
