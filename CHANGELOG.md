@@ -4,15 +4,74 @@ Releases History
 2.0.0 (TBD)
 -------------------
 
+## Highlights
+
+### Faster hand calculation
+A redesigned hand division algorithm and a more streamlined yaku detection process have reduced the overall hand calculation time to roughly 1/3 of the previous version.
+
+#### Benchmark
+(TODO)
+
+### Major methods converted to `staticmethod`
+The following methods are now available as static methods:
+- `HandDivider.divide_hand()`
+- `FuCalculator.calculate_fu()`
+- `FuCalculator.round_fu()`
+- `HandCalculator.estimate_hand_value()`
+- `ScoresCalculator.calculate_scores()`
+- `Aotenjou.calculate_scores()`
+- `Aotenjou.aotenjou_filter_yaku()`
+- `Agari.is_agari()`
+- `Shanten.calculate_shanten()`
+- `Shanten.calculate_shanten_for_chiitoitsu_hand()`
+- `Shanten.calculate_shanten_for_kokushi_hand()`
+- `Shanten.calculate_shanten_for_regular_hand()`
+
 ## Breaking changes
-
-### Things that likely require your code changes
 - Dropped support for Python 3.9 (because it is EOL). Python 3.10 or later is required.
-- Constants in `constants.py` have been converted from lists to frozensets for O(1) lookup performance. This affects `TERMINAL_INDICES`, `HONOR_INDICES`, `WINDS` and `AKA_DORA_LIST`. Code using list-specific operations (indexing, concatenation) will need updates.
-
-### Internal behavior changes that may affect you if you rely on specific implementation details
-- Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku.xxx` values may be affected.
-- Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two identical triplets of the same tile.
+- The following constants in `constants.py` have been converted from lists to frozensets for O(1) lookup performance. Code using list-specific operations (such as indexing or concatenation) will need updates.
+  - `TERMINAL_INDICES`
+  - `WINDS`
+  - `HONOR_INDICES`
+  - `AKA_DORA_LIST`
+- Removed deprecated `Meld.CHANKAN`. Use `Meld.SHOUMINKAN` instead.
+- Removed deprecated `Yaku.english` and `Yaku.japanese`. Use `Yaku.name` instead.
+- The `use_cache` parameter of `HandDivider.divide_hand()` has been removed following the introduction of `functools.lru_cache`.
+- The `use_hand_divider_cache` parameter of `HandCalculator.estimate_hand_value()` has been removed following the introduction of `functools.lru_cache`.
+- The following methods have been removed due to algorithm changes.
+  - `HandDivider.find_pairs()`
+  - `HandDivider.find_valid_combinations()`
+  - `HandDivider.clear_cache()`
+- The following class and instance attributes have been removed as part of internal cleanup related to the transition of several methods to staticmethods. These attributes were not intended for public use.
+  - `HandDivider.divider_cache`
+  - `HandDivider.cache_key`
+  - `HandCalculator.config`
+  - `HandCalculator.divider`
+  - `Shanten.tiles`
+  - `Shanten.number_melds`
+  - `Shanten.number_tatsu`
+  - `Shanten.number_pairs`
+  - `Shanten.number_jidahai`
+  - `Shanten.number_characters`
+  - `Shanten.number_isolated_tiles`
+  - `Shanten.min_shanten`
+- The following methods now invoke other methods via the class rather than `self`. This affects code that relies on subclass overrides, instance attribute assignments, or instance method replacements.
+  - `HandDivider.divide_hand()`
+  - `FuCalculator.calculate_fu()`
+  - `HandCalculator.estimate_hand_value()`
+  - `Agari.is_agari()`
+  - `Shanten.calculate_shanten()`
+  - `Shanten.calculate_shanten_for_regular_hand()`
+- In the following classes, some instance variables were incorrectly declared as class variables. They are now defined as type annotations. These variables are overwritten in `__init__()`, so this has no effect on typical usage, but it does affect code that accesses them as class variables.
+  - `OptionalRules`
+  - `HandConfig`
+  - `HandResponse`
+  - `Yaku`
+  - `Meld`
+  - `Tile`
+- `HandDivider.divide_hand()` now only succeeds when the tiles can be divided into exactly five blocks. Previous implementation succeeded even when the tiles could be divided into six or more blocks. This change also affects `HandCalculator.estimate_hand_value()`, which internally relies on `HandDivider.divide_hand()`.
+- Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
+- Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
 
 ## What's Changed
 - Placeholder. It would be filled on release automatically
