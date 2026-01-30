@@ -142,3 +142,10 @@ def test_decompose_honors_hand_rejects_invalid_tile_count() -> None:
     tiles_34[_string_to_34_tile(honors="1")] = 5
     result = HandDivider.divide_hand(tiles_34)
     assert result == []
+
+
+def test_decompose_chiitoitsu_rejects_hand_with_melds() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="2288", pin="2288", sou="22", honors="2244")
+    melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man="111"))]
+    result = HandDivider.divide_hand(tiles_34, melds)
+    assert result == []
