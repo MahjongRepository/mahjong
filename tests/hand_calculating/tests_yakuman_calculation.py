@@ -253,35 +253,37 @@ def test_is_not_chuuren_poutou(tiles: list[int]) -> None:
     assert not config.chuuren_poutou.is_condition_met(_hand(tiles))
 
 
-def test_chuuren_poutou_hand_value() -> None:
-    hand = HandCalculator()
+def test_chuuren_poutou_hand_value_single() -> None:
     tiles = TilesConverter.string_to_136_array(man="11123456789999")
     win_tile = _string_to_136_tile(man="1")
-    result = hand.estimate_hand_value(tiles, win_tile)
+    result = HandCalculator.estimate_hand_value(tiles, win_tile)
     assert result.error is None
     assert result.han == 13
     assert result.fu == 40
     assert len(result.yaku) == 1
 
-    daburi = [
-        ["11122345678999", "2"],
-        ["11123456789999", "9"],
-        ["11112345678999", "1"],
-    ]
-    for hand_tiles, win_tile in daburi:
-        tiles = TilesConverter.string_to_136_array(man=hand_tiles)
-        win_tile = _string_to_136_tile(man=win_tile)
 
-        result = hand.estimate_hand_value(tiles, win_tile)
-        assert result.error is None
-        assert result.han == 26
-        assert len(result.yaku) == 1
+@pytest.mark.parametrize(
+    ("tiles", "win_tile"),
+    [
+        (TilesConverter.string_to_136_array(man="11122345678999"), _string_to_136_tile(man="2")),
+        (TilesConverter.string_to_136_array(man="11123456789999"), _string_to_136_tile(man="9")),
+        (TilesConverter.string_to_136_array(man="11112345678999"), _string_to_136_tile(man="1")),
+    ],
+)
+def test_chuuren_poutou_hand_value_double(tiles: list[int], win_tile: int) -> None:
+    result = HandCalculator.estimate_hand_value(tiles, win_tile)
+    assert result.error is None
+    assert result.han == 26
+    assert len(result.yaku) == 1
 
+
+def test_chuuren_poutou_hand_value_rejects_hand_with_melds() -> None:
     tiles = TilesConverter.string_to_136_array(pin="111234566789999")
     win_tile = _string_to_136_tile(pin="3")
     melds = [_make_meld(Meld.KAN, pin="9999", is_open=False)]
 
-    result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
+    result = HandCalculator.estimate_hand_value(tiles, win_tile, melds=melds)
     assert result.error is None
     assert result.han == 6
     assert result.fu == 70
