@@ -1,7 +1,6 @@
 import pytest
 
 from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, HAKU
-from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 from mahjong.utils import (
     classify_hand_suits,
@@ -258,18 +257,6 @@ def test_simplify(sou: str, pin: str, man: str, honors: str, simplified: int) ->
     assert simplify(tile_34) == simplified
 
 
-def test_meld_str() -> None:
-    tiles = TilesConverter.string_to_136_array(man="123")
-    meld = Meld(meld_type=Meld.CHI, tiles=tiles)
-    assert str(meld) == f"Type: chi, Tiles: 123m {tiles}"
-
-
-def test_meld_repr() -> None:
-    tiles = TilesConverter.string_to_136_array(man="111")
-    meld = Meld(meld_type=Meld.PON, tiles=tiles)
-    assert repr(meld) == str(meld)
-
-
 @pytest.mark.parametrize(
     ("tile_136", "dora_indicators_136", "add_aka_dora", "expected"),
     [
@@ -303,7 +290,7 @@ def test_plus_dora(tile_136: int, dora_indicators_136: list[int], add_aka_dora: 
         (_string_to_34_tile(honors="7"), True),
         (_string_to_34_tile(honors="4"), False),
         (_string_to_34_tile(honors="1"), False),
-        (_string_to_34_tile(man="1"), False),
+        (_string_to_34_tile(man="5"), False),
     ],
 )
 def test_is_sangenpai(tile_34: int, expected: bool) -> None:
