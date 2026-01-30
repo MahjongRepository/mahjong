@@ -49,6 +49,13 @@ The following methods are now available as static methods:
   - `Shanten.number_characters`
   - `Shanten.number_isolated_tiles`
   - `Shanten.min_shanten`
+- The following methods now invoke other methods via the class rather than `self`. This affects code that relies on subclass overrides, instance attribute assignments, or instance method replacements.
+  - `HandDivider.divide_hand()`
+  - `FuCalculator.calculate_fu()`
+  - `HandCalculator.estimate_hand_value()`
+  - `Agari.is_agari()`
+  - `Shanten.calculate_shanten()`
+  - `Shanten.calculate_shanten_for_regular_hand()`
 - Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
 - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
 
