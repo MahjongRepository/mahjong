@@ -222,40 +222,41 @@ def test_is_suuankou() -> None:
     assert len(result.yaku) == 1
 
 
-def test_is_chuuren_poutou() -> None:
-    hand = HandCalculator()
+@pytest.mark.parametrize(
+    "tiles",
+    [
+        TilesConverter.string_to_34_array(man="11112345678999"),
+        TilesConverter.string_to_34_array(pin="11122345678999"),
+        TilesConverter.string_to_34_array(sou="11123345678999"),
+        TilesConverter.string_to_34_array(sou="11123445678999"),
+        TilesConverter.string_to_34_array(sou="11123455678999"),
+        TilesConverter.string_to_34_array(sou="11123456678999"),
+        TilesConverter.string_to_34_array(sou="11123456778999"),
+        TilesConverter.string_to_34_array(sou="11123456788999"),
+        TilesConverter.string_to_34_array(sou="11123456789999"),
+    ],
+)
+def test_is_chuuren_poutou(tiles: list[int]) -> None:
     config = YakuConfig()
-
-    tiles = TilesConverter.string_to_34_array(man="11112345678999")
     assert config.chuuren_poutou.is_condition_met(_hand(tiles))
 
-    tiles = TilesConverter.string_to_34_array(pin="11122345678999")
-    assert config.chuuren_poutou.is_condition_met(_hand(tiles))
 
-    tiles = TilesConverter.string_to_34_array(sou="11123345678999")
-    assert config.chuuren_poutou.is_condition_met(_hand(tiles))
+@pytest.mark.parametrize(
+    "tiles",
+    [
+        TilesConverter.string_to_34_array(man="11112233488999"),
+        TilesConverter.string_to_34_array(pin="11123444678999"),
+    ],
+)
+def test_is_not_chuuren_poutou(tiles: list[int]) -> None:
+    config = YakuConfig()
+    assert not config.chuuren_poutou.is_condition_met(_hand(tiles))
 
-    tiles = TilesConverter.string_to_34_array(sou="11123445678999")
-    assert config.chuuren_poutou.is_condition_met(_hand(tiles))
 
-    tiles = TilesConverter.string_to_34_array(sou="11123455678999")
-    assert config.chuuren_poutou.is_condition_met(_hand(tiles))
-
-    tiles = TilesConverter.string_to_34_array(sou="11123456678999")
-    assert config.chuuren_poutou.is_condition_met(_hand(tiles))
-
-    tiles = TilesConverter.string_to_34_array(sou="11123456778999")
-    assert config.chuuren_poutou.is_condition_met(_hand(tiles))
-
-    tiles = TilesConverter.string_to_34_array(sou="11123456788999")
-    assert config.chuuren_poutou.is_condition_met(_hand(tiles))
-
-    tiles = TilesConverter.string_to_34_array(sou="11123456789999")
-    assert config.chuuren_poutou.is_condition_met(_hand(tiles))
-
+def test_chuuren_poutou_hand_value() -> None:
+    hand = HandCalculator()
     tiles = TilesConverter.string_to_136_array(man="11123456789999")
     win_tile = _string_to_136_tile(man="1")
-
     result = hand.estimate_hand_value(tiles, win_tile)
     assert result.error is None
     assert result.han == 13
@@ -285,18 +286,6 @@ def test_is_chuuren_poutou() -> None:
     assert result.han == 6
     assert result.fu == 70
     assert len(result.yaku) == 1
-
-
-@pytest.mark.parametrize(
-    "tiles",
-    [
-        TilesConverter.string_to_34_array(man="11112233488999"),
-        TilesConverter.string_to_34_array(pin="11123444678999"),
-    ],
-)
-def test_is_not_chuuren_poutou(tiles: list[int]) -> None:
-    config = YakuConfig()
-    assert not config.chuuren_poutou.is_condition_met(_hand(tiles))
 
 
 def test_is_suukantsu() -> None:
