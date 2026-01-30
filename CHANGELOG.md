@@ -7,7 +7,7 @@ Releases History
 ## Highlights
 
 ### Faster hand calculation
-A redesigned hand decomposition algorithm and a more streamlined yaku detection process have reduced the overall hand calculation time to roughly 1/3 of the previous version.
+A redesigned hand division algorithm and a more streamlined yaku detection process have reduced the overall hand calculation time to roughly 1/3 of the previous version.
 
 #### Benchmark
 (TODO)
