@@ -213,5 +213,7 @@ class HandDivider:
                 has_pair = True
             elif count == 3:
                 blocks.append(_Block(_BlockType.TRIPLET, 27 + i))
+            else:
+                return []
 
         return blocks

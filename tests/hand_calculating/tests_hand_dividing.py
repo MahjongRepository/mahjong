@@ -132,3 +132,13 @@ def test_divide_hand_skips_combinations_with_wrong_block_count() -> None:
     tiles_34 = TilesConverter.string_to_34_array(man="123789", pin="123789", sou="111", honors="11")
     result = HandDivider.divide_hand(tiles_34)
     assert result == []
+
+
+def test_decompose_honors_hand_rejects_invalid_tile_count() -> None:
+    # honor tile with count 5 is invalid and must be rejected.
+    # without the guard, the invalid count is silently skipped,
+    # allowing other honors to form blocks that pass validation.
+    tiles_34 = TilesConverter.string_to_34_array(man="111", pin="111", sou="111", honors="22233")
+    tiles_34[_string_to_34_tile(honors="1")] = 5
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
