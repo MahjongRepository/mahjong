@@ -201,18 +201,17 @@ class HandDivider:
         has_pair = False
         blocks: list[_Block] = []
         for i, count in enumerate(honors_hand):
-            if count == 0:
-                continue
-            elif count in (1, 4):
-                return []
-            elif count == 2:
-                if has_pair:
+            match count:
+                case 0:
+                    continue
+                case 2:
+                    if has_pair:
+                        return []
+                    blocks.append(_Block(_BlockType.PAIR, 27 + i))
+                    has_pair = True
+                case 3:
+                    blocks.append(_Block(_BlockType.TRIPLET, 27 + i))
+                case _:
                     return []
-                blocks.append(_Block(_BlockType.PAIR, 27 + i))
-                has_pair = True
-            elif count == 3:
-                blocks.append(_Block(_BlockType.TRIPLET, 27 + i))
-            else:
-                return []
 
         return blocks
