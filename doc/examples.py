@@ -15,7 +15,7 @@ def print_hand_result(hand_result: HandResponse) -> None:
     print(hand_result.yaku)
     for fu_item in hand_result.fu_details:
         print(fu_item)
-    print("")
+    print()
 
 
 ####################################################################
