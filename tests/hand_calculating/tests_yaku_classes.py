@@ -1,7 +1,5 @@
 import pytest
 
-from tests.utils_for_tests import _string_to_34_tiles
-
 from mahjong.hand_calculating.yaku_list.aka_dora import AkaDora
 from mahjong.hand_calculating.yaku_list.chankan import Chankan
 from mahjong.hand_calculating.yaku_list.daburu_open_riichi import DaburuOpenRiichi
@@ -29,6 +27,7 @@ from mahjong.hand_calculating.yaku_list.yakuman.renhou_yakuman import RenhouYaku
 from mahjong.hand_calculating.yaku_list.yakuman.sashikomi import Sashikomi
 from mahjong.hand_calculating.yaku_list.yakuman.suuankou_tanki import SuuankouTanki
 from mahjong.hand_calculating.yaku_list.yakuman.tenhou import Tenhou
+from tests.utils_for_tests import _string_to_34_tiles
 
 
 @pytest.mark.parametrize(
@@ -62,7 +61,7 @@ from mahjong.hand_calculating.yaku_list.yakuman.tenhou import Tenhou
     ],
     ids=lambda val: val.__name__ if isinstance(val, type) else str(val),
 )
-def test_situational_yaku_is_condition_met_returns_true(yaku_class, yaku_id) -> None:
+def test_situational_yaku_is_condition_met_returns_true(yaku_class: type, yaku_id: int | None) -> None:
     """
     Verify situational yaku classes return True from is_condition_met.
     """

@@ -273,11 +273,11 @@ def test_win_tile_only_in_opened_meld() -> None:
 
 
 @pytest.mark.parametrize(
-    ("error_string",),
+    "error_string",
     [
-        ("hand_not_winning",),
-        ("no_yaku",),
-        ("winning_tile_not_in_hand",),
+        "hand_not_winning",
+        "no_yaku",
+        "winning_tile_not_in_hand",
     ],
 )
 def test_str_returns_error_when_error_is_set(error_string: str) -> None:
