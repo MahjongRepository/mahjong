@@ -62,6 +62,13 @@ The following methods are now available as static methods:
   - `Agari.is_agari()`
   - `Shanten.calculate_shanten()`
   - `Shanten.calculate_shanten_for_regular_hand()`
+- In the following classes, some instance variables were incorrectly declared as class variables. They are now defined as type annotations. These variables are overwritten in `__init__()`, so this has no effect on typical usage, but it does affect code that accesses them as class variables.
+  - `OptionalRules`
+  - `HandConfig`
+  - `HandResponse`
+  - `Yaku`
+  - `Meld`
+  - `Tile`
 - `HandDivider.divide_hand()` now only succeeds when the tiles can be divided into exactly five blocks. Previous implementation succeeded even when the tiles could be divided into six or more blocks. This change also affects `HandCalculator.estimate_hand_value()`, which internally relies on `HandDivider.divide_hand()`.
 - Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
 - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
