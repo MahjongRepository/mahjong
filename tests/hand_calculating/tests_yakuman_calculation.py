@@ -246,6 +246,8 @@ def test_is_chuuren_poutou(tiles: list[int]) -> None:
     [
         TilesConverter.string_to_34_array(man="11112233488999"),
         TilesConverter.string_to_34_array(pin="11123444678999"),
+        TilesConverter.string_to_34_array(pin="12345678999", honors="111"),
+        TilesConverter.string_to_34_array(sou="11123456789", man="999"),
     ],
 )
 def test_is_not_chuuren_poutou(tiles: list[int]) -> None:
