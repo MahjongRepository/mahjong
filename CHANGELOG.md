@@ -36,6 +36,8 @@ The following methods are now available as static methods:
   - `AKA_DORA_LIST`
 - Removed deprecated `Meld.CHANKAN`. Use `Meld.SHOUMINKAN` instead.
 - Removed deprecated `Yaku.english` and `Yaku.japanese`. Use `Yaku.name` instead.
+- The `use_cache` parameter of `HandDivider.divide_hand()` has been removed following the introduction of `functools.lru_cache`.
+- The `use_hand_divider_cache` parameter of `HandCalculator.estimate_hand_value()` has been removed following the introduction of `functools.lru_cache`.
 - The following methods have been removed due to algorithm changes.
   - `HandDivider.find_pairs()`
   - `HandDivider.find_valid_combinations()`
