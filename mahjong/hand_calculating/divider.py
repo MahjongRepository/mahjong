@@ -103,8 +103,7 @@ class HandDivider:
 
         combinations: list[list[_Block]] = []
 
-        chiitoitsu = HandDivider._decompose_chiitoitsu(hand)
-        if chiitoitsu:
+        if not melds and (chiitoitsu := HandDivider._decompose_chiitoitsu(hand)):
             combinations.append(chiitoitsu)
 
         for man in man_combinations:
