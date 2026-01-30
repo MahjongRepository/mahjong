@@ -2,7 +2,7 @@ from collections.abc import Collection, Sequence
 from itertools import chain
 
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_man, is_pin, is_sou, simplify
+from mahjong.utils import classify_hand_suits, simplify
 
 
 class ChuurenPoutou(Yaku):
@@ -24,47 +24,36 @@ class ChuurenPoutou(Yaku):
         self.is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        sou_sets = 0
-        pin_sets = 0
-        man_sets = 0
-        honor_sets = 0
-        for item in hand:
-            if is_sou(item[0]):
-                sou_sets += 1
-            elif is_pin(item[0]):
-                pin_sets += 1
-            elif is_man(item[0]):
-                man_sets += 1
-            else:
-                honor_sets += 1
-
-        sets = [sou_sets, pin_sets, man_sets]
-        only_one_suit = len([x for x in sets if x != 0]) == 1
-        if not only_one_suit or honor_sets > 0:
+        suit_mask, honor_count = classify_hand_suits(hand)
+        if honor_count > 0 or suit_mask not in (1, 2, 4):
             return False
 
-        indices = list(chain.from_iterable(hand))
-        # cast tile indices to 0..8 representation
-        indices = [simplify(x) for x in indices]
+        counts = [0] * 9
+        for x in chain.from_iterable(hand):
+            counts[simplify(x)] += 1
 
         # 1-1-1
-        if len([x for x in indices if x == 0]) < 3:
+        if counts[0] < 3:
             return False
 
         # 9-9-9
-        if len([x for x in indices if x == 8]) < 3:
+        if counts[8] < 3:
             return False
 
+        has_two_tiles = False
+        counts[0] -= 2
+        counts[8] -= 2
+
         # 1-2-3-4-5-6-7-8-9 and one tile to any of them
-        indices.remove(0)
-        indices.remove(0)
-        indices.remove(8)
-        indices.remove(8)
-        for x in range(0, 9):
-            if x in indices:
-                indices.remove(x)
+        for c in counts:
+            match c:
+                case 1:
+                    continue
+                case 2:
+                    if has_two_tiles:
+                        return False
+                    has_two_tiles = True
+                case _:
+                    return False
 
-        if len(indices) == 1:
-            return True
-
-        return False
+        return has_two_tiles
