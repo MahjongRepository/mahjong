@@ -102,8 +102,8 @@ YAKU_ID_TO_TENHOU_ID: dict[int, int] = {
     Tenhou().yaku_id: 37,
     Chiihou().yaku_id: 38,
     Daisangen().yaku_id: 39,
-    SuuankouTanki().yaku_id: 40,
-    Suuankou().yaku_id: 41,
+    Suuankou().yaku_id: 40,
+    SuuankouTanki().yaku_id: 41,
     Tsuuiisou().yaku_id: 42,
     Ryuuiisou().yaku_id: 43,
     Chinroutou().yaku_id: 44,
@@ -116,7 +116,6 @@ YAKU_ID_TO_TENHOU_ID: dict[int, int] = {
     Suukantsu().yaku_id: 51,
     Dora().yaku_id: 52,
     AkaDora().yaku_id: 54,
-    Paarenchan().yaku_id: 37,
 }
 
 

@@ -74,6 +74,7 @@ The following methods are now available as static methods:
 - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
 - `Yaku.tenhou_id` has been removed. Use the `YAKU_ID_TO_TENHOU_ID` mapping from `mahjong.hand_calculating.yaku_config` instead.
 - `Yaku.__init__` no longer accepts a `yaku_id` parameter. `yaku_id` is now set exclusively in each subclass's `set_attributes()` method.
+- `yaku_id` values have been reassigned. Previously, values were assigned sequentially via a counter in `YakuConfig.__init__`. Now each `Yaku` subclass defines its own fixed `yaku_id`. Code that relies on specific `yaku_id` values (e.g., for serialization or lookup) must be updated.
 
 ## What's Changed
 - Placeholder. It would be filled on release automatically
