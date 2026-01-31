@@ -1,6 +1,6 @@
 from collections.abc import Collection, Sequence
 
-from mahjong.constants import CHUN, HAKU, HATSU
+from mahjong.constants import DRAGONS
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_pair, is_pon_or_kan
 
@@ -24,11 +24,10 @@ class Shosangen(Yaku):
         self.is_yakuman = False
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        dragons = [CHUN, HAKU, HATSU]
         count_of_conditions = 0
         for item in hand:
             # dragon pon or pair
-            if (is_pair(item) or is_pon_or_kan(item)) and item[0] in dragons:
+            if (is_pair(item) or is_pon_or_kan(item)) and item[0] in DRAGONS:
                 count_of_conditions += 1
 
         return count_of_conditions == 3
