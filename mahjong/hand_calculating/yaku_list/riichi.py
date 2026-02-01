@@ -4,15 +4,9 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Riichi(Yaku):
-    def set_attributes(self) -> None:
-        self.yaku_id = 1
-
-        self.name = "Riichi"
-
-        self.han_open = None
-        self.han_closed = 1
-
-        self.is_yakuman = False
+    yaku_id = 1
+    name = "Riichi"
+    han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         return True

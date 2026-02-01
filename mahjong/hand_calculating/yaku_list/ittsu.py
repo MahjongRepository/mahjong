@@ -8,15 +8,10 @@ class Ittsu(Yaku):
     Three sets of same suit: 1-2-3, 4-5-6, 7-8-9
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 25
-
-        self.name = "Ittsu"
-
-        self.han_open = 1
-        self.han_closed = 2
-
-        self.is_yakuman = False
+    yaku_id = 25
+    name = "Ittsu"
+    han_open = 1
+    han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         # bitmask per suit: bit 0 = chi at 0, bit 1 = chi at 3, bit 2 = chi at 6

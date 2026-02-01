@@ -12,15 +12,10 @@ class Junchan(Yaku):
     Honours are not allowed
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 35
-
-        self.name = "Junchan"
-
-        self.han_open = 2
-        self.han_closed = 3
-
-        self.is_yakuman = False
+    yaku_id = 35
+    name = "Junchan"
+    han_open = 2
+    han_closed = 3
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         terminal_sets = 0

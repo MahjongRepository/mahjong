@@ -8,15 +8,9 @@ class DaburuOpenRiichi(Yaku):
     Yaku situation
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 9
-
-        self.name = "Double Open Riichi"
-
-        self.han_open = None
-        self.han_closed = 3
-
-        self.is_yakuman = False
+    yaku_id = 9
+    name = "Double Open Riichi"
+    han_closed = 3
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         # was it here or not is controlling by superior code

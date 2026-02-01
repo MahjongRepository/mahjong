@@ -35,7 +35,6 @@ The following methods are now available as static methods:
   - `HONOR_INDICES`
   - `AKA_DORA_LIST`
 - Removed deprecated `Meld.CHANKAN`. Use `Meld.SHOUMINKAN` instead.
-- Removed deprecated `Yaku.english` and `Yaku.japanese`. Use `Yaku.name` instead.
 - The `use_cache` parameter of `HandDivider.divide_hand()` has been removed following the introduction of `functools.lru_cache`.
 - The `use_hand_divider_cache` parameter of `HandCalculator.estimate_hand_value()` has been removed following the introduction of `functools.lru_cache`.
 - The following methods have been removed due to algorithm changes.
@@ -70,11 +69,15 @@ The following methods are now available as static methods:
   - `Meld`
   - `Tile`
 - `HandDivider.divide_hand()` now only succeeds when the tiles can be divided into exactly five blocks. Previous implementation succeeded even when the tiles could be divided into six or more blocks. This change also affects `HandCalculator.estimate_hand_value()`, which internally relies on `HandDivider.divide_hand()`.
-- Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
-- Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
-- `Yaku.tenhou_id` has been removed. Use the `YAKU_ID_TO_TENHOU_ID` mapping from `mahjong.hand_calculating.yaku_config` instead.
-- `Yaku.__init__()` no longer accepts a `yaku_id` parameter. `yaku_id` is now set exclusively in each subclass's `set_attributes()` method.
-- `yaku_id` values have been reassigned. Previously, values were assigned sequentially via a counter in `YakuConfig.__init__`. Now each `Yaku` subclass defines its own fixed `yaku_id`. Code that relies on specific `yaku_id` values (e.g., for serialization or lookup) must be updated.
+- `Yaku` class has been redesigned:
+  - `Yaku` is now an abstract base class (`abc.ABC`). Only `is_condition_met()` is decorated with `@abstractmethod`. Directly instantiating `Yaku` or an incomplete subclass now raises `TypeError` instead of `NotImplementedError`.
+  - Removed `Yaku.set_attributes()` and `Yaku.__init__()`. All yaku attributes (`yaku_id`, `name`, `han_open`, `han_closed`, `is_yakuman`) are now class-level attributes on each subclass. Subclasses that override `set_attributes()` must convert to class-level attributes.
+  - Removed deprecated `Yaku.english` and `Yaku.japanese`. Use `Yaku.name` instead.
+  - Removed `Yaku.tenhou_id`. Use the `YAKU_ID_TO_TENHOU_ID` mapping from `mahjong.hand_calculating.yaku_config` instead.
+  - `yaku_id` values have been reassigned. Each `Yaku` subclass now defines its own fixed `yaku_id` as a class attribute. Code that relies on specific `yaku_id` values (e.g., for serialization or lookup) must be updated.
+  - `han_open` and `han_closed` are now `int` (default `0`) instead of `int | None` (default `None`). A value of `0` means the yaku is not available in the respective hand type.
+  - Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
+  - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
 
 ## What's Changed
 - Placeholder. It would be filled on release automatically

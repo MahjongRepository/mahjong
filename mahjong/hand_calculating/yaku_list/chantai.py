@@ -11,15 +11,10 @@ class Chantai(Yaku):
     a terminal or honour tile. Must contain at least one sequence (123 or 789)
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 26
-
-        self.name = "Chantai"
-
-        self.han_open = 1
-        self.han_closed = 2
-
-        self.is_yakuman = False
+    yaku_id = 26
+    name = "Chantai"
+    han_open = 1
+    han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         honor_sets = 0

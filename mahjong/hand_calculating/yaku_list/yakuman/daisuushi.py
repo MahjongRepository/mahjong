@@ -10,15 +10,11 @@ class DaiSuushii(Yaku):
     The hand contains four sets of winds
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 111
-
-        self.name = "Dai Suushii"
-
-        self.han_open = 26
-        self.han_closed = 26
-
-        self.is_yakuman = True
+    yaku_id = 111
+    name = "Dai Suushii"
+    han_open = 26
+    han_closed = 26
+    is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         """

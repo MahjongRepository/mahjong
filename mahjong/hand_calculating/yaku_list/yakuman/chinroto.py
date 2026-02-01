@@ -6,15 +6,11 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Chinroutou(Yaku):
-    def set_attributes(self) -> None:
-        self.yaku_id = 108
-
-        self.name = "Chinroutou"
-
-        self.han_open = 13
-        self.han_closed = 13
-
-        self.is_yakuman = True
+    yaku_id = 108
+    name = "Chinroutou"
+    han_open = 13
+    han_closed = 13
+    is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         """

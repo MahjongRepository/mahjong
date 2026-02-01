@@ -10,15 +10,11 @@ class Ryuuiisou(Yaku):
     Hand composed entirely of green tiles. Green tiles are: green dragons and 2, 3, 4, 6 and 8 of sou.
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 105
-
-        self.name = "Ryuuiisou"
-
-        self.han_open = 13
-        self.han_closed = 13
-
-        self.is_yakuman = True
+    yaku_id = 105
+    name = "Ryuuiisou"
+    han_open = 13
+    han_closed = 13
+    is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         green_indices = [19, 20, 21, 23, 25, HATSU]

@@ -9,15 +9,10 @@ class Honitsu(Yaku):
     The hand contains tiles from a single suit plus honours
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 34
-
-        self.name = "Honitsu"
-
-        self.han_open = 2
-        self.han_closed = 3
-
-        self.is_yakuman = False
+    yaku_id = 34
+    name = "Honitsu"
+    han_open = 2
+    han_closed = 3
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         suit_mask, honor_count = classify_hand_suits(hand)

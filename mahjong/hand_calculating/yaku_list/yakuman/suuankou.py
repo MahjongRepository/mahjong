@@ -9,15 +9,10 @@ class Suuankou(Yaku):
     Four closed pon sets
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 102
-
-        self.name = "Suu Ankou"
-
-        self.han_open = None
-        self.han_closed = 13
-
-        self.is_yakuman = True
+    yaku_id = 102
+    name = "Suu Ankou"
+    han_closed = 13
+    is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], win_tile: int, is_tsumo: bool) -> bool:
         win_tile //= 4

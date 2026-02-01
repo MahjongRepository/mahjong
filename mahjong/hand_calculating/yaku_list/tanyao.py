@@ -10,15 +10,10 @@ class Tanyao(Yaku):
     Hand without 1, 9, dragons and winds
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 13
-
-        self.name = "Tanyao"
-
-        self.han_open = 1
-        self.han_closed = 1
-
-        self.is_yakuman = False
+    yaku_id = 13
+    name = "Tanyao"
+    han_open = 1
+    han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         indices = chain.from_iterable(hand)

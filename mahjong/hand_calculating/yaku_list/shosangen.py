@@ -10,15 +10,10 @@ class Shosangen(Yaku):
     Hand with two dragon pon sets and one dragon pair
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 33
-
-        self.name = "Shou Sangen"
-
-        self.han_open = 2
-        self.han_closed = 2
-
-        self.is_yakuman = False
+    yaku_id = 33
+    name = "Shou Sangen"
+    han_open = 2
+    han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         count_of_conditions = 0

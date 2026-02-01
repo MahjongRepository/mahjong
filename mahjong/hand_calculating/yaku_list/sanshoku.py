@@ -8,15 +8,10 @@ class Sanshoku(Yaku):
     The same chi in three suits
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 24
-
-        self.name = "Sanshoku Doujun"
-
-        self.han_open = 1
-        self.han_closed = 2
-
-        self.is_yakuman = False
+    yaku_id = 24
+    name = "Sanshoku Doujun"
+    han_open = 1
+    han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         # bitmask per suit: bit i = chi starting at simplified position i

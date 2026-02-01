@@ -8,16 +8,12 @@ class Paarenchan(Yaku):
     Yaku situation
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 119
-
-        self.name = "Paarenchan"
-
-        self.han_open = 13
-        self.han_closed = 13
-        self.count = 0
-
-        self.is_yakuman = True
+    yaku_id = 119
+    name = "Paarenchan"
+    han_open = 13
+    han_closed = 13
+    is_yakuman = True
+    count = 0
 
     def set_paarenchan_count(self, count: int) -> None:
         self.han_open = 13 * count

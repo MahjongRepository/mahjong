@@ -9,15 +9,10 @@ class Toitoi(Yaku):
     The hand consists of all pon sets (and of course a pair), no sequences.
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 28
-
-        self.name = "Toitoi"
-
-        self.han_open = 2
-        self.han_closed = 2
-
-        self.is_yakuman = False
+    yaku_id = 28
+    name = "Toitoi"
+    han_open = 2
+    han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         count_of_pon = sum(1 for item in hand if is_pon_or_kan(item))

@@ -10,15 +10,10 @@ class Hatsu(Yaku):
     Pon of green dragons
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 16
-
-        self.name = "Yakuhai (hatsu)"
-
-        self.han_open = 1
-        self.han_closed = 1
-
-        self.is_yakuman = False
+    yaku_id = 16
+    name = "Yakuhai (hatsu)"
+    han_open = 1
+    han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         return has_pon_or_kan_of(hand, HATSU)

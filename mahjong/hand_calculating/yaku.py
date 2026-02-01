@@ -1,15 +1,14 @@
+from abc import ABC, abstractmethod
 from collections.abc import Collection, Sequence
 
 
-class Yaku:
+class Yaku(ABC):
     yaku_id: int
-    name: str | None
-    han_open: int | None
-    han_closed: int | None
-    is_yakuman: bool | None
-
-    def __init__(self) -> None:
-        self.set_attributes()
+    name: str
+    # 0 means the yaku is not available in the respective hand type
+    han_open: int = 0
+    han_closed: int = 0
+    is_yakuman: bool = False
 
     def __str__(self) -> str:
         return self.name
@@ -18,6 +17,7 @@ class Yaku:
         # for calls in array
         return self.__str__()
 
+    @abstractmethod
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         """
         Is this yaku exists in the hand?
@@ -25,10 +25,3 @@ class Yaku:
         :param: args: some yaku requires additional attributes
         :return: boolean
         """
-        raise NotImplementedError
-
-    def set_attributes(self) -> None:
-        """
-        Set id, name, han related to the yaku
-        """
-        raise NotImplementedError

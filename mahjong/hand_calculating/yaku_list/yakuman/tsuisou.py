@@ -10,15 +10,11 @@ class Tsuuiisou(Yaku):
     Hand composed entirely of honour tiles
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 107
-
-        self.name = "Tsuu Iisou"
-
-        self.han_open = 13
-        self.han_closed = 13
-
-        self.is_yakuman = True
+    yaku_id = 107
+    name = "Tsuu Iisou"
+    han_open = 13
+    han_closed = 13
+    is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         """

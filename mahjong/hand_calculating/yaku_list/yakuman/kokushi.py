@@ -9,15 +9,10 @@ class KokushiMusou(Yaku):
     any tile that matches anything else in the hand.
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 100
-
-        self.name = "Kokushi Musou"
-
-        self.han_open = None
-        self.han_closed = 13
-
-        self.is_yakuman = True
+    yaku_id = 100
+    name = "Kokushi Musou"
+    han_closed = 13
+    is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]] | None, tiles_34: Sequence[int], *args) -> bool:
         if (

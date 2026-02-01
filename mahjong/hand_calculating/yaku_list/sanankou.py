@@ -10,15 +10,10 @@ class Sanankou(Yaku):
     Three closed pon sets, the other sets need not to be closed
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 29
-
-        self.name = "San Ankou"
-
-        self.han_open = 2
-        self.han_closed = 2
-
-        self.is_yakuman = False
+    yaku_id = 29
+    name = "San Ankou"
+    han_open = 2
+    han_closed = 2
 
     def is_condition_met(
         self,

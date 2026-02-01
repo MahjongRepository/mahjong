@@ -1333,22 +1333,18 @@ class TestYakuBaseClass:
         tsumo = Tsumo()
         assert repr(tsumo) == "Menzen Tsumo"
 
-    def test_set_attributes_raises_not_implemented(self) -> None:
-        with pytest.raises(NotImplementedError):
+    def test_direct_instantiation_raises_type_error(self) -> None:
+        with pytest.raises(TypeError):
             Yaku()
 
-    def test_is_condition_met_raises_not_implemented(self) -> None:
-        class _YakuWithAttributes(Yaku):
+    def test_partial_subclass_raises_type_error(self) -> None:
+        class _YakuWithoutConditionMet(Yaku):
             """
-            Partial yaku subclass that only implements set_attributes
+            Partial yaku subclass that does not implement is_condition_met
             """
 
-            def set_attributes(self) -> None:
-                self.name = "Test"
-                self.han_open = None
-                self.han_closed = 1
-                self.is_yakuman = False
+            name = "Test"
+            han_closed = 1
 
-        yaku = _YakuWithAttributes()
-        with pytest.raises(NotImplementedError):
-            yaku.is_condition_met([])
+        with pytest.raises(TypeError):
+            _YakuWithoutConditionMet()

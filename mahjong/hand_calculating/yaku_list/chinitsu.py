@@ -9,15 +9,10 @@ class Chinitsu(Yaku):
     The hand contains tiles only from a single suit
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 37
-
-        self.name = "Chinitsu"
-
-        self.han_open = 5
-        self.han_closed = 6
-
-        self.is_yakuman = False
+    yaku_id = 37
+    name = "Chinitsu"
+    han_open = 5
+    han_closed = 6
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         suit_mask, honor_count = classify_hand_suits(hand)

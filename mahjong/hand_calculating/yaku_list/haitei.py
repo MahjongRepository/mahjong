@@ -8,15 +8,10 @@ class Haitei(Yaku):
     Yaku situation
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 6
-
-        self.name = "Haitei Raoyue"
-
-        self.han_open = 1
-        self.han_closed = 1
-
-        self.is_yakuman = False
+    yaku_id = 6
+    name = "Haitei Raoyue"
+    han_open = 1
+    han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         # was it here or not is controlling by superior code

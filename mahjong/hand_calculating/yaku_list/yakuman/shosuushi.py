@@ -10,15 +10,11 @@ class Shousuushii(Yaku):
     The hand contains three sets of winds and a pair of the remaining wind
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 104
-
-        self.name = "Shousuushii"
-
-        self.han_open = 13
-        self.han_closed = 13
-
-        self.is_yakuman = True
+    yaku_id = 104
+    name = "Shousuushii"
+    han_open = 13
+    han_closed = 13
+    is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         pon_sets = [x for x in hand if is_pon_or_kan(x)]
