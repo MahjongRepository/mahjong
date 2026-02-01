@@ -9,15 +9,9 @@ class Iipeiko(Yaku):
     Hand with two identical chi
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 14
-
-        self.name = "Iipeiko"
-
-        self.han_open = None
-        self.han_closed = 1
-
-        self.is_yakuman = False
+    yaku_id = 14
+    name = "Iipeiko"
+    han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         chi_sets = [i for i in hand if is_chi(i)]

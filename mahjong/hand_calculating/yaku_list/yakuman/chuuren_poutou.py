@@ -10,15 +10,10 @@ class ChuurenPoutou(Yaku):
     The hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit.
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 101
-
-        self.name = "Chuuren Poutou"
-
-        self.han_open = None
-        self.han_closed = 13
-
-        self.is_yakuman = True
+    yaku_id = 101
+    name = "Chuuren Poutou"
+    han_closed = 13
+    is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         suit_mask, honor_count = classify_hand_suits(hand)

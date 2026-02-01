@@ -13,15 +13,10 @@ class Daisharin(Yaku):
     Optionally can be of any suit
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 109
-
-        self.set_pin()
-
-        self.han_open = None
-        self.han_closed = 13
-
-        self.is_yakuman = True
+    yaku_id = 109
+    name = "Daisharin"
+    han_closed = 13
+    is_yakuman = True
 
     def set_pin(self) -> None:
         self.name = "Daisharin"

@@ -9,15 +9,10 @@ class SanshokuDoukou(Yaku):
     Three pon sets consisting of the same numbers in all three suits
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 31
-
-        self.name = "Sanshoku Doukou"
-
-        self.han_open = 2
-        self.han_closed = 2
-
-        self.is_yakuman = False
+    yaku_id = 31
+    name = "Sanshoku Doukou"
+    han_open = 2
+    han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         pon_sets = [i for i in hand if is_pon_or_kan(i)]

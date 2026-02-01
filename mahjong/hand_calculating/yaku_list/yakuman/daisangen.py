@@ -10,15 +10,11 @@ class Daisangen(Yaku):
     The hand contains three sets of dragons
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 103
-
-        self.name = "Daisangen"
-
-        self.han_open = 13
-        self.han_closed = 13
-
-        self.is_yakuman = True
+    yaku_id = 103
+    name = "Daisangen"
+    han_open = 13
+    han_closed = 13
+    is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         count_of_dragon_pon_sets = 0

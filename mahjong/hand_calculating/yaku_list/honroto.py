@@ -10,15 +10,10 @@ class Honroto(Yaku):
     All tiles are terminals or honours
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 27
-
-        self.name = "Honroutou"
-
-        self.han_open = 2
-        self.han_closed = 2
-
-        self.is_yakuman = False
+    yaku_id = 27
+    name = "Honroutou"
+    han_open = 2
+    han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         indices = chain.from_iterable(hand)

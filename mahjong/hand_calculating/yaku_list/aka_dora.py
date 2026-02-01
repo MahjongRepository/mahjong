@@ -8,15 +8,10 @@ class AkaDora(Yaku):
     Red five
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 121
-
-        self.name = "Aka Dora"
-
-        self.han_open = 1
-        self.han_closed = 1
-
-        self.is_yakuman = False
+    yaku_id = 121
+    name = "Aka Dora"
+    han_open = 1
+    han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         return True

@@ -10,15 +10,10 @@ class YakuhaiSouth(Yaku):
     Pon of south winds
     """
 
-    def set_attributes(self) -> None:
-        self.yaku_id = 19
-
-        self.name = "Yakuhai (south)"
-
-        self.han_open = 1
-        self.han_closed = 1
-
-        self.is_yakuman = False
+    yaku_id = 19
+    name = "Yakuhai (south)"
+    han_open = 1
+    han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], player_wind: int, round_wind: int, *args) -> bool:
         if player_wind != SOUTH and round_wind != SOUTH:
