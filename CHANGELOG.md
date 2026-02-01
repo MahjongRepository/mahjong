@@ -4,7 +4,10 @@ Releases History
 2.0.0 (TBD)
 -------------------
 
-## Highlights
+## Functionality Improvements
+
+### New features
+- Ura dora support. `HandCalculator.estimate_hand_value()` now accepts an `ura_dora_indicators` parameter and calculates ura dora accordingly when the hand won after riichi.
 
 ### Faster hand calculation
 A redesigned hand division algorithm and a more streamlined yaku detection process have reduced the overall hand calculation time to roughly 1/3 of the previous version.
@@ -26,10 +29,6 @@ The following methods are now available as static methods:
 - `Shanten.calculate_shanten_for_chiitoitsu_hand()`
 - `Shanten.calculate_shanten_for_kokushi_hand()`
 - `Shanten.calculate_shanten_for_regular_hand()`
-
-## New features
-
-- Ura dora support. `HandCalculator.estimate_hand_value()` now accepts an `ura_dora_indicators` parameter and calculates ura dora accordingly when the hand won by tsumo or ron after riichi.
 
 ## Breaking changes
 - Dropped support for Python 3.9 (because it is EOL). Python 3.10 or later is required.
