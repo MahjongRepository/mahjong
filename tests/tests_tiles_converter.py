@@ -5,15 +5,15 @@ from mahjong.tile import Tile, TilesConverter
 def test_convert_to_one_line_string() -> None:
     tiles = [0, 1, 34, 35, 36, 37, 70, 71, 72, 73, 106, 107, 108, 109, 133, 134]
     result = TilesConverter.to_one_line_string(tiles)
-    assert "1199m1199p1199s1177z" == result
+    assert result == "1199m1199p1199s1177z"
 
 
 def test_convert_to_one_line_string_with_aka_dora() -> None:
     tiles = [1, 16, 13, 46, 5, 13, 24, 34, 134, 124]
     result = TilesConverter.to_one_line_string(tiles, print_aka_dora=False)
-    assert "1244579m3p57z" == result
+    assert result == "1244579m3p57z"
     result = TilesConverter.to_one_line_string(tiles, print_aka_dora=True)
-    assert "1244079m3p57z" == result
+    assert result == "1244079m3p57z"
 
 
 def test_convert_to_34_array() -> None:
@@ -40,7 +40,7 @@ def test_convert_to_136_array() -> None:
 def test_convert_string_to_136_array() -> None:
     tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="1234567")
 
-    assert [0, 32, 36, 68, 72, 104, 108, 112, 116, 120, 124, 128, 132] == tiles
+    assert tiles == [0, 32, 36, 68, 72, 104, 108, 112, 116, 120, 124, 128, 132]
 
 
 def test_find_34_tile_in_136_array() -> None:

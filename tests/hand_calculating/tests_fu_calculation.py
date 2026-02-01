@@ -20,12 +20,12 @@ def test_chitoitsu_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 1 == len(fu_details)
+    assert len(fu_details) == 1
     assert {"fu": 25, "reason": FuCalculator.BASE} in fu_details
     assert fu == 25
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 1 == len(fu_details)
+    assert len(fu_details) == 1
     assert {"fu": 25, "reason": FuCalculator.BASE} in fu_details
     assert fu == 25
 
@@ -40,7 +40,7 @@ def test_open_hand_base() -> None:
     melds = [_make_meld(Meld.PON, sou="222")]
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config, melds=melds)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 2, "reason": FuCalculator.OPEN_PON} in fu_details
     assert fu == 30
@@ -75,7 +75,7 @@ def test_open_hand_without_additional_fu() -> None:
     melds = [_make_meld(Meld.CHI, sou="234")]
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config, melds=melds)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 2, "reason": FuCalculator.HAND_WITHOUT_FU} in fu_details
     assert fu == 30
@@ -91,7 +91,7 @@ def test_open_hand_without_additional_fu_2() -> None:
 
     config = HandConfig(options=OptionalRules(fu_for_open_pinfu=False))
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config, melds=melds)
-    assert 1 == len(fu_details)
+    assert len(fu_details) == 1
     assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
     assert fu == 20
 
@@ -117,7 +117,7 @@ def test_tsumo_hand_and_pinfu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 1 == len(fu_details)
+    assert len(fu_details) == 1
     assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
     assert fu == 20
 
@@ -131,7 +131,7 @@ def test_tsumo_hand_and_disabled_pinfu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 2, "reason": FuCalculator.TSUMO} in fu_details
     assert fu == 30
@@ -161,7 +161,7 @@ def test_penchan_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 2, "reason": FuCalculator.PENCHAN} in fu_details
     assert fu == 40
@@ -172,7 +172,7 @@ def test_penchan_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 2, "reason": FuCalculator.PENCHAN} in fu_details
     assert fu == 40
@@ -187,7 +187,7 @@ def test_kanchan_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 2, "reason": FuCalculator.KANCHAN} in fu_details
     assert fu == 40
@@ -209,7 +209,7 @@ def test_valued_pair_fu() -> None:
         config,
         valued_tiles=valued_tiles,
     )
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 2, "reason": FuCalculator.VALUED_PAIR} in fu_details
     assert fu == 40
@@ -219,7 +219,7 @@ def test_valued_pair_fu() -> None:
     fu_details, fu = fu_calculator.calculate_fu(
         hand, win_tile, _get_win_group(hand, win_tile), config, valued_tiles=valued_tiles
     )
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 4, "reason": FuCalculator.DOUBLE_VALUED_PAIR} in fu_details
     assert fu == 40
@@ -234,7 +234,7 @@ def test_pair_wait_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 2, "reason": FuCalculator.PAIR_WAIT} in fu_details
     assert fu == 40
@@ -249,7 +249,7 @@ def test_closed_pon_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 4, "reason": FuCalculator.CLOSED_PON} in fu_details
     assert fu == 40
@@ -260,7 +260,7 @@ def test_closed_pon_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 2, "reason": FuCalculator.OPEN_PON} in fu_details
     assert fu == 40
@@ -275,7 +275,7 @@ def test_closed_terminal_pon_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 8, "reason": FuCalculator.CLOSED_TERMINAL_PON} in fu_details
     assert fu == 40
@@ -286,7 +286,7 @@ def test_closed_terminal_pon_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 4, "reason": FuCalculator.OPEN_TERMINAL_PON} in fu_details
     assert fu == 40
@@ -301,7 +301,7 @@ def test_closed_honor_pon_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 8, "reason": FuCalculator.CLOSED_TERMINAL_PON} in fu_details
     assert fu == 40
@@ -312,7 +312,7 @@ def test_closed_honor_pon_fu() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 4, "reason": FuCalculator.OPEN_TERMINAL_PON} in fu_details
     assert fu == 40
@@ -328,7 +328,7 @@ def test_open_terminal_pon_fu() -> None:
     melds = [_make_meld(Meld.PON, honors="111")]
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config, melds=melds)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 4, "reason": FuCalculator.OPEN_TERMINAL_PON} in fu_details
     assert fu == 30
@@ -344,7 +344,7 @@ def test_closed_kan_fu() -> None:
     melds = [_make_meld(Meld.KAN, sou="222", is_open=False)]
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config, melds=melds)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 16, "reason": FuCalculator.CLOSED_KAN} in fu_details
     assert fu == 50
@@ -360,7 +360,7 @@ def test_open_kan_fu() -> None:
     melds = [_make_meld(Meld.KAN, sou="222", is_open=True)]
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config, melds=melds)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 8, "reason": FuCalculator.OPEN_KAN} in fu_details
     assert fu == 30
@@ -376,7 +376,7 @@ def test_closed_terminal_kan_fu() -> None:
     melds = [_make_meld(Meld.KAN, pin="111", is_open=False)]
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config, melds=melds)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 32, "reason": FuCalculator.CLOSED_TERMINAL_KAN} in fu_details
     assert fu == 70
@@ -392,7 +392,7 @@ def test_open_terminal_kan_fu() -> None:
     melds = [_make_meld(Meld.KAN, pin="111", is_open=True)]
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config, melds=melds)
-    assert 2 == len(fu_details)
+    assert len(fu_details) == 2
     assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
     assert {"fu": 16, "reason": FuCalculator.OPEN_TERMINAL_KAN} in fu_details
     assert fu == 40
@@ -406,7 +406,7 @@ def test_incorrect_fu_calculation_test_case_1() -> None:
 
     result = calculator.estimate_hand_value(tiles, win_tile, config=HandConfig(is_tsumo=True))
     assert result.fu == 30
-    assert 3 == len(result.fu_details)
+    assert len(result.fu_details) == 3
     assert {"fu": 20, "reason": FuCalculator.BASE} in result.fu_details
     assert {"fu": 8, "reason": FuCalculator.CLOSED_TERMINAL_PON} in result.fu_details
     assert {"fu": 2, "reason": FuCalculator.TSUMO} in result.fu_details
@@ -431,6 +431,6 @@ def test_calculate_fu_can_call_as_static_method() -> None:
     hand = _hand(TilesConverter.to_34_array(tiles + [win_tile]))
 
     fu_details, fu = FuCalculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert 1 == len(fu_details)
+    assert len(fu_details) == 1
     assert {"fu": 25, "reason": FuCalculator.BASE} in fu_details
     assert fu == 25
