@@ -8,10 +8,9 @@ class Sashikomi(Yaku):
     Yaku situation
     """
 
-    def __init__(self, yaku_id: int | None) -> None:
-        super(Sashikomi, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
+        self.yaku_id = 118
+
         self.name = "Sashikomi"
 
         self.han_open = None

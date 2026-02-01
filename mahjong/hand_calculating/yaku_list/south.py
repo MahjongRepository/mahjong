@@ -10,11 +10,8 @@ class YakuhaiSouth(Yaku):
     Pon of south winds
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(YakuhaiSouth, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 10
+        self.yaku_id = 19
 
         self.name = "Yakuhai (south)"
 

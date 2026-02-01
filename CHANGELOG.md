@@ -72,6 +72,9 @@ The following methods are now available as static methods:
 - `HandDivider.divide_hand()` now only succeeds when the tiles can be divided into exactly five blocks. Previous implementation succeeded even when the tiles could be divided into six or more blocks. This change also affects `HandCalculator.estimate_hand_value()`, which internally relies on `HandDivider.divide_hand()`.
 - Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
 - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
+- `Yaku.tenhou_id` has been removed. Use the `YAKU_ID_TO_TENHOU_ID` mapping from `mahjong.hand_calculating.yaku_config` instead.
+- `Yaku.__init__()` no longer accepts a `yaku_id` parameter. `yaku_id` is now set exclusively in each subclass's `set_attributes()` method.
+- `yaku_id` values have been reassigned. Previously, values were assigned sequentially via a counter in `YakuConfig.__init__`. Now each `Yaku` subclass defines its own fixed `yaku_id`. Code that relies on specific `yaku_id` values (e.g., for serialization or lookup) must be updated.
 
 ## What's Changed
 - Placeholder. It would be filled on release automatically

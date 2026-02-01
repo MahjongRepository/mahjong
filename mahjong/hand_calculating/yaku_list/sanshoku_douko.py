@@ -9,11 +9,8 @@ class SanshokuDoukou(Yaku):
     Three pon sets consisting of the same numbers in all three suits
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(SanshokuDoukou, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 26
+        self.yaku_id = 31
 
         self.name = "Sanshoku Doukou"
 

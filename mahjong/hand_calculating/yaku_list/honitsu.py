@@ -9,11 +9,9 @@ class Honitsu(Yaku):
     The hand contains tiles from a single suit plus honours
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(Honitsu, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 34
+        self.yaku_id = 34
+
         self.name = "Honitsu"
 
         self.han_open = 2

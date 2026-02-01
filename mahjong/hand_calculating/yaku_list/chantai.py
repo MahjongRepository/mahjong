@@ -11,11 +11,8 @@ class Chantai(Yaku):
     a terminal or honour tile. Must contain at least one sequence (123 or 789)
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(Chantai, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 23
+        self.yaku_id = 26
 
         self.name = "Chantai"
 

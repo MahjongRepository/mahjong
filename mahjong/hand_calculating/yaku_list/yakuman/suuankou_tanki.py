@@ -4,11 +4,8 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class SuuankouTanki(Yaku):
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(SuuankouTanki, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 40
+        self.yaku_id = 113
 
         self.name = "Suu Ankou Tanki"
 

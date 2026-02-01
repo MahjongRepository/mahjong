@@ -9,11 +9,8 @@ class KokushiMusou(Yaku):
     any tile that matches anything else in the hand.
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(KokushiMusou, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 47
+        self.yaku_id = 100
 
         self.name = "Kokushi Musou"
 

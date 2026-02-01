@@ -10,11 +10,8 @@ class Haku(Yaku):
     Pon of white dragons
     """
 
-    def __init__(self, yaku_id: int | None = None) -> None:
-        super(Haku, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
-        self.tenhou_id = 18
+        self.yaku_id = 15
 
         self.name = "Yakuhai (haku)"
 

@@ -10,10 +10,9 @@ class Daichisei(Yaku):
     Yaku situation
     """
 
-    def __init__(self, yaku_id: int | None) -> None:
-        super(Daichisei, self).__init__(yaku_id)
-
     def set_attributes(self) -> None:
+        self.yaku_id = 110
+
         self.name = "Daichisei"
 
         self.han_open = None
