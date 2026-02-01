@@ -48,14 +48,16 @@ class HandCalculator:
         dora_indicators: Collection[int] | None = None,
         config: HandConfig | None = None,
         scores_calculator_factory: type[ScoresCalculator] = ScoresCalculator,
+        ura_dora_indicators: Collection[int] | None = None,
     ) -> HandResponse:
         """
         :param tiles: array with 14 tiles in 136-tile format
-        :param win_tile: 136 format tile that caused win (ron or tsumo)
+        :param win_tile: 136-tile format tile that caused win (ron or tsumo)
         :param melds: array with Meld objects
         :param dora_indicators: array of tiles in 136-tile format
         :param config: HandConfig object
-        :param use_hand_divider_cache: could be useful if you are calculating a lot of menchin hands
+        :param scores_calculator_factory: ScoresCalculator class or subclass
+        :param ura_dora_indicators: array of tiles in 136-tile format (only counted with riichi)
         :return: HandResponse object
         """
 
@@ -64,6 +66,9 @@ class HandCalculator:
 
         if not dora_indicators:
             dora_indicators = []
+
+        if not ura_dora_indicators:
+            ura_dora_indicators = []
 
         config = config or _DEFAULT_CONFIG
 
@@ -422,6 +427,16 @@ class HandCalculator:
                         hand_yaku.append(config.yaku.aka_dora)
                         han += count_of_aka_dora
 
+                    if config.is_riichi or config.is_daburu_riichi:
+                        count_of_ura_dora = 0
+                        for tile in tiles_for_dora:
+                            count_of_ura_dora += plus_dora(tile, ura_dora_indicators)
+
+                        if count_of_ura_dora:
+                            config.yaku.ura_dora.han_closed = count_of_ura_dora
+                            hand_yaku.append(config.yaku.ura_dora)
+                            han += count_of_ura_dora
+
                 if not is_aotenjou and (config.options.limit_to_sextuple_yakuman and han > 78):
                     han = 78
 
@@ -491,6 +506,16 @@ class HandCalculator:
                     config.yaku.dora.han_closed = count_of_dora
                     hand_yaku.append(config.yaku.dora)
                     han += count_of_dora
+
+                if config.is_riichi or config.is_daburu_riichi:
+                    count_of_ura_dora = 0
+                    for tile in tiles_for_dora:
+                        count_of_ura_dora += plus_dora(tile, ura_dora_indicators)
+
+                    if count_of_ura_dora:
+                        config.yaku.ura_dora.han_closed = count_of_ura_dora
+                        hand_yaku.append(config.yaku.ura_dora)
+                        han += count_of_ura_dora
 
             cost = scores_calculator.calculate_scores(han, fu, config, len(hand_yaku) > 0)
             calculated_hands.append(

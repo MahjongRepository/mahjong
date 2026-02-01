@@ -27,6 +27,10 @@ The following methods are now available as static methods:
 - `Shanten.calculate_shanten_for_kokushi_hand()`
 - `Shanten.calculate_shanten_for_regular_hand()`
 
+## New features
+
+- Ura dora support. `HandCalculator.estimate_hand_value()` now accepts an `ura_dora_indicators` parameter and calculates ura dora accordingly when the hand won by tsumo or ron after riichi.
+
 ## Breaking changes
 - Dropped support for Python 3.9 (because it is EOL). Python 3.10 or later is required.
 - The following constants in `constants.py` have been converted from lists to frozensets for O(1) lookup performance. Code using list-specific operations (such as indexing or concatenation) will need updates.

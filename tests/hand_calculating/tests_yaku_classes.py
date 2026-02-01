@@ -15,6 +15,7 @@ from mahjong.hand_calculating.yaku_list.renhou import Renhou
 from mahjong.hand_calculating.yaku_list.riichi import Riichi
 from mahjong.hand_calculating.yaku_list.rinshan import Rinshan
 from mahjong.hand_calculating.yaku_list.tsumo import Tsumo
+from mahjong.hand_calculating.yaku_list.ura_dora import UraDora
 from mahjong.hand_calculating.yaku_list.yakuhai_place import YakuhaiOfPlace
 from mahjong.hand_calculating.yaku_list.yakuhai_round import YakuhaiOfRound
 from mahjong.hand_calculating.yaku_list.yakuman.chiihou import Chiihou
@@ -57,6 +58,7 @@ from tests.utils_for_tests import _string_to_34_tiles
         Tenhou,
         AkaDora,
         Dora,
+        UraDora,
         Paarenchan,
     ],
     ids=lambda val: val.__name__,
@@ -83,6 +85,14 @@ def test_dora_str() -> None:
     """
     yaku = Dora()
     assert str(yaku) == "Dora 1"
+
+
+def test_ura_dora_str() -> None:
+    """
+    Verify UraDora string representation includes han count.
+    """
+    yaku = UraDora()
+    assert str(yaku) == "Ura Dora 1"
 
 
 def test_paarenchan_str() -> None:

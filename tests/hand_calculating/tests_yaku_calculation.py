@@ -1196,6 +1196,31 @@ def test_dora_in_hand() -> None:
     assert len(result.yaku) == 2
 
 
+def test_ura_dora_in_hand() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="123456", man="123456", pin="33")
+    win_tile = _string_to_136_tile(man="6")
+    ura_dora_indicators = [_string_to_136_tile(pin="2")]
+    result = hand.estimate_hand_value(
+        tiles, win_tile, ura_dora_indicators=ura_dora_indicators, config=_make_hand_config(is_riichi=True)
+    )
+    assert result.error is None
+    assert result.han == 4
+    assert len(result.yaku) == 3
+
+    # ura dora NOT counted without riichi
+    tiles = TilesConverter.string_to_136_array(sou="123456", man="123456", pin="33")
+    win_tile = _string_to_136_tile(man="6")
+    ura_dora_indicators = [_string_to_136_tile(pin="2")]
+    result = hand.estimate_hand_value(
+        tiles, win_tile, ura_dora_indicators=ura_dora_indicators, config=_make_hand_config(is_tsumo=True)
+    )
+    assert result.error is None
+    assert result.han == 2
+    assert len(result.yaku) == 2
+
+
 def test_is_agari_and_closed_kan() -> None:
     """
     There were a bug when we don't count closed kan set for agari
