@@ -86,7 +86,7 @@ class _RegularShanten:
 
     def _run(self, depth: int) -> None:
         if self._min_shanten == Shanten.AGARI_STATE:
-            return
+            return None
 
         while not self._tiles[depth]:
             depth += 1
