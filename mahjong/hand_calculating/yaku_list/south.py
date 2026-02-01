@@ -16,6 +16,6 @@ class YakuhaiSouth(Yaku):
     han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], player_wind: int, round_wind: int, *args) -> bool:
-        if player_wind != SOUTH and round_wind != SOUTH:
+        if SOUTH not in (player_wind, round_wind):
             return False
         return has_pon_or_kan_of(hand, SOUTH)

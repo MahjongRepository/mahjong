@@ -144,7 +144,7 @@ class Agari:
         a = m & 7
         b = 0
         c = 0
-        if a == 1 or a == 4:
+        if a in {1, 4}:
             b = c = 1
         elif a == 2:
             b = c = 2
@@ -158,7 +158,7 @@ class Agari:
         for _ in range(0, 6):
             b = c
             c = 0
-            if a == 1 or a == 4:
+            if a in {1, 4}:
                 b += 1
                 c += 1
             elif a == 2:
@@ -176,7 +176,7 @@ class Agari:
         m >>= 3
         a = (m & 7) - c
 
-        return a == 0 or a == 3
+        return a in {0, 3}
 
     @staticmethod
     def _is_atama_mentsu(nn: int, m: int) -> bool:
