@@ -12,7 +12,7 @@ class Junchan(Yaku):
     Honours are not allowed
     """
 
-    yaku_id = 35
+    yaku_id = 37
     name = "Junchan"
     han_open = 2
     han_closed = 3

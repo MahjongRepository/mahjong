@@ -9,7 +9,7 @@ class Honitsu(Yaku):
     The hand contains tiles from a single suit plus honours
     """
 
-    yaku_id = 34
+    yaku_id = 36
     name = "Honitsu"
     han_open = 2
     han_closed = 3

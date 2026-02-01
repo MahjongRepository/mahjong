@@ -34,12 +34,14 @@ from mahjong.hand_calculating.yaku_list import (
     Toitoi,
     Tsumo,
     UraDora,
-    YakuhaiEast,
-    YakuhaiNorth,
-    YakuhaiOfPlace,
-    YakuhaiOfRound,
-    YakuhaiSouth,
-    YakuhaiWest,
+    YakuhaiRoundEast,
+    YakuhaiRoundNorth,
+    YakuhaiRoundSouth,
+    YakuhaiRoundWest,
+    YakuhaiSeatEast,
+    YakuhaiSeatNorth,
+    YakuhaiSeatSouth,
+    YakuhaiSeatWest,
 )
 from mahjong.hand_calculating.yaku_list.yakuman import (
     Chiihou,
@@ -75,12 +77,14 @@ YAKU_ID_TO_TENHOU_ID: dict[int, int] = {
     Pinfu().yaku_id: 7,
     Tanyao().yaku_id: 8,
     Iipeiko().yaku_id: 9,
-    YakuhaiEast().yaku_id: 10,
-    YakuhaiSouth().yaku_id: 10,
-    YakuhaiWest().yaku_id: 10,
-    YakuhaiNorth().yaku_id: 10,
-    YakuhaiOfPlace().yaku_id: 10,
-    YakuhaiOfRound().yaku_id: 11,
+    YakuhaiSeatEast().yaku_id: 10,
+    YakuhaiSeatSouth().yaku_id: 11,
+    YakuhaiSeatWest().yaku_id: 12,
+    YakuhaiSeatNorth().yaku_id: 13,
+    YakuhaiRoundEast().yaku_id: 14,
+    YakuhaiRoundSouth().yaku_id: 15,
+    YakuhaiRoundWest().yaku_id: 16,
+    YakuhaiRoundNorth().yaku_id: 17,
     Haku().yaku_id: 18,
     Hatsu().yaku_id: 19,
     Chun().yaku_id: 20,
@@ -145,12 +149,14 @@ class YakuConfig:
         self.hatsu = Hatsu()
         self.chun = Chun()
 
-        self.east = YakuhaiEast()
-        self.south = YakuhaiSouth()
-        self.west = YakuhaiWest()
-        self.north = YakuhaiNorth()
-        self.yakuhai_place = YakuhaiOfPlace()
-        self.yakuhai_round = YakuhaiOfRound()
+        self.yakuhai_seat_east = YakuhaiSeatEast()
+        self.yakuhai_seat_south = YakuhaiSeatSouth()
+        self.yakuhai_seat_west = YakuhaiSeatWest()
+        self.yakuhai_seat_north = YakuhaiSeatNorth()
+        self.yakuhai_round_east = YakuhaiRoundEast()
+        self.yakuhai_round_south = YakuhaiRoundSouth()
+        self.yakuhai_round_west = YakuhaiRoundWest()
+        self.yakuhai_round_north = YakuhaiRoundNorth()
 
         # Yaku 2 Hans
         self.sanshoku = Sanshoku()

@@ -8,7 +8,7 @@ class Ittsu(Yaku):
     Three sets of same suit: 1-2-3, 4-5-6, 7-8-9
     """
 
-    yaku_id = 25
+    yaku_id = 27
     name = "Ittsu"
     han_open = 1
     han_closed = 2

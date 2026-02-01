@@ -9,7 +9,7 @@ class Toitoi(Yaku):
     The hand consists of all pon sets (and of course a pair), no sequences.
     """
 
-    yaku_id = 28
+    yaku_id = 30
     name = "Toitoi"
     han_open = 2
     han_closed = 2

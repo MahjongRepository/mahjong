@@ -8,7 +8,7 @@ class Sanshoku(Yaku):
     The same chi in three suits
     """
 
-    yaku_id = 24
+    yaku_id = 26
     name = "Sanshoku Doujun"
     han_open = 1
     han_closed = 2

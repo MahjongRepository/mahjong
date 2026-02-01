@@ -11,7 +11,7 @@ class Chantai(Yaku):
     a terminal or honour tile. Must contain at least one sequence (123 or 789)
     """
 
-    yaku_id = 26
+    yaku_id = 28
     name = "Chantai"
     han_open = 1
     han_closed = 2

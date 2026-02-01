@@ -9,7 +9,7 @@ class Chinitsu(Yaku):
     The hand contains tiles only from a single suit
     """
 
-    yaku_id = 37
+    yaku_id = 39
     name = "Chinitsu"
     han_open = 5
     han_closed = 6

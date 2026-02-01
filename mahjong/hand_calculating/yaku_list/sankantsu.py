@@ -9,7 +9,7 @@ class SanKantsu(Yaku):
     The hand with three kan sets
     """
 
-    yaku_id = 30
+    yaku_id = 32
     name = "San Kantsu"
     han_open = 2
     han_closed = 2

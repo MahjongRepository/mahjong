@@ -7,7 +7,6 @@ from mahjong.hand_calculating.yaku_list.chun import Chun
 from mahjong.hand_calculating.yaku_list.daburu_open_riichi import DaburuOpenRiichi
 from mahjong.hand_calculating.yaku_list.daburu_riichi import DaburuRiichi
 from mahjong.hand_calculating.yaku_list.dora import Dora
-from mahjong.hand_calculating.yaku_list.east import YakuhaiEast
 from mahjong.hand_calculating.yaku_list.haitei import Haitei
 from mahjong.hand_calculating.yaku_list.haku import Haku
 from mahjong.hand_calculating.yaku_list.hatsu import Hatsu
@@ -19,7 +18,6 @@ from mahjong.hand_calculating.yaku_list.ippatsu import Ippatsu
 from mahjong.hand_calculating.yaku_list.ittsu import Ittsu
 from mahjong.hand_calculating.yaku_list.junchan import Junchan
 from mahjong.hand_calculating.yaku_list.nagashi_mangan import NagashiMangan
-from mahjong.hand_calculating.yaku_list.north import YakuhaiNorth
 from mahjong.hand_calculating.yaku_list.open_riichi import OpenRiichi
 from mahjong.hand_calculating.yaku_list.pinfu import Pinfu
 from mahjong.hand_calculating.yaku_list.renhou import Renhou
@@ -31,11 +29,15 @@ from mahjong.hand_calculating.yaku_list.sankantsu import SanKantsu
 from mahjong.hand_calculating.yaku_list.sanshoku import Sanshoku
 from mahjong.hand_calculating.yaku_list.sanshoku_douko import SanshokuDoukou
 from mahjong.hand_calculating.yaku_list.shosangen import Shosangen
-from mahjong.hand_calculating.yaku_list.south import YakuhaiSouth
 from mahjong.hand_calculating.yaku_list.tanyao import Tanyao
 from mahjong.hand_calculating.yaku_list.toitoi import Toitoi
 from mahjong.hand_calculating.yaku_list.tsumo import Tsumo
 from mahjong.hand_calculating.yaku_list.ura_dora import UraDora
-from mahjong.hand_calculating.yaku_list.west import YakuhaiWest
-from mahjong.hand_calculating.yaku_list.yakuhai_place import YakuhaiOfPlace
-from mahjong.hand_calculating.yaku_list.yakuhai_round import YakuhaiOfRound
+from mahjong.hand_calculating.yaku_list.yakuhai_round_east import YakuhaiRoundEast
+from mahjong.hand_calculating.yaku_list.yakuhai_round_north import YakuhaiRoundNorth
+from mahjong.hand_calculating.yaku_list.yakuhai_round_south import YakuhaiRoundSouth
+from mahjong.hand_calculating.yaku_list.yakuhai_round_west import YakuhaiRoundWest
+from mahjong.hand_calculating.yaku_list.yakuhai_seat_east import YakuhaiSeatEast
+from mahjong.hand_calculating.yaku_list.yakuhai_seat_north import YakuhaiSeatNorth
+from mahjong.hand_calculating.yaku_list.yakuhai_seat_south import YakuhaiSeatSouth
+from mahjong.hand_calculating.yaku_list.yakuhai_seat_west import YakuhaiSeatWest

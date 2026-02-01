@@ -10,7 +10,7 @@ class Shosangen(Yaku):
     Hand with two dragon pon sets and one dragon pair
     """
 
-    yaku_id = 33
+    yaku_id = 35
     name = "Shou Sangen"
     han_open = 2
     han_closed = 2
