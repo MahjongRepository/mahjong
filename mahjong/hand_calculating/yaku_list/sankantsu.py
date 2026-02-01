@@ -15,5 +15,5 @@ class SanKantsu(Yaku):
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], melds: Collection[Meld], *args) -> bool:
-        kan_sets = [x for x in melds if x.type == Meld.KAN or x.type == Meld.SHOUMINKAN]
+        kan_sets = [x for x in melds if x.type in (Meld.KAN, Meld.SHOUMINKAN)]
         return len(kan_sets) == 3

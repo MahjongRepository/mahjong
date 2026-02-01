@@ -87,7 +87,7 @@ class TilesConverter:
                 return []
 
             for i in string:
-                if (i == "r" or i == "0") and has_aka_dora:
+                if (i in {"r", "0"}) and has_aka_dora:
                     assert red is not None
                     temp.append(red)
                     data.append(red)
@@ -182,7 +182,7 @@ class TilesConverter:
             if i == "s":
                 sou += string[split_start:index]
                 split_start = index + 1
-            if i == "z" or i == "h":
+            if i in {"z", "h"}:
                 honors += string[split_start:index]
                 split_start = index + 1
 
