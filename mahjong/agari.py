@@ -66,7 +66,7 @@ class Agari:
             return True
 
         # seven pairs
-        if not (j & 10) and sum([tiles[i] == 2 for i in range(0, 34)]) == 7:
+        if not (j & 10) and sum([tiles[i] == 2 for i in range(34)]) == 7:
             return True
 
         if j & 2:
@@ -155,7 +155,7 @@ class Agari:
             return False
 
         is_not_mentsu = False
-        for _ in range(0, 6):
+        for _ in range(6):
             b = c
             c = 0
             if a in {1, 4}:
@@ -206,6 +206,6 @@ class Agari:
     @staticmethod
     def _to_meld(tiles: list[int], d: int) -> int:
         result = 0
-        for i in range(0, 9):
+        for i in range(9):
             result |= tiles[d + i] << i * 3
         return result

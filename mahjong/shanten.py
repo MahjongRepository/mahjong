@@ -79,7 +79,7 @@ class _RegularShanten:
         return self._min_shanten
 
     def _scan(self, init_mentsu: int) -> None:
-        for i in range(0, 27):
+        for i in range(27):
             self._flag_four_copies |= (self._tiles[i] == 4) << i
         self._number_melds += init_mentsu
         self._run(0)

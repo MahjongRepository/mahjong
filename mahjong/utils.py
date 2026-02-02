@@ -287,7 +287,7 @@ def count_tiles_by_suits(tiles_34: Sequence[int]) -> list[dict]:
         {"count": 0, "name": "honor", "function": is_honor},
     ]
 
-    for x in range(0, 34):
+    for x in range(34):
         tile = tiles_34[x]
         if not tile:
             continue
