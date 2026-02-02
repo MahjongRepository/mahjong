@@ -127,8 +127,7 @@ class TilesConverter:
         We need it to increase readability of our tests
         """
         results = TilesConverter.string_to_136_array(sou, pin, man, honors)
-        results = TilesConverter.to_34_array(results)
-        return results
+        return TilesConverter.to_34_array(results)
 
     @staticmethod
     def find_34_tile_in_136_array(tile34: int | None, tiles: Collection[int]) -> int | None:
@@ -199,5 +198,4 @@ class TilesConverter:
         has_aka_dora has to be True for this to do that.
         """
         results = TilesConverter.one_line_string_to_136_array(string, has_aka_dora)
-        results = TilesConverter.to_34_array(results)
-        return results
+        return TilesConverter.to_34_array(results)
