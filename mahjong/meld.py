@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from functools import cached_property
 
 from mahjong.tile import TilesConverter
 
@@ -41,6 +42,6 @@ class Meld:
     def __repr__(self) -> str:
         return self.__str__()
 
-    @property
+    @cached_property
     def tiles_34(self) -> list[int]:
         return [x // 4 for x in self.tiles]
