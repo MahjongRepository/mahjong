@@ -4,7 +4,13 @@ from typing import Any
 from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.meld import Meld
-from mahjong.utils import contains_terminals, is_pon_or_kan, simplify
+
+# terminal/honor membership lookup for tile_34 indices 0..33
+_IS_TERMINAL_OR_HONOR = [i in TERMINAL_AND_HONOR_INDICES for i in range(34)]
+
+# meld state bit flags
+_OPENED = 1
+_IS_KAN = 2
 
 
 class FuCalculator:
@@ -29,6 +35,18 @@ class FuCalculator:
     CLOSED_TERMINAL_KAN = "closed_terminal_kan"
     OPEN_TERMINAL_KAN = "open_terminal_kan"
 
+    # lookup table indexed by [is_terminal_or_honor][is_kan][is_open] -> (fu, reason)
+    _PON_KAN_FU_TABLE = (
+        (  # simple tiles
+            ((4, CLOSED_PON), (2, OPEN_PON)),  # pon
+            ((16, CLOSED_KAN), (8, OPEN_KAN)),  # kan
+        ),
+        (  # terminal or honor tiles
+            ((8, CLOSED_TERMINAL_PON), (4, OPEN_TERMINAL_PON)),  # pon
+            ((32, CLOSED_TERMINAL_KAN), (16, OPEN_TERMINAL_KAN)),  # kan
+        ),
+    )
+
     @staticmethod
     def calculate_fu(
         hand: Collection[Sequence[int]],
@@ -48,121 +66,143 @@ class FuCalculator:
         :param melds: opened sets
         :return:
         """
-
-        win_tile_34 = win_tile // 4
-
-        if not valued_tiles:
-            valued_tiles = []
-
-        if not melds:
-            melds = []
-
-        fu_details = []
-
+        # chiitoitsu: always 25 fu
         if len(hand) == 7:
             return [{"fu": 25, "reason": FuCalculator.BASE}], 25
 
-        pair = None
-        pon_sets = []
-        for x in hand:
-            if len(x) == 2:
-                pair = x
-            elif is_pon_or_kan(x):
-                pon_sets.append(x)
+        win_tile_34 = win_tile >> 2
 
-        copied_opened_melds = [x.tiles_34 for x in melds if x.type == Meld.CHI]
-        closed_chi_sets = []
-        for x in hand:
-            if x not in copied_opened_melds:
-                closed_chi_sets.append(list(x))
+        if not valued_tiles:
+            valued_tiles = ()
+
+        if not melds:
+            melds = ()
+
+        fu_details: list[dict[str, Any]] = []
+        fu_total = 0
+
+        is_tsumo = config.is_tsumo
+        opts = config.options
+        win_group_len = len(win_group)
+
+        # detect if win_group is a chi (sequential meld)
+        win_group_is_chi = False
+        wg0 = wg1 = wg2 = -1
+        if win_group_len == 3:
+            wg0 = win_group[0]
+            wg1 = win_group[1]
+            wg2 = win_group[2]
+            win_group_is_chi = wg0 != wg1
+
+        # single pass over hand: find pair, collect pon/kan sets,
+        # count chi groups matching win_group
+        pair_tile = -1
+        pon_sets: list[Sequence[int]] = []
+        win_group_chi_count_in_hand = 0
+        for grp in hand:
+            grp_len = len(grp)
+            if grp_len == 2:
+                pair_tile = grp[0]
+                continue
+
+            # pon/kan: all tiles are the same
+            if grp[0] == grp[1]:
+                pon_sets.append(grp)
+                continue
+
+            # chi: count matches for win_group open/closed detection
+            if win_group_is_chi and grp_len == 3:
+                if grp[0] == wg0 and grp[1] == wg1 and grp[2] == wg2:
+                    win_group_chi_count_in_hand += 1
+
+        # preprocess melds into a fixed-size state table (tile_34 -> bit flags)
+        is_open_hand = False
+        win_group_open_chi_count = 0
+        meld_state = [0] * 34
+        for m in melds:
+            if m.opened:
+                is_open_hand = True
+
+            if m.type == Meld.CHI:
+                if win_group_is_chi:
+                    t0 = m.tiles[0] >> 2
+                    t1 = m.tiles[1] >> 2
+                    t2 = m.tiles[2] >> 2
+                    if t0 == wg0 and t1 == wg1 and t2 == wg2:
+                        win_group_open_chi_count += 1
             else:
-                copied_opened_melds.remove(list(x))
+                tile = m.tiles[0] >> 2
+                state = 0
+                if m.opened:
+                    state |= _OPENED
+                if m.type in (Meld.KAN, Meld.SHOUMINKAN):
+                    state |= _IS_KAN
+                meld_state[tile] = state
 
-        is_open_hand = any(x.opened for x in melds)
+        # win_group chi is closed if hand has more of this pattern than open melds
+        win_group_is_closed_chi = win_group_is_chi and win_group_chi_count_in_hand > win_group_open_chi_count
 
-        if win_group in closed_chi_sets:
-            tile_index = simplify(win_tile_34)
+        # wait fu: penchan and kanchan (only for closed chi containing win tile)
+        if win_group_is_closed_chi:
+            start_rank = wg0 % 9
 
-            # penchan
-            if contains_terminals(win_group):
-                # 1-2-... wait
-                if tile_index == 2 and win_group.index(win_tile_34) == 2:
-                    fu_details.append({"fu": 2, "reason": FuCalculator.PENCHAN})
-                # 8-9-... wait
-                elif tile_index == 6 and win_group.index(win_tile_34) == 0:
-                    fu_details.append({"fu": 2, "reason": FuCalculator.PENCHAN})
+            # penchan: edge wait completing 1-2-3 with the 3, or 7-8-9 with the 7
+            is_penchan = (start_rank == 0 and win_tile_34 == wg2) or (start_rank == 6 and win_tile_34 == wg0)
+            if is_penchan:
+                fu_details.append({"fu": 2, "reason": FuCalculator.PENCHAN})
+                fu_total += 2
 
-            # kanchan waiting 5-...-7
-            if win_group.index(win_tile_34) == 1:
+            # kanchan: wait on the middle tile
+            if win_tile_34 == wg1:
                 fu_details.append({"fu": 2, "reason": FuCalculator.KANCHAN})
+                fu_total += 2
 
-        # valued pair
-        count_of_valued_pairs = valued_tiles.count(pair[0])
-        if count_of_valued_pairs == 1:
-            fu_details.append({"fu": 2, "reason": FuCalculator.VALUED_PAIR})
+        # valued pair fu
+        if pair_tile >= 0 and valued_tiles:
+            valued_count = valued_tiles.count(pair_tile)
+            if valued_count == 1:
+                fu_details.append({"fu": 2, "reason": FuCalculator.VALUED_PAIR})
+                fu_total += 2
+            elif valued_count >= 2:
+                # e.g. east-east pair when player is east
+                fu_details.append({"fu": 4, "reason": FuCalculator.DOUBLE_VALUED_PAIR})
+                fu_total += 4
 
-        # east-east pair when you are on east gave double fu
-        if count_of_valued_pairs == 2:
-            fu_details.append({"fu": 4, "reason": FuCalculator.DOUBLE_VALUED_PAIR})
-
-        # pair wait
-        if len(win_group) == 2:
+        # pair wait fu
+        if win_group_len == 2:
             fu_details.append({"fu": 2, "reason": FuCalculator.PAIR_WAIT})
+            fu_total += 2
 
+        # pon/kan fu via lookup table
         for set_item in pon_sets:
-            open_melds = [x for x in melds if set_item == x.tiles_34]
-            open_meld = open_melds[0] if open_melds else None
+            tile = set_item[0]
+            state = meld_state[tile]
 
-            set_was_open = bool(open_meld and open_meld.opened)
-            is_kan_set = bool(open_meld and (open_meld.type in (Meld.KAN, Meld.SHOUMINKAN)))
-            is_honor = set_item[0] in TERMINAL_AND_HONOR_INDICES
+            set_was_open = (state & _OPENED) != 0
+            is_kan_set = len(set_item) == 4 or (state & _IS_KAN) != 0
 
-            # we win by ron on the third pon tile, our pon will be count as open
-            if not config.is_tsumo and set_item == win_group:
+            # ron on the third pon tile counts pon as open
+            if not is_tsumo and win_group_len == len(set_item) and win_group[0] == tile and win_group[1] == tile:
                 set_was_open = True
 
-            if is_honor:
-                if is_kan_set:
-                    if set_was_open:
-                        fu_details.append({"fu": 16, "reason": FuCalculator.OPEN_TERMINAL_KAN})
-                    else:
-                        fu_details.append({"fu": 32, "reason": FuCalculator.CLOSED_TERMINAL_KAN})
-                else:
-                    if set_was_open:
-                        fu_details.append({"fu": 4, "reason": FuCalculator.OPEN_TERMINAL_PON})
-                    else:
-                        fu_details.append({"fu": 8, "reason": FuCalculator.CLOSED_TERMINAL_PON})
-            else:
-                if is_kan_set:
-                    if set_was_open:
-                        fu_details.append({"fu": 8, "reason": FuCalculator.OPEN_KAN})
-                    else:
-                        fu_details.append({"fu": 16, "reason": FuCalculator.CLOSED_KAN})
-                else:
-                    if set_was_open:
-                        fu_details.append({"fu": 2, "reason": FuCalculator.OPEN_PON})
-                    else:
-                        fu_details.append({"fu": 4, "reason": FuCalculator.CLOSED_PON})
+            fu, reason = FuCalculator._PON_KAN_FU_TABLE[_IS_TERMINAL_OR_HONOR[tile]][is_kan_set][set_was_open]
+            fu_details.append({"fu": fu, "reason": reason})
+            fu_total += fu
 
-        add_tsumo_fu = len(fu_details) > 0 or config.options.fu_for_pinfu_tsumo
-
-        if config.is_tsumo and add_tsumo_fu:
-            # 2 additional fu for tsumo (but not for pinfu)
+        # tsumo fu (not for pinfu unless option is enabled)
+        if is_tsumo and (fu_total > 0 or opts.fu_for_pinfu_tsumo):
             fu_details.append({"fu": 2, "reason": FuCalculator.TSUMO})
+            fu_total += 2
 
-        if is_open_hand and not fu_details and config.options.fu_for_open_pinfu:
-            # there is no 1-20 hands, so we had to add additional fu
+        # open pinfu: no 1-20 hands exist, add 2 fu
+        if is_open_hand and fu_total == 0 and opts.fu_for_open_pinfu:
             fu_details.append({"fu": 2, "reason": FuCalculator.HAND_WITHOUT_FU})
+            fu_total += 2
 
-        if is_open_hand or config.is_tsumo:
-            fu_details.append({"fu": 20, "reason": FuCalculator.BASE})
-        else:
-            fu_details.append({"fu": 30, "reason": FuCalculator.BASE})
+        # base fu: 30 for closed ron, 20 for open or tsumo
+        base_fu = 20 if is_open_hand or is_tsumo else 30
+        fu_details.append({"fu": base_fu, "reason": FuCalculator.BASE})
+        fu_total += base_fu
 
-        return fu_details, FuCalculator.round_fu(fu_details)
-
-    @staticmethod
-    def round_fu(fu_details: Collection[dict[str, Any]]) -> int:
-        # 22 -> 30 and etc.
-        fu = sum(x["fu"] for x in fu_details)
-        return (fu + 9) // 10 * 10
+        # round up to the nearest 10
+        return fu_details, (fu_total + 9) // 10 * 10

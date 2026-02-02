@@ -24,7 +24,6 @@ A redesigned hand division algorithm and a more streamlined yaku detection proce
 The following methods are now available as static methods:
 - `HandDivider.divide_hand()`
 - `FuCalculator.calculate_fu()`
-- `FuCalculator.round_fu()`
 - `HandCalculator.estimate_hand_value()`
 - `ScoresCalculator.calculate_scores()`
 - `Aotenjou.calculate_scores()`
@@ -49,6 +48,7 @@ The following methods are now available as static methods:
   - `HandDivider.find_pairs()`
   - `HandDivider.find_valid_combinations()`
   - `HandDivider.clear_cache()`
+  - `FuCalculator.round_fu()`
 - The following class and instance attributes have been removed as part of internal cleanup related to the transition of several methods to staticmethods. These attributes were not intended for public use.
   - `HandDivider.divider_cache`
   - `HandDivider.cache_key`

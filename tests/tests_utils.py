@@ -4,6 +4,7 @@ from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, HAKU
 from mahjong.tile import TilesConverter
 from mahjong.utils import (
     classify_hand_suits,
+    contains_terminals,
     count_tiles_by_suits,
     find_isolated_tile_indices,
     has_pon_or_kan_of,
@@ -314,6 +315,22 @@ def test_is_sangenpai(tile_34: int, expected: bool) -> None:
 )
 def test_is_terminal(tile_34: int, expected: bool) -> None:
     assert is_terminal(tile_34) == expected
+
+
+@pytest.mark.parametrize(
+    ("hand_set", "expected"),
+    [
+        (_string_to_34_tiles(man="123"), True),  # contains 1m (terminal)
+        (_string_to_34_tiles(man="789"), True),  # contains 9m (terminal)
+        (_string_to_34_tiles(pin="19"), True),  # contains 1p and 9p
+        (_string_to_34_tiles(sou="456"), False),  # no terminals
+        (_string_to_34_tiles(man="234"), False),  # no terminals
+        (_string_to_34_tiles(honors="11"), False),  # honors are not terminals
+        (_string_to_34_tiles(sou="19"), True),  # contains 1s and 9s
+    ],
+)
+def test_contains_terminals(hand_set: list[int], expected: bool) -> None:
+    assert contains_terminals(hand_set) == expected
 
 
 def test_count_tiles_by_suits() -> None:
