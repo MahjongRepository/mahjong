@@ -174,7 +174,6 @@ class FuCalculator:
             fu_total += 2
 
         # pon/kan fu via lookup table
-        fu_table = FuCalculator._PON_KAN_FU_TABLE
         for set_item in pon_sets:
             tile = set_item[0]
             state = meld_state[tile]
@@ -186,7 +185,7 @@ class FuCalculator:
             if not is_tsumo and win_group_len == len(set_item) and win_group[0] == tile and win_group[1] == tile:
                 set_was_open = True
 
-            fu, reason = fu_table[_IS_TERMINAL_OR_HONOR[tile]][is_kan_set][set_was_open]
+            fu, reason = FuCalculator._PON_KAN_FU_TABLE[_IS_TERMINAL_OR_HONOR[tile]][is_kan_set][set_was_open]
             fu_details.append({"fu": fu, "reason": reason})
             fu_total += fu
 
