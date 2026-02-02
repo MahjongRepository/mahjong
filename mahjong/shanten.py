@@ -204,6 +204,8 @@ class _RegularShanten:
                     self._run(depth + 1)
                     self._decrease_tatsu_first(depth)
 
+        return None
+
     def _update_result(self) -> None:
         ret_shanten = 8 - self._number_melds * 2 - self._number_tatsu - self._number_pairs
         n_mentsu_kouho = self._number_melds + self._number_tatsu
