@@ -61,8 +61,7 @@ def _make_meld(
     honors: str | None = "",
 ) -> Meld:
     tiles = TilesConverter.string_to_136_array(man=man, pin=pin, sou=sou, honors=honors)
-    meld = Meld(meld_type=meld_type, tiles=tiles, opened=is_open, called_tile=tiles[0], who=0)
-    return meld
+    return Meld(meld_type=meld_type, tiles=tiles, opened=is_open, called_tile=tiles[0], who=0)
 
 
 def _make_hand_config(

@@ -556,6 +556,4 @@ class HandCalculator:
         # and depends on form we will have different hand cost
         # so, we had to check all possible win groups
         win_groups = [x for x in closed_set_items if win_tile_34 in x]
-        unique_win_groups = [list(x) for x in {tuple(x) for x in win_groups}]
-
-        return unique_win_groups
+        return [list(x) for x in {tuple(x) for x in win_groups}]

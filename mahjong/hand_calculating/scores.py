@@ -153,7 +153,7 @@ class ScoresCalculator:
         if config.is_nagashi_mangan:
             yaku_level = "nagashi mangan"
 
-        ret_dict = {
+        return {
             "main": main,
             "main_bonus": main_bonus,
             "additional": additional,
@@ -162,8 +162,6 @@ class ScoresCalculator:
             "total": total,
             "yaku_level": yaku_level,
         }
-
-        return ret_dict
 
 
 class Aotenjou(ScoresCalculator):
