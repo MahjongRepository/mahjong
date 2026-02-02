@@ -57,11 +57,11 @@ def test_fu_based_on_win_group() -> None:
     win_groups = [x for x in hand if win_tile // 4 in x]
 
     # pinfu wait 4-5-6
-    fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, win_groups[0], config)
+    _, fu = fu_calculator.calculate_fu(hand, win_tile, win_groups[0], config)
     assert fu == 30
 
     # pair wait 66
-    fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, win_groups[1], config)
+    _, fu = fu_calculator.calculate_fu(hand, win_tile, win_groups[1], config)
     assert fu == 40
 
 
