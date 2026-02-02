@@ -45,7 +45,7 @@ class Shanten:
             completed_terminals += tiles_34[i] >= 2
             terminals += tiles_34[i] != 0
 
-        return 13 - terminals - (completed_terminals and 1 or 0)
+        return 13 - terminals - (1 if completed_terminals else 0)
 
     @staticmethod
     def calculate_shanten_for_regular_hand(tiles_34: Sequence[int]) -> int:

@@ -176,9 +176,9 @@ class Aotenjou(ScoresCalculator):
         six_rounded = (6 * base_points + 99) // 100 * 100
 
         if config.is_tsumo:
-            return {"main": double_rounded, "additional": config.is_dealer and double_rounded or rounded}
+            return {"main": double_rounded, "additional": double_rounded if config.is_dealer else rounded}
         else:
-            return {"main": config.is_dealer and six_rounded or four_rounded, "additional": 0}
+            return {"main": six_rounded if config.is_dealer else four_rounded, "additional": 0}
 
     @staticmethod
     def aotenjou_filter_yaku(hand_yaku: MutableSequence[Yaku] | MutableSet[Yaku], config: HandConfig) -> None:

@@ -86,7 +86,6 @@ ignore = [
     "RET505",
     "RET507",
     "SIM114",
-    "RUF021",
     "PLR5501",
     "SIM102",
     "SIM108",
