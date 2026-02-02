@@ -17,4 +17,4 @@ class AkaDora(Yaku):
         return True
 
     def __str__(self) -> str:
-        return "Aka Dora {}".format(self.han_closed)
+        return f"Aka Dora {self.han_closed}"

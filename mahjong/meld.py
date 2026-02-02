@@ -36,7 +36,7 @@ class Meld:
         self.from_who = from_who
 
     def __str__(self) -> str:
-        return "Type: {}, Tiles: {} {}".format(self.type, TilesConverter.to_one_line_string(self.tiles), self.tiles)
+        return f"Type: {self.type}, Tiles: {TilesConverter.to_one_line_string(self.tiles)} {self.tiles}"
 
     # for calls in array
     def __repr__(self) -> str:
