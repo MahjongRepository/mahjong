@@ -5,6 +5,9 @@ description = "Mahjong hands calculation"
 authors = [
     { name = "Alexey Lisikhin", email = "alexey@nihisil.com" },
 ]
+maintainers = [
+    { name = "Apricot S." },
+]
 license = "MIT"
 license-files = ["LICENSE.txt"]
 readme = "README.md"
