@@ -52,8 +52,4 @@ class Daisharin(Yaku):
                 counts[tile % 9] += 1
 
         # each of 2-8 (indices 1-7) must appear exactly twice
-        for i in range(1, 8):
-            if counts[i] != 2:
-                return False
-
-        return True
+        return all(counts[i] == 2 for i in range(1, 8))
