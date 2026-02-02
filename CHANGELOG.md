@@ -4,7 +4,12 @@ Releases History
 2.0.0 (TBD)
 -------------------
 
-## Highlights
+## New features
+
+### Ura dora support
+`HandCalculator.estimate_hand_value()` now accepts an `ura_dora_indicators` parameter and calculates ura dora accordingly when the hand won after riichi.
+
+## Improvements
 
 ### Faster hand calculation
 A redesigned hand division algorithm and a more streamlined yaku detection process have reduced the overall hand calculation time to roughly 1/3 of the previous version.

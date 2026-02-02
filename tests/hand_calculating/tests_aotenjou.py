@@ -365,3 +365,23 @@ def test_aotenjou_kokushi_with_dora() -> None:
     assert result.fu == 40
     assert len(result.yaku) == 2
     assert result.cost["main"] == 128849018900
+
+
+def test_aotenjou_kokushi_with_ura_dora() -> None:
+    hand = HandCalculator()
+
+    # kokushi with riichi and ura dora in aotenjou scoring
+    tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
+    win_tile = TilesConverter.string_to_136_array(honors="7")[0]
+
+    ura_dora_indicators = TilesConverter.string_to_136_array(man="8")
+    result = hand.estimate_hand_value(
+        tiles,
+        win_tile,
+        ura_dora_indicators=ura_dora_indicators,
+        scores_calculator_factory=Aotenjou,
+        config=_make_hand_config(is_riichi=True, player_wind=EAST, round_wind=EAST),
+    )
+    assert result.error is None
+    assert result.han == 27
+    assert result.fu == 40

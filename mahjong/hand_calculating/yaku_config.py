@@ -33,6 +33,7 @@ from mahjong.hand_calculating.yaku_list import (
     Tanyao,
     Toitoi,
     Tsumo,
+    UraDora,
     YakuhaiEast,
     YakuhaiNorth,
     YakuhaiOfPlace,
@@ -115,6 +116,7 @@ YAKU_ID_TO_TENHOU_ID: dict[int, int] = {
     Shousuushii().yaku_id: 50,
     Suukantsu().yaku_id: 51,
     Dora().yaku_id: 52,
+    UraDora().yaku_id: 53,
     AkaDora().yaku_id: 54,
 }
 
@@ -199,3 +201,4 @@ class YakuConfig:
         # Other
         self.dora = Dora()
         self.aka_dora = AkaDora()
+        self.ura_dora = UraDora()
