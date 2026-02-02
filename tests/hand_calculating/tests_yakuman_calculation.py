@@ -672,7 +672,7 @@ def test_paarenchan_no_yaku_disallowed() -> None:
     tiles = TilesConverter.string_to_136_array(pin="12367778", sou="678", man="456")
     win_tile = _string_to_136_tile(pin="7")
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=False, paarenchan=1))
-    assert result.error is not None, None
+    assert result.error is not None
 
 
 def test_paarenchan_no_yaku_allowed() -> None:
@@ -683,7 +683,7 @@ def test_paarenchan_no_yaku_allowed() -> None:
     result = hand.estimate_hand_value(
         tiles, win_tile, config=_make_hand_config(is_tsumo=False, paarenchan=1, paarenchan_needs_yaku=False)
     )
-    assert result.error is None, None
+    assert result.error is None
     assert result.han == 13
 
 
@@ -693,13 +693,13 @@ def test_paarenchan() -> None:
     tiles = TilesConverter.string_to_136_array(pin="111222777", sou="44455")
     win_tile = _string_to_136_tile(pin="7")
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(paarenchan=1, is_tsumo=True))
-    assert result.error is None, None
+    assert result.error is None
     assert result.han == 26
 
     tiles = TilesConverter.string_to_136_array(pin="111222777", sou="44455")
     win_tile = _string_to_136_tile(pin="7")
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(paarenchan=4, is_tsumo=True))
-    assert result.error is None, None
+    assert result.error is None
     assert result.han == 65
 
 
