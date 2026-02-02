@@ -229,9 +229,7 @@ def find_isolated_tile_indices(hand_34: Sequence[int]) -> list[int]:
                     isolated_indices.append(x)
 
     # honor tiles (27-33) - no neighbor check needed
-    for x in range(27, 34):
-        if hand_34[x] == 0:
-            isolated_indices.append(x)
+    isolated_indices.extend(x for x in range(27, 34) if hand_34[x] == 0)
 
     return isolated_indices
 

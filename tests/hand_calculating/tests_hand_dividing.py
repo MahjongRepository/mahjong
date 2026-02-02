@@ -8,10 +8,7 @@ from tests.utils_for_tests import _make_meld, _string_to_34_tile, _string_to_136
 
 
 def _string(hand: list[list[int]]) -> list[str]:
-    results = []
-    for set_item in hand:
-        results.append(TilesConverter.to_one_line_string([x * 4 for x in set_item]))
-    return results
+    return [TilesConverter.to_one_line_string([x * 4 for x in set_item]) for set_item in hand]
 
 
 def test_simple_hand_dividing() -> None:
