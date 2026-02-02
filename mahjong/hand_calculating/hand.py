@@ -1,7 +1,7 @@
 from collections.abc import Collection
 
 from mahjong.agari import Agari
-from mahjong.constants import CHUN, HAKU, HATSU
+from mahjong.constants import CHUN, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, HAKU, HATSU
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.hand_config import HandConfig
@@ -9,7 +9,7 @@ from mahjong.hand_calculating.hand_response import HandResponse
 from mahjong.hand_calculating.scores import Aotenjou, ScoresCalculator
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
-from mahjong.utils import is_aka_dora, is_chi, is_kan, is_pon, plus_dora
+from mahjong.utils import build_dora_count_map, count_dora_for_hand, is_chi, is_kan, is_pon, plus_dora
 
 _DEFAULT_CONFIG = HandConfig()
 
@@ -161,6 +161,19 @@ class HandCalculator:
             config.yaku.daisuushi.han_open = 13
 
         hand_options = HandDivider.divide_hand(tiles_34, melds)
+
+        # precompute dora counts, invariant across all hand decompositions
+        dora_count_map = build_dora_count_map(dora_indicators)
+        precomputed_dora = count_dora_for_hand(tiles_34, dora_count_map)
+
+        precomputed_aka_dora = 0
+        if config.options.has_aka_dora:
+            precomputed_aka_dora = tiles.count(FIVE_RED_MAN) + tiles.count(FIVE_RED_PIN) + tiles.count(FIVE_RED_SOU)
+
+        precomputed_ura_dora = 0
+        if config.is_riichi or config.is_daburu_riichi:
+            ura_count_map = build_dora_count_map(ura_dora_indicators)
+            precomputed_ura_dora = count_dora_for_hand(tiles_34, ura_count_map)
 
         calculated_hands = []
         for hand in hand_options:
@@ -393,41 +406,24 @@ class HandCalculator:
                     error = HandCalculator.ERR_NO_YAKU
                     cost = None
 
-                # we don't need to add dora to yakuman
+                # dora is not added to yakuman
                 if not yakuman_list:
-                    tiles_for_dora = list(tiles)
-
-                    count_of_dora = 0
-                    count_of_aka_dora = 0
-
-                    for tile in tiles_for_dora:
-                        count_of_dora += plus_dora(tile, dora_indicators)
-
-                    for tile in tiles_for_dora:
-                        if is_aka_dora(tile, config.options.has_aka_dora):
-                            count_of_aka_dora += 1
-
-                    if count_of_dora:
-                        config.yaku.dora.han_open = count_of_dora
-                        config.yaku.dora.han_closed = count_of_dora
+                    if precomputed_dora:
+                        config.yaku.dora.han_open = precomputed_dora
+                        config.yaku.dora.han_closed = precomputed_dora
                         hand_yaku.append(config.yaku.dora)
-                        han += count_of_dora
+                        han += precomputed_dora
 
-                    if count_of_aka_dora:
-                        config.yaku.aka_dora.han_open = count_of_aka_dora
-                        config.yaku.aka_dora.han_closed = count_of_aka_dora
+                    if precomputed_aka_dora:
+                        config.yaku.aka_dora.han_open = precomputed_aka_dora
+                        config.yaku.aka_dora.han_closed = precomputed_aka_dora
                         hand_yaku.append(config.yaku.aka_dora)
-                        han += count_of_aka_dora
+                        han += precomputed_aka_dora
 
-                    if config.is_riichi or config.is_daburu_riichi:
-                        count_of_ura_dora = 0
-                        for tile in tiles_for_dora:
-                            count_of_ura_dora += plus_dora(tile, ura_dora_indicators)
-
-                        if count_of_ura_dora:
-                            config.yaku.ura_dora.han_closed = count_of_ura_dora
-                            hand_yaku.append(config.yaku.ura_dora)
-                            han += count_of_ura_dora
+                    if precomputed_ura_dora:
+                        config.yaku.ura_dora.han_closed = precomputed_ura_dora
+                        hand_yaku.append(config.yaku.ura_dora)
+                        han += precomputed_ura_dora
 
                 if not is_aotenjou and (config.options.limit_to_sextuple_yakuman and han > 78):
                     han = 78

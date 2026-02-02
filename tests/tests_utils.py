@@ -3,8 +3,11 @@ import pytest
 from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, HAKU
 from mahjong.tile import TilesConverter
 from mahjong.utils import (
+    _indicator_to_dora_34,
+    build_dora_count_map,
     classify_hand_suits,
     contains_terminals,
+    count_dora_for_hand,
     count_tiles_by_suits,
     find_isolated_tile_indices,
     has_pon_or_kan_of,
@@ -355,3 +358,50 @@ def test_count_tiles_by_suits_empty_hand() -> None:
     assert result[1]["count"] == 0
     assert result[2]["count"] == 0
     assert result[3]["count"] == 0
+
+
+@pytest.mark.parametrize(
+    ("indicator_34", "expected_dora_34"),
+    [
+        # regular suited tiles: indicator + 1 = dora (one per suit)
+        (_string_to_34_tile(man="4"), _string_to_34_tile(man="5")),
+        (_string_to_34_tile(pin="1"), _string_to_34_tile(pin="2")),
+        (_string_to_34_tile(sou="1"), _string_to_34_tile(sou="2")),
+        # suit wrapping: 9 -> 1
+        (_string_to_34_tile(man="9"), _string_to_34_tile(man="1")),
+        # wind wrapping: north -> east
+        (_string_to_34_tile(honors="2"), _string_to_34_tile(honors="3")),
+        (_string_to_34_tile(honors="4"), _string_to_34_tile(honors="1")),
+        # dragon wrapping: chun -> haku
+        (_string_to_34_tile(honors="5"), _string_to_34_tile(honors="6")),
+        (_string_to_34_tile(honors="7"), _string_to_34_tile(honors="5")),
+    ],
+)
+def test_indicator_to_dora_34(indicator_34: int, expected_dora_34: int) -> None:
+    assert _indicator_to_dora_34(indicator_34) == expected_dora_34
+
+
+def test_build_dora_count_map_duplicate_indicators() -> None:
+    # two 1m indicators both produce dora 2m, so count is 2
+    indicator_a = _string_to_136_tile(man="1")
+    result = build_dora_count_map([indicator_a, indicator_a + 1])
+    assert result == {_string_to_34_tile(man="2"): 2}
+
+
+def test_build_dora_count_map_different_indicators() -> None:
+    result = build_dora_count_map([_string_to_136_tile(man="1"), _string_to_136_tile(pin="1")])
+    assert result == {_string_to_34_tile(man="2"): 1, _string_to_34_tile(pin="2"): 1}
+
+
+def test_count_dora_for_hand_no_dora() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="123", pin="456", sou="789", honors="11")
+    dora_map = build_dora_count_map([_string_to_136_tile(man="5")])
+    result = count_dora_for_hand(tiles_34, dora_map)
+    assert result == 0
+
+
+def test_count_dora_for_hand_multiple_dora_tiles() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="133", pin="456", sou="789", honors="11")
+    dora_map = build_dora_count_map([_string_to_136_tile(man="2")])
+    result = count_dora_for_hand(tiles_34, dora_map)
+    assert result == 2

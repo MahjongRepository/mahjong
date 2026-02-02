@@ -1,6 +1,6 @@
 from collections.abc import Collection, Sequence
 
-from mahjong.constants import AKA_DORA_LIST, EAST, TERMINAL_INDICES
+from mahjong.constants import AKA_DORA_LIST, EAST, HAKU, NORTH, TERMINAL_INDICES
 
 
 def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
@@ -57,6 +57,44 @@ def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora:
                 dora_count += 1
 
     return dora_count
+
+
+def _indicator_to_dora_34(indicator_34: int) -> int:
+    """
+    Convert a dora indicator (34-format) to the actual dora tile (34-format)
+    """
+    # suited tiles wrap within each suit of 9
+    if indicator_34 < EAST:
+        suit_base = (indicator_34 // 9) * 9
+        return suit_base + (indicator_34 - suit_base + 1) % 9
+
+    # winds (27-30) wrap within group of 4
+    if indicator_34 <= NORTH:
+        return EAST + (indicator_34 - EAST + 1) % 4
+
+    # dragons (31-33) wrap within group of 3
+    return HAKU + (indicator_34 - HAKU + 1) % 3
+
+
+def build_dora_count_map(dora_indicators_136: Collection[int]) -> dict[int, int]:
+    """
+    Build a mapping from tile_34 index to dora count for the given indicators
+    """
+    dora_map: dict[int, int] = {}
+    for indicator in dora_indicators_136:
+        dora_34 = _indicator_to_dora_34(indicator // 4)
+        dora_map[dora_34] = dora_map.get(dora_34, 0) + 1
+    return dora_map
+
+
+def count_dora_for_hand(tiles_34: Sequence[int], dora_count_map: dict[int, int]) -> int:
+    """
+    Count total dora in a hand using a precomputed dora count map
+    """
+    total = 0
+    for tile_34, dora_count in dora_count_map.items():
+        total += tiles_34[tile_34] * dora_count
+    return total
 
 
 def is_chi(item: Sequence[int]) -> bool:
