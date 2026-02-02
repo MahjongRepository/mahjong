@@ -221,8 +221,7 @@ class _RegularShanten:
         if ret_shanten != Shanten.AGARI_STATE and ret_shanten < self._number_jidahai:
             ret_shanten = self._number_jidahai
 
-        if ret_shanten < self._min_shanten:
-            self._min_shanten = ret_shanten
+        self._min_shanten = min(self._min_shanten, ret_shanten)
 
     def _increase_set(self, k: int) -> None:
         self._tiles[k] -= 3
