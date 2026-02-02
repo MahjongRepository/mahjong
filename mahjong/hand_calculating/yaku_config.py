@@ -24,19 +24,19 @@ from mahjong.hand_calculating.yaku_list import (
     Renhou,
     Riichi,
     Rinshan,
-    RoundEast,
-    RoundNorth,
-    RoundSouth,
-    RoundWest,
+    RoundWindEast,
+    RoundWindNorth,
+    RoundWindSouth,
+    RoundWindWest,
     Ryanpeikou,
     Sanankou,
     SanKantsu,
     Sanshoku,
     SanshokuDoukou,
-    SeatEast,
-    SeatNorth,
-    SeatSouth,
-    SeatWest,
+    SeatWindEast,
+    SeatWindNorth,
+    SeatWindSouth,
+    SeatWindWest,
     Shosangen,
     Tanyao,
     Toitoi,
@@ -77,14 +77,14 @@ YAKU_ID_TO_TENHOU_ID: dict[int, int] = {
     Pinfu().yaku_id: 7,
     Tanyao().yaku_id: 8,
     Iipeiko().yaku_id: 9,
-    SeatEast().yaku_id: 10,
-    SeatSouth().yaku_id: 11,
-    SeatWest().yaku_id: 12,
-    SeatNorth().yaku_id: 13,
-    RoundEast().yaku_id: 14,
-    RoundSouth().yaku_id: 15,
-    RoundWest().yaku_id: 16,
-    RoundNorth().yaku_id: 17,
+    SeatWindEast().yaku_id: 10,
+    SeatWindSouth().yaku_id: 11,
+    SeatWindWest().yaku_id: 12,
+    SeatWindNorth().yaku_id: 13,
+    RoundWindEast().yaku_id: 14,
+    RoundWindSouth().yaku_id: 15,
+    RoundWindWest().yaku_id: 16,
+    RoundWindNorth().yaku_id: 17,
     Haku().yaku_id: 18,
     Hatsu().yaku_id: 19,
     Chun().yaku_id: 20,
@@ -149,14 +149,14 @@ class YakuConfig:
         self.hatsu = Hatsu()
         self.chun = Chun()
 
-        self.yakuhai_seat_east = SeatEast()
-        self.yakuhai_seat_south = SeatSouth()
-        self.yakuhai_seat_west = SeatWest()
-        self.yakuhai_seat_north = SeatNorth()
-        self.yakuhai_round_east = RoundEast()
-        self.yakuhai_round_south = RoundSouth()
-        self.yakuhai_round_west = RoundWest()
-        self.yakuhai_round_north = RoundNorth()
+        self.yakuhai_seat_east = SeatWindEast()
+        self.yakuhai_seat_south = SeatWindSouth()
+        self.yakuhai_seat_west = SeatWindWest()
+        self.yakuhai_seat_north = SeatWindNorth()
+        self.yakuhai_round_east = RoundWindEast()
+        self.yakuhai_round_south = RoundWindSouth()
+        self.yakuhai_round_west = RoundWindWest()
+        self.yakuhai_round_north = RoundWindNorth()
 
         # Yaku 2 Hans
         self.sanshoku = Sanshoku()
