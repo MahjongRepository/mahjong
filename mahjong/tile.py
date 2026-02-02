@@ -59,8 +59,7 @@ class TilesConverter:
         results: list[int] = []
         for index, count in enumerate(tiles):
             base_id = index * 4
-            for i in range(count):
-                results.append(base_id + i)
+            results.extend(base_id + i for i in range(count))
         return results
 
     @staticmethod
