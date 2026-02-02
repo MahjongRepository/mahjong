@@ -84,10 +84,10 @@ The following methods are now available as static methods:
   - Removed `Yaku.tenhou_id`. Use the `YAKU_ID_TO_TENHOU_ID` mapping from `mahjong.hand_calculating.yaku_config` instead.
   - `yaku_id` values have been reassigned. Each `Yaku` subclass now defines its own fixed `yaku_id` as a class attribute. Code that relies on specific `yaku_id` values (e.g., for serialization or lookup) must be updated.
 - Wind yakuhai classes have been renamed and restructured:
-    - `YakuhaiEast` → `SeatWindEast`, `YakuhaiSouth` → `SeatWindSouth`, `YakuhaiWest` → `SeatWindWest`, `YakuhaiNorth` → `SeatWindNorth`.
-    - `YakuhaiOfPlace` and `YakuhaiOfRound` have been removed and replaced by per-direction round wind classes: `RoundWindEast`, `RoundWindSouth`, `RoundWindWest`, `RoundWindNorth`.
-    - `YakuConfig` attributes renamed: `east` → `seat_wind_east`, `south` → `seat_wind_south`, `west` → `seat_wind_west`, `north` → `seat_wind_north`. `yakuhai_place` and `yakuhai_round` replaced by `round_wind_east`, `round_wind_south`, `round_wind_west`, `round_wind_north`.
-    - Seat wind `is_condition_met` now accepts `(hand, player_wind)` and round wind accepts `(hand, round_wind)` instead of both accepting `(hand, player_wind, round_wind)`.
+  - `YakuhaiEast` → `SeatWindEast`, `YakuhaiSouth` → `SeatWindSouth`, `YakuhaiWest` → `SeatWindWest`, `YakuhaiNorth` → `SeatWindNorth`.
+  - `YakuhaiOfPlace` and `YakuhaiOfRound` have been removed and replaced by per-direction round wind classes: `RoundWindEast`, `RoundWindSouth`, `RoundWindWest`, `RoundWindNorth`.
+  - `YakuConfig` attributes renamed: `east` → `seat_wind_east`, `south` → `seat_wind_south`, `west` → `seat_wind_west`, `north` → `seat_wind_north`. `yakuhai_place` and `yakuhai_round` replaced by `round_wind_east`, `round_wind_south`, `round_wind_west`, `round_wind_north`.
+  - Seat wind `is_condition_met` now accepts `(hand, player_wind)` and round wind accepts `(hand, round_wind)` instead of both accepting `(hand, player_wind, round_wind)`.
 - `han_open` and `han_closed` are now `int` (default `0`) instead of `int | None` (default `None`). A value of `0` means the yaku is not available in the respective hand type.
 - Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
 - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
