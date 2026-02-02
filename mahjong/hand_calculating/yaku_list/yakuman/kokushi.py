@@ -15,7 +15,7 @@ class KokushiMusou(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]] | None, tiles_34: Sequence[int], *args) -> bool:
-        if (
+        return (
             tiles_34[0]
             * tiles_34[8]
             * tiles_34[9]
@@ -30,5 +30,4 @@ class KokushiMusou(Yaku):
             * tiles_34[32]
             * tiles_34[33]
             == 2
-        ):
-            return True
+        )

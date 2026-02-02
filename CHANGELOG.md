@@ -91,6 +91,7 @@ The following methods are now available as static methods:
 - `han_open` and `han_closed` are now `int` (default `0`) instead of `int | None` (default `None`). A value of `0` means the yaku is not available in the respective hand type.
 - Yaku calculation order has changed: chinitsu/honitsu are now mutually exclusive, and tsuisou/honroto/chinroto checks now require no chi sets. Users manually overwriting `config.yaku` fields may be affected.
 - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
+- Fixed an issue where `KokushiMusou.is_condition_met()` would return `None` if the condition was not met. It now consistently returns a `bool` value. Remove any `None` checks in code that relied on the previous behavior.
 
 ## What's Changed
 - Placeholder. It would be filled on release automatically
