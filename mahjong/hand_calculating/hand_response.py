@@ -49,4 +49,4 @@ class HandResponse:
     def __str__(self) -> str:
         if self.error:
             return self.error
-        return "{} han, {} fu".format(self.han, self.fu)
+        return f"{self.han} han, {self.fu} fu"

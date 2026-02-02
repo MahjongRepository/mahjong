@@ -25,4 +25,4 @@ class Paarenchan(Yaku):
         return True
 
     def __str__(self) -> str:
-        return "Paarenchan {}".format(self.count)
+        return f"Paarenchan {self.count}"

@@ -12,4 +12,4 @@ class UraDora(Yaku):
         return True
 
     def __str__(self) -> str:
-        return "Ura Dora {}".format(self.han_closed)
+        return f"Ura Dora {self.han_closed}"

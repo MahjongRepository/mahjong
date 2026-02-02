@@ -13,4 +13,4 @@ class Dora(Yaku):
         return True
 
     def __str__(self) -> str:
-        return "Dora {}".format(self.han_closed)
+        return f"Dora {self.han_closed}"
