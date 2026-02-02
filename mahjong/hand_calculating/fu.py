@@ -150,7 +150,7 @@ class FuCalculator:
             # 2 additional fu for tsumo (but not for pinfu)
             fu_details.append({"fu": 2, "reason": FuCalculator.TSUMO})
 
-        if is_open_hand and not len(fu_details) and config.options.fu_for_open_pinfu:
+        if is_open_hand and not fu_details and config.options.fu_for_open_pinfu:
             # there is no 1-20 hands, so we had to add additional fu
             fu_details.append({"fu": 2, "reason": FuCalculator.HAND_WITHOUT_FU})
 

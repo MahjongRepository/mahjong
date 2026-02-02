@@ -44,7 +44,7 @@ class Sanankou(Yaku):
 
             # if we do the ron on syanpon wait our pon will be consider as open
             # and it is not 789999 set
-            if win_tile in item and not is_tsumo and not len(chi_sets):
+            if win_tile in item and not is_tsumo and not chi_sets:
                 continue
 
             closed_pon_sets.append(item)
