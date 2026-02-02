@@ -24,24 +24,24 @@ from mahjong.hand_calculating.yaku_list import (
     Renhou,
     Riichi,
     Rinshan,
+    RoundEast,
+    RoundNorth,
+    RoundSouth,
+    RoundWest,
     Ryanpeikou,
     Sanankou,
     SanKantsu,
     Sanshoku,
     SanshokuDoukou,
+    SeatEast,
+    SeatNorth,
+    SeatSouth,
+    SeatWest,
     Shosangen,
     Tanyao,
     Toitoi,
     Tsumo,
     UraDora,
-    YakuhaiRoundEast,
-    YakuhaiRoundNorth,
-    YakuhaiRoundSouth,
-    YakuhaiRoundWest,
-    YakuhaiSeatEast,
-    YakuhaiSeatNorth,
-    YakuhaiSeatSouth,
-    YakuhaiSeatWest,
 )
 from mahjong.hand_calculating.yaku_list.yakuman import (
     Chiihou,
@@ -77,14 +77,14 @@ YAKU_ID_TO_TENHOU_ID: dict[int, int] = {
     Pinfu().yaku_id: 7,
     Tanyao().yaku_id: 8,
     Iipeiko().yaku_id: 9,
-    YakuhaiSeatEast().yaku_id: 10,
-    YakuhaiSeatSouth().yaku_id: 11,
-    YakuhaiSeatWest().yaku_id: 12,
-    YakuhaiSeatNorth().yaku_id: 13,
-    YakuhaiRoundEast().yaku_id: 14,
-    YakuhaiRoundSouth().yaku_id: 15,
-    YakuhaiRoundWest().yaku_id: 16,
-    YakuhaiRoundNorth().yaku_id: 17,
+    SeatEast().yaku_id: 10,
+    SeatSouth().yaku_id: 11,
+    SeatWest().yaku_id: 12,
+    SeatNorth().yaku_id: 13,
+    RoundEast().yaku_id: 14,
+    RoundSouth().yaku_id: 15,
+    RoundWest().yaku_id: 16,
+    RoundNorth().yaku_id: 17,
     Haku().yaku_id: 18,
     Hatsu().yaku_id: 19,
     Chun().yaku_id: 20,
@@ -149,14 +149,14 @@ class YakuConfig:
         self.hatsu = Hatsu()
         self.chun = Chun()
 
-        self.yakuhai_seat_east = YakuhaiSeatEast()
-        self.yakuhai_seat_south = YakuhaiSeatSouth()
-        self.yakuhai_seat_west = YakuhaiSeatWest()
-        self.yakuhai_seat_north = YakuhaiSeatNorth()
-        self.yakuhai_round_east = YakuhaiRoundEast()
-        self.yakuhai_round_south = YakuhaiRoundSouth()
-        self.yakuhai_round_west = YakuhaiRoundWest()
-        self.yakuhai_round_north = YakuhaiRoundNorth()
+        self.yakuhai_seat_east = SeatEast()
+        self.yakuhai_seat_south = SeatSouth()
+        self.yakuhai_seat_west = SeatWest()
+        self.yakuhai_seat_north = SeatNorth()
+        self.yakuhai_round_east = RoundEast()
+        self.yakuhai_round_south = RoundSouth()
+        self.yakuhai_round_west = RoundWest()
+        self.yakuhai_round_north = RoundNorth()
 
         # Yaku 2 Hans
         self.sanshoku = Sanshoku()

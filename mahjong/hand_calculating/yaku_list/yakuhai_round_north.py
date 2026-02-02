@@ -5,7 +5,7 @@ from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import has_pon_or_kan_of
 
 
-class YakuhaiRoundNorth(Yaku):
+class RoundNorth(Yaku):
     """
     Round wind north yakuhai
     """

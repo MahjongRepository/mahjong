@@ -5,7 +5,7 @@ from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import has_pon_or_kan_of
 
 
-class YakuhaiSeatWest(Yaku):
+class SeatWest(Yaku):
     """
     Seat wind west yakuhai
     """
