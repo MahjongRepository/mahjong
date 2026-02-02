@@ -149,14 +149,14 @@ class YakuConfig:
         self.hatsu = Hatsu()
         self.chun = Chun()
 
-        self.yakuhai_seat_east = SeatWindEast()
-        self.yakuhai_seat_south = SeatWindSouth()
-        self.yakuhai_seat_west = SeatWindWest()
-        self.yakuhai_seat_north = SeatWindNorth()
-        self.yakuhai_round_east = RoundWindEast()
-        self.yakuhai_round_south = RoundWindSouth()
-        self.yakuhai_round_west = RoundWindWest()
-        self.yakuhai_round_north = RoundWindNorth()
+        self.seat_wind_east = SeatWindEast()
+        self.seat_wind_south = SeatWindSouth()
+        self.seat_wind_west = SeatWindWest()
+        self.seat_wind_north = SeatWindNorth()
+        self.round_wind_east = RoundWindEast()
+        self.round_wind_south = RoundWindSouth()
+        self.round_wind_west = RoundWindWest()
+        self.round_wind_north = RoundWindNorth()
 
         # Yaku 2 Hans
         self.sanshoku = Sanshoku()

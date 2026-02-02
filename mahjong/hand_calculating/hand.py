@@ -320,18 +320,24 @@ class HandCalculator:
                     if config.yaku.chun.is_condition_met(hand):
                         hand_yaku.append(config.yaku.chun)
 
-                    yakuhai_wind_yaku = {
-                        config.yaku.yakuhai_seat_east,
-                        config.yaku.yakuhai_seat_south,
-                        config.yaku.yakuhai_seat_west,
-                        config.yaku.yakuhai_seat_north,
-                        config.yaku.yakuhai_round_east,
-                        config.yaku.yakuhai_round_south,
-                        config.yaku.yakuhai_round_west,
-                        config.yaku.yakuhai_round_north,
+                    yakuhai_seat_wind_yaku = {
+                        config.yaku.seat_wind_east,
+                        config.yaku.seat_wind_south,
+                        config.yaku.seat_wind_west,
+                        config.yaku.seat_wind_north,
                     }
-                    for yaku in yakuhai_wind_yaku:
-                        if yaku.is_condition_met(hand, config.player_wind, config.round_wind):
+                    for yaku in yakuhai_seat_wind_yaku:
+                        if yaku.is_condition_met(hand, config.player_wind):
+                            hand_yaku.append(yaku)
+
+                    yakuhai_round_wind_yaku = {
+                        config.yaku.round_wind_east,
+                        config.yaku.round_wind_south,
+                        config.yaku.round_wind_west,
+                        config.yaku.round_wind_north,
+                    }
+                    for yaku in yakuhai_round_wind_yaku:
+                        if yaku.is_condition_met(hand, config.round_wind):
                             hand_yaku.append(yaku)
 
                     if config.yaku.daisangen.is_condition_met(hand):

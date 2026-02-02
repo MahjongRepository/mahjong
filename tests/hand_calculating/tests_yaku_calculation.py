@@ -982,7 +982,7 @@ def test_is_east() -> None:
     config = YakuConfig()
 
     tiles = TilesConverter.string_to_34_array(sou="234567", man="23422", honors="111")
-    assert config.yakuhai_seat_east.is_condition_met(_hand(tiles), player_wind, round_wind)
+    assert config.seat_wind_east.is_condition_met(_hand(tiles), player_wind)
 
     tiles = TilesConverter.string_to_136_array(sou="234567", man="23422", honors="111")
     win_tile = _string_to_136_tile(honors="1")
@@ -1015,7 +1015,7 @@ def test_is_south() -> None:
     config = YakuConfig()
 
     tiles = TilesConverter.string_to_34_array(sou="234567", man="23422", honors="222")
-    assert config.yakuhai_seat_south.is_condition_met(_hand(tiles), player_wind, round_wind)
+    assert config.seat_wind_south.is_condition_met(_hand(tiles), player_wind)
 
     tiles = TilesConverter.string_to_136_array(sou="234567", man="23422", honors="222")
     win_tile = _string_to_136_tile(honors="2")
@@ -1048,7 +1048,7 @@ def test_is_west() -> None:
     config = YakuConfig()
 
     tiles = TilesConverter.string_to_34_array(sou="234567", man="23422", honors="333")
-    assert config.yakuhai_seat_west.is_condition_met(_hand(tiles), player_wind, round_wind)
+    assert config.seat_wind_west.is_condition_met(_hand(tiles), player_wind)
 
     tiles = TilesConverter.string_to_136_array(sou="234567", man="23422", honors="333")
     win_tile = _string_to_136_tile(honors="3")
@@ -1081,7 +1081,7 @@ def test_is_north() -> None:
     config = YakuConfig()
 
     tiles = TilesConverter.string_to_34_array(sou="234567", man="23422", honors="444")
-    assert config.yakuhai_seat_north.is_condition_met(_hand(tiles), player_wind, round_wind)
+    assert config.seat_wind_north.is_condition_met(_hand(tiles), player_wind)
 
     tiles = TilesConverter.string_to_136_array(sou="234567", man="23422", honors="444")
     win_tile = _string_to_136_tile(honors="4")
