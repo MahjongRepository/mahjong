@@ -26,7 +26,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install libs
-        run: uv sync
+        run: uv sync --no-group dev --group lint
 
       - name: Lint files
         run: make lint
