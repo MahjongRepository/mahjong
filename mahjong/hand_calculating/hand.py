@@ -1,7 +1,7 @@
 from collections.abc import Collection
 
 from mahjong.agari import Agari
-from mahjong.constants import CHUN, EAST, HAKU, HATSU, NORTH, SOUTH, WEST
+from mahjong.constants import CHUN, HAKU, HATSU
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.hand_config import HandConfig
@@ -320,33 +320,25 @@ class HandCalculator:
                     if config.yaku.chun.is_condition_met(hand):
                         hand_yaku.append(config.yaku.chun)
 
-                    if config.yaku.east.is_condition_met(hand, config.player_wind, config.round_wind):
-                        if config.player_wind == EAST:
-                            hand_yaku.append(config.yaku.yakuhai_place)
+                    yakuhai_seat_wind_yaku = {
+                        config.yaku.seat_wind_east,
+                        config.yaku.seat_wind_south,
+                        config.yaku.seat_wind_west,
+                        config.yaku.seat_wind_north,
+                    }
+                    for yaku in yakuhai_seat_wind_yaku:
+                        if yaku.is_condition_met(hand, config.player_wind):
+                            hand_yaku.append(yaku)
 
-                        if config.round_wind == EAST:
-                            hand_yaku.append(config.yaku.yakuhai_round)
-
-                    if config.yaku.south.is_condition_met(hand, config.player_wind, config.round_wind):
-                        if config.player_wind == SOUTH:
-                            hand_yaku.append(config.yaku.yakuhai_place)
-
-                        if config.round_wind == SOUTH:
-                            hand_yaku.append(config.yaku.yakuhai_round)
-
-                    if config.yaku.west.is_condition_met(hand, config.player_wind, config.round_wind):
-                        if config.player_wind == WEST:
-                            hand_yaku.append(config.yaku.yakuhai_place)
-
-                        if config.round_wind == WEST:
-                            hand_yaku.append(config.yaku.yakuhai_round)
-
-                    if config.yaku.north.is_condition_met(hand, config.player_wind, config.round_wind):
-                        if config.player_wind == NORTH:
-                            hand_yaku.append(config.yaku.yakuhai_place)
-
-                        if config.round_wind == NORTH:
-                            hand_yaku.append(config.yaku.yakuhai_round)
+                    yakuhai_round_wind_yaku = {
+                        config.yaku.round_wind_east,
+                        config.yaku.round_wind_south,
+                        config.yaku.round_wind_west,
+                        config.yaku.round_wind_north,
+                    }
+                    for yaku in yakuhai_round_wind_yaku:
+                        if yaku.is_condition_met(hand, config.round_wind):
+                            hand_yaku.append(yaku)
 
                     if config.yaku.daisangen.is_condition_met(hand):
                         hand_yaku.append(config.yaku.daisangen)

@@ -9,7 +9,7 @@ class SanshokuDoukou(Yaku):
     Three pon sets consisting of the same numbers in all three suits
     """
 
-    yaku_id = 31
+    yaku_id = 33
     name = "Sanshoku Doukou"
     han_open = 2
     han_closed = 2

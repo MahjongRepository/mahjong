@@ -10,7 +10,7 @@ class Honroto(Yaku):
     All tiles are terminals or honours
     """
 
-    yaku_id = 27
+    yaku_id = 29
     name = "Honroutou"
     han_open = 2
     han_closed = 2

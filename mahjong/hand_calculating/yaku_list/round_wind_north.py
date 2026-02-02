@@ -5,17 +5,17 @@ from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import has_pon_or_kan_of
 
 
-class YakuhaiNorth(Yaku):
+class RoundWindNorth(Yaku):
     """
-    Pon of north winds
+    Round wind north yakuhai
     """
 
-    yaku_id = 21
-    name = "Yakuhai (north)"
+    yaku_id = 25
+    name = "Yakuhai (round wind north)"
     han_open = 1
     han_closed = 1
 
-    def is_condition_met(self, hand: Collection[Sequence[int]], player_wind: int, round_wind: int, *args) -> bool:
-        if NORTH not in (player_wind, round_wind):
+    def is_condition_met(self, hand: Collection[Sequence[int]], round_wind: int, *args) -> bool:
+        if round_wind != NORTH:
             return False
         return has_pon_or_kan_of(hand, NORTH)

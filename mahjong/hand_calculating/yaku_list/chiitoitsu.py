@@ -8,7 +8,7 @@ class Chiitoitsu(Yaku):
     Hand contains only pairs
     """
 
-    yaku_id = 32
+    yaku_id = 34
     name = "Chiitoitsu"
     han_closed = 2
 

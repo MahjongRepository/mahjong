@@ -10,7 +10,7 @@ class Sanankou(Yaku):
     Three closed pon sets, the other sets need not to be closed
     """
 
-    yaku_id = 29
+    yaku_id = 31
     name = "San Ankou"
     han_open = 2
     han_closed = 2

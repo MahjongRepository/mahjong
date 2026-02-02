@@ -9,7 +9,7 @@ class Ryanpeikou(Yaku):
     The hand contains two different Iipeikou's
     """
 
-    yaku_id = 36
+    yaku_id = 38
     name = "Ryanpeikou"
     han_closed = 3
 

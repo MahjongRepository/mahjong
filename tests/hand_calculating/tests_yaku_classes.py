@@ -1,5 +1,7 @@
 import pytest
 
+from mahjong.hand_calculating.yaku import Yaku
+from mahjong.hand_calculating.yaku_config import YakuConfig
 from mahjong.hand_calculating.yaku_list.aka_dora import AkaDora
 from mahjong.hand_calculating.yaku_list.chankan import Chankan
 from mahjong.hand_calculating.yaku_list.daburu_open_riichi import DaburuOpenRiichi
@@ -16,8 +18,6 @@ from mahjong.hand_calculating.yaku_list.riichi import Riichi
 from mahjong.hand_calculating.yaku_list.rinshan import Rinshan
 from mahjong.hand_calculating.yaku_list.tsumo import Tsumo
 from mahjong.hand_calculating.yaku_list.ura_dora import UraDora
-from mahjong.hand_calculating.yaku_list.yakuhai_place import YakuhaiOfPlace
-from mahjong.hand_calculating.yaku_list.yakuhai_round import YakuhaiOfRound
 from mahjong.hand_calculating.yaku_list.yakuman.chiihou import Chiihou
 from mahjong.hand_calculating.yaku_list.yakuman.chuuren_poutou import ChuurenPoutou
 from mahjong.hand_calculating.yaku_list.yakuman.daburu_chuuren_poutou import DaburuChuurenPoutou
@@ -47,8 +47,6 @@ from tests.utils_for_tests import _string_to_34_tiles
         Riichi,
         Rinshan,
         Tsumo,
-        YakuhaiOfPlace,
-        YakuhaiOfRound,
         Chiihou,
         DaburuChuurenPoutou,
         DaburuKokushiMusou,
@@ -132,6 +130,24 @@ def test_chuuren_poutou_is_condition_met_returns_false_for_wrong_length() -> Non
     ]
     yaku = ChuurenPoutou()
     assert yaku.is_condition_met(hand) is False
+
+
+def test_all_yaku_have_unique_ids() -> None:
+    """
+    Verify all yaku classes registered in YakuConfig have unique yaku_id values
+    """
+    config = YakuConfig()
+    all_yaku = [v for v in vars(config).values() if isinstance(v, Yaku)]
+
+    seen: dict[int, str] = {}
+    duplicates: list[str] = []
+    for yaku in all_yaku:
+        if yaku.yaku_id in seen:
+            duplicates.append(f"yaku_id={yaku.yaku_id} is shared by {seen[yaku.yaku_id]} and {yaku.name}")
+        else:
+            seen[yaku.yaku_id] = yaku.name
+
+    assert duplicates == [], f"Duplicate yaku_id values found: {duplicates}"
 
 
 def test_daisharin_is_condition_met_returns_false_for_wrong_tile_counts() -> None:

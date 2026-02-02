@@ -24,22 +24,24 @@ from mahjong.hand_calculating.yaku_list import (
     Renhou,
     Riichi,
     Rinshan,
+    RoundWindEast,
+    RoundWindNorth,
+    RoundWindSouth,
+    RoundWindWest,
     Ryanpeikou,
     Sanankou,
     SanKantsu,
     Sanshoku,
     SanshokuDoukou,
+    SeatWindEast,
+    SeatWindNorth,
+    SeatWindSouth,
+    SeatWindWest,
     Shosangen,
     Tanyao,
     Toitoi,
     Tsumo,
     UraDora,
-    YakuhaiEast,
-    YakuhaiNorth,
-    YakuhaiOfPlace,
-    YakuhaiOfRound,
-    YakuhaiSouth,
-    YakuhaiWest,
 )
 from mahjong.hand_calculating.yaku_list.yakuman import (
     Chiihou,
@@ -75,12 +77,14 @@ YAKU_ID_TO_TENHOU_ID: dict[int, int] = {
     Pinfu().yaku_id: 7,
     Tanyao().yaku_id: 8,
     Iipeiko().yaku_id: 9,
-    YakuhaiEast().yaku_id: 10,
-    YakuhaiSouth().yaku_id: 10,
-    YakuhaiWest().yaku_id: 10,
-    YakuhaiNorth().yaku_id: 10,
-    YakuhaiOfPlace().yaku_id: 10,
-    YakuhaiOfRound().yaku_id: 11,
+    SeatWindEast().yaku_id: 10,
+    SeatWindSouth().yaku_id: 11,
+    SeatWindWest().yaku_id: 12,
+    SeatWindNorth().yaku_id: 13,
+    RoundWindEast().yaku_id: 14,
+    RoundWindSouth().yaku_id: 15,
+    RoundWindWest().yaku_id: 16,
+    RoundWindNorth().yaku_id: 17,
     Haku().yaku_id: 18,
     Hatsu().yaku_id: 19,
     Chun().yaku_id: 20,
@@ -145,12 +149,14 @@ class YakuConfig:
         self.hatsu = Hatsu()
         self.chun = Chun()
 
-        self.east = YakuhaiEast()
-        self.south = YakuhaiSouth()
-        self.west = YakuhaiWest()
-        self.north = YakuhaiNorth()
-        self.yakuhai_place = YakuhaiOfPlace()
-        self.yakuhai_round = YakuhaiOfRound()
+        self.seat_wind_east = SeatWindEast()
+        self.seat_wind_south = SeatWindSouth()
+        self.seat_wind_west = SeatWindWest()
+        self.seat_wind_north = SeatWindNorth()
+        self.round_wind_east = RoundWindEast()
+        self.round_wind_south = RoundWindSouth()
+        self.round_wind_west = RoundWindWest()
+        self.round_wind_north = RoundWindNorth()
 
         # Yaku 2 Hans
         self.sanshoku = Sanshoku()
