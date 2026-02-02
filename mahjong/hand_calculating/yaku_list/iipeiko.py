@@ -22,7 +22,6 @@ class Iipeiko(Yaku):
             for y in chi_sets:
                 if x == y:
                     count += 1
-            if count > count_of_identical_chi:
-                count_of_identical_chi = count
+            count_of_identical_chi = max(count_of_identical_chi, count)
 
         return count_of_identical_chi >= 2
