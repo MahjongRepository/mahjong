@@ -48,8 +48,5 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install libs
-        run: uv sync --no-group dev --group test
-
       - name: Test with python ${{ matrix.python-version }}
         run: make tests
