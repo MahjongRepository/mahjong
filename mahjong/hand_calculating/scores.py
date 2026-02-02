@@ -175,8 +175,7 @@ class Aotenjou(ScoresCalculator):
 
         if config.is_tsumo:
             return {"main": double_rounded, "additional": double_rounded if config.is_dealer else rounded}
-        else:
-            return {"main": six_rounded if config.is_dealer else four_rounded, "additional": 0}
+        return {"main": six_rounded if config.is_dealer else four_rounded, "additional": 0}
 
     @staticmethod
     def aotenjou_filter_yaku(hand_yaku: MutableSequence[Yaku] | MutableSet[Yaku], config: HandConfig) -> None:

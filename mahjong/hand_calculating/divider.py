@@ -36,13 +36,12 @@ class _Block:
         tiles_34 = meld.tiles_34
         if is_chi(tiles_34):
             return cls(_BlockType.SEQUENCE, tiles_34[0])
-        elif is_pon(tiles_34):
+        if is_pon(tiles_34):
             return cls(_BlockType.TRIPLET, tiles_34[0])
-        elif is_kan(tiles_34):
+        if is_kan(tiles_34):
             return cls(_BlockType.QUAD, tiles_34[0])
-        else:
-            msg = f"invalid meld type: {meld.type}, tiles: {tiles_34}"
-            raise RuntimeError(msg)
+        msg = f"invalid meld type: {meld.type}, tiles: {tiles_34}"
+        raise RuntimeError(msg)
 
     @property
     def tiles_34(self) -> list[int]:
