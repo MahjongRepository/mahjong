@@ -195,9 +195,8 @@ class HandCalculator:
                 kan_sets = [x for x in hand if is_kan(x)]
                 chi_sets = [x for x in hand if is_chi(x)]
 
-                if config.is_tsumo:
-                    if not is_open_hand:
-                        hand_yaku.append(config.yaku.tsumo)
+                if config.is_tsumo and not is_open_hand:
+                    hand_yaku.append(config.yaku.tsumo)
 
                 if is_pinfu:
                     hand_yaku.append(config.yaku.pinfu)
@@ -450,13 +449,11 @@ class HandCalculator:
                 hand_yaku.append(config.yaku.kokushi)
 
             if not config.is_tsumo and config.options.has_sashikomi_yakuman:
-                if config.is_riichi and not config.is_daburu_riichi:
-                    if config.is_open_riichi:
-                        hand_yaku.append(config.yaku.sashikomi)
+                if config.is_riichi and not config.is_daburu_riichi and config.is_open_riichi:
+                    hand_yaku.append(config.yaku.sashikomi)
 
-                if config.is_daburu_riichi:
-                    if config.is_open_riichi:
-                        hand_yaku.append(config.yaku.sashikomi)
+                if config.is_daburu_riichi and config.is_open_riichi:
+                    hand_yaku.append(config.yaku.sashikomi)
 
             if config.is_renhou and config.options.renhou_as_yakuman:
                 hand_yaku.append(config.yaku.renhou_yakuman)

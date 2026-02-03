@@ -211,9 +211,12 @@ class _RegularShanten:
         n_mentsu_kouho = self._number_melds + self._number_tatsu
         if self._number_pairs:
             n_mentsu_kouho += self._number_pairs - 1
-        elif self._flag_four_copies and self._flag_isolated_tiles:
-            if (self._flag_four_copies | self._flag_isolated_tiles) == self._flag_four_copies:
-                ret_shanten += 1
+        elif (
+            self._flag_four_copies
+            and self._flag_isolated_tiles
+            and (self._flag_four_copies | self._flag_isolated_tiles) == self._flag_four_copies
+        ):
+            ret_shanten += 1
 
         if n_mentsu_kouho > 4:
             ret_shanten += n_mentsu_kouho - 4
