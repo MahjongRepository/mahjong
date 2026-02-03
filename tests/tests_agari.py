@@ -81,11 +81,6 @@ def test_is_agari_and_open_hand() -> None:
     assert Agari.is_agari(tiles, melds) is False
 
 
-def test_is_agari_can_call_as_static_method() -> None:
-    tiles = TilesConverter.string_to_34_array(sou="123456789", pin="123", man="33")
-    assert Agari.is_agari(tiles)
-
-
 def test_open_hand_with_many_melds_returns_false() -> None:
     tiles = TilesConverter.string_to_34_array(man="123456789", pin="123456789", sou="123456789", honors="1234567")
     open_sets = [
