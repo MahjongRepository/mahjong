@@ -17,10 +17,8 @@ from tests.utils_for_tests import _string_to_open_34_set
     ],
 )
 def test_is_agari(sou: str, pin: str, man: str, honors: str) -> None:
-    agari = Agari()
-
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
-    assert agari.is_agari(tiles)
+    assert Agari.is_agari(tiles) is True
 
 
 @pytest.mark.parametrize(
@@ -32,10 +30,8 @@ def test_is_agari(sou: str, pin: str, man: str, honors: str) -> None:
     ],
 )
 def test_is_not_agari(sou: str, pin: str, man: str, honors: str) -> None:
-    agari = Agari()
-
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
-    assert not agari.is_agari(tiles)
+    assert Agari.is_agari(tiles) is False
 
 
 @pytest.mark.parametrize(
@@ -47,10 +43,8 @@ def test_is_not_agari(sou: str, pin: str, man: str, honors: str) -> None:
     ],
 )
 def test_is_chitoitsu_agari(sou: str, pin: str, man: str, honors: str) -> None:
-    agari = Agari()
-
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
-    assert agari.is_agari(tiles)
+    assert Agari.is_agari(tiles) is True
 
 
 @pytest.mark.parametrize(
@@ -62,10 +56,8 @@ def test_is_chitoitsu_agari(sou: str, pin: str, man: str, honors: str) -> None:
     ],
 )
 def test_is_kokushi_musou_agari(sou: str, pin: str, man: str, honors: str) -> None:
-    agari = Agari()
-
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
-    assert agari.is_agari(tiles)
+    assert Agari.is_agari(tiles) is True
 
 
 @pytest.mark.parametrize(
@@ -76,21 +68,17 @@ def test_is_kokushi_musou_agari(sou: str, pin: str, man: str, honors: str) -> No
     ],
 )
 def test_is_not_kokushi_musou_agari(sou: str, pin: str, man: str, honors: str) -> None:
-    agari = Agari()
-
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
-    assert not agari.is_agari(tiles)
+    assert Agari.is_agari(tiles) is False
 
 
 def test_is_agari_and_open_hand() -> None:
-    agari = Agari()
-
     tiles = TilesConverter.string_to_34_array(sou="23455567", pin="222", man="345")
     melds = [
         _string_to_open_34_set(man="345"),
         _string_to_open_34_set(sou="555"),
     ]
-    assert not agari.is_agari(tiles, melds)
+    assert Agari.is_agari(tiles, melds) is False
 
 
 def test_is_agari_can_call_as_static_method() -> None:
@@ -98,7 +86,7 @@ def test_is_agari_can_call_as_static_method() -> None:
     assert Agari.is_agari(tiles)
 
 
-def test_open_sets_break_when_isolated_tiles_exhausted() -> None:
+def test_open_hand_with_many_melds_returns_false() -> None:
     tiles = TilesConverter.string_to_34_array(man="123456789", pin="123456789", sou="123456789", honors="1234567")
     open_sets = [
         _string_to_open_34_set(man="123"),

@@ -99,8 +99,8 @@ def test_classify_hand_suits(hand: list[list[int]], expected: tuple[int, int]) -
         ("", "7", "", "", False),
         ("", "8", "", "", False),
         ("", "9", "", "", False),
-        ("", "", "1", "", False),
-        ("", "", "2", "", False),
+        ("", "", "1", "", True),
+        ("", "", "2", "", True),
         ("", "", "3", "", False),
         ("", "", "4", "", False),
         ("", "", "5", "", False),
@@ -118,7 +118,7 @@ def test_classify_hand_suits(hand: list[list[int]], expected: tuple[int, int]) -
     ],
 )
 def test_find_isolated_tiles(sou: str, pin: str, man: str, honors: str, expected: bool) -> None:
-    hand_34 = TilesConverter.string_to_34_array(sou="1369", pin="15678", man="25", honors="124")
+    hand_34 = TilesConverter.string_to_34_array(sou="1369", pin="15678", man="45", honors="124")
     isolated_tiles = find_isolated_tile_indices(hand_34)
 
     tile_34 = _string_to_34_tile(sou=sou, pin=pin, man=man, honors=honors)

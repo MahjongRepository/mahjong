@@ -1,37 +1,26 @@
 from collections.abc import Collection, Sequence
 
-from mahjong.utils import find_isolated_tile_indices
-
 
 class Agari:
     @staticmethod
     def is_agari(tiles_34: Sequence[int], open_sets_34: Collection[Sequence[int]] | None = None) -> bool:
         """
-        Determine was it win or not
+        Determine whether the hand is a winning hand (agari)
         :param tiles_34: 34 tiles format array
-        :param open_sets_34: array of array of 34 tiles format
+        :param open_sets_34: array of arrays of 34 tiles format
         :return: boolean
         """
-        # we will modify them later, so we need to use a copy
-        tiles = list(tiles_34)
-
-        # With open hand we need to remove open sets from hand and replace them with isolated pon sets
-        # it will allow to determine agari state correctly
         if open_sets_34:
-            isolated_tiles = find_isolated_tile_indices(tiles)
+            # subtract declared meld tiles so the algorithm checks only the closed portion
+            tiles = list(tiles_34)
             for meld in open_sets_34:
-                if not isolated_tiles:
-                    break
-
-                isolated_tile = isolated_tiles.pop()
-
                 tiles[meld[0]] -= 1
                 tiles[meld[1]] -= 1
                 tiles[meld[2]] -= 1
-                # kan
                 if len(meld) > 3:
                     tiles[meld[3]] -= 1
-                tiles[isolated_tile] = 3
+        else:
+            tiles = tiles_34
 
         j = (
             (1 << tiles[27])
@@ -154,7 +143,6 @@ class Agari:
         if a < 0:
             return False
 
-        is_not_mentsu = False
         for _ in range(6):
             b = c
             c = 0
@@ -167,11 +155,7 @@ class Agari:
             m >>= 3
             a = (m & 7) - b
             if a < 0:
-                is_not_mentsu = True
-                break
-
-        if is_not_mentsu:
-            return False
+                return False
 
         m >>= 3
         a = (m & 7) - c
@@ -195,7 +179,7 @@ class Agari:
             if (m & (7 << 21)) >= (2 << 21) and Agari._is_mentsu(m - (2 << 21)):
                 return True
         elif nn == 2:
-            if (m & (7 << 0)) >= (2 << 0) and Agari._is_mentsu(m - (2 << 0)):
+            if (m & 7) >= 2 and Agari._is_mentsu(m - 2):
                 return True
             if (m & (7 << 9)) >= (2 << 9) and Agari._is_mentsu(m - (2 << 9)):
                 return True
@@ -204,8 +188,15 @@ class Agari:
         return False
 
     @staticmethod
-    def _to_meld(tiles: list[int], d: int) -> int:
-        result = 0
-        for i in range(9):
-            result |= tiles[d + i] << i * 3
-        return result
+    def _to_meld(tiles: Sequence[int], d: int) -> int:
+        return (
+            tiles[d]
+            | (tiles[d + 1] << 3)
+            | (tiles[d + 2] << 6)
+            | (tiles[d + 3] << 9)
+            | (tiles[d + 4] << 12)
+            | (tiles[d + 5] << 15)
+            | (tiles[d + 6] << 18)
+            | (tiles[d + 7] << 21)
+            | (tiles[d + 8] << 24)
+        )
