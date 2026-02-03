@@ -86,8 +86,6 @@ ignore = [
     # Will be fixed later
     "COM812",
     "PLW1641",
-    "SIM114",
-    "PLR5501",
     "SIM102",
     "SIM108",
     "PLW2901",

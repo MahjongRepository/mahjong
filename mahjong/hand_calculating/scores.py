@@ -114,9 +114,8 @@ class ScoresCalculator:
                 if (han == 4 and fu == 30) or (han == 3 and fu == 60):
                     yaku_level = "kiriage mangan"
                     is_kiriage = True
-            else:  # kiriage not supported
-                if rounded > 2000:
-                    yaku_level = "mangan"
+            elif rounded > 2000:  # kiriage not supported
+                yaku_level = "mangan"
 
             # mangan
             if rounded > 2000 or is_kiriage:
