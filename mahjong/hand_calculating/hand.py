@@ -233,7 +233,7 @@ class HandCalculator:
                 if (
                     not config.is_tsumo
                     and config.options.has_sashikomi_yakuman
-                    and ((config.yaku.daburu_open_riichi in hand_yaku) or (config.yaku.open_riichi in hand_yaku))
+                    and (config.yaku.daburu_open_riichi in hand_yaku or config.yaku.open_riichi in hand_yaku)
                 ):
                     hand_yaku.append(config.yaku.sashikomi)
 
