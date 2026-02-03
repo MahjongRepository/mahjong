@@ -448,12 +448,13 @@ class HandCalculator:
             else:
                 hand_yaku.append(config.yaku.kokushi)
 
-            if not config.is_tsumo and config.options.has_sashikomi_yakuman:
-                if config.is_riichi and not config.is_daburu_riichi and config.is_open_riichi:
-                    hand_yaku.append(config.yaku.sashikomi)
-
-                if config.is_daburu_riichi and config.is_open_riichi:
-                    hand_yaku.append(config.yaku.sashikomi)
+            if (
+                not config.is_tsumo
+                and config.options.has_sashikomi_yakuman
+                and config.is_open_riichi
+                and (config.is_daburu_riichi or config.is_riichi)
+            ):
+                hand_yaku.append(config.yaku.sashikomi)
 
             if config.is_renhou and config.options.renhou_as_yakuman:
                 hand_yaku.append(config.yaku.renhou_yakuman)
