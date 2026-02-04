@@ -200,22 +200,22 @@ class Aotenjou(ScoresCalculator):
             # for daisuushi we need to remove toitoi
             hand_yaku.remove(config.yaku.toitoi)
 
-        if config.yaku.suuankou in hand_yaku or config.yaku.suuankou_tanki in hand_yaku:
+        if (
+            config.yaku.suuankou in hand_yaku or config.yaku.suuankou_tanki in hand_yaku
+        ) and config.yaku.toitoi in hand_yaku:
             # for suu ankou we need to remove toitoi and sanankou (sanankou is already removed by default)
-            if config.yaku.toitoi in hand_yaku:
-                # toitoi is "optional" in closed suukantsu, maybe a bug? or toitoi is not given when it's kans?
-                hand_yaku.remove(config.yaku.toitoi)
+            # toitoi is "optional" in closed suukantsu, maybe a bug? or toitoi is not given when it's kans?
+            hand_yaku.remove(config.yaku.toitoi)
 
         if config.yaku.chinroto in hand_yaku:
             # for chinroto we need to remove toitoi and honroto
             hand_yaku.remove(config.yaku.toitoi)
             hand_yaku.remove(config.yaku.honroto)
 
-        if config.yaku.suukantsu in hand_yaku:
+        if config.yaku.suukantsu in hand_yaku and config.yaku.toitoi in hand_yaku:
             # for suukantsu we need to remove toitoi and sankantsu (sankantsu is already removed by default)
-            if config.yaku.toitoi in hand_yaku:
-                # same as above?
-                hand_yaku.remove(config.yaku.toitoi)
+            # same as above?
+            hand_yaku.remove(config.yaku.toitoi)
 
         if config.yaku.chuuren_poutou in hand_yaku or config.yaku.daburu_chuuren_poutou in hand_yaku:
             # for chuuren poutou we need to remove chinitsu
@@ -232,7 +232,6 @@ class Aotenjou(ScoresCalculator):
             if config.yaku.chiitoitsu in hand_yaku:
                 hand_yaku.remove(config.yaku.chiitoitsu)
 
-        if config.yaku.ryuisou in hand_yaku:
+        if config.yaku.ryuisou in hand_yaku and config.yaku.honitsu in hand_yaku:
             # for ryuisou we need to remove honitsu, if it is there
-            if config.yaku.honitsu in hand_yaku:
-                hand_yaku.remove(config.yaku.honitsu)
+            hand_yaku.remove(config.yaku.honitsu)

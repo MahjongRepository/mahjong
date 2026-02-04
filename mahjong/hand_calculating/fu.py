@@ -111,9 +111,8 @@ class FuCalculator:
                 continue
 
             # chi: count matches for win_group open/closed detection
-            if win_group_is_chi and grp_len == 3:
-                if grp[0] == wg0 and grp[1] == wg1 and grp[2] == wg2:
-                    win_group_chi_count_in_hand += 1
+            if win_group_is_chi and grp_len == 3 and grp[0] == wg0 and grp[1] == wg1 and grp[2] == wg2:
+                win_group_chi_count_in_hand += 1
 
         # preprocess melds into a fixed-size state table (tile_34 -> bit flags)
         is_open_hand = False
