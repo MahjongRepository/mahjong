@@ -1,0 +1,22 @@
+name: Publish Wiki
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - .github/wiki/**
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Publish Wiki
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: Andrew-Chen-Wang/github-wiki-action@v5
+        with:
+          path: .github/wiki/
