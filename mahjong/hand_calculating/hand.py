@@ -476,10 +476,7 @@ class HandCalculator:
 
             fu = 0
             if is_aotenjou:
-                if config.is_tsumo:
-                    fu = 30
-                else:
-                    fu = 40
+                fu = 30 if config.is_tsumo else 40
 
                 tiles_for_dora = list(tiles)
 

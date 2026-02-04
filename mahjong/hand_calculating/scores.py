@@ -130,21 +130,13 @@ class ScoresCalculator:
             main = double_rounded
             main_bonus = 100 * config.tsumi_number
             additional_bonus = main_bonus
-
-            if config.is_dealer:
-                additional = main
-            else:  # player
-                additional = rounded
+            additional = main if config.is_dealer else rounded
 
         else:  # ron
             additional = 0
             additional_bonus = 0
             main_bonus = 300 * config.tsumi_number
-
-            if config.is_dealer:
-                main = six_rounded
-            else:  # player
-                main = four_rounded
+            main = six_rounded if config.is_dealer else four_rounded
 
         kyoutaku_bonus = 1000 * config.kyoutaku_number
         total = (main + main_bonus) + 2 * (additional + additional_bonus) + kyoutaku_bonus
