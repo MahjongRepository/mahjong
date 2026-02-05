@@ -328,7 +328,7 @@ def count_tiles_by_suits(tiles_34: Sequence[int]) -> list[dict]:
             continue
 
         for item in suits:
-            if item["function"](x):  # type: ignore
-                item["count"] += tile  # type: ignore
+            if item["function"](x):  # type: ignore[operator]
+                item["count"] += tile  # type: ignore[operator]
 
     return suits
