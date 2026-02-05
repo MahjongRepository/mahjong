@@ -1,6 +1,6 @@
 # Mahjong Library Documentation
 
-## Latest (v2)
+## v2 version (in development)
 - [[v2-English]]
 - [[v2-Chinese|中文]]
 
