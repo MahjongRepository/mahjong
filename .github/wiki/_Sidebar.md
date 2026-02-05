@@ -1,3 +1,12 @@
-# Table of Contents
+# Documentation
 
-- [[Home]]
+**v2** (in development)
+- [[v2-English]]
+- [[v2-Chinese]]
+
+**v1**
+- [[English]]
+- [[Chinese (简体中文)]]
+
+---
+[[Home]]
