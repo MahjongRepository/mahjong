@@ -23,8 +23,8 @@ def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora:
     if add_aka_dora and is_aka_dora(tile_136, aka_enabled=True):
         dora_count += 1
 
-    for dora in dora_indicators_136:
-        dora //= 4
+    for dora_indicator in dora_indicators_136:
+        dora = dora_indicator // 4
 
         # sou, pin, man
         if tile_index < EAST:

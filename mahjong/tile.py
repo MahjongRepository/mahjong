@@ -47,8 +47,7 @@ class TilesConverter:
         """
         results = [0] * 34
         for tile in tiles:
-            tile //= 4
-            results[tile] += 1
+            results[tile // 4] += 1
         return results
 
     @staticmethod
