@@ -17,7 +17,7 @@ class _BlockType(Enum):
 
 @total_ordering
 @dataclass(frozen=True)
-class _Block:
+class _Block:  # noqa: PLW1641 __hash__ is automatically implemented
     ty: _BlockType
     tile_34: int
 
