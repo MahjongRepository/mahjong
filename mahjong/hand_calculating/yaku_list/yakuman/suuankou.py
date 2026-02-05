@@ -19,7 +19,7 @@ class Suuankou(Yaku):
         closed_hand = []
         for item in hand:
             # if we do the ron on syanpon wait our pon will be consider as open
-            if is_pon_or_kan(item) and win_tile in item and not is_tsumo:
+            if not is_tsumo and win_tile in item and is_pon_or_kan(item):
                 continue
 
             closed_hand.append(item)

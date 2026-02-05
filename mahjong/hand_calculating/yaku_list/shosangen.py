@@ -18,8 +18,10 @@ class Shosangen(Yaku):
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
         count_of_conditions = 0
         for item in hand:
-            # dragon pon or pair
-            if (is_pair(item) or is_pon_or_kan(item)) and item[0] in DRAGONS:
+            if item[0] not in DRAGONS:
+                continue
+
+            if is_pair(item) or is_pon_or_kan(item):
                 count_of_conditions += 1
 
         return count_of_conditions == 3
