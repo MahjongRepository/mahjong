@@ -102,7 +102,7 @@ def test_fix_not_correct_kan_handling() -> None:
     ids=["int", "str", "float", "None"],
 )
 def test_block_eq_with_non_block_returns_not_implemented(other: object) -> None:
-    block = _Block(_BlockType.TRIPLET, _string_to_34_tile(man="1"))
+    block = _Block(tile_34=_string_to_34_tile(man="1"), ty=_BlockType.TRIPLET)
     assert block.__eq__(other) is NotImplemented
 
 
@@ -112,7 +112,7 @@ def test_block_eq_with_non_block_returns_not_implemented(other: object) -> None:
     ids=["int", "str", "float", "None"],
 )
 def test_block_lt_with_non_block_returns_not_implemented(other: object) -> None:
-    block = _Block(_BlockType.TRIPLET, _string_to_34_tile(man="1"))
+    block = _Block(tile_34=_string_to_34_tile(man="1"), ty=_BlockType.TRIPLET)
     assert block.__lt__(other) is NotImplemented
 
 
