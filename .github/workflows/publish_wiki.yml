@@ -2,7 +2,7 @@ name: Publish Wiki
 
 on:
   push:
-    branches: [master]
+    branches: [add-wiki-v2-pages]
     paths:
       - .github/wiki/**
 
