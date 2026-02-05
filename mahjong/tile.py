@@ -62,6 +62,35 @@ class TilesConverter:
         return results
 
     @staticmethod
+    def _split_string(string: str | None, offset: int, red: int | None = None) -> list[int]:
+        if not string:
+            return []
+
+        data = []
+        temp = []
+
+        for i in string:
+            if red is not None and i in {"r", "0"}:
+                temp.append(red)
+                data.append(red)
+            else:
+                tile = offset + (int(i) - 1) * 4
+                if red is not None and tile == red:
+                    # prevent non reds to become red
+                    tile += 1
+                if tile in data:
+                    count_of_tiles = len([x for x in temp if x == tile])
+                    new_tile = tile + count_of_tiles
+                    data.append(new_tile)
+
+                    temp.append(tile)
+                else:
+                    data.append(tile)
+                    temp.append(tile)
+
+        return data
+
+    @staticmethod
     def string_to_136_array(
         sou: str | None = None,
         pin: str | None = None,
@@ -76,40 +105,10 @@ class TilesConverter:
         has_aka_dora has to be True for this to do that.
         We need it to increase readability of our tests
         """
-
-        def _split_string(string: str | None, offset: int, red: int | None = None) -> list[int]:
-            data = []
-            temp = []
-
-            if not string:
-                return []
-
-            for i in string:
-                if red is not None and i in {"r", "0"}:
-                    temp.append(red)
-                    data.append(red)
-                else:
-                    tile = offset + (int(i) - 1) * 4
-                    if red is not None and tile == red:
-                        # prevent non reds to become red
-                        tile += 1
-                    if tile in data:
-                        count_of_tiles = len([x for x in temp if x == tile])
-                        new_tile = tile + count_of_tiles
-                        data.append(new_tile)
-
-                        temp.append(tile)
-                    else:
-                        data.append(tile)
-                        temp.append(tile)
-
-            return data
-
-        results = _split_string(man, 0, FIVE_RED_MAN if has_aka_dora else None)
-        results += _split_string(pin, 36, FIVE_RED_PIN if has_aka_dora else None)
-        results += _split_string(sou, 72, FIVE_RED_SOU if has_aka_dora else None)
-        results += _split_string(honors, 108)
-
+        results = TilesConverter._split_string(man, 0, FIVE_RED_MAN if has_aka_dora else None)
+        results += TilesConverter._split_string(pin, 36, FIVE_RED_PIN if has_aka_dora else None)
+        results += TilesConverter._split_string(sou, 72, FIVE_RED_SOU if has_aka_dora else None)
+        results += TilesConverter._split_string(honors, 108)
         return results
 
     @staticmethod
