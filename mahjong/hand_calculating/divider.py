@@ -132,7 +132,7 @@ class HandDivider:
                 single_color_hand[pair] -= 2
                 blocks = [_Block(suit + pair, _BlockType.PAIR)]
                 comb = HandDivider._decompose_single_color_hand_without_pair(
-                    single_color_hand, blocks, 0, suit, remaining - 2
+                    single_color_hand, blocks, 0, suit, remaining - 2,
                 )
                 single_color_hand[pair] += 2
 
@@ -156,7 +156,7 @@ class HandDivider:
 
         if single_color_hand[i] == 0:
             return HandDivider._decompose_single_color_hand_without_pair(
-                single_color_hand, blocks, i + 1, suit, remaining
+                single_color_hand, blocks, i + 1, suit, remaining,
             )
 
         combinations: list[list[_Block]] = []
