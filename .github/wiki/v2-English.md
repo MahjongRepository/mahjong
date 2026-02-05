@@ -1,4 +1,4 @@
-Python 3.9+ is supported.
+Python 3.10+ is supported.
 
 If you need Python 2 support, you can use the v1.1.11 version of the library.
 
@@ -9,32 +9,28 @@ for the Japanese version of mahjong (riichi mahjong).
 
 It supports optional features like:
 
-| Feature                                                                                   | Keyword parameter         | Default value               |
-|-------------------------------------------------------------------------------------------|---------------------------|-----------------------------|
-| Disable or enable open tanyao yaku                                                        | has\_open\_tanyao           | False                       |
-| Disable or enable aka dora in the hand                                                    | has\_aka\_dora              | False                       |
-| Disable or enable double yakuman (like suuanko tanki)                                     | has\_double\_yakuman        | True                        |
-| Settings for different kazoe yakuman calculation (it сan be an yakuman or a sanbaiman)    | kazoe\_limit               | HandConstants.KAZOE\_LIMITED |
-| Support kiriage mangan                                                                    | kiriage                   | False                       |
-| Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting) | fu\_for\_open\_pinfu         | True                        |
-| Disable or enable pinfu tsumo                                                             | fu\_for\_pinfu\_tsumo        | False                       |
-| Counting renhou as 5 han or yakuman                                                       | renhou\_as\_yakuman         | False                       |
-| Disable or enable Daisharin yakuman                                                       | has\_daisharin             | False                       |
-| Disable or enable Daisharin in other suits (Daisuurin, Daichikurin)                       | has\_daisharin\_other\_suits | False                       |
-| Disable or enable yakuman for dealing into open hands                                     | has\_sashikomi\_yakuman     | False                       |
-| Limit yakuman calculation to 6 (maximum score 192000)                                     | limit\_to\_sextuple\_yakuman | True                        |
-| Disable or enable extra yakuman for all honors 7 pairs                                    | has\_daichisei             | False                       |
-| Disable or enable paarenchan without any yaku                                             | paarenchan\_needs\_yaku     | True                        |
+| Feature | Keyword parameter | Default value |
+|---------|-------------------|---------------|
+| Disable or enable open tanyao yaku | `has_open_tanyao` | `False` |
+| Disable or enable aka dora in the hand | `has_aka_dora` | `False` |
+| Disable or enable double yakuman (like suuanko tanki) | `has_double_yakuman` | `True` |
+| Settings for different kazoe yakuman calculation (it сan be an yakuman or a sanbaiman) | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
+| Support kiriage mangan | `kiriage` | `False` |
+| Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting) | `fu_for_open_pinfu` | `True` |
+| Disable or enable pinfu tsumo | `fu_for_pinfu_tsumo` | `False` |
+| Counting renhou as 5 han or yakuman | `renhou_as_yakuman` | `False` |
+| Disable or enable Daisharin yakuman | `has_daisharin` | `False` |
+| Disable or enable Daisharin in other suits (Daisuurin, Daichikurin) | `has_daisharin_other_suits` | `False` |
+| Disable or enable yakuman for dealing into open hands | `has_sashikomi_yakuman` | `False` |
+| Limit yakuman calculation to 6 (maximum score 192000) | `limit_to_sextuple_yakuman` | `True` |
+| Disable or enable extra yakuman for all honors 7 pairs | `has_daichisei` | `False` |
+| Disable or enable paarenchan without any yaku | `paarenchan_needs_yaku` | `True` |
 
-The code was validated on tenhou.net phoenix replays in total on
-**11,120,125 hands**.
+The code was validated on tenhou.net phoenix replays in total on **11,120,125 hands**.
 
-So, we can say that our hand calculator works the same way that
-tenhou.net hand calculation.
+So, we can say that our hand calculator works the same way that tenhou.net hand calculation.
 
 ## How to use
-
-You can find more examples here: https://github.com/MahjongRepository/mahjong/blob/v1.4.0/doc/examples.py
 
 Let's calculate how much will cost this hand:
 
@@ -48,13 +44,11 @@ from mahjong.tile import TilesConverter
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.meld import Meld
 
-calculator = HandCalculator()
-
 # we had to use all 14 tiles in that array
 tiles = TilesConverter.string_to_136_array(man='22444', pin='333567', sou='444')
 win_tile = TilesConverter.string_to_136_array(sou='4')[0]
 
-result = calculator.estimate_hand_value(tiles, win_tile)
+result = HandCalculator.estimate_hand_value(tiles, win_tile)
 
 print(result.han, result.fu)
 print(result.cost['main'])
@@ -65,18 +59,20 @@ for fu_item in result.fu_details:
 
 Output:
 
-    1 40
-    1300
-    [Tanyao]
-    {'fu': 30, 'reason': 'base'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 2, 'reason': 'open_pon'}
+```
+1 40
+1300
+[Tanyao]
+{'fu': 30, 'reason': 'base'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 2, 'reason': 'open_pon'}
+```
 
 ### How about tsumo?
 
 ```python
-result = calculator.estimate_hand_value(tiles, win_tile, config=HandConfig(is_tsumo=True))
+result = HandCalculator.estimate_hand_value(tiles, win_tile, config=HandConfig(is_tsumo=True))
 
 print(result.han, result.fu)
 print(result.cost['main'], result.cost['additional'])
@@ -87,21 +83,25 @@ for fu_item in result.fu_details:
 
 Output:
 
-    4 40
-    4000 2000
-    [Menzen Tsumo, Tanyao, San Ankou]
-    {'fu': 20, 'reason': 'base'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 2, 'reason': 'tsumo'}
+```
+4 40
+4000 2000
+[Menzen Tsumo, Tanyao, San Ankou]
+{'fu': 20, 'reason': 'base'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 2, 'reason': 'tsumo'}
+```
 
 ### What if we add open set?
 
 ```python
+from mahjong.hand_calculating.hand_config import OptionalRules
+
 melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man='444'))]
 
-result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(options=OptionalRules(has_open_tanyao=True)))
+result = HandCalculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(options=OptionalRules(has_open_tanyao=True)))
 
 print(result.han, result.fu)
 print(result.cost['main'])
@@ -112,29 +112,73 @@ for fu_item in result.fu_details:
 
 Output:
 
-    1 30
-    1000
-    [Tanyao]
-    {'fu': 20, 'reason': 'base'}
-    {'fu': 4, 'reason': 'closed_pon'}
-    {'fu': 2, 'reason': 'open_pon'}
-    {'fu': 2, 'reason': 'open_pon'}
+```
+1 30
+1000
+[Tanyao]
+{'fu': 20, 'reason': 'base'}
+{'fu': 4, 'reason': 'closed_pon'}
+{'fu': 2, 'reason': 'open_pon'}
+{'fu': 2, 'reason': 'open_pon'}
+```
 
-# Shanten calculation
+### Riichi and Ura dora
+
+Ura dora indicators can be passed via the `ura_dora_indicators` parameter. Ura dora is only counted when the hand won after riichi.
+
+```python
+tiles = TilesConverter.string_to_136_array(man='22444', pin='333567', sou='444')
+win_tile = TilesConverter.string_to_136_array(sou='4')[0]
+dora_indicators = TilesConverter.string_to_136_array(man='1')
+ura_dora_indicators = TilesConverter.string_to_136_array(pin='2')
+
+result = HandCalculator.estimate_hand_value(
+    tiles,
+    win_tile,
+    dora_indicators=dora_indicators,
+    ura_dora_indicators=ura_dora_indicators,
+    config=HandConfig(is_riichi=True, is_tsumo=True)
+)
+
+print(result.han, result.fu)
+print(result.yaku)
+```
+
+Output:
+
+```
+10 40
+[Menzen Tsumo, Riichi, Tanyao, San Ankou, Dora 2, Ura Dora 3]
+```
+
+## Shanten calculation
 
 ```python
 from mahjong.shanten import Shanten
+from mahjong.tile import TilesConverter
 
-shanten = Shanten()
 tiles = TilesConverter.string_to_34_array(man='13569', pin='123459', sou='443')
-result = shanten.calculate_shanten(tiles)
+result = Shanten.calculate_shanten(tiles)
 
 print(result)
 ```
 
-# Aotenjou scoring rules
+Output:
+
+```
+2
+```
+
+## Aotenjou scoring rules
 
 ```python
+from mahjong.hand_calculating.hand import HandCalculator
+from mahjong.hand_calculating.hand_config import HandConfig
+from mahjong.hand_calculating.scores import Aotenjou
+from mahjong.tile import TilesConverter
+from mahjong.meld import Meld
+from mahjong.constants import EAST
+
 tiles = TilesConverter.string_to_136_array(honors='111133555566667777')
 win_tile = TilesConverter.string_to_136_array(honors='3')[0]
 
@@ -145,8 +189,21 @@ melds = [
     Meld(meld_type=Meld.KAN, tiles=TilesConverter.string_to_136_array(honors='7777'), opened=False),
 ]
 
-result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=TilesConverter.string_to_136_array(honors='44447777'),
-    scores_calculator_factory=Aotenjou, config=HandConfig(is_riichi=True, is_tsumo=True, is_ippatsu=True, is_haitei=True, player_wind=EAST, round_wind=EAST))
+result = HandCalculator.estimate_hand_value(
+    tiles,
+    win_tile,
+    melds=melds,
+    dora_indicators=TilesConverter.string_to_136_array(honors='44447777'),
+    scores_calculator_factory=Aotenjou,
+    config=HandConfig(
+        is_riichi=True,
+        is_tsumo=True,
+        is_ippatsu=True,
+        is_haitei=True,
+        player_wind=EAST,
+        round_wind=EAST
+    )
+)
 
 print(result.han, result.fu)
 print(result.cost['main'])
@@ -157,13 +214,15 @@ for fu_item in result.fu_details:
 
 Output:
 
-    103 160
-    12980742146337069071326240823050300
-    [Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (wind of place), Yakuhai (wind of round), Daisangen, Suu Kantsu, Tsuu Iisou, Suu Ankou Tanki, Dora 32]
-    {'fu': 32, 'reason': 'closed_terminal_kan'}
-    {'fu': 32, 'reason': 'closed_terminal_kan'}
-    {'fu': 32, 'reason': 'closed_terminal_kan'}
-    {'fu': 32, 'reason': 'closed_terminal_kan'}
-    {'fu': 20, 'reason': 'base'}
-    {'fu': 2, 'reason': 'pair_wait'}
-    {'fu': 2, 'reason': 'tsumo'}
+```
+103 160
+12980742146337069071326240823050300
+[Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (seat wind east), Yakuhai (round wind east), Daisangen, Suu Kantsu, Tsuu Iisou, Suu Ankou Tanki, Dora 32]
+{'fu': 32, 'reason': 'closed_terminal_kan'}
+{'fu': 32, 'reason': 'closed_terminal_kan'}
+{'fu': 32, 'reason': 'closed_terminal_kan'}
+{'fu': 32, 'reason': 'closed_terminal_kan'}
+{'fu': 20, 'reason': 'base'}
+{'fu': 2, 'reason': 'pair_wait'}
+{'fu': 2, 'reason': 'tsumo'}
+```
