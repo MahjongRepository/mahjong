@@ -1,7 +1,5 @@
 Python 3.10+ is supported.
 
-If you need Python 2 support, you can use the v1.1.11 version of the library.
-
 The library contains various tools (shanten, agari, hand calculation)
 for the Japanese version of mahjong (riichi mahjong).
 
