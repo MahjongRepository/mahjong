@@ -69,7 +69,9 @@ class _RegularShanten:
 
     def calculate(self) -> int:
         count_of_tiles = sum(self._tiles)
-        assert count_of_tiles <= 14, f"Too many tiles = {count_of_tiles}"
+        if count_of_tiles > 14:
+            msg = f"Too many tiles = {count_of_tiles}"
+            raise ValueError(msg)
 
         self._remove_character_tiles(count_of_tiles)
 
