@@ -157,7 +157,7 @@ class ScoresCalculator:
 
 class Aotenjou(ScoresCalculator):
     @staticmethod
-    def calculate_scores(han: int, fu: int, config: HandConfig, is_yakuman: bool = False) -> dict[str, int]:
+    def calculate_scores(han: int, fu: int, config: HandConfig, is_yakuman: bool = False) -> dict[str, int]:  # noqa: ARG004
         base_points: int = fu * pow(2, 2 + han)
         rounded = (base_points + 99) // 100 * 100
         double_rounded = (2 * base_points + 99) // 100 * 100
