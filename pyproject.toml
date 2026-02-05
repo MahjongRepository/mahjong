@@ -87,7 +87,6 @@ ignore = [
     "COM812",
     "PLW2901",
     "S101",
-    "ARG002",
 ]
 
 [tool.ruff.lint.pycodestyle]
@@ -105,6 +104,7 @@ ignore-overlong-task-comments = true
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
+"mahjong/hand_calculating/yaku_list/*.py" = ["ARG002"] # for `is_condition_met()`
 
 [tool.pytest]
 python_files = ["tests_*.py"]
