@@ -2,10 +2,10 @@
 
 ## v2 version (in development)
 - [[v2-English]]
-- [[v2-Chinese|中文]]
+- [[v2-Chinese]]
 
 ## Previous Versions
 
 ### v1
-- [[v1-English]]
-- [[v1-Chinese|中文]]
+- [[English]]
+- [[Chinese (简体中文)]]
