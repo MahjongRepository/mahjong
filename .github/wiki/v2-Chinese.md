@@ -29,8 +29,6 @@
 
 因此，我们可以确定所提供的算法与天凤算法一致。
 
-项目地址: https://github.com/MahjongRepository/mahjong
-
 ## 如何使用
 
 我们来计算一下下面这手牌的得点：
@@ -194,7 +192,8 @@ result = HandCalculator.estimate_hand_value(
     tiles,
     win_tile,
     melds=melds,
-    dora_indicators=TilesConverter.string_to_136_array(honors='44447777'),
+    dora_indicators=TilesConverter.string_to_136_array(honors='4444'),
+    ura_dora_indicators=TilesConverter.string_to_136_array(honors='7777'),
     scores_calculator_factory=Aotenjou,
     config=HandConfig(
         is_riichi=True,
@@ -218,7 +217,7 @@ for fu_item in result.fu_details:
 ```
 103 160
 12980742146337069071326240823050300
-[Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (seat wind east), Yakuhai (round wind east), Daisangen, Suu Kantsu, Tsuu Iisou, Suu Ankou Tanki, Dora 32]
+[Menzen Tsumo, Riichi, Ippatsu, Haitei Raoyue, Yakuhai (seat wind east), Yakuhai (round wind east), Daisangen, Suu Kantsu, Tsuu Iisou, Suu Ankou Tanki, Dora 16, Ura Dora 16]
 {'fu': 32, 'reason': 'closed_terminal_kan'}
 {'fu': 32, 'reason': 'closed_terminal_kan'}
 {'fu': 32, 'reason': 'closed_terminal_kan'}
