@@ -1,13 +1,13 @@
 from collections.abc import Collection, Sequence
 from dataclasses import dataclass
-from enum import Enum
+from enum import IntEnum
 from functools import lru_cache
 from typing import Literal
 
 from mahjong.meld import Meld
 
 
-class _BlockType(int, Enum):
+class _BlockType(IntEnum):
     QUAD = 0
     TRIPLET = 1
     PAIR = 2
@@ -132,7 +132,11 @@ class HandDivider:
                 single_color_hand[pair] -= 2
                 blocks = [_Block(suit + pair, _BlockType.PAIR)]
                 comb = HandDivider._decompose_single_color_hand_without_pair(
-                    single_color_hand, blocks, 0, suit, remaining - 2,
+                    single_color_hand,
+                    blocks,
+                    0,
+                    suit,
+                    remaining - 2,
                 )
                 single_color_hand[pair] += 2
 
@@ -156,7 +160,11 @@ class HandDivider:
 
         if single_color_hand[i] == 0:
             return HandDivider._decompose_single_color_hand_without_pair(
-                single_color_hand, blocks, i + 1, suit, remaining,
+                single_color_hand,
+                blocks,
+                i + 1,
+                suit,
+                remaining,
             )
 
         combinations: list[list[_Block]] = []

@@ -93,6 +93,7 @@ The following methods are now available as static methods:
 - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
 - Fixed an issue where `KokushiMusou.is_condition_met()` would return `None` if the condition was not met. It now consistently returns a `bool` value. Remove any `None` checks in the code that relied on the previous behavior.
 - `Shanten.calculate_shanten()` and `Shanten.calculate_shanten_for_regular_hand()` now raises `ValueError` instead of `assert` when the number of tiles is 15 or more.
+- `HandDivider` now determines block type from `meld.type` instead of inferring it from `meld.tiles`. This is a breaking change if `meld.type` and `meld.tiles` are inconsistent.
 
 ## What's Changed
 - Placeholder. It would be filled on release automatically
