@@ -19,6 +19,12 @@ def test_calculate_shanten(sou: str, pin: str, man: str, honors: str, shanten_nu
     assert shanten.calculate_shanten(tiles) == shanten_number
 
 
+def test_calculate_shanten_raises_error_too_many_tiles() -> None:
+    tiles = TilesConverter.string_to_34_array(sou="1111", pin="1111", man="1111", honors="111")
+    with pytest.raises(ValueError, match="Too many tiles = 15"):
+        Shanten.calculate_shanten(tiles)
+
+
 @pytest.mark.parametrize(
     ("sou", "pin", "man", "honors", "shanten_number"),
     [
