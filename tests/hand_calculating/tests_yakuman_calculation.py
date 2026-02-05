@@ -338,7 +338,9 @@ def test_disabled_double_yakuman() -> None:
     win_tile = _string_to_136_tile(pin="5")
 
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(is_tsumo=True, disable_double_yakuman=True)
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_tsumo=True, disable_double_yakuman=True),
     )
     assert result.error is None
     assert result.han == 13
@@ -525,7 +527,9 @@ def test_is_renhou_yakuman() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(is_tsumo=False, is_renhou=True, renhou_as_yakuman=True)
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_tsumo=False, is_renhou=True, renhou_as_yakuman=True),
     )
     assert result.error is None
     assert result.han == 13
@@ -576,7 +580,9 @@ def test_is_daichikurin() -> None:
     win_tile = _string_to_136_tile(sou="8")
 
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(allow_daisharin=True, allow_daisharin_other_suits=True)
+        tiles,
+        win_tile,
+        config=_make_hand_config(allow_daisharin=True, allow_daisharin_other_suits=True),
     )
     assert result.error is None
     assert result.han == 13
@@ -603,7 +609,9 @@ def test_is_daisuurin() -> None:
     win_tile = _string_to_136_tile(man="8")
 
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(allow_daisharin=True, allow_daisharin_other_suits=True)
+        tiles,
+        win_tile,
+        config=_make_hand_config(allow_daisharin=True, allow_daisharin_other_suits=True),
     )
     assert result.error is None
     assert result.han == 13
@@ -634,7 +642,10 @@ def test_septuple_yakuman_disabled() -> None:
     win_tile = _string_to_136_tile(honors="5")
 
     config = _make_hand_config(
-        is_renhou=True, disable_double_yakuman=False, renhou_as_yakuman=True, has_sashikomi_yakuman=True
+        is_renhou=True,
+        disable_double_yakuman=False,
+        renhou_as_yakuman=True,
+        has_sashikomi_yakuman=True,
     )
 
     result = hand.estimate_hand_value(tiles, win_tile, config=config)
@@ -681,7 +692,9 @@ def test_paarenchan_no_yaku_allowed() -> None:
     tiles = TilesConverter.string_to_136_array(pin="12367778", sou="678", man="456")
     win_tile = _string_to_136_tile(pin="7")
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(is_tsumo=False, paarenchan=1, paarenchan_needs_yaku=False)
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_tsumo=False, paarenchan=1, paarenchan_needs_yaku=False),
     )
     assert result.error is None
     assert result.han == 13

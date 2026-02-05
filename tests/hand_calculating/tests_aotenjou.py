@@ -82,7 +82,12 @@ def test_aotenjou_hands() -> None:
         dora_indicators=TilesConverter.string_to_136_array(honors="22224444"),
         scores_calculator_factory=Aotenjou,
         config=_make_hand_config(
-            is_riichi=True, is_tsumo=True, is_ippatsu=True, is_haitei=True, player_wind=EAST, round_wind=EAST
+            is_riichi=True,
+            is_tsumo=True,
+            is_ippatsu=True,
+            is_haitei=True,
+            player_wind=EAST,
+            round_wind=EAST,
         ),
     )
     assert result.error is None

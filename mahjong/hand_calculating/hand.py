@@ -206,7 +206,8 @@ class HandCalculator:
 
                 if config.options.has_daisharin:
                     is_daisharin = config.yaku.daisharin.is_condition_met(
-                        hand, config.options.has_daisharin_other_suits
+                        hand,
+                        config.options.has_daisharin_other_suits,
                     )
                     if is_daisharin:
                         config.yaku.daisharin.rename(hand)
@@ -502,7 +503,7 @@ class HandCalculator:
 
             cost = scores_calculator.calculate_scores(han, fu, config, len(hand_yaku) > 0)
             calculated_hands.append(
-                {"cost": cost, "error": None, "hand_yaku": hand_yaku, "han": han, "fu": fu, "fu_details": []}
+                {"cost": cost, "error": None, "hand_yaku": hand_yaku, "han": han, "fu": fu, "fu_details": []},
             )
 
         if not calculated_hands:

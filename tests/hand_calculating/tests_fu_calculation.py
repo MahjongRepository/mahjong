@@ -217,7 +217,11 @@ def test_valued_pair_fu() -> None:
     # double valued pair
     valued_tiles = [EAST, EAST]
     fu_details, fu = fu_calculator.calculate_fu(
-        hand, win_tile, _get_win_group(hand, win_tile), config, valued_tiles=valued_tiles
+        hand,
+        win_tile,
+        _get_win_group(hand, win_tile),
+        config,
+        valued_tiles=valued_tiles,
     )
     assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details

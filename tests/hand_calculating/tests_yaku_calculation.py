@@ -263,7 +263,10 @@ def test_is_rinshan() -> None:
     # closed kan: rinshan & tsumo
     melds = [_make_meld(Meld.KAN, is_open=False, sou="4444")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, melds=melds, config=_make_hand_config(is_tsumo=True, is_rinshan=True)
+        tiles,
+        win_tile,
+        melds=melds,
+        config=_make_hand_config(is_tsumo=True, is_rinshan=True),
     )
     assert result.error is None
     assert result.han == 2
@@ -273,7 +276,10 @@ def test_is_rinshan() -> None:
     # open kan: rinshan only
     melds = [_make_meld(Meld.KAN, sou="4444")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, melds=melds, config=_make_hand_config(is_tsumo=True, is_rinshan=True)
+        tiles,
+        win_tile,
+        melds=melds,
+        config=_make_hand_config(is_tsumo=True, is_rinshan=True),
     )
     assert result.error is None
     assert result.han == 1
@@ -310,7 +316,10 @@ def test_is_haitei() -> None:
     # haitei only
     melds = [_make_meld(Meld.CHI, sou="123")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, melds=melds, config=_make_hand_config(is_tsumo=True, is_haitei=True)
+        tiles,
+        win_tile,
+        melds=melds,
+        config=_make_hand_config(is_tsumo=True, is_haitei=True),
     )
     assert result.error is None
     assert result.han == 1
@@ -377,7 +386,9 @@ def test_is_daburu_open_riichi() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(is_daburu_riichi=True, is_riichi=True, is_open_riichi=True)
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_daburu_riichi=True, is_riichi=True, is_open_riichi=True),
     )
     assert result.error is None
     assert result.han == 3
@@ -511,7 +522,9 @@ def test_is_pinfu_hand() -> None:
     tiles = TilesConverter.string_to_136_array(sou="123678", man="123456", honors="11")
     win_tile = _string_to_136_tile(sou="6")
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(player_wind=player_wind, round_wind=round_wind)
+        tiles,
+        win_tile,
+        config=_make_hand_config(player_wind=player_wind, round_wind=round_wind),
     )
     assert result.error is not None
 
@@ -1134,7 +1147,10 @@ def test_dora_in_hand() -> None:
     win_tile = _string_to_136_tile(man="2")
     dora_indicators = [_string_to_136_tile(man="1"), _string_to_136_tile(pin="2")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, dora_indicators=dora_indicators, config=_make_hand_config(is_tsumo=True)
+        tiles,
+        win_tile,
+        dora_indicators=dora_indicators,
+        config=_make_hand_config(is_tsumo=True),
     )
     assert result.error is None
     assert result.han == 4
@@ -1146,7 +1162,10 @@ def test_dora_in_hand() -> None:
     win_tile = _string_to_136_tile(pin="7")
     dora_indicators = [_string_to_136_tile(sou="4"), _string_to_136_tile(sou="4")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, dora_indicators=dora_indicators, config=_make_hand_config(is_tsumo=True)
+        tiles,
+        win_tile,
+        dora_indicators=dora_indicators,
+        config=_make_hand_config(is_tsumo=True),
     )
     assert result.error is None
     assert result.han == 3
@@ -1158,7 +1177,10 @@ def test_dora_in_hand() -> None:
     win_tile = _string_to_136_tile(pin="5")
     dora_indicators = [_string_to_136_tile(honors="5"), _string_to_136_tile(honors="5")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, dora_indicators=dora_indicators, config=_make_hand_config(is_riichi=True)
+        tiles,
+        win_tile,
+        dora_indicators=dora_indicators,
+        config=_make_hand_config(is_riichi=True),
     )
     assert result.error is None
     assert result.han == 5
@@ -1188,7 +1210,11 @@ def test_dora_in_hand() -> None:
 
     dora_indicators = [_string_to_136_tile(man="6")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, dora_indicators=dora_indicators, melds=melds, config=_make_hand_config(is_tsumo=True)
+        tiles,
+        win_tile,
+        dora_indicators=dora_indicators,
+        melds=melds,
+        config=_make_hand_config(is_tsumo=True),
     )
     assert result.error is None
     assert result.han == 5
@@ -1203,7 +1229,10 @@ def test_ura_dora_in_hand() -> None:
     win_tile = _string_to_136_tile(man="6")
     ura_dora_indicators = [_string_to_136_tile(pin="2")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, ura_dora_indicators=ura_dora_indicators, config=_make_hand_config(is_riichi=True)
+        tiles,
+        win_tile,
+        ura_dora_indicators=ura_dora_indicators,
+        config=_make_hand_config(is_riichi=True),
     )
     assert result.error is None
     assert result.han == 4
@@ -1214,7 +1243,10 @@ def test_ura_dora_in_hand() -> None:
     win_tile = _string_to_136_tile(man="6")
     ura_dora_indicators = [_string_to_136_tile(pin="2")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, ura_dora_indicators=ura_dora_indicators, config=_make_hand_config(is_tsumo=True)
+        tiles,
+        win_tile,
+        ura_dora_indicators=ura_dora_indicators,
+        config=_make_hand_config(is_tsumo=True),
     )
     assert result.error is None
     assert result.han == 2
