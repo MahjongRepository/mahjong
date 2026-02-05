@@ -70,10 +70,10 @@ class TilesConverter:
         seen: set[int] = set()
         counts: dict[int, int] = {}
 
-        is_explicit_aka = {"r", "0"}
+        explicit_aka = {"r", "0"}
         for ch in string:
             # explicit aka markers
-            if red is not None and ch in is_explicit_aka:
+            if red is not None and ch in explicit_aka:
                 data.append(red)
                 seen.add(red)
                 # explicit aka does not increment the regular tile count
