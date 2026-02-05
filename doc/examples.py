@@ -48,7 +48,10 @@ print_hand_result(result)
 melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man="444"))]
 
 result = calculator.estimate_hand_value(
-    tiles, win_tile, melds=melds, config=HandConfig(options=OptionalRules(has_open_tanyao=True))
+    tiles,
+    win_tile,
+    melds=melds,
+    config=HandConfig(options=OptionalRules(has_open_tanyao=True)),
 )
 print_hand_result(result)
 

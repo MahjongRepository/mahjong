@@ -84,7 +84,6 @@ ignore = [
     "FBT003", # boolean-positional-value-in-call
 
     # Will be fixed later
-    "COM812",
     "S101",
 ]
 

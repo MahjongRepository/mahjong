@@ -37,7 +37,10 @@ def test_open_hand_daburi() -> None:
 
     melds = [_make_meld(Meld.CHI, sou="123")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, melds=melds, config=_make_hand_config(is_riichi=True, is_daburu_riichi=True)
+        tiles,
+        win_tile,
+        melds=melds,
+        config=_make_hand_config(is_riichi=True, is_daburu_riichi=True),
     )
     assert result.error == "open_hand_daburi_not_allowed"
 
@@ -120,7 +123,9 @@ def test_haitei_with_rinshan() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_haitei=True)
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_haitei=True),
     )
     assert result.error == "haitei_with_rinshan_not_allowed"
 
@@ -132,7 +137,9 @@ def test_houtei_with_chankan() -> None:
     win_tile = _string_to_136_tile(sou="1")
 
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(is_tsumo=False, is_chankan=True, is_houtei=True)
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_tsumo=False, is_chankan=True, is_houtei=True),
     )
     assert result.error == "houtei_with_chankan_not_allowed"
 
@@ -149,7 +156,9 @@ def test_tenhou_not_as_dealer() -> None:
 
     # raise error when player wind is specified and *not* EAST
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_tenhou=True, player_wind=SOUTH)
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_tsumo=True, is_tenhou=True, player_wind=SOUTH),
     )
     assert result.error == "tenhou_not_as_dealer_not_allowed"
 
@@ -172,7 +181,10 @@ def test_tenhou_with_meld() -> None:
 
     melds = [_make_meld(Meld.KAN, is_open=False, sou="4444")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, melds=melds, config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_tenhou=True)
+        tiles,
+        win_tile,
+        melds=melds,
+        config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_tenhou=True),
     )
     assert result.error == "tenhou_with_meld_not_allowed"
 
@@ -189,7 +201,9 @@ def test_chiihou_as_dealer() -> None:
 
     # raise error when player wind is specified EAST
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_chiihou=True, player_wind=EAST)
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_tsumo=True, is_chiihou=True, player_wind=EAST),
     )
     assert result.error == "chiihou_as_dealer_not_allowed"
 
@@ -212,7 +226,10 @@ def test_chiihou_with_meld() -> None:
 
     melds = [_make_meld(Meld.KAN, is_open=False, sou="4444")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, melds=melds, config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_chiihou=True)
+        tiles,
+        win_tile,
+        melds=melds,
+        config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_chiihou=True),
     )
     assert result.error == "chiihou_with_meld_not_allowed"
 
@@ -229,7 +246,9 @@ def test_renhou_as_dealer() -> None:
 
     # raise error when player wind is specified EAST
     result = hand.estimate_hand_value(
-        tiles, win_tile, config=_make_hand_config(is_tsumo=False, is_renhou=True, player_wind=EAST)
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_tsumo=False, is_renhou=True, player_wind=EAST),
     )
     assert result.error == "renhou_as_dealer_not_allowed"
 
@@ -252,7 +271,10 @@ def test_renhou_with_meld() -> None:
 
     melds = [_make_meld(Meld.KAN, is_open=False, sou="4444")]
     result = hand.estimate_hand_value(
-        tiles, win_tile, melds=melds, config=_make_hand_config(is_tsumo=False, is_renhou=True)
+        tiles,
+        win_tile,
+        melds=melds,
+        config=_make_hand_config(is_tsumo=False, is_renhou=True),
     )
     assert result.error == "renhou_with_meld_not_allowed"
 
