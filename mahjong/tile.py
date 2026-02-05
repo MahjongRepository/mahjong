@@ -85,13 +85,12 @@ class TilesConverter:
                 return []
 
             for i in string:
-                if (i in {"r", "0"}) and has_aka_dora:
-                    assert red is not None
+                if red is not None and i in {"r", "0"}:
                     temp.append(red)
                     data.append(red)
                 else:
                     tile = offset + (int(i) - 1) * 4
-                    if tile == red and has_aka_dora:
+                    if red is not None and tile == red:
                         # prevent non reds to become red
                         tile += 1
                     if tile in data:
@@ -106,9 +105,9 @@ class TilesConverter:
 
             return data
 
-        results = _split_string(man, 0, FIVE_RED_MAN)
-        results += _split_string(pin, 36, FIVE_RED_PIN)
-        results += _split_string(sou, 72, FIVE_RED_SOU)
+        results = _split_string(man, 0, FIVE_RED_MAN if has_aka_dora else None)
+        results += _split_string(pin, 36, FIVE_RED_PIN if has_aka_dora else None)
+        results += _split_string(sou, 72, FIVE_RED_SOU if has_aka_dora else None)
         results += _split_string(honors, 108)
 
         return results
