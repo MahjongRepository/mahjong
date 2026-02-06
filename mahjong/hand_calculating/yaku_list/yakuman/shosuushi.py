@@ -21,8 +21,7 @@ class Shousuushii(Yaku):
         wind_pair = 0
 
         for item in hand:
-            first = item[0]
-            if first not in WINDS:
+            if item[0] not in WINDS:
                 continue
 
             if is_pair(item):

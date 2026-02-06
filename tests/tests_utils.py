@@ -435,6 +435,10 @@ def test_is_pair(item: list[int], expected: bool) -> None:
         (_string_to_34_tiles(man="11"), False),  # pair
         (_string_to_34_tiles(man="1111"), False),  # kan
         (_string_to_34_tiles(man="124"), False),  # not consecutive
+        (_string_to_34_tiles(man="213"), False),  # not ascending order
+        (_string_to_34_tiles(man="321"), False),  # descending order
+        (_string_to_34_tiles(sou="987"), False),  # descending order
+        (_string_to_34_tiles(pin="312"), False),  # not ascending order
     ],
 )
 def test_is_chi(item: list[int], expected: bool) -> None:
