@@ -1,7 +1,7 @@
 from collections.abc import Collection
 
 from mahjong.agari import Agari
-from mahjong.constants import CHUN, HAKU, HATSU, AKA_DORA_LIST
+from mahjong.constants import AKA_DORA_LIST, CHUN, HAKU, HATSU
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.hand_config import HandConfig
