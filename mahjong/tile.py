@@ -1,3 +1,4 @@
+from collections import Counter
 from collections.abc import Collection, Sequence
 from typing import Any
 
@@ -62,6 +63,32 @@ class TilesConverter:
         return results
 
     @staticmethod
+    def _split_string(string: str | None, offset: int, red: int | None = None) -> list[int]:
+        if not string:
+            return []
+
+        counts: Counter[int] = Counter()
+        result: list[int] = []
+
+        explicit_aka = {"r", "0"}
+        for ch in string:
+            # explicit aka markers
+            if ch in explicit_aka and red is not None:
+                result.append(red)
+                continue
+
+            tile = offset + (int(ch) - 1) * 4
+            # numeric '5' should not map to aka id when aka support is present
+            if red is not None and tile == red:
+                tile += 1
+
+            count_of_tiles = counts[tile]
+            result.append(tile + count_of_tiles)
+            counts[tile] += 1
+
+        return result
+
+    @staticmethod
     def string_to_136_array(
         sou: str | None = None,
         pin: str | None = None,
@@ -76,41 +103,10 @@ class TilesConverter:
         has_aka_dora has to be True for this to do that.
         We need it to increase readability of our tests
         """
-
-        def _split_string(string: str | None, offset: int, red: int | None = None) -> list[int]:
-            data = []
-            temp = []
-
-            if not string:
-                return []
-
-            for i in string:
-                if (i in {"r", "0"}) and has_aka_dora:
-                    assert red is not None
-                    temp.append(red)
-                    data.append(red)
-                else:
-                    tile = offset + (int(i) - 1) * 4
-                    if tile == red and has_aka_dora:
-                        # prevent non reds to become red
-                        tile += 1
-                    if tile in data:
-                        count_of_tiles = len([x for x in temp if x == tile])
-                        new_tile = tile + count_of_tiles
-                        data.append(new_tile)
-
-                        temp.append(tile)
-                    else:
-                        data.append(tile)
-                        temp.append(tile)
-
-            return data
-
-        results = _split_string(man, 0, FIVE_RED_MAN)
-        results += _split_string(pin, 36, FIVE_RED_PIN)
-        results += _split_string(sou, 72, FIVE_RED_SOU)
-        results += _split_string(honors, 108)
-
+        results = TilesConverter._split_string(man, 0, FIVE_RED_MAN if has_aka_dora else None)
+        results += TilesConverter._split_string(pin, 36, FIVE_RED_PIN if has_aka_dora else None)
+        results += TilesConverter._split_string(sou, 72, FIVE_RED_SOU if has_aka_dora else None)
+        results += TilesConverter._split_string(honors, 108)
         return results
 
     @staticmethod

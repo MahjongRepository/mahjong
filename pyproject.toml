@@ -78,13 +78,9 @@ ignore = [
     "PLR0913", # too-many-arguments
     "PLR0915", # too-many-statements
     "PLR2004", # magic-value-comparison
-
-    "FBT001", # boolean-type-hint-positional-argument
-    "FBT002", # boolean-default-value-positional-argument
-    "FBT003", # boolean-positional-value-in-call
-
-    # Will be fixed later
-    "S101",
+    "FBT001",  # boolean-type-hint-positional-argument
+    "FBT002",  # boolean-default-value-positional-argument
+    "FBT003",  # boolean-positional-value-in-call
 ]
 
 [tool.ruff.lint.pycodestyle]
