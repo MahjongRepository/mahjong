@@ -126,7 +126,21 @@ def test_block_from_meld_with_invalid_meld_type_raises_runtime_error() -> None:
 
 def test_divide_hand_skips_hand_with_negative_tiles() -> None:
     tiles_34 = TilesConverter.string_to_34_array(man="123789", pin="123", sou="12", honors="11222")
-    tiles_34[26] = -2
+    tiles_34[_string_to_34_tile(sou="9")] = -2
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
+def test_divide_hand_skips_hand_with_5_identical_tiles() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(pin="123", sou="123", honors="111")
+    tiles_34[_string_to_34_tile(man="1")] = 5
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
+def test_divide_hand_skips_hand_with_6_identical_tiles() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(pin="123", sou="123", honors="11")
+    tiles_34[_string_to_34_tile(man="1")] = 6
     result = HandDivider.divide_hand(tiles_34)
     assert result == []
 
