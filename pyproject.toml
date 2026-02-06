@@ -26,6 +26,7 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/MahjongRepository/mahjong"
+Wiki = "https://github.com/MahjongRepository/mahjong/wiki"
 
 [build-system]
 requires = ["setuptools >= 77.0.3"]
