@@ -124,6 +124,13 @@ def test_block_from_meld_with_invalid_meld_type_raises_runtime_error() -> None:
         _Block.from_meld(meld)
 
 
+def test_divide_hand_skips_hand_with_negative_tiles() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="123789", pin="123", sou="12", honors="11222")
+    tiles_34[26] = -2
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
 def test_divide_hand_skips_combinations_with_wrong_block_count() -> None:
     # 5 melds + 1 pair = 6 blocks, which != 5
     tiles_34 = TilesConverter.string_to_34_array(man="123789", pin="123789", sou="111", honors="11")
