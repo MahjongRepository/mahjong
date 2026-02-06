@@ -146,3 +146,15 @@ def test_decompose_chiitoitsu_rejects_hand_with_melds() -> None:
     melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man="111"))]
     result = HandDivider.divide_hand(tiles_34, melds)
     assert result == []
+
+
+def test_decompose_chiitoitsu_rejects_hand_with_too_many_tiles() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="2288", pin="2288", sou="228", honors="2244")
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
+def test_decompose_chiitoitsu_rejects_hand_with_too_many_pairs() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="2288", pin="2288", sou="2288", honors="2244")
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
