@@ -116,6 +116,9 @@ class HandDivider:
 
     @staticmethod
     def _decompose_chiitoitsu(pure_hand: list[int]) -> list[_Block]:
+        if any(count not in {0, 2} for count in pure_hand):
+            return []
+
         blocks = [_Block(i, _BlockType.PAIR) for i, count in enumerate(pure_hand) if count == 2]
         return blocks if len(blocks) == 7 else []
 
