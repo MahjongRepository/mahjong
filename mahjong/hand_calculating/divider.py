@@ -130,7 +130,8 @@ class HandDivider:
 
         if not combinations:
             for pair in range(9):
-                if single_color_hand[pair] < 2:
+                if single_color_hand[pair] < 2 or single_color_hand[pair] > 4:
+                    # Skip if there is no pair or there are too many tiles.
                     continue
 
                 single_color_hand[pair] -= 2
