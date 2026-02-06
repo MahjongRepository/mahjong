@@ -1,47 +1,37 @@
 from collections.abc import Collection, Sequence
 from dataclasses import dataclass
-from enum import Enum
-from functools import lru_cache, total_ordering
+from enum import IntEnum
+from functools import lru_cache
 from typing import Literal
 
 from mahjong.meld import Meld
-from mahjong.utils import is_chi, is_kan, is_pon
 
 
-class _BlockType(Enum):
+class _BlockType(IntEnum):
     QUAD = 0
     TRIPLET = 1
     PAIR = 2
     SEQUENCE = 3
 
 
-@total_ordering
-@dataclass(frozen=True)
-class _Block:  # noqa: PLW1641 __hash__ is automatically implemented
-    ty: _BlockType
+@dataclass(frozen=True, order=True)
+class _Block:
     tile_34: int
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, _Block):
-            return NotImplemented
-        return (self.tile_34, self.ty.value) == (other.tile_34, other.ty.value)
-
-    def __lt__(self, other: object) -> bool:
-        if not isinstance(other, _Block):
-            return NotImplemented
-        return (self.tile_34, self.ty.value) < (other.tile_34, other.ty.value)
+    ty: _BlockType
 
     @classmethod
     def from_meld(cls, meld: Meld) -> "_Block":
-        tiles_34 = meld.tiles_34
-        if is_chi(tiles_34):
-            return cls(_BlockType.SEQUENCE, tiles_34[0])
-        if is_pon(tiles_34):
-            return cls(_BlockType.TRIPLET, tiles_34[0])
-        if is_kan(tiles_34):
-            return cls(_BlockType.QUAD, tiles_34[0])
-        msg = f"invalid meld type: {meld.type}, tiles: {tiles_34}"
-        raise RuntimeError(msg)
+        tile_34 = meld.tiles_34[0]
+        match meld.type:
+            case Meld.CHI:
+                return cls(tile_34, _BlockType.SEQUENCE)
+            case Meld.PON:
+                return cls(tile_34, _BlockType.TRIPLET)
+            case Meld.KAN | Meld.SHOUMINKAN:
+                return cls(tile_34, _BlockType.QUAD)
+            case _:
+                msg = f"invalid meld type: {meld.type}, tiles: {meld.tiles_34}"
+                raise RuntimeError(msg)
 
     @property
     def tiles_34(self) -> list[int]:
@@ -126,12 +116,13 @@ class HandDivider:
 
     @staticmethod
     def _decompose_chiitoitsu(pure_hand: list[int]) -> list[_Block]:
-        blocks = [_Block(_BlockType.PAIR, i) for i, count in enumerate(pure_hand) if count == 2]
+        blocks = [_Block(i, _BlockType.PAIR) for i, count in enumerate(pure_hand) if count == 2]
         return blocks if len(blocks) == 7 else []
 
     @staticmethod
     def _decompose_single_color_hand(single_color_hand: list[int], suit: Literal[0, 9, 18]) -> list[list[_Block]]:
-        combinations = HandDivider._decompose_single_color_hand_without_pair(single_color_hand, [], 0, suit)
+        remaining = sum(single_color_hand)
+        combinations = HandDivider._decompose_single_color_hand_without_pair(single_color_hand, [], 0, suit, remaining)
 
         if not combinations:
             for pair in range(9):
@@ -139,8 +130,14 @@ class HandDivider:
                     continue
 
                 single_color_hand[pair] -= 2
-                blocks = [_Block(_BlockType.PAIR, suit + pair)]
-                comb = HandDivider._decompose_single_color_hand_without_pair(single_color_hand, blocks, 0, suit)
+                blocks = [_Block(suit + pair, _BlockType.PAIR)]
+                comb = HandDivider._decompose_single_color_hand_without_pair(
+                    single_color_hand,
+                    blocks,
+                    0,
+                    suit,
+                    remaining - 2,
+                )
                 single_color_hand[pair] += 2
 
                 if not comb:
@@ -156,12 +153,19 @@ class HandDivider:
         blocks: list[_Block],
         i: int,
         suit: Literal[0, 9, 18],
+        remaining: int,
     ) -> list[list[_Block]]:
         if i == 9:
-            return [blocks] if sum(single_color_hand) == 0 else []
+            return [blocks] if remaining == 0 else []
 
         if single_color_hand[i] == 0:
-            return HandDivider._decompose_single_color_hand_without_pair(single_color_hand, blocks, i + 1, suit)
+            return HandDivider._decompose_single_color_hand_without_pair(
+                single_color_hand,
+                blocks,
+                i + 1,
+                suit,
+                remaining,
+            )
 
         combinations: list[list[_Block]] = []
 
@@ -169,12 +173,13 @@ class HandDivider:
             single_color_hand[i] -= 1
             single_color_hand[i + 1] -= 1
             single_color_hand[i + 2] -= 1
-            new_blocks = [*blocks, _Block(_BlockType.SEQUENCE, suit + i)]
+            new_blocks = [*blocks, _Block(suit + i, _BlockType.SEQUENCE)]
             new_combination = HandDivider._decompose_single_color_hand_without_pair(
                 single_color_hand,
                 new_blocks,
                 i,
                 suit,
+                remaining - 3,
             )
             combinations.extend(new_combination)
             single_color_hand[i + 2] += 1
@@ -183,12 +188,13 @@ class HandDivider:
 
         if single_color_hand[i] >= 3:
             single_color_hand[i] -= 3
-            new_blocks = [*blocks, _Block(_BlockType.TRIPLET, suit + i)]
+            new_blocks = [*blocks, _Block(suit + i, _BlockType.TRIPLET)]
             new_combination = HandDivider._decompose_single_color_hand_without_pair(
                 single_color_hand,
                 new_blocks,
                 i + 1,
                 suit,
+                remaining - 3,
             )
             combinations.extend(new_combination)
             single_color_hand[i] += 3
@@ -206,10 +212,10 @@ class HandDivider:
                 case 2:
                     if has_pair:
                         return []
-                    blocks.append(_Block(_BlockType.PAIR, 27 + i))
+                    blocks.append(_Block(27 + i, _BlockType.PAIR))
                     has_pair = True
                 case 3:
-                    blocks.append(_Block(_BlockType.TRIPLET, 27 + i))
+                    blocks.append(_Block(27 + i, _BlockType.TRIPLET))
                 case _:
                     return []
 
