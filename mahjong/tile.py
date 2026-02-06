@@ -67,31 +67,24 @@ class TilesConverter:
         if not string:
             return []
 
-        result: list[int] = []
-        seen: set[int] = set()
         counts: Counter[int] = Counter()
+        result: list[int] = []
 
         explicit_aka = {"r", "0"}
         for ch in string:
             # explicit aka markers
             if red is not None and ch in explicit_aka:
-                tile = red
-            else:
-                tile = offset + (int(ch) - 1) * 4
-                # numeric '5' should not map to aka id when aka support is present
-                if red is not None and tile == red:
-                    tile += 1
+                result.append(red)
+                continue
 
-            if tile in seen:
-                count_of_tiles = counts[tile]
-                new_tile = tile + count_of_tiles
-                result.append(new_tile)
-                seen.add(new_tile)
-                counts[tile] = count_of_tiles + 1
-            else:
-                result.append(tile)
-                seen.add(tile)
-                counts[tile] = counts[tile] + 1
+            tile = offset + (int(ch) - 1) * 4
+            # numeric '5' should not map to aka id when aka support is present
+            if red is not None and tile == red:
+                tile += 1
+
+            count_of_tiles = counts[tile]
+            result.append(tile + count_of_tiles)
+            counts[tile] += 1
 
         return result
 
