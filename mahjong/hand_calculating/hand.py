@@ -1,7 +1,7 @@
 from collections.abc import Collection
 
 from mahjong.agari import Agari
-from mahjong.constants import CHUN, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU, HAKU, HATSU
+from mahjong.constants import CHUN, HAKU, HATSU, AKA_DORA_LIST
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.hand_config import HandConfig
@@ -171,8 +171,7 @@ class HandCalculator:
 
         precomputed_aka_dora = 0
         if config.options.has_aka_dora:
-            aka_dora_tiles = {FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU}
-            precomputed_aka_dora = sum(t in aka_dora_tiles for t in tiles)
+            precomputed_aka_dora = sum(t in AKA_DORA_LIST for t in tiles)
 
         precomputed_ura_dora = 0
         if config.is_riichi or config.is_daburu_riichi:
