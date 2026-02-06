@@ -14,11 +14,11 @@ class Iipeiko(Yaku):
     han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        # count occurrences of each chi set
-        chi_counts: dict[tuple[int, ...], int] = {}
+        # count occurrences of each chi set (first tile uniquely identifies a chi)
+        chi_counts: dict[int, int] = {}
         for item in hand:
             if is_chi(item):
-                key = tuple(item)
+                key = item[0]
                 chi_counts[key] = chi_counts.get(key, 0) + 1
 
         # iipeiko requires at least one pair of identical chi
