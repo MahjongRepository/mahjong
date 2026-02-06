@@ -61,10 +61,17 @@ class HandDivider:
         :param melds: list of Meld objects
         :return:
         """
+        if not HandDivider._validate_tiles(tiles_34):
+            return []
+
         meld_blocks = HandDivider._melds_to_blocks(melds)
         pure_hand = HandDivider._get_pure_hand(tiles_34, meld_blocks)
         combinations = HandDivider._divide_hand_impl(pure_hand, meld_blocks)
         return [[b.tiles_34 for b in blocks] for blocks in combinations]
+
+    @staticmethod
+    def _validate_tiles(tiles_34: Sequence[int]) -> bool:
+        return all(0 <= count <= 4 for count in tiles_34)
 
     @staticmethod
     def _melds_to_blocks(melds: Collection[Meld] | None = None) -> tuple[_Block, ...]:
@@ -130,8 +137,7 @@ class HandDivider:
 
         if not combinations:
             for pair in range(9):
-                if single_color_hand[pair] < 2 or single_color_hand[pair] > 4:
-                    # Skip if there is no pair or there are too many tiles.
+                if single_color_hand[pair] < 2:
                     continue
 
                 single_color_hand[pair] -= 2
