@@ -138,10 +138,26 @@ def test_divide_hand_skips_hand_with_5_identical_tiles() -> None:
     assert result == []
 
 
+def test_divide_hand_skips_hand_with_5_identical_tiles_with_meld() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(pin="123", sou="123", honors="111")
+    tiles_34[_string_to_34_tile(man="1")] = 5
+    melds = [_make_meld(Meld.PON, man="111")]
+    result = HandDivider.divide_hand(tiles_34, melds)
+    assert result == []
+
+
 def test_divide_hand_skips_hand_with_6_identical_tiles() -> None:
     tiles_34 = TilesConverter.string_to_34_array(pin="123", sou="123", honors="11")
     tiles_34[_string_to_34_tile(man="1")] = 6
     result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
+def test_divide_hand_skips_hand_with_6_identical_tiles_with_meld() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(pin="123", sou="123", honors="11")
+    tiles_34[_string_to_34_tile(man="1")] = 6
+    melds = [_make_meld(Meld.PON, man="111")]
+    result = HandDivider.divide_hand(tiles_34, melds)
     assert result == []
 
 
