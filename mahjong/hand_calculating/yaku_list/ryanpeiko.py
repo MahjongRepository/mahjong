@@ -14,10 +14,11 @@ class Ryanpeikou(Yaku):
     han_closed = 3
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        chi_counts: dict[tuple[int, ...], int] = {}
+        # count occurrences of each chi set (first tile uniquely identifies a chi)
+        chi_counts: dict[int, int] = {}
         for item in hand:
             if is_chi(item):
-                key = tuple(item)
+                key = item[0]
                 chi_counts[key] = chi_counts.get(key, 0) + 1
 
         # ryanpeiko requires 4 chi that form 2 pairs
