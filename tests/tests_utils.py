@@ -12,7 +12,12 @@ from mahjong.utils import (
     find_isolated_tile_indices,
     has_pon_or_kan_of,
     is_aka_dora,
+    is_chi,
     is_dora_indicator_for_terminal,
+    is_kan,
+    is_pair,
+    is_pon,
+    is_pon_or_kan,
     is_sangenpai,
     is_terminal,
     is_tile_strictly_isolated,
@@ -405,3 +410,80 @@ def test_count_dora_for_hand_multiple_dora_tiles() -> None:
     dora_map = build_dora_count_map([_string_to_136_tile(man="2")])
     result = count_dora_for_hand(tiles_34, dora_map)
     assert result == 2
+
+
+@pytest.mark.parametrize(
+    ("item", "expected"),
+    [
+        (_string_to_34_tiles(man="11"), True),
+        (_string_to_34_tiles(man="111"), False),
+        (_string_to_34_tiles(man="1111"), False),
+        (_string_to_34_tiles(man="123"), False),
+    ],
+)
+def test_is_pair(item: list[int], expected: bool) -> None:
+    assert is_pair(item) == expected
+
+
+@pytest.mark.parametrize(
+    ("item", "expected"),
+    [
+        (_string_to_34_tiles(man="123"), True),  # chi
+        (_string_to_34_tiles(pin="456"), True),  # chi
+        (_string_to_34_tiles(sou="789"), True),  # chi
+        (_string_to_34_tiles(man="111"), False),  # pon
+        (_string_to_34_tiles(man="11"), False),  # pair
+        (_string_to_34_tiles(man="1111"), False),  # kan
+        (_string_to_34_tiles(man="124"), False),  # not consecutive
+        (_string_to_34_tiles(man="213"), False),  # not ascending order
+        (_string_to_34_tiles(man="321"), False),  # descending order
+        (_string_to_34_tiles(sou="987"), False),  # descending order
+        (_string_to_34_tiles(pin="312"), False),  # not ascending order
+    ],
+)
+def test_is_chi(item: list[int], expected: bool) -> None:
+    assert is_chi(item) == expected
+
+
+@pytest.mark.parametrize(
+    ("item", "expected"),
+    [
+        (_string_to_34_tiles(man="111"), True),  # pon
+        (_string_to_34_tiles(pin="555"), True),  # pon
+        (_string_to_34_tiles(honors="111"), True),  # pon of honors
+        (_string_to_34_tiles(man="123"), False),  # chi
+        (_string_to_34_tiles(man="11"), False),  # pair
+        (_string_to_34_tiles(man="1111"), False),  # kan
+    ],
+)
+def test_is_pon(item: list[int], expected: bool) -> None:
+    assert is_pon(item) == expected
+
+
+@pytest.mark.parametrize(
+    ("item", "expected"),
+    [
+        (_string_to_34_tiles(man="1111"), True),  # kan
+        (_string_to_34_tiles(pin="5555"), True),  # kan
+        (_string_to_34_tiles(man="111"), False),  # pon
+        (_string_to_34_tiles(man="123"), False),  # chi
+        (_string_to_34_tiles(man="11"), False),  # pair
+    ],
+)
+def test_is_kan(item: list[int], expected: bool) -> None:
+    assert is_kan(item) == expected
+
+
+@pytest.mark.parametrize(
+    ("item", "expected"),
+    [
+        (_string_to_34_tiles(man="111"), True),  # pon
+        (_string_to_34_tiles(man="1111"), True),  # kan
+        (_string_to_34_tiles(pin="555"), True),  # pon
+        (_string_to_34_tiles(pin="5555"), True),  # kan
+        (_string_to_34_tiles(man="123"), False),  # chi
+        (_string_to_34_tiles(man="11"), False),  # pair
+    ],
+)
+def test_is_pon_or_kan(item: list[int], expected: bool) -> None:
+    assert is_pon_or_kan(item) == expected

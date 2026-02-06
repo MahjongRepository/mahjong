@@ -1,7 +1,7 @@
 from collections.abc import Collection, Sequence
 
 from mahjong.hand_calculating.yaku import Yaku
-from mahjong.utils import is_man, is_pin, is_pon_or_kan, is_sou, simplify
+from mahjong.utils import is_pon_or_kan
 
 
 class SanshokuDoukou(Yaku):
@@ -15,28 +15,30 @@ class SanshokuDoukou(Yaku):
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        pon_sets = [i for i in hand if is_pon_or_kan(i)]
-        if len(pon_sets) < 3:
-            return False
+        # bitmask per suit: bit i = pon at simplified position i
+        sou_mask = 0
+        pin_mask = 0
+        man_mask = 0
 
-        sou_pon: list[Collection[int]] = []
-        pin_pon: list[Collection[int]] = []
-        man_pon: list[Collection[int]] = []
-        for item in pon_sets:
-            if is_sou(item[0]):
-                sou_pon.append(item)
-            elif is_pin(item[0]):
-                pin_pon.append(item)
-            elif is_man(item[0]):
-                man_pon.append(item)
+        for item in hand:
+            first = item[0]
 
-        for sou_item in sou_pon:
-            for pin_item in pin_pon:
-                for man_item in man_pon:
-                    # cast tile indices to 1..9 representation
-                    simplified_sou_item = {simplify(x) for x in sou_item}
-                    simplified_pin_item = {simplify(x) for x in pin_item}
-                    simplified_man_item = {simplify(x) for x in man_item}
-                    if simplified_sou_item == simplified_pin_item == simplified_man_item:
-                        return True
-        return False
+            # skip honors (27-33)
+            if first >= 27:
+                continue
+
+            if not is_pon_or_kan(item):
+                continue
+
+            simplified = first % 9
+            bit = 1 << simplified
+
+            if first >= 18:  # sou
+                sou_mask |= bit
+            elif first >= 9:  # pin
+                pin_mask |= bit
+            else:  # man
+                man_mask |= bit
+
+        # sanshoku douko requires same pon in all three suits
+        return (sou_mask & pin_mask & man_mask) != 0

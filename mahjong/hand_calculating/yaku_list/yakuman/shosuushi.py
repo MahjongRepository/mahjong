@@ -1,6 +1,6 @@
 from collections.abc import Collection, Sequence
 
-from mahjong.constants import EAST, NORTH, SOUTH, WEST
+from mahjong.constants import WINDS
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.utils import is_pair, is_pon_or_kan
 
@@ -17,18 +17,16 @@ class Shousuushii(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        pon_sets = [x for x in hand if is_pon_or_kan(x)]
-        if len(pon_sets) < 3:
-            return False
-
         count_of_wind_sets = 0
         wind_pair = 0
-        winds = [EAST, SOUTH, WEST, NORTH]
-        for item in hand:
-            if is_pon_or_kan(item) and item[0] in winds:
-                count_of_wind_sets += 1
 
-            if is_pair(item) and item[0] in winds:
+        for item in hand:
+            if item[0] not in WINDS:
+                continue
+
+            if is_pair(item):
                 wind_pair += 1
+            elif is_pon_or_kan(item):
+                count_of_wind_sets += 1
 
         return count_of_wind_sets == 3 and wind_pair == 1
