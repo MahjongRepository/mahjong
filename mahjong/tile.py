@@ -1,3 +1,4 @@
+from collections import Counter
 from collections.abc import Collection, Sequence
 from typing import Any
 
@@ -68,7 +69,7 @@ class TilesConverter:
 
         data: list[int] = []
         seen: set[int] = set()
-        counts: dict[int, int] = {}
+        counts: Counter[int] = Counter()
 
         explicit_aka = {"r", "0"}
         for ch in string:
@@ -86,7 +87,7 @@ class TilesConverter:
                 tile += 1
 
             if tile in seen:
-                count_of_tiles = counts.get(tile, 0)
+                count_of_tiles = counts[tile]
                 new_tile = tile + count_of_tiles
                 data.append(new_tile)
                 seen.add(new_tile)
@@ -94,7 +95,7 @@ class TilesConverter:
             else:
                 data.append(tile)
                 seen.add(tile)
-                counts[tile] = counts.get(tile, 0) + 1
+                counts[tile] = counts[tile] + 1
 
         return data
 
