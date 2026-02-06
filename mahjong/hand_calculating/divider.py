@@ -195,6 +195,7 @@ class HandDivider:
         if single_color_hand[i] >= 3:
             single_color_hand[i] -= 3
             new_blocks = [*blocks, _Block(suit + i, _BlockType.TRIPLET)]
+            # The triplet is extracted only once.
             new_combination = HandDivider._decompose_single_color_hand_without_pair(
                 single_color_hand,
                 new_blocks,
