@@ -73,7 +73,7 @@ class TilesConverter:
         explicit_aka = {"r", "0"}
         for ch in string:
             # explicit aka markers
-            if red is not None and ch in explicit_aka:
+            if ch in explicit_aka and red is not None:
                 result.append(red)
                 continue
 
