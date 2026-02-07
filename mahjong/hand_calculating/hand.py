@@ -1,6 +1,5 @@
 from collections.abc import Collection
 
-from mahjong.agari import Agari
 from mahjong.constants import AKA_DORA_LIST, CHUN, HAKU, HATSU
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator
@@ -23,7 +22,6 @@ class HandCalculator:
     ERR_OPEN_HAND_DABURI = "open_hand_daburi_not_allowed"
     ERR_IPPATSU_WITHOUT_RIICHI = "ippatsu_without_riichi_not_allowed"
     ERR_HAND_NOT_WINNING = "hand_not_winning"
-    ERR_HAND_NOT_CORRECT = "hand_not_correct"
     ERR_NO_YAKU = "no_yaku"
     ERR_CHANKAN_WITH_TSUMO = "chankan_with_tsumo_not_allowed"
     ERR_RINSHAN_WITHOUT_TSUMO = "rinshan_without_tsumo_not_allowed"
@@ -82,7 +80,6 @@ class HandCalculator:
         is_aotenjou = isinstance(scores_calculator, Aotenjou)
 
         opened_melds = [x.tiles_34 for x in melds if x.opened]
-        all_melds = [x.tiles_34 for x in melds]
         is_open_hand = len(opened_melds) > 0
 
         # special situation
@@ -152,9 +149,6 @@ class HandCalculator:
 
         if config.is_renhou and melds:
             return HandResponse(error=HandCalculator.ERR_RENHOU_WITH_MELD)
-
-        if not Agari.is_agari(tiles_34, all_melds):
-            return HandResponse(error=HandCalculator.ERR_HAND_NOT_WINNING)
 
         if not config.options.has_double_yakuman:
             config.yaku.daburu_kokushi.han_closed = 13
@@ -533,7 +527,7 @@ class HandCalculator:
             )
 
         if not calculated_hands:
-            return HandResponse(error=HandCalculator.ERR_HAND_NOT_CORRECT)
+            return HandResponse(error=HandCalculator.ERR_HAND_NOT_WINNING)
 
         # find most expensive hand
         calculated_hands = sorted(calculated_hands, key=lambda x: (x["han"], x["fu"]), reverse=True)
