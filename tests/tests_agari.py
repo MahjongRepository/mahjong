@@ -107,15 +107,17 @@ def test_honor_tile_overflow_returns_false(tiles_34: list[int]) -> None:
     assert Agari.is_agari(tiles_34) is False
 
 
-def test_pin_suit_mod3_equals_1_returns_false() -> None:
-    # 1 tile in pin suit: sum = 1, 1 % 3 = 1
-    tiles = TilesConverter.string_to_34_array(pin="1")
-    assert Agari.is_agari(tiles) is False
-
-
-def test_sou_suit_mod3_equals_1_returns_false() -> None:
-    # 1 tile in sou suit: sum = 1, 1 % 3 = 1
-    tiles = TilesConverter.string_to_34_array(sou="1")
+@pytest.mark.parametrize(
+    ("man", "pin", "sou"),
+    [
+        pytest.param("1", "", "", id="man"),
+        pytest.param("", "1", "", id="pin"),
+        pytest.param("", "", "1", id="sou"),
+    ],
+)
+def test_single_tile_in_suit_returns_false(man: str, pin: str, sou: str) -> None:
+    # a single tile in any suit can't form a valid group (tile count % 3 == 1)
+    tiles = TilesConverter.string_to_34_array(man=man, pin=pin, sou=sou)
     assert Agari.is_agari(tiles) is False
 
 
@@ -148,3 +150,27 @@ def test_is_mentsu_negative_a_returns_false() -> None:
     # 1m count=2 implies 2 sequences, but 2m count=0 gives a = 0 - 2 = -2 < 0
     tiles = TilesConverter.string_to_34_array(man="114", honors="11")
     assert Agari.is_agari(tiles) is False
+
+
+def test_open_hand_with_kan_meld() -> None:
+    # 4-tile kan meld exercises the len(meld) > 3 branch
+    tiles = TilesConverter.string_to_34_array(man="1111", pin="123456789", sou="22")
+    kan_of_1m = [0, 0, 0, 0]
+    assert Agari.is_agari(tiles, [kan_of_1m]) is True
+
+
+@pytest.mark.parametrize(
+    ("man", "pin"),
+    [
+        pytest.param("66", "111222333444"),
+        pytest.param("99", "111222333444"),
+        pytest.param("22", "111222333444"),
+        pytest.param("44", "111222333444"),
+        pytest.param("77", "111222333444"),
+    ],
+)
+def test_atama_mentsu_pair_positions(man: str, pin: str) -> None:
+    # each case places the pair at a different position within the man suit,
+    # exercising distinct branches in _is_atama_mentsu
+    tiles = TilesConverter.string_to_34_array(man=man, pin=pin)
+    assert Agari.is_agari(tiles) is True

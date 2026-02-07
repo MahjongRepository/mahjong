@@ -15,7 +15,7 @@ def test_no_winning_tile() -> None:
     win_tile = _string_to_136_tile(sou="9")
 
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_riichi=True))
-    assert result.error == "winning_tile_not_in_hand"
+    assert result.error == HandCalculator.ERR_NO_WINNING_TILE
 
 
 def test_open_hand_riichi() -> None:
@@ -26,7 +26,7 @@ def test_open_hand_riichi() -> None:
 
     melds = [_make_meld(Meld.CHI, sou="123")]
     result = hand.estimate_hand_value(tiles, win_tile, melds=melds, config=_make_hand_config(is_riichi=True))
-    assert result.error == "open_hand_riichi_not_allowed"
+    assert result.error == HandCalculator.ERR_OPEN_HAND_RIICHI
 
 
 def test_open_hand_daburi() -> None:
@@ -42,7 +42,7 @@ def test_open_hand_daburi() -> None:
         melds=melds,
         config=_make_hand_config(is_riichi=True, is_daburu_riichi=True),
     )
-    assert result.error == "open_hand_daburi_not_allowed"
+    assert result.error == HandCalculator.ERR_OPEN_HAND_DABURI
 
 
 def test_ippatsu_without_riichi() -> None:
@@ -52,7 +52,7 @@ def test_ippatsu_without_riichi() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_ippatsu=True))
-    assert result.error == "ippatsu_without_riichi_not_allowed"
+    assert result.error == HandCalculator.ERR_IPPATSU_WITHOUT_RIICHI
 
 
 def test_hand_not_winning() -> None:
@@ -62,7 +62,7 @@ def test_hand_not_winning() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(tiles, win_tile)
-    assert result.error == "hand_not_winning"
+    assert result.error == HandCalculator.ERR_HAND_NOT_WINNING
 
 
 def test_no_yaku() -> None:
@@ -73,7 +73,7 @@ def test_no_yaku() -> None:
 
     melds = [_make_meld(Meld.CHI, sou="123")]
     result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
-    assert result.error == "no_yaku"
+    assert result.error == HandCalculator.ERR_NO_YAKU
 
 
 def test_chankan_with_tsumo() -> None:
@@ -83,7 +83,7 @@ def test_chankan_with_tsumo() -> None:
     win_tile = _string_to_136_tile(sou="1")
 
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_chankan=True))
-    assert result.error == "chankan_with_tsumo_not_allowed"
+    assert result.error == HandCalculator.ERR_CHANKAN_WITH_TSUMO
 
 
 def test_rinshan_without_tsumo() -> None:
@@ -93,7 +93,7 @@ def test_rinshan_without_tsumo() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=False, is_rinshan=True))
-    assert result.error == "rinshan_without_tsumo_not_allowed"
+    assert result.error == HandCalculator.ERR_RINSHAN_WITHOUT_TSUMO
 
 
 def test_haitei_without_tsumo() -> None:
@@ -103,7 +103,7 @@ def test_haitei_without_tsumo() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=False, is_haitei=True))
-    assert result.error == "haitei_without_tsumo_not_allowed"
+    assert result.error == HandCalculator.ERR_HAITEI_WITHOUT_TSUMO
 
 
 def test_houtei_with_tsumo() -> None:
@@ -113,7 +113,7 @@ def test_houtei_with_tsumo() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_houtei=True))
-    assert result.error == "houtei_with_tsumo_not_allowed"
+    assert result.error == HandCalculator.ERR_HOUTEI_WITH_TSUMO
 
 
 def test_haitei_with_rinshan() -> None:
@@ -127,7 +127,7 @@ def test_haitei_with_rinshan() -> None:
         win_tile,
         config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_haitei=True),
     )
-    assert result.error == "haitei_with_rinshan_not_allowed"
+    assert result.error == HandCalculator.ERR_HAITEI_WITH_RINSHAN
 
 
 def test_houtei_with_chankan() -> None:
@@ -141,7 +141,7 @@ def test_houtei_with_chankan() -> None:
         win_tile,
         config=_make_hand_config(is_tsumo=False, is_chankan=True, is_houtei=True),
     )
-    assert result.error == "houtei_with_chankan_not_allowed"
+    assert result.error == HandCalculator.ERR_HOUTEI_WITH_CHANKAN
 
 
 def test_tenhou_not_as_dealer() -> None:
@@ -160,7 +160,7 @@ def test_tenhou_not_as_dealer() -> None:
         win_tile,
         config=_make_hand_config(is_tsumo=True, is_tenhou=True, player_wind=SOUTH),
     )
-    assert result.error == "tenhou_not_as_dealer_not_allowed"
+    assert result.error == HandCalculator.ERR_TENHOU_NOT_AS_DEALER
 
 
 def test_tenhou_without_tsumo() -> None:
@@ -170,7 +170,7 @@ def test_tenhou_without_tsumo() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=False, is_tenhou=True))
-    assert result.error == "tenhou_without_tsumo_not_allowed"
+    assert result.error == HandCalculator.ERR_TENHOU_WITHOUT_TSUMO
 
 
 def test_tenhou_with_meld() -> None:
@@ -186,7 +186,7 @@ def test_tenhou_with_meld() -> None:
         melds=melds,
         config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_tenhou=True),
     )
-    assert result.error == "tenhou_with_meld_not_allowed"
+    assert result.error == HandCalculator.ERR_TENHOU_WITH_MELD
 
 
 def test_chiihou_as_dealer() -> None:
@@ -205,7 +205,7 @@ def test_chiihou_as_dealer() -> None:
         win_tile,
         config=_make_hand_config(is_tsumo=True, is_chiihou=True, player_wind=EAST),
     )
-    assert result.error == "chiihou_as_dealer_not_allowed"
+    assert result.error == HandCalculator.ERR_CHIIHOU_AS_DEALER
 
 
 def test_chiihou_without_tsumo() -> None:
@@ -215,7 +215,7 @@ def test_chiihou_without_tsumo() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=False, is_chiihou=True))
-    assert result.error == "chiihou_without_tsumo_not_allowed"
+    assert result.error == HandCalculator.ERR_CHIIHOU_WITHOUT_TSUMO
 
 
 def test_chiihou_with_meld() -> None:
@@ -231,7 +231,7 @@ def test_chiihou_with_meld() -> None:
         melds=melds,
         config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_chiihou=True),
     )
-    assert result.error == "chiihou_with_meld_not_allowed"
+    assert result.error == HandCalculator.ERR_CHIIHOU_WITH_MELD
 
 
 def test_renhou_as_dealer() -> None:
@@ -250,7 +250,7 @@ def test_renhou_as_dealer() -> None:
         win_tile,
         config=_make_hand_config(is_tsumo=False, is_renhou=True, player_wind=EAST),
     )
-    assert result.error == "renhou_as_dealer_not_allowed"
+    assert result.error == HandCalculator.ERR_RENHOU_AS_DEALER
 
 
 def test_renhou_with_tsumo() -> None:
@@ -260,7 +260,7 @@ def test_renhou_with_tsumo() -> None:
     win_tile = _string_to_136_tile(sou="4")
 
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_renhou=True))
-    assert result.error == "renhou_with_tsumo_not_allowed"
+    assert result.error == HandCalculator.ERR_RENHOU_WITH_TSUMO
 
 
 def test_renhou_with_meld() -> None:
@@ -276,7 +276,7 @@ def test_renhou_with_meld() -> None:
         melds=melds,
         config=_make_hand_config(is_tsumo=False, is_renhou=True),
     )
-    assert result.error == "renhou_with_meld_not_allowed"
+    assert result.error == HandCalculator.ERR_RENHOU_WITH_MELD
 
 
 def test_win_tile_only_in_opened_meld() -> None:
@@ -291,15 +291,15 @@ def test_win_tile_only_in_opened_meld() -> None:
 
     meld = Meld(meld_type=Meld.PON, tiles=tiles[0:3], opened=True, called_tile=tiles[0], who=0)
     result = hand.estimate_hand_value(tiles, win_tile, melds=[meld])
-    assert result.error == "hand_not_correct"
+    assert result.error == HandCalculator.ERR_HAND_NOT_WINNING
 
 
 @pytest.mark.parametrize(
     "error_string",
     [
-        "hand_not_winning",
-        "no_yaku",
-        "winning_tile_not_in_hand",
+        HandCalculator.ERR_HAND_NOT_WINNING,
+        HandCalculator.ERR_NO_YAKU,
+        HandCalculator.ERR_NO_WINNING_TILE,
     ],
 )
 def test_str_returns_error_when_error_is_set(error_string: str) -> None:
