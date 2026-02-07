@@ -124,6 +124,43 @@ def test_block_from_meld_with_invalid_meld_type_raises_runtime_error() -> None:
         _Block.from_meld(meld)
 
 
+def test_divide_hand_skips_hand_with_negative_tiles() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="123789", pin="123", sou="12", honors="11222")
+    tiles_34[_string_to_34_tile(sou="9")] = -2
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
+def test_divide_hand_skips_hand_with_5_identical_tiles() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(pin="123", sou="123", honors="111")
+    tiles_34[_string_to_34_tile(man="1")] = 5
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
+def test_divide_hand_skips_hand_with_5_identical_tiles_with_meld() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(pin="123", sou="123", honors="111")
+    tiles_34[_string_to_34_tile(man="1")] = 5
+    melds = [_make_meld(Meld.PON, man="111")]
+    result = HandDivider.divide_hand(tiles_34, melds)
+    assert result == []
+
+
+def test_divide_hand_skips_hand_with_6_identical_tiles() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(pin="123", sou="123", honors="11")
+    tiles_34[_string_to_34_tile(man="1")] = 6
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
+def test_divide_hand_skips_hand_with_6_identical_tiles_with_meld() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(pin="123", sou="123", honors="11")
+    tiles_34[_string_to_34_tile(man="1")] = 6
+    melds = [_make_meld(Meld.PON, man="111")]
+    result = HandDivider.divide_hand(tiles_34, melds)
+    assert result == []
+
+
 def test_divide_hand_skips_combinations_with_wrong_block_count() -> None:
     # 5 melds + 1 pair = 6 blocks, which != 5
     tiles_34 = TilesConverter.string_to_34_array(man="123789", pin="123789", sou="111", honors="11")
@@ -145,4 +182,16 @@ def test_decompose_chiitoitsu_rejects_hand_with_melds() -> None:
     tiles_34 = TilesConverter.string_to_34_array(man="2288", pin="2288", sou="22", honors="2244")
     melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man="111"))]
     result = HandDivider.divide_hand(tiles_34, melds)
+    assert result == []
+
+
+def test_decompose_chiitoitsu_rejects_hand_with_too_many_tiles() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="2288", pin="2288", sou="228", honors="2244")
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
+def test_decompose_chiitoitsu_rejects_hand_with_too_many_pairs() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="2288", pin="2288", sou="2288", honors="2244")
+    result = HandDivider.divide_hand(tiles_34)
     assert result == []

@@ -61,10 +61,17 @@ class HandDivider:
         :param melds: list of Meld objects
         :return:
         """
+        if not HandDivider._validate_tiles(tiles_34):
+            return []
+
         meld_blocks = HandDivider._melds_to_blocks(melds)
         pure_hand = HandDivider._get_pure_hand(tiles_34, meld_blocks)
         combinations = HandDivider._divide_hand_impl(pure_hand, meld_blocks)
         return [[b.tiles_34 for b in blocks] for blocks in combinations]
+
+    @staticmethod
+    def _validate_tiles(tiles_34: Sequence[int]) -> bool:
+        return all(0 <= count <= 4 for count in tiles_34)
 
     @staticmethod
     def _melds_to_blocks(melds: Collection[Meld] | None = None) -> tuple[_Block, ...]:
@@ -98,6 +105,7 @@ class HandDivider:
         for man in man_combinations:
             for pin in pin_combinations:
                 for sou in sou_combinations:
+                    # For invalid suits, *_combinations will be [] and the loop will not be executed.
                     all_blocks = [*man, *pin, *sou, *honors]
 
                     num_pair = sum(block.ty == _BlockType.PAIR for block in all_blocks)
@@ -116,6 +124,9 @@ class HandDivider:
 
     @staticmethod
     def _decompose_chiitoitsu(pure_hand: list[int]) -> list[_Block]:
+        if any(count not in {0, 2} for count in pure_hand):
+            return []
+
         blocks = [_Block(i, _BlockType.PAIR) for i, count in enumerate(pure_hand) if count == 2]
         return blocks if len(blocks) == 7 else []
 
@@ -156,6 +167,8 @@ class HandDivider:
         remaining: int,
     ) -> list[list[_Block]]:
         if i == 9:
+            # If there is no tile of the target suits, returns [[]].
+            # If there are any tiles remaining, it returns [].
             return [blocks] if remaining == 0 else []
 
         if single_color_hand[i] == 0:
@@ -192,13 +205,15 @@ class HandDivider:
             new_combination = HandDivider._decompose_single_color_hand_without_pair(
                 single_color_hand,
                 new_blocks,
-                i + 1,
+                i + 1,  # The triplet is extracted only once.
                 suit,
                 remaining - 3,
             )
             combinations.extend(new_combination)
             single_color_hand[i] += 3
 
+        # If single_color_hand[i] is an invalid number (not empty, not a triplet, not a sequence),
+        # [] is returned immediately.
         return combinations
 
     @staticmethod
