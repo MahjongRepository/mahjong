@@ -6,7 +6,7 @@ from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _make_hand_config, _make_meld, _string_to_136_tile
 
 
-def test_aotenjou_hands() -> None:
+def test_aotenjou_kokushi_ron() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="119", man="19", pin="19", honors="1234567")
@@ -23,6 +23,10 @@ def test_aotenjou_hands() -> None:
     assert result.fu == 40
     assert len(result.yaku) == 1
     assert result.cost["main"] == 7864400
+
+
+def test_aotenjou_open_hand_with_honor_melds() -> None:
+    hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(man="234", honors="11122233344")
     win_tile = _string_to_136_tile(man="2")
@@ -44,6 +48,10 @@ def test_aotenjou_hands() -> None:
     assert len(result.yaku) == 4
     assert result.cost["main"] + result.cost["additional"] == 83886200
 
+
+def test_aotenjou_all_honors_with_meld() -> None:
+    hand = HandCalculator()
+
     tiles = TilesConverter.string_to_136_array(honors="11122233444777")
     win_tile = _string_to_136_tile(honors="2")
     melds = [
@@ -63,7 +71,9 @@ def test_aotenjou_hands() -> None:
     assert len(result.yaku) == 6
     assert result.cost["main"] + result.cost["additional"] == 1717986918400
 
-    # monster hand for fun
+
+def test_aotenjou_monster_hand() -> None:
+    hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(honors="111133555566667777")
     win_tile = _string_to_136_tile(honors="3")
@@ -334,7 +344,7 @@ def test_aotenjou_kokushi_tsumo() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
-    win_tile = TilesConverter.string_to_136_array(honors="7")[0]
+    win_tile = _string_to_136_tile(honors="7")
 
     result = hand.estimate_hand_value(
         tiles,
@@ -353,7 +363,7 @@ def test_aotenjou_kokushi_with_dora() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
-    win_tile = TilesConverter.string_to_136_array(honors="7")[0]
+    win_tile = _string_to_136_tile(honors="7")
 
     # 8m indicator makes 9m a dora; kokushi hand includes 9m
     dora_indicators = TilesConverter.string_to_136_array(man="8")
@@ -377,7 +387,7 @@ def test_aotenjou_kokushi_with_ura_dora() -> None:
 
     # kokushi with riichi and ura dora in aotenjou scoring
     tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
-    win_tile = TilesConverter.string_to_136_array(honors="7")[0]
+    win_tile = _string_to_136_tile(honors="7")
 
     ura_dora_indicators = TilesConverter.string_to_136_array(man="8")
     result = hand.estimate_hand_value(

@@ -1,3 +1,5 @@
+import pytest
+
 from mahjong.constants import EAST
 from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.hand import HandCalculator
@@ -151,24 +153,19 @@ def test_tsumo_hand_and_not_pinfu() -> None:
     assert fu == 30
 
 
-def test_penchan_fu() -> None:
+@pytest.mark.parametrize(
+    ("tiles_string", "win_tile_string"),
+    [
+        pytest.param("123456m12456s55p", "3s", id="12_wait"),
+        pytest.param("123456m34589s55p", "7s", id="89_wait"),
+    ],
+)
+def test_penchan_fu(tiles_string: str, win_tile_string: str) -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
-    # 1-2-... wait
-    tiles = TilesConverter.string_to_136_array(sou="12456", man="123456", pin="55")
-    win_tile = _string_to_136_tile(sou="3")
-    hand = _hand(TilesConverter.to_34_array([*tiles, win_tile]))
-
-    fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
-    assert len(fu_details) == 2
-    assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
-    assert {"fu": 2, "reason": FuCalculator.PENCHAN} in fu_details
-    assert fu == 40
-
-    # ...-8-9 wait
-    tiles = TilesConverter.string_to_136_array(sou="34589", man="123456", pin="55")
-    win_tile = _string_to_136_tile(sou="7")
+    tiles = TilesConverter.one_line_string_to_136_array(tiles_string)
+    win_tile = TilesConverter.one_line_string_to_136_array(win_tile_string)[0]
     hand = _hand(TilesConverter.to_34_array([*tiles, win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)
@@ -193,7 +190,14 @@ def test_kanchan_fu() -> None:
     assert fu == 40
 
 
-def test_valued_pair_fu() -> None:
+@pytest.mark.parametrize(
+    ("valued_tiles", "expected_fu", "expected_reason"),
+    [
+        pytest.param([EAST], 2, FuCalculator.VALUED_PAIR, id="single"),
+        pytest.param([EAST, EAST], 4, FuCalculator.DOUBLE_VALUED_PAIR, id="double"),
+    ],
+)
+def test_valued_pair_fu(valued_tiles: list[int], expected_fu: int, expected_reason: str) -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
@@ -201,7 +205,6 @@ def test_valued_pair_fu() -> None:
     win_tile = _string_to_136_tile(sou="6")
     hand = _hand(TilesConverter.to_34_array([*tiles, win_tile]))
 
-    valued_tiles = [EAST]
     fu_details, fu = fu_calculator.calculate_fu(
         hand,
         win_tile,
@@ -211,21 +214,7 @@ def test_valued_pair_fu() -> None:
     )
     assert len(fu_details) == 2
     assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
-    assert {"fu": 2, "reason": FuCalculator.VALUED_PAIR} in fu_details
-    assert fu == 40
-
-    # double valued pair
-    valued_tiles = [EAST, EAST]
-    fu_details, fu = fu_calculator.calculate_fu(
-        hand,
-        win_tile,
-        _get_win_group(hand, win_tile),
-        config,
-        valued_tiles=valued_tiles,
-    )
-    assert len(fu_details) == 2
-    assert {"fu": 30, "reason": FuCalculator.BASE} in fu_details
-    assert {"fu": 4, "reason": FuCalculator.DOUBLE_VALUED_PAIR} in fu_details
+    assert {"fu": expected_fu, "reason": expected_reason} in fu_details
     assert fu == 40
 
 

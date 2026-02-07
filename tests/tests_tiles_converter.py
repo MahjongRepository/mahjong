@@ -1,37 +1,43 @@
+import pytest
+
 from mahjong.constants import FIVE_RED_PIN
 from mahjong.tile import Tile, TilesConverter
+from tests.utils_for_tests import _string_to_34_tile, _string_to_136_tile
 
 
 def test_convert_to_one_line_string() -> None:
-    tiles = [0, 1, 34, 35, 36, 37, 70, 71, 72, 73, 106, 107, 108, 109, 133, 134]
+    tiles = TilesConverter.string_to_136_array(man="1199", pin="1199", sou="1199", honors="1177")
     result = TilesConverter.to_one_line_string(tiles)
     assert result == "1199m1199p1199s1177z"
 
 
-def test_convert_to_one_line_string_with_aka_dora() -> None:
-    tiles = [1, 16, 13, 46, 5, 13, 24, 34, 134, 124]
-    result = TilesConverter.to_one_line_string(tiles, print_aka_dora=False)
-    assert result == "1244579m3p57z"
-    result = TilesConverter.to_one_line_string(tiles, print_aka_dora=True)
-    assert result == "1244079m3p57z"
+@pytest.mark.parametrize(
+    ("print_aka_dora", "expected"),
+    [
+        (False, "1244579m3p57z"),
+        (True, "1244079m3p57z"),
+    ],
+)
+def test_convert_to_one_line_string_with_aka_dora(print_aka_dora: bool, expected: str) -> None:
+    tiles = TilesConverter.string_to_136_array(man="1244079", pin="3", honors="57", has_aka_dora=True)
+    result = TilesConverter.to_one_line_string(tiles, print_aka_dora=print_aka_dora)
+    assert result == expected
 
 
 def test_convert_to_34_array() -> None:
-    tiles = [0, 34, 35, 36, 37, 70, 71, 72, 73, 106, 107, 108, 109, 134]
+    tiles = TilesConverter.string_to_136_array(man="199", pin="1199", sou="1199", honors="117")
     result = TilesConverter.to_34_array(tiles)
-    assert result[0] == 1
-    assert result[8] == 2
-    assert result[9] == 2
-    assert result[17] == 2
-    assert result[18] == 2
-    assert result[26] == 2
-    assert result[27] == 2
-    assert result[33] == 1
-    assert sum(result) == 14
+    # 199m1199p1199s117z
+    assert result == [
+        1, 0, 0, 0, 0, 0, 0, 0, 2,  # m
+        2, 0, 0, 0, 0, 0, 0, 0, 2,  # p
+        2, 0, 0, 0, 0, 0, 0, 0, 2,  # s
+        2, 0, 0, 0, 0, 0, 1,        # z
+    ]  # fmt: skip
 
 
 def test_convert_to_136_array() -> None:
-    tiles = [0, 32, 33, 36, 37, 68, 69, 72, 73, 104, 105, 108, 109, 132]
+    tiles = TilesConverter.string_to_136_array(man="199", pin="1199", sou="1199", honors="117")
     result = TilesConverter.to_34_array(tiles)
     result = TilesConverter.to_136_array(result)
     assert result == tiles
@@ -43,15 +49,38 @@ def test_convert_string_to_136_array() -> None:
     assert tiles == [0, 32, 36, 68, 72, 104, 108, 112, 116, 120, 124, 128, 132]
 
 
-def test_find_34_tile_in_136_array() -> None:
-    result = TilesConverter.find_34_tile_in_136_array(0, [3, 4, 5, 6])
-    assert result == 3
-
-    result = TilesConverter.find_34_tile_in_136_array(33, [3, 4, 134, 135])
-    assert result == 134
-
-    result = TilesConverter.find_34_tile_in_136_array(20, [3, 4, 134, 135])
-    assert result is None
+@pytest.mark.parametrize(
+    ("tile_34", "tiles_136", "expected"),
+    [
+        pytest.param(
+            _string_to_34_tile(man="1"),
+            TilesConverter.string_to_136_array(man="1222"),
+            _string_to_136_tile(man="1"),
+            id="finds_first_match",
+        ),
+        pytest.param(
+            _string_to_34_tile(honors="7"),
+            TilesConverter.string_to_136_array(man="1", honors="77"),
+            _string_to_136_tile(honors="7"),
+            id="finds_honor_tile",
+        ),
+        pytest.param(
+            _string_to_34_tile(sou="3"),
+            TilesConverter.string_to_136_array(man="1", honors="77"),
+            None,
+            id="returns_none_for_missing_tile",
+        ),
+        pytest.param(
+            34,
+            TilesConverter.string_to_136_array(man="1111"),
+            None,
+            id="returns_none_for_out_of_range_tile",
+        ),
+    ],
+)
+def test_find_34_tile_in_136_array(tile_34: int, tiles_136: list[int], expected: int | None) -> None:
+    result = TilesConverter.find_34_tile_in_136_array(tile_34, tiles_136)
+    assert result == expected
 
 
 def test_convert_string_with_aka_dora_to_136_array() -> None:
@@ -67,8 +96,6 @@ def test_convert_string_with_aka_dora_as_zero_to_136_array() -> None:
 def test_one_line_string_to_136_array() -> None:
     initial_string = "789m456p555s11222z"
     tiles = TilesConverter.one_line_string_to_136_array(initial_string)
-    assert len(tiles) == 14
-
     new_string = TilesConverter.to_one_line_string(tiles)
     assert initial_string == new_string
 
@@ -76,19 +103,13 @@ def test_one_line_string_to_136_array() -> None:
 def test_one_line_string_to_34_array() -> None:
     initial_string = "789m456p555s11222z"
     tiles = TilesConverter.one_line_string_to_34_array(initial_string)
-    assert len(tiles) == 34
-
     tiles = TilesConverter.to_136_array(tiles)
     new_string = TilesConverter.to_one_line_string(tiles)
     assert initial_string == new_string
 
 
 def test_tile_instantiation() -> None:
-    tile = Tile(value=0, is_tsumogiri=False)
-    assert tile.value == 0
+    tile_value = _string_to_136_tile(man="1")
+    tile = Tile(value=tile_value, is_tsumogiri=False)
+    assert tile.value == tile_value
     assert tile.is_tsumogiri is False
-
-
-def test_find_34_tile_in_136_array_returns_none_for_out_of_range_tile() -> None:
-    result = TilesConverter.find_34_tile_in_136_array(34, [0, 1, 2, 3])
-    assert result is None

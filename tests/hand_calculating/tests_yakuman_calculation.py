@@ -9,26 +9,20 @@ from mahjong.tile import TilesConverter
 from tests.utils_for_tests import _hand, _make_hand_config, _make_meld, _string_to_136_tile
 
 
-def test_is_tenhou() -> None:
+@pytest.mark.parametrize(
+    "config_kwargs",
+    [
+        pytest.param({"is_tsumo": True, "is_tenhou": True}, id="tenhou"),
+        pytest.param({"is_tsumo": True, "is_chiihou": True}, id="chiihou"),
+    ],
+)
+def test_is_tenhou_or_chiihou(config_kwargs: dict) -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
     win_tile = _string_to_136_tile(sou="4")
 
-    result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_tenhou=True))
-    assert result.error is None
-    assert result.han == 13
-    assert result.fu == 30
-    assert len(result.yaku) == 1
-
-
-def test_is_chiihou() -> None:
-    hand = HandCalculator()
-
-    tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
-    win_tile = _string_to_136_tile(sou="4")
-
-    result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_chiihou=True))
+    result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(**config_kwargs))
     assert result.error is None
     assert result.han == 13
     assert result.fu == 30
@@ -407,7 +401,7 @@ def test_kokushi_musou_multiple_yakuman() -> None:
     # kokushi test
 
     tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
-    win_tile = TilesConverter.string_to_136_array(honors="1")[0]
+    win_tile = _string_to_136_tile(honors="1")
 
     hand_config = HandConfig(is_tsumo=True, is_tenhou=False, is_chiihou=False)
 
@@ -448,7 +442,7 @@ def test_kokushi_musou_multiple_yakuman() -> None:
     # double kokushi test
 
     tiles = TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677")
-    win_tile = TilesConverter.string_to_136_array(honors="7")[0]
+    win_tile = _string_to_136_tile(honors="7")
 
     hand_config = HandConfig(is_tsumo=True, is_tenhou=False, is_chiihou=False)
 
@@ -700,20 +694,21 @@ def test_paarenchan_no_yaku_allowed() -> None:
     assert result.han == 13
 
 
-def test_paarenchan() -> None:
+@pytest.mark.parametrize(
+    ("paarenchan", "expected_han"),
+    [
+        (1, 26),
+        (4, 65),
+    ],
+)
+def test_paarenchan(paarenchan: int, expected_han: int) -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(pin="111222777", sou="44455")
     win_tile = _string_to_136_tile(pin="7")
-    result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(paarenchan=1, is_tsumo=True))
+    result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(paarenchan=paarenchan, is_tsumo=True))
     assert result.error is None
-    assert result.han == 26
-
-    tiles = TilesConverter.string_to_136_array(pin="111222777", sou="44455")
-    win_tile = _string_to_136_tile(pin="7")
-    result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(paarenchan=4, is_tsumo=True))
-    assert result.error is None
-    assert result.han == 65
+    assert result.han == expected_han
 
 
 def test_sextuple_yakuman_limit() -> None:
