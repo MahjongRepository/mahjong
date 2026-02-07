@@ -154,18 +154,18 @@ def test_tsumo_hand_and_not_pinfu() -> None:
 
 
 @pytest.mark.parametrize(
-    ("tiles_kwargs", "win_tile_kwargs"),
+    ("tiles_string", "win_tile_string"),
     [
-        pytest.param({"sou": "12456", "man": "123456", "pin": "55"}, {"sou": "3"}, id="12_wait"),
-        pytest.param({"sou": "34589", "man": "123456", "pin": "55"}, {"sou": "7"}, id="89_wait"),
+        pytest.param("123456m12456s55p", "3s", id="12_wait"),
+        pytest.param("123456m34589s55p", "7s", id="89_wait"),
     ],
 )
-def test_penchan_fu(tiles_kwargs: dict, win_tile_kwargs: dict) -> None:
+def test_penchan_fu(tiles_string: str, win_tile_string: str) -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 
-    tiles = TilesConverter.string_to_136_array(**tiles_kwargs)
-    win_tile = _string_to_136_tile(**win_tile_kwargs)
+    tiles = TilesConverter.one_line_string_to_136_array(tiles_string)
+    win_tile = TilesConverter.one_line_string_to_136_array(win_tile_string)[0]
     hand = _hand(TilesConverter.to_34_array([*tiles, win_tile]))
 
     fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config)

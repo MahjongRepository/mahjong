@@ -27,42 +27,13 @@ def test_convert_to_one_line_string_with_aka_dora(print_aka_dora: bool, expected
 def test_convert_to_34_array() -> None:
     tiles = TilesConverter.string_to_136_array(man="199", pin="1199", sou="1199", honors="117")
     result = TilesConverter.to_34_array(tiles)
+    # 199m1199p1199s117z
     assert result == [
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        2,  # man: 1m=1, 9m=2
-        2,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        2,  # pin: 1p=2, 9p=2
-        2,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        2,  # sou: 1s=2, 9s=2
-        2,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,  # honors: 1z=2, 7z=1
-    ]
+        1, 0, 0, 0, 0, 0, 0, 0, 2,  # m
+        2, 0, 0, 0, 0, 0, 0, 0, 2,  # p
+        2, 0, 0, 0, 0, 0, 0, 0, 2,  # s
+        2, 0, 0, 0, 0, 0, 1,        # z
+    ]  # fmt: skip
 
 
 def test_convert_to_136_array() -> None:
