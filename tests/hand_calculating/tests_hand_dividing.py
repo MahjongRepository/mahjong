@@ -11,50 +11,61 @@ def _string(hand: list[list[int]]) -> list[str]:
     return [TilesConverter.to_one_line_string([x * 4 for x in set_item]) for set_item in hand]
 
 
-def test_simple_hand_dividing() -> None:
-    hand = HandDivider()
-
-    tiles_34 = TilesConverter.string_to_34_array(man="234567", sou="23455", honors="777")
-    result = hand.divide_hand(tiles_34)
+@pytest.mark.parametrize(
+    ("tiles_kwargs", "expected"),
+    [
+        pytest.param(
+            {"man": "234567", "sou": "23455", "honors": "777"},
+            ["234m", "567m", "234s", "55s", "777z"],
+            id="simple",
+        ),
+        pytest.param(
+            {"man": "123", "pin": "123", "sou": "123", "honors": "11222"},
+            ["123m", "123p", "123s", "11z", "222z"],
+            id="simple_all_suits",
+        ),
+        pytest.param(
+            {"man": "23444", "pin": "344556", "sou": "333"},
+            ["234m", "44m", "345p", "456p", "333s"],
+            id="with_pairs",
+        ),
+        pytest.param(
+            {"sou": "111123666789", "honors": "11"},
+            ["111s", "123s", "666s", "789s", "11z"],
+            id="one_suit",
+        ),
+    ],
+)
+def test_single_hand_dividing(tiles_kwargs: dict, expected: list[str]) -> None:
+    tiles_34 = TilesConverter.string_to_34_array(**tiles_kwargs)
+    result = HandDivider.divide_hand(tiles_34)
     assert len(result) == 1
-    assert _string(result[0]) == ["234m", "567m", "234s", "55s", "777z"]
+    assert _string(result[0]) == expected
 
 
-def test_second_simple_hand_dividing() -> None:
-    hand = HandDivider()
-
-    tiles_34 = TilesConverter.string_to_34_array(man="123", pin="123", sou="123", honors="11222")
-    result = hand.divide_hand(tiles_34)
-    assert len(result) == 1
-    assert _string(result[0]) == ["123m", "123p", "123s", "11z", "222z"]
-
-
-def test_hand_with_pairs_dividing() -> None:
-    hand = HandDivider()
-
-    tiles_34 = TilesConverter.string_to_34_array(man="23444", pin="344556", sou="333")
-    result = hand.divide_hand(tiles_34)
-    assert len(result) == 1
-    assert _string(result[0]) == ["234m", "44m", "345p", "456p", "333s"]
-
-
-def test_one_suit_hand_dividing() -> None:
-    hand = HandDivider()
-
-    tiles_34 = TilesConverter.string_to_34_array(man="11122233388899")
-    result = hand.divide_hand(tiles_34)
+@pytest.mark.parametrize(
+    ("tiles_kwargs", "expected_first", "expected_second"),
+    [
+        pytest.param(
+            {"man": "11122233388899"},
+            ["111m", "222m", "333m", "888m", "99m"],
+            ["123m", "123m", "123m", "888m", "99m"],
+            id="one_suit",
+        ),
+        pytest.param(
+            {"man": "112233", "pin": "99", "sou": "445566"},
+            ["11m", "22m", "33m", "99p", "44s", "55s", "66s"],
+            ["123m", "123m", "99p", "456s", "456s"],
+            id="chitoitsu_like",
+        ),
+    ],
+)
+def test_multiple_hand_dividing(tiles_kwargs: dict, expected_first: list[str], expected_second: list[str]) -> None:
+    tiles_34 = TilesConverter.string_to_34_array(**tiles_kwargs)
+    result = HandDivider.divide_hand(tiles_34)
     assert len(result) == 2
-    assert _string(result[0]) == ["111m", "222m", "333m", "888m", "99m"]
-    assert _string(result[1]) == ["123m", "123m", "123m", "888m", "99m"]
-
-
-def test_second_one_suit_hand_dividing() -> None:
-    hand = HandDivider()
-
-    tiles_34 = TilesConverter.string_to_34_array(sou="111123666789", honors="11")
-    result = hand.divide_hand(tiles_34)
-    assert len(result) == 1
-    assert _string(result[0]) == ["111s", "123s", "666s", "789s", "11z"]
+    assert _string(result[0]) == expected_first
+    assert _string(result[1]) == expected_second
 
 
 def test_third_one_suit_hand_dividing() -> None:
@@ -68,16 +79,6 @@ def test_third_one_suit_hand_dividing() -> None:
     result = hand.divide_hand(tiles_34, melds)
     assert len(result) == 1
     assert _string(result[0]) == ["234p", "789p", "789p", "789p", "22z"]
-
-
-def test_chitoitsu_like_hand_dividing() -> None:
-    hand = HandDivider()
-
-    tiles_34 = TilesConverter.string_to_34_array(man="112233", pin="99", sou="445566")
-    result = hand.divide_hand(tiles_34)
-    assert len(result) == 2
-    assert _string(result[0]) == ["11m", "22m", "33m", "99p", "44s", "55s", "66s"]
-    assert _string(result[1]) == ["123m", "123m", "99p", "456s", "456s"]
 
 
 def test_fix_not_correct_kan_handling() -> None:

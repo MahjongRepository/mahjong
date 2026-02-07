@@ -1274,7 +1274,15 @@ def test_is_agari_and_closed_kan() -> None:
     assert result.error is not None
 
 
-def test_kazoe_settings() -> None:
+@pytest.mark.parametrize(
+    ("kazoe_limit", "expected_cost"),
+    [
+        pytest.param(HandConfig.KAZOE_LIMITED, 32000, id="limited"),
+        pytest.param(HandConfig.KAZOE_SANBAIMAN, 24000, id="sanbaiman"),
+        pytest.param(HandConfig.KAZOE_NO_LIMIT, 64000, id="no_limit"),
+    ],
+)
+def test_kazoe_settings(kazoe_limit: int, expected_cost: int) -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(man="222244466677788")
@@ -1290,20 +1298,10 @@ def test_kazoe_settings() -> None:
         _string_to_136_tile(man="1"),
     ]
 
-    config = HandConfig(is_riichi=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_LIMITED))
+    config = HandConfig(is_riichi=True, options=OptionalRules(kazoe_limit=kazoe_limit))
     result = hand.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
     assert result.han == 28
-    assert result.cost["main"] == 32000
-
-    config = HandConfig(is_riichi=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_SANBAIMAN))
-    result = hand.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
-    assert result.han == 28
-    assert result.cost["main"] == 24000
-
-    config = HandConfig(is_riichi=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
-    result = hand.estimate_hand_value(tiles, win_tile, melds, dora_indicators, config)
-    assert result.han == 28
-    assert result.cost["main"] == 64000
+    assert result.cost["main"] == expected_cost
 
 
 def test_open_hand_without_additional_fu() -> None:
@@ -1322,7 +1320,7 @@ def test_open_hand_without_additional_fu() -> None:
 
 def test_aka_dora() -> None:
     hand_calculator = HandCalculator()
-    win_tile = TilesConverter.string_to_136_array(man="9")[0]
+    win_tile = _string_to_136_tile(man="9")
 
     hand_config = HandConfig(is_tsumo=True, options=OptionalRules(has_aka_dora=True))
 
@@ -1334,7 +1332,7 @@ def test_aka_dora() -> None:
 
     # zero red
     tiles = TilesConverter.string_to_136_array(sou="345", pin="456", man="12355599", has_aka_dora=True)
-    win_tile = TilesConverter.string_to_136_array(man="9")[0]
+    win_tile = _string_to_136_tile(man="9")
 
     hand_config = HandConfig(is_tsumo=True, options=OptionalRules(has_aka_dora=True))
 
