@@ -90,7 +90,7 @@ max-doc-length = 120
 ignore-overlong-task-comments = true
 
 [tool.ruff.lint.extend-per-file-ignores]
-"./doc/*" = [
+"./examples/*" = [
     "T201",    # print
     "INP001",  # implicit-namespace-package
 ]
