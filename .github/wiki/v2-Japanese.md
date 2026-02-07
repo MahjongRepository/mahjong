@@ -136,7 +136,7 @@ result = HandCalculator.estimate_hand_value(
     win_tile,
     dora_indicators=dora_indicators,
     ura_dora_indicators=ura_dora_indicators,
-    config=HandConfig(is_riichi=True, is_tsumo=True)
+    config=HandConfig(is_riichi=True, is_tsumo=True),
 )
 
 print(result.han, result.fu)
@@ -201,8 +201,8 @@ result = HandCalculator.estimate_hand_value(
         is_ippatsu=True,
         is_haitei=True,
         player_wind=EAST,
-        round_wind=EAST
-    )
+        round_wind=EAST,
+    ),
 )
 
 print(result.han, result.fu)
