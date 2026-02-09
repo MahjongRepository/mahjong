@@ -1,6 +1,6 @@
 from collections.abc import Collection
 
-from mahjong.constants import AKA_DORA_LIST, CHUN, HAKU, HATSU
+from mahjong.constants import AKA_DORAS, CHUN, HAKU, HATSU
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator
 from mahjong.hand_calculating.hand_config import HandConfig
@@ -165,7 +165,7 @@ class HandCalculator:
 
         precomputed_aka_dora = 0
         if config.options.has_aka_dora:
-            precomputed_aka_dora = sum(t in AKA_DORA_LIST for t in tiles)
+            precomputed_aka_dora = sum(t in AKA_DORAS for t in tiles)
 
         precomputed_ura_dora = 0
         if config.is_riichi or config.is_daburu_riichi:

@@ -40,7 +40,8 @@ The following methods are now available as static methods:
   - `TERMINAL_INDICES`
   - `WINDS`
   - `HONOR_INDICES`
-  - `AKA_DORA_LIST`
+  - `AKA_DORA_LIST` (now `AKA_DORAS`)
+- `AKA_DORA_LIST` has been renamed to `AKA_DORAS`. Update all imports and references.
 - Removed deprecated `Meld.CHANKAN`. Use `Meld.SHOUMINKAN` instead.
 - The `use_cache` parameter of `HandDivider.divide_hand()` has been removed following the introduction of `functools.lru_cache`.
 - The `use_hand_divider_cache` parameter of `HandCalculator.estimate_hand_value()` has been removed following the introduction of `functools.lru_cache`.
