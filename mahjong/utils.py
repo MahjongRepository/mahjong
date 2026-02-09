@@ -1,6 +1,6 @@
 from collections.abc import Collection, Sequence
 
-from mahjong.constants import AKA_DORA_LIST, EAST, HAKU, NORTH, TERMINAL_INDICES
+from mahjong.constants import AKA_DORAS, EAST, HAKU, NORTH, TERMINAL_INDICES
 
 
 def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
@@ -10,7 +10,7 @@ def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
     if not aka_enabled:
         return False
 
-    return tile_136 in AKA_DORA_LIST
+    return tile_136 in AKA_DORAS
 
 
 def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora: bool = False) -> int:
