@@ -12,7 +12,7 @@ class Meld:
     NUKI = "nuki"
 
     type: str | None
-    tiles: list[int]
+    tiles: tuple[int]
     # we need it to distinguish opened and closed kan
     opened: bool
     called_tile: int | None
@@ -29,11 +29,16 @@ class Meld:
         from_who: int | None = None,
     ) -> None:
         self.type = meld_type
-        self.tiles = list(tiles) if tiles else []
+        self.tiles = tuple(tiles) if tiles else ()
         self.opened = opened
         self.called_tile = called_tile
         self.who = who
         self.from_who = from_who
+
+    def __setattr__(self, name: str, value: object) -> None:
+        super().__setattr__(name, value)
+        if name == "tiles" and "tiles_34" in self.__dict__:
+            del self.__dict__["tiles_34"]
 
     def __str__(self) -> str:
         return f"Type: {self.type}, Tiles: {TilesConverter.to_one_line_string(self.tiles)} {self.tiles}"
