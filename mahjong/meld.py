@@ -12,7 +12,7 @@ class Meld:
     NUKI = "nuki"
 
     type: str | None
-    tiles: tuple[int]
+    tiles: tuple[int, ...]
     # we need it to distinguish opened and closed kan
     opened: bool
     called_tile: int | None
