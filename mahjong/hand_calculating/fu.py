@@ -1,9 +1,15 @@
 from collections.abc import Collection, Sequence
-from typing import Any
+from typing import TypedDict
 
 from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.meld import Meld
+
+
+class FuDetail(TypedDict):
+    fu: int
+    reason: str
+
 
 # terminal/honor membership lookup for tile_34 indices 0..33
 _IS_TERMINAL_OR_HONOR = [i in TERMINAL_AND_HONOR_INDICES for i in range(34)]
@@ -55,7 +61,7 @@ class FuCalculator:
         config: HandConfig,
         valued_tiles: Sequence[int | None] | None = None,
         melds: Collection[Meld] | None = None,
-    ) -> tuple[list[dict[str, Any]], int]:
+    ) -> tuple[list[FuDetail], int]:
         """
         Calculate hand fu with explanations
         :param hand:
@@ -68,7 +74,7 @@ class FuCalculator:
         """
         # chiitoitsu: always 25 fu
         if len(hand) == 7:
-            return [{"fu": 25, "reason": FuCalculator.BASE}], 25
+            return [FuDetail(fu=25, reason=FuCalculator.BASE)], 25
 
         win_tile_34 = win_tile >> 2
 
@@ -78,7 +84,7 @@ class FuCalculator:
         if not melds:
             melds = ()
 
-        fu_details: list[dict[str, Any]] = []
+        fu_details: list[FuDetail] = []
         fu_total = 0
 
         is_tsumo = config.is_tsumo
@@ -148,28 +154,28 @@ class FuCalculator:
             # penchan: edge wait completing 1-2-3 with the 3, or 7-8-9 with the 7
             is_penchan = (start_rank == 0 and win_tile_34 == wg2) or (start_rank == 6 and win_tile_34 == wg0)
             if is_penchan:
-                fu_details.append({"fu": 2, "reason": FuCalculator.PENCHAN})
+                fu_details.append(FuDetail(fu=2, reason=FuCalculator.PENCHAN))
                 fu_total += 2
 
             # kanchan: wait on the middle tile
             if win_tile_34 == wg1:
-                fu_details.append({"fu": 2, "reason": FuCalculator.KANCHAN})
+                fu_details.append(FuDetail(fu=2, reason=FuCalculator.KANCHAN))
                 fu_total += 2
 
         # valued pair fu
         if pair_tile >= 0 and valued_tiles:
             valued_count = valued_tiles.count(pair_tile)
             if valued_count == 1:
-                fu_details.append({"fu": 2, "reason": FuCalculator.VALUED_PAIR})
+                fu_details.append(FuDetail(fu=2, reason=FuCalculator.VALUED_PAIR))
                 fu_total += 2
             elif valued_count >= 2:
                 # e.g. east-east pair when player is east
-                fu_details.append({"fu": 4, "reason": FuCalculator.DOUBLE_VALUED_PAIR})
+                fu_details.append(FuDetail(fu=4, reason=FuCalculator.DOUBLE_VALUED_PAIR))
                 fu_total += 4
 
         # pair wait fu
         if win_group_len == 2:
-            fu_details.append({"fu": 2, "reason": FuCalculator.PAIR_WAIT})
+            fu_details.append(FuDetail(fu=2, reason=FuCalculator.PAIR_WAIT))
             fu_total += 2
 
         # pon/kan fu via lookup table
@@ -185,22 +191,22 @@ class FuCalculator:
                 set_was_open = True
 
             fu, reason = FuCalculator._PON_KAN_FU_TABLE[_IS_TERMINAL_OR_HONOR[tile]][is_kan_set][set_was_open]
-            fu_details.append({"fu": fu, "reason": reason})
+            fu_details.append(FuDetail(fu=fu, reason=reason))
             fu_total += fu
 
         # tsumo fu (not for pinfu unless option is enabled)
         if is_tsumo and (fu_total > 0 or opts.fu_for_pinfu_tsumo):
-            fu_details.append({"fu": 2, "reason": FuCalculator.TSUMO})
+            fu_details.append(FuDetail(fu=2, reason=FuCalculator.TSUMO))
             fu_total += 2
 
         # open pinfu: no 1-20 hands exist, add 2 fu
         if is_open_hand and fu_total == 0 and opts.fu_for_open_pinfu:
-            fu_details.append({"fu": 2, "reason": FuCalculator.HAND_WITHOUT_FU})
+            fu_details.append(FuDetail(fu=2, reason=FuCalculator.HAND_WITHOUT_FU))
             fu_total += 2
 
         # base fu: 30 for closed ron, 20 for open or tsumo
         base_fu = 20 if is_open_hand or is_tsumo else 30
-        fu_details.append({"fu": base_fu, "reason": FuCalculator.BASE})
+        fu_details.append(FuDetail(fu=base_fu, reason=FuCalculator.BASE))
         fu_total += base_fu
 
         # round up to the nearest 10

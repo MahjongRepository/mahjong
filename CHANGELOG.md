@@ -20,6 +20,15 @@ A redesigned hand division algorithm and a more streamlined yaku detection proce
 #### Benchmark
 (TODO)
 
+### TypedDict return types for scores, fu, and hand calculations
+Plain `dict` return types have been replaced with `TypedDict` classes for improved type safety and IDE auto-completion:
+- `ScoresResult` — returned by `ScoresCalculator.calculate_scores()` and `Aotenjou.calculate_scores()`
+- `FuDetail` — returned (as list elements) by `FuCalculator.calculate_fu()`
+- `SuitCount` — returned (as list elements) by `count_tiles_by_suits()`
+- `CalculatedHand` — used internally in `HandCalculator.estimate_hand_value()`
+
+`HandResponse.cost` is now typed as `ScoresResult | None` and `HandResponse.fu_details` as `list[FuDetail] | None`.
+
 ### Major methods converted to `staticmethod`
 The following methods are now available as static methods:
 - `HandDivider.divide_hand()`

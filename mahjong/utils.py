@@ -1,4 +1,5 @@
-from collections.abc import Collection, Sequence
+from collections.abc import Callable, Collection, Sequence
+from typing import TypedDict
 
 from mahjong.constants import AKA_DORAS, EAST, HAKU, NORTH, TERMINAL_INDICES
 
@@ -309,17 +310,23 @@ def is_tile_strictly_isolated(hand_34: Sequence[int], tile_34: int) -> bool:
     )
 
 
-def count_tiles_by_suits(tiles_34: Sequence[int]) -> list[dict]:
+class SuitCount(TypedDict):
+    count: int
+    name: str
+    function: Callable[[int], bool]
+
+
+def count_tiles_by_suits(tiles_34: Sequence[int]) -> list[SuitCount]:
     """
     Separate tiles by suits and count them
     :param tiles_34: array of tiles to count
-    :return: dict
+    :return: list[SuitCount]
     """
     suits = [
-        {"count": 0, "name": "sou", "function": is_sou},
-        {"count": 0, "name": "man", "function": is_man},
-        {"count": 0, "name": "pin", "function": is_pin},
-        {"count": 0, "name": "honor", "function": is_honor},
+        SuitCount(count=0, name="sou", function=is_sou),
+        SuitCount(count=0, name="man", function=is_man),
+        SuitCount(count=0, name="pin", function=is_pin),
+        SuitCount(count=0, name="honor", function=is_honor),
     ]
 
     for x in range(34):
@@ -328,7 +335,7 @@ def count_tiles_by_suits(tiles_34: Sequence[int]) -> list[dict]:
             continue
 
         for item in suits:
-            if item["function"](x):  # type: ignore[operator]
-                item["count"] += tile  # type: ignore[operator]
+            if item["function"](x):
+                item["count"] += tile
 
     return suits

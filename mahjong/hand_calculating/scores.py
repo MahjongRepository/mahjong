@@ -1,20 +1,30 @@
 from collections.abc import MutableSequence, MutableSet
-from typing import Any
+from typing import TypedDict
 
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.hand_calculating.yaku import Yaku
 
 
+class ScoresResult(TypedDict):
+    main: int
+    additional: int
+    main_bonus: int
+    additional_bonus: int
+    kyoutaku_bonus: int
+    total: int
+    yaku_level: str
+
+
 class ScoresCalculator:
     @staticmethod
-    def calculate_scores(han: int, fu: int, config: HandConfig, is_yakuman: bool = False) -> dict[str, Any]:
+    def calculate_scores(han: int, fu: int, config: HandConfig, is_yakuman: bool = False) -> ScoresResult:
         """
         Calculate how much scores cost a hand with given han and fu
         :param han: int
         :param fu: int
         :param config: HandConfig object
         :param is_yakuman: boolean
-        :return: a dictionary with following keys:
+        :return: ScoresResult with the following keys:
         'main': main cost (honba number / tsumi bou not included)
         'additional': additional cost (honba number not included)
         'main_bonus': extra cost due to honba number to be added on main cost
@@ -144,20 +154,20 @@ class ScoresCalculator:
         if config.is_nagashi_mangan:
             yaku_level = "nagashi mangan"
 
-        return {
-            "main": main,
-            "main_bonus": main_bonus,
-            "additional": additional,
-            "additional_bonus": additional_bonus,
-            "kyoutaku_bonus": kyoutaku_bonus,
-            "total": total,
-            "yaku_level": yaku_level,
-        }
+        return ScoresResult(
+            main=main,
+            additional=additional,
+            main_bonus=main_bonus,
+            additional_bonus=additional_bonus,
+            kyoutaku_bonus=kyoutaku_bonus,
+            total=total,
+            yaku_level=yaku_level,
+        )
 
 
 class Aotenjou(ScoresCalculator):
     @staticmethod
-    def calculate_scores(han: int, fu: int, config: HandConfig, is_yakuman: bool = False) -> dict[str, int]:  # noqa: ARG004
+    def calculate_scores(han: int, fu: int, config: HandConfig, is_yakuman: bool = False) -> ScoresResult:  # noqa: ARG004
         base_points: int = fu * pow(2, 2 + han)
         rounded = (base_points + 99) // 100 * 100
         double_rounded = (2 * base_points + 99) // 100 * 100
@@ -165,8 +175,22 @@ class Aotenjou(ScoresCalculator):
         six_rounded = (6 * base_points + 99) // 100 * 100
 
         if config.is_tsumo:
-            return {"main": double_rounded, "additional": double_rounded if config.is_dealer else rounded}
-        return {"main": six_rounded if config.is_dealer else four_rounded, "additional": 0}
+            main = double_rounded
+            additional = double_rounded if config.is_dealer else rounded
+        else:
+            main = six_rounded if config.is_dealer else four_rounded
+            additional = 0
+
+        # aotenjou bypasses all scoring tiers and bonuses (honba/kyoutaku)
+        return ScoresResult(
+            main=main,
+            additional=additional,
+            main_bonus=0,
+            additional_bonus=0,
+            kyoutaku_bonus=0,
+            total=main + 2 * additional,
+            yaku_level="",
+        )
 
     @staticmethod
     def aotenjou_filter_yaku(hand_yaku: MutableSequence[Yaku] | MutableSet[Yaku], config: HandConfig) -> None:
