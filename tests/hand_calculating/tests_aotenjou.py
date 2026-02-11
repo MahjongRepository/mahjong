@@ -23,6 +23,12 @@ def test_aotenjou_kokushi_ron() -> None:
     assert result.fu == 40
     assert len(result.yaku) == 1
     assert result.cost["main"] == 7864400
+    assert result.cost["additional"] == 0
+    assert result.cost["main_bonus"] == 0
+    assert result.cost["additional_bonus"] == 0
+    assert result.cost["kyoutaku_bonus"] == 0
+    assert result.cost["total"] == result.cost["main"]
+    assert result.cost["yaku_level"] == ""
 
 
 def test_aotenjou_open_hand_with_honor_melds() -> None:
@@ -47,6 +53,11 @@ def test_aotenjou_open_hand_with_honor_melds() -> None:
     assert result.fu == 40
     assert len(result.yaku) == 4
     assert result.cost["main"] + result.cost["additional"] == 83886200
+    assert result.cost["main_bonus"] == 0
+    assert result.cost["additional_bonus"] == 0
+    assert result.cost["kyoutaku_bonus"] == 0
+    assert result.cost["total"] == result.cost["main"] + 2 * result.cost["additional"]
+    assert result.cost["yaku_level"] == ""
 
 
 def test_aotenjou_all_honors_with_meld() -> None:

@@ -1304,7 +1304,7 @@ def test_kazoe_settings(kazoe_limit: int, expected_cost: int) -> None:
     assert result.cost["main"] == expected_cost
 
 
-def test_open_hand_without_additional_fu() -> None:
+def test_open_hand_without_additional_fu_scores_correctly() -> None:
     hand = HandCalculator()
 
     tiles = TilesConverter.string_to_136_array(sou="234678", man="234567", pin="22")

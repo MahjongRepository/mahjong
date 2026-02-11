@@ -67,7 +67,7 @@ def test_fu_based_on_win_group() -> None:
     assert fu == 40
 
 
-def test_open_hand_without_additional_fu() -> None:
+def test_open_pinfu_adds_hand_without_fu() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig()
 

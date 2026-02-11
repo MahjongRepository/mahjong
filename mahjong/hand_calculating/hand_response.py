@@ -1,34 +1,36 @@
 from collections.abc import Collection
 
+from mahjong.hand_calculating.fu import FuDetail
+from mahjong.hand_calculating.scores import ScoresResult
 from mahjong.hand_calculating.yaku import Yaku
 
 
 class HandResponse:
-    cost: dict | None
+    cost: ScoresResult | None
     han: int | None
     fu: int | None
-    fu_details: list[dict] | None
+    fu_details: list[FuDetail] | None
     yaku: list[Yaku] | None
     error: str | None
     is_open_hand: bool
 
     def __init__(
         self,
-        cost: dict | None = None,
+        cost: ScoresResult | None = None,
         han: int | None = None,
         fu: int | None = None,
         yaku: Collection[Yaku] | None = None,
         error: str | None = None,
-        fu_details: list[dict] | None = None,
+        fu_details: list[FuDetail] | None = None,
         is_open_hand: bool = False,
     ) -> None:
         """
-        :param cost: dict
+        :param cost: ScoresResult
         :param han: int
         :param fu: int
         :param yaku: list
         :param error: str
-        :param fu_details: dict
+        :param fu_details: list[FuDetail]
         """
         self.cost = cost
         self.han = han

@@ -1,14 +1,26 @@
 from collections.abc import Collection
+from typing import TypedDict
 
 from mahjong.constants import AKA_DORAS, CHUN, HAKU, HATSU
 from mahjong.hand_calculating.divider import HandDivider
-from mahjong.hand_calculating.fu import FuCalculator
+from mahjong.hand_calculating.fu import FuCalculator, FuDetail
 from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.hand_calculating.hand_response import HandResponse
-from mahjong.hand_calculating.scores import Aotenjou, ScoresCalculator
+from mahjong.hand_calculating.scores import Aotenjou, ScoresCalculator, ScoresResult
+from mahjong.hand_calculating.yaku import Yaku
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 from mahjong.utils import build_dora_count_map, classify_hand_suits, count_dora_for_hand, plus_dora
+
+
+class _CalculatedHand(TypedDict):
+    cost: ScoresResult | None
+    error: str | None
+    hand_yaku: list[Yaku]
+    han: int
+    fu: int
+    fu_details: list[FuDetail]
+
 
 # suit bitmask: sou=1, pin=2, man=4
 _ALL_SUITS_MASK = 7
@@ -185,7 +197,7 @@ class HandCalculator:
             config.yaku.round_wind_north,
         )
 
-        calculated_hands = []
+        calculated_hands: list[_CalculatedHand] = []
         for hand in hand_options:
             is_chiitoitsu = config.yaku.chiitoitsu.is_condition_met(hand)
             valued_tiles = [HAKU, HATSU, CHUN, config.player_wind, config.round_wind]
@@ -451,14 +463,14 @@ class HandCalculator:
                 if not error:
                     cost = scores_calculator.calculate_scores(han, fu, config, len(yakuman_list) > 0)
 
-                calculated_hand = {
-                    "cost": cost,
-                    "error": error,
-                    "hand_yaku": hand_yaku,
-                    "han": han,
-                    "fu": fu,
-                    "fu_details": fu_details,
-                }
+                calculated_hand = _CalculatedHand(
+                    cost=cost,
+                    error=error,
+                    hand_yaku=hand_yaku,
+                    han=han,
+                    fu=fu,
+                    fu_details=fu_details,
+                )
 
                 calculated_hands.append(calculated_hand)
 
@@ -523,7 +535,7 @@ class HandCalculator:
 
             cost = scores_calculator.calculate_scores(han, fu, config, len(hand_yaku) > 0)
             calculated_hands.append(
-                {"cost": cost, "error": None, "hand_yaku": hand_yaku, "han": han, "fu": fu, "fu_details": []},
+                _CalculatedHand(cost=cost, error=None, hand_yaku=hand_yaku, han=han, fu=fu, fu_details=[]),
             )
 
         if not calculated_hands:
@@ -540,14 +552,15 @@ class HandCalculator:
         calculated_hands = sorted(calculated_hands, key=lambda x: sum([y["fu"] for y in x["fu_details"]]), reverse=True)
         calculated_hand = calculated_hands[0]
 
-        cost = calculated_hand["cost"]
-        error = calculated_hand["error"]
-        hand_yaku = calculated_hand["hand_yaku"]
-        han = calculated_hand["han"]
-        fu = calculated_hand["fu"]
-        fu_details = calculated_hand["fu_details"]
-
-        return HandResponse(cost, han, fu, hand_yaku, error, fu_details, is_open_hand)
+        return HandResponse(
+            calculated_hand["cost"],
+            calculated_hand["han"],
+            calculated_hand["fu"],
+            calculated_hand["hand_yaku"],
+            calculated_hand["error"],
+            calculated_hand["fu_details"],
+            is_open_hand,
+        )
 
     @staticmethod
     def _find_win_groups(win_tile: int, hand: list[list[int]], opened_melds: list[list[int]]) -> list[list[int]]:
