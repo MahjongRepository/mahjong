@@ -13,7 +13,7 @@ from mahjong.tile import TilesConverter
 from mahjong.utils import build_dora_count_map, classify_hand_suits, count_dora_for_hand, plus_dora
 
 
-class CalculatedHand(TypedDict):
+class _CalculatedHand(TypedDict):
     cost: ScoresResult | None
     error: str | None
     hand_yaku: list[Yaku]
@@ -197,7 +197,7 @@ class HandCalculator:
             config.yaku.round_wind_north,
         )
 
-        calculated_hands: list[CalculatedHand] = []
+        calculated_hands: list[_CalculatedHand] = []
         for hand in hand_options:
             is_chiitoitsu = config.yaku.chiitoitsu.is_condition_met(hand)
             valued_tiles = [HAKU, HATSU, CHUN, config.player_wind, config.round_wind]
@@ -463,7 +463,7 @@ class HandCalculator:
                 if not error:
                     cost = scores_calculator.calculate_scores(han, fu, config, len(yakuman_list) > 0)
 
-                calculated_hand = CalculatedHand(
+                calculated_hand = _CalculatedHand(
                     cost=cost,
                     error=error,
                     hand_yaku=hand_yaku,
@@ -535,7 +535,7 @@ class HandCalculator:
 
             cost = scores_calculator.calculate_scores(han, fu, config, len(hand_yaku) > 0)
             calculated_hands.append(
-                CalculatedHand(cost=cost, error=None, hand_yaku=hand_yaku, han=han, fu=fu, fu_details=[]),
+                _CalculatedHand(cost=cost, error=None, hand_yaku=hand_yaku, han=han, fu=fu, fu_details=[]),
             )
 
         if not calculated_hands:
@@ -552,14 +552,15 @@ class HandCalculator:
         calculated_hands = sorted(calculated_hands, key=lambda x: sum([y["fu"] for y in x["fu_details"]]), reverse=True)
         calculated_hand = calculated_hands[0]
 
-        cost = calculated_hand["cost"]
-        error = calculated_hand["error"]
-        hand_yaku = calculated_hand["hand_yaku"]
-        han = calculated_hand["han"]
-        fu = calculated_hand["fu"]
-        fu_details = calculated_hand["fu_details"]
-
-        return HandResponse(cost, han, fu, hand_yaku, error, fu_details, is_open_hand)
+        return HandResponse(
+            calculated_hand["cost"],
+            calculated_hand["han"],
+            calculated_hand["fu"],
+            calculated_hand["hand_yaku"],
+            calculated_hand["error"],
+            calculated_hand["fu_details"],
+            is_open_hand,
+        )
 
     @staticmethod
     def _find_win_groups(win_tile: int, hand: list[list[int]], opened_melds: list[list[int]]) -> list[list[int]]:

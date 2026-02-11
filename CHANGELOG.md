@@ -25,7 +25,6 @@ Plain `dict` return types have been replaced with `TypedDict` classes for improv
 - `ScoresResult` — returned by `ScoresCalculator.calculate_scores()` and `Aotenjou.calculate_scores()`
 - `FuDetail` — returned (as list elements) by `FuCalculator.calculate_fu()`
 - `SuitCount` — returned (as list elements) by `count_tiles_by_suits()`
-- `CalculatedHand` — used internally in `HandCalculator.estimate_hand_value()`
 
 `HandResponse.cost` is now typed as `ScoresResult | None` and `HandResponse.fu_details` as `list[FuDetail] | None`.
 
@@ -106,6 +105,7 @@ The following methods are now available as static methods:
 - `HandDivider.divide_hand()` now determines block type from `Meld.type` instead of inferring it from `Meld.tiles`. Behavior may differ for invalid `Meld.tiles` or inconsistent `Meld.type` and `Meld.tiles` combinations.
 - Removed `HandCalculator.ERR_HAND_NOT_CORRECT`. Hands that previously returned `ERR_HAND_NOT_CORRECT` now return `ERR_HAND_NOT_WINNING` instead.
 - `Meld.tiles` is now a `tuple[int, ...]` instead of `list[int]`. Code that mutates `Meld.tiles` in place (e.g., `append()`, `sort()`, item assignment) must be updated.
+- `Aotenjou.calculate_scores()` now returns a full `ScoresResult` with all keys (`main`, `additional`, `main_bonus`, `additional_bonus`, `kyoutaku_bonus`, `total`, `yaku_level`) instead of a minimal dict with only `main` and `additional`. Code that relies on the absence of these keys (e.g., catching `KeyError`) must be updated.
 
 ## What's Changed
 - Placeholder. It would be filled on release automatically
