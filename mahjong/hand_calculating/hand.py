@@ -438,8 +438,8 @@ class HandCalculator:
                     error = HandCalculator.ERR_NO_YAKU
                     cost = None
 
-                # dora is not added to yakuman
-                if not yakuman_list:
+                # dora is not added to yakuman and hands without yaku
+                if not yakuman_list and not error:
                     if precomputed_dora:
                         config.yaku.dora.han_open = precomputed_dora
                         config.yaku.dora.han_closed = precomputed_dora
@@ -552,12 +552,16 @@ class HandCalculator:
         calculated_hands = sorted(calculated_hands, key=lambda x: sum([y["fu"] for y in x["fu_details"]]), reverse=True)
         calculated_hand = calculated_hands[0]
 
+        error = calculated_hand["error"]
+        if error:
+            return HandResponse(error=error)
+
         return HandResponse(
             calculated_hand["cost"],
             calculated_hand["han"],
             calculated_hand["fu"],
             calculated_hand["hand_yaku"],
-            calculated_hand["error"],
+            error,
             calculated_hand["fu_details"],
             is_open_hand,
         )
