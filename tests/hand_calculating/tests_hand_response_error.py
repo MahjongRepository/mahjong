@@ -76,6 +76,24 @@ def test_no_yaku() -> None:
     assert result.error == HandCalculator.ERR_NO_YAKU
 
 
+def test_no_yaku_hand_does_not_count_dora() -> None:
+    hand = HandCalculator()
+
+    # hand with no yaku but with dora and aka dora
+    tiles = TilesConverter.one_line_string_to_136_array("123m234p340678s22z", has_aka_dora=True)
+    win_tile = TilesConverter.string_to_136_array(man="2")[0]
+    dora_indicators = TilesConverter.string_to_136_array(man="1")
+    config = _make_hand_config(has_aka_dora=True)
+
+    result = hand.estimate_hand_value(tiles, win_tile, dora_indicators=dora_indicators, config=config)
+
+    assert result.error == HandCalculator.ERR_NO_YAKU
+    assert result.han is None
+    assert result.fu is None
+    assert result.yaku is None
+    assert result.cost is None
+
+
 def test_chankan_with_tsumo() -> None:
     hand = HandCalculator()
 

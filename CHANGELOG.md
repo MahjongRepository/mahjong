@@ -106,6 +106,7 @@ The following methods are now available as static methods:
 - Removed `HandCalculator.ERR_HAND_NOT_CORRECT`. Hands that previously returned `ERR_HAND_NOT_CORRECT` now return `ERR_HAND_NOT_WINNING` instead.
 - `Meld.tiles` is now a `tuple[int, ...]` instead of `list[int]`. Code that mutates `Meld.tiles` in place (e.g., `append()`, `sort()`, item assignment) must be updated.
 - `Aotenjou.calculate_scores()` now returns a full `ScoresResult` with all keys (`main`, `additional`, `main_bonus`, `additional_bonus`, `kyoutaku_bonus`, `total`, `yaku_level`) instead of a minimal dict with only `main` and `additional`. Code that relies on the absence of these keys (e.g., catching `KeyError`) must be updated.
+- Hands without yaku no longer count dora. `HandResponse` now returns only `error` with all other fields as `None`, instead of returning `han`, `fu`, and dora yaku alongside the error.
 
 ## What's Changed
 - Placeholder. It would be filled on release automatically
