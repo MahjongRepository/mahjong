@@ -13,7 +13,7 @@ Python 3.10以上に対応しています。
 | 喰い断を有効にするかどうか | `has_open_tanyao` | `False` |
 | 赤ドラを有効にするかどうか | `has_aka_dora` | `False` |
 | ダブル役満（四暗刻単騎など）を有効にするかどうか | `has_double_yakuman` | `True` |
-| 数え役満の扱い（役満または三倍満） | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
+| 非役満役の累計飜数の上限設定（数え役満/数え三倍満/上限なし） | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
 | 切り上げ満貫を有効にするかどうか | `kiriage` | `False` |
 | 喰い平和形ロンに2符を追加するかどうか | `fu_for_open_pinfu` | `True` |
 | 平和のツモ符を有効にするかどうか | `fu_for_pinfu_tsumo` | `False` |
