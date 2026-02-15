@@ -13,7 +13,7 @@
 | 有无食断（非门前清断幺九是否成立） | `has_open_tanyao` | `False` |
 | 有无红宝牌 | `has_aka_dora` | `False` |
 | 有无双倍役满役种（如四暗刻单骑） | `has_double_yakuman` | `True` |
-| 非役满役种累计番数上限设置（累计役满/累计三倍满） | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
+| 非役满役种累计番数上限设置（累计役满/累计三倍满/无限制） | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
 | 有无切上满贯 | `kiriage` | `False` |
 | 非门清平和型食和是否+2符（总计30符） | `fu_for_open_pinfu` | `True` |
 | 平和自摸是否仍然+2符（总计30符） | `fu_for_pinfu_tsumo` | `False` |

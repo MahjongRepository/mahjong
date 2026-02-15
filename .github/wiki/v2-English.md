@@ -14,7 +14,7 @@ It supports optional features like:
 | Disable or enable open tanyao yaku | `has_open_tanyao` | `False` |
 | Disable or enable aka dora in the hand | `has_aka_dora` | `False` |
 | Disable or enable double yakuman (like suuanko tanki) | `has_double_yakuman` | `True` |
-| Settings for different kazoe yakuman calculation (it can be an yakuman or a sanbaiman) | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
+| Upper limit for cumulative han of non-yakuman yaku (counted yakuman / counted sanbaiman / no limit) | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
 | Support kiriage mangan | `kiriage` | `False` |
 | Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting) | `fu_for_open_pinfu` | `True` |
 | Disable or enable pinfu tsumo | `fu_for_pinfu_tsumo` | `False` |
