@@ -46,10 +46,14 @@ mahjong = ["py.typed"]
 [dependency-groups]
 dev = [
     { include-group = "lint" },
+    { include-group = "typing" },
     { include-group = "test" },
 ]
 lint = [
     "ruff>=0.15.0,<0.16",
+]
+typing = [
+    "ty>=0.0.17",
 ]
 test = [
     "pytest>=9.0.2,<10",
@@ -101,6 +105,12 @@ ignore-overlong-task-comments = true
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
 "mahjong/hand_calculating/yaku_list/*.py" = ["ARG002"] # for `is_condition_met()`
+
+[[tool.ty.overrides]]
+include = ["mahjong/hand_calculating/yaku_list/**"] # for `is_condition_met()`
+
+[tool.ty.overrides.rules]
+invalid-method-override = "ignore"
 
 [tool.pytest]
 python_files = ["tests_*.py"]
