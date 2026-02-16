@@ -106,6 +106,9 @@ ignore-overlong-task-comments = true
 "__init__.py" = ["F401"]
 "mahjong/hand_calculating/yaku_list/*.py" = ["ARG002"] # for `is_condition_met()`
 
+[tool.ty.src]
+include = ["mahjong"]
+
 [[tool.ty.overrides]]
 include = ["mahjong/hand_calculating/yaku_list/**"] # for `is_condition_met()`
 
