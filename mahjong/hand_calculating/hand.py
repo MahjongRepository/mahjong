@@ -424,7 +424,7 @@ class HandCalculator:
                     if not is_aotenjou:
                         hand_yaku = yakuman_list
                     else:
-                        scores_calculator.aotenjou_filter_yaku(hand_yaku, config)
+                        scores_calculator.aotenjou_filter_yaku(hand_yaku, config)  # ty: ignore[unresolved-attribute]
                         yakuman_list = []
 
                 # calculate han
