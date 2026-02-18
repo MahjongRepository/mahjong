@@ -22,7 +22,7 @@
 | 是否有其他花色的大车轮役种（索：大竹林，万：大数邻） | `has_daisharin_other_suits` | `False` |
 | 放铳开立直是否算役满 | `has_sashikomi_yakuman` | `False` |
 | 多倍役满是否上限为6倍（最高得点192000） | `limit_to_sextuple_yakuman` | `True` |
-| 是否有大七星役满役种（字牌七对子） | `has_daichisei` | `False` |
+| 是否有大七星役满役种（字一色七对子） | `has_daichisei` | `False` |
 | 八连庄是否需要有役才能成立 | `paarenchan_needs_yaku` | `True` |
 
 本软件包经过tenhou.net（天凤）**11,120,125局**凤凰对局测试验证。
