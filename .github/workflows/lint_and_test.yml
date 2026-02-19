@@ -51,7 +51,7 @@ jobs:
         run: make type
 
   tests:
-    needs: lint
+    needs: [lint, typecheck]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
