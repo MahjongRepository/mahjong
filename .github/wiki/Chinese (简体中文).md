@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> 这是已弃用的 v1 文档。新的 v2 文档请参阅[此处](https://github.com/MahjongRepository/mahjong/wiki/v2-Chinese)。
+
 本软件包支持Python 3.9及以上版本
 
 若您需要与Python 2兼容，请使用本软件包v1.1.11版本。

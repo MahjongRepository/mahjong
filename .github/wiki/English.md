@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This is the deprecated v1 documentation. The new v2 documentation is available [here](https://github.com/MahjongRepository/mahjong/wiki/v2-English).
+
 Python 3.9+ is supported.
 
 If you need Python 2 support, you can use the v1.1.11 version of the library.
