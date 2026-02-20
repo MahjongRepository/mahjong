@@ -31,8 +31,27 @@ jobs:
       - name: Lint files
         run: make lint
 
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.10"
+
+      - name: Install libs
+        run: uv sync --no-group dev --group typing
+
+      - name: Check files
+        run: make type
+
   tests:
-    needs: lint
+    needs: [lint, typecheck]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
