@@ -73,8 +73,6 @@ extend-exclude = [
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "D", # pydocstyle
-
     "COM812",  # missing-trailing-comma
     "C901",    # complex-structure
     "ANN002",  # missing-type-args
@@ -93,12 +91,17 @@ ignore = [
 max-doc-length = 120
 ignore-overlong-task-comments = true
 
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
 [tool.ruff.lint.extend-per-file-ignores]
 "./examples/*" = [
+    "D",       # pydocstyle
     "T201",    # print
     "INP001",  # implicit-namespace-package
 ]
 "./tests/*" = [
+    "D",       # pydocstyle
     "S101",    # assert
 ]
 
