@@ -152,20 +152,82 @@ print(result.yaku)
 
 ## シャンテン数計算
 
+シャンテン数は和了まであと何枚必要かを示します。`0` はテンパイ（あと1枚で和了）、`-1` は既に和了形（完成形）を意味します。
+
+`calculate_shanten` は一般形、七対子、国士無双の3つの形のシャンテン数を計算し、最小値を返します。各形のシャンテン数を個別に計算することもできます。
+
 ```python
 from mahjong.shanten import Shanten
 from mahjong.tile import TilesConverter
 
+# 一般形、2シャンテン
 tiles = TilesConverter.string_to_34_array(man='13569', pin='123459', sou='443')
-result = Shanten.calculate_shanten(tiles)
+print("一般形シャンテン数:", Shanten.calculate_shanten(tiles))
 
-print(result)
+# テンパイ（0シャンテン、あと1枚で和了）
+tiles = TilesConverter.string_to_34_array(sou='111345677', pin='11', man='567')
+print("テンパイ:", Shanten.calculate_shanten(tiles))
+
+# 和了形（-1シャンテン、既に完成）
+tiles = TilesConverter.string_to_34_array(sou='111234567', pin='11', man='567')
+print("和了形:", Shanten.calculate_shanten(tiles))
+
+# 各形のシャンテン数を個別に計算
+tiles = TilesConverter.string_to_34_array(sou='114477', pin='114477', man='76')
+print("七対子シャンテン数:", Shanten.calculate_shanten_for_chiitoitsu_hand(tiles))
+
+tiles = TilesConverter.string_to_34_array(sou='129', pin='19', man='19', honors='1234567')
+print("国士無双シャンテン数:", Shanten.calculate_shanten_for_kokushi_hand(tiles))
 ```
 
 出力:
 
 ```
-2
+一般形シャンテン数: 2
+テンパイ: 0
+和了形: -1
+七対子シャンテン数: 0
+国士無双シャンテン数: 0
+```
+
+## 和了判定
+
+和了判定は手牌が完成形（4面子1雀頭、七対子、国士無双）かどうかを判定します。牌の構成のみを検証し、役や点数の判定は行いません。
+
+```python
+from mahjong.agari import Agari
+from mahjong.tile import TilesConverter
+
+# 完成形：123s 456s 789s 123p 33m
+tiles = TilesConverter.string_to_34_array(sou='123456789', pin='123', man='33')
+print("一般形:", Agari.is_agari(tiles))
+
+# 未完成形：123s 456s 789s 12345p
+tiles = TilesConverter.string_to_34_array(sou='123456789', pin='12345')
+print("未完成形:", Agari.is_agari(tiles))
+
+# 七対子：1133557799s 1199p
+tiles = TilesConverter.string_to_34_array(sou='1133557799', pin='1199')
+print("七対子:", Agari.is_agari(tiles))
+
+# 国士無双：19s 19p 199m 1234567z
+tiles = TilesConverter.string_to_34_array(sou='19', pin='19', man='199', honors='1234567')
+print("国士無双:", Agari.is_agari(tiles))
+
+# 副露手（槓子）：1111m 123456789p 22s
+tiles = TilesConverter.string_to_34_array(man='1111', pin='123456789', sou='22')
+open_set = [0, 0, 0, 0]  # 一萬の槓子（34牌形式のインデックス0）
+print("副露手（槓子）:", Agari.is_agari(tiles, [open_set]))
+```
+
+出力:
+
+```
+一般形: True
+未完成形: False
+七対子: True
+国士無双: True
+副露手（槓子）: True
 ```
 
 ## 青天井ルール

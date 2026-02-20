@@ -153,20 +153,82 @@ Output:
 
 ## Shanten calculation
 
+Shanten number indicates how many tiles away a hand is from winning. A value of `0` means tenpai (one tile away), and `-1` means the hand is already complete (agari).
+
+`calculate_shanten` returns the minimum shanten across regular hand, chiitoitsu (seven pairs), and kokushi (thirteen orphans) forms. You can also calculate shanten for each form individually.
+
 ```python
 from mahjong.shanten import Shanten
 from mahjong.tile import TilesConverter
 
+# regular hand, 2 shanten
 tiles = TilesConverter.string_to_34_array(man='13569', pin='123459', sou='443')
-result = Shanten.calculate_shanten(tiles)
+print("Regular hand shanten:", Shanten.calculate_shanten(tiles))
 
-print(result)
+# tenpai (0 shanten, one tile away from winning)
+tiles = TilesConverter.string_to_34_array(sou='111345677', pin='11', man='567')
+print("Tenpai hand:", Shanten.calculate_shanten(tiles))
+
+# complete hand (-1 shanten, already winning)
+tiles = TilesConverter.string_to_34_array(sou='111234567', pin='11', man='567')
+print("Complete hand:", Shanten.calculate_shanten(tiles))
+
+# calculate shanten for specific hand forms
+tiles = TilesConverter.string_to_34_array(sou='114477', pin='114477', man='76')
+print("Chiitoitsu shanten:", Shanten.calculate_shanten_for_chiitoitsu_hand(tiles))
+
+tiles = TilesConverter.string_to_34_array(sou='129', pin='19', man='19', honors='1234567')
+print("Kokushi shanten:", Shanten.calculate_shanten_for_kokushi_hand(tiles))
 ```
 
 Output:
 
 ```
-2
+Regular hand shanten: 2
+Tenpai hand: 0
+Complete hand: -1
+Chiitoitsu shanten: 0
+Kokushi shanten: 0
+```
+
+## Agari (winning hand detection)
+
+Agari check determines whether the given tiles form a complete hand structure (4 melds + 1 pair, seven pairs, or thirteen orphans). It only validates the tile arrangement, not yaku or scoring.
+
+```python
+from mahjong.agari import Agari
+from mahjong.tile import TilesConverter
+
+# complete hand: 123s 456s 789s 123p 33m
+tiles = TilesConverter.string_to_34_array(sou='123456789', pin='123', man='33')
+print("Regular hand:", Agari.is_agari(tiles))
+
+# incomplete hand: 123s 456s 789s 12345p
+tiles = TilesConverter.string_to_34_array(sou='123456789', pin='12345')
+print("Incomplete hand:", Agari.is_agari(tiles))
+
+# seven pairs (chiitoitsu): 1133557799s 1199p
+tiles = TilesConverter.string_to_34_array(sou='1133557799', pin='1199')
+print("Seven pairs:", Agari.is_agari(tiles))
+
+# thirteen orphans (kokushi): 19s 19p 199m 1234567z
+tiles = TilesConverter.string_to_34_array(sou='19', pin='19', man='199', honors='1234567')
+print("Kokushi:", Agari.is_agari(tiles))
+
+# open hand with kan meld: 1111m 123456789p 22s
+tiles = TilesConverter.string_to_34_array(man='1111', pin='123456789', sou='22')
+open_set = [0, 0, 0, 0]  # kan of 1m (tile index 0 in 34-tile format)
+print("Open hand with kan:", Agari.is_agari(tiles, [open_set]))
+```
+
+Output:
+
+```
+Regular hand: True
+Incomplete hand: False
+Seven pairs: True
+Kokushi: True
+Open hand with kan: True
 ```
 
 ## Aotenjou scoring rules
