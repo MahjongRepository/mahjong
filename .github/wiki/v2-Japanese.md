@@ -56,7 +56,7 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
+出力:
 
 ```
 1 40
@@ -80,7 +80,7 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
+出力:
 
 ```
 4 40
@@ -109,7 +109,7 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
+出力:
 
 ```
 1 30
@@ -143,7 +143,7 @@ print(result.han, result.fu)
 print(result.yaku)
 ```
 
-Output:
+出力:
 
 ```
 10 40
@@ -162,7 +162,7 @@ result = Shanten.calculate_shanten(tiles)
 print(result)
 ```
 
-Output:
+出力:
 
 ```
 2
@@ -212,7 +212,7 @@ for fu_item in result.fu_details:
     print(fu_item)
 ```
 
-Output:
+出力:
 
 ```
 103 160
