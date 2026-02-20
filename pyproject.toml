@@ -105,6 +105,25 @@ convention = "pep257"
     "S101",    # assert
 ]
 
+# temporary
+"./mahjong/__init__.py" = ["D"]
+"./mahjong/agari.py" = ["D"]
+"./mahjong/constants.py" = ["D"]
+"./mahjong/meld.py" = ["D"]
+"./mahjong/shanten.py" = ["D"]
+"./mahjong/tile.py" = ["D"]
+"./mahjong/utils.py" = ["D"]
+"./mahjong/hand_calculating/__init__.py" = ["D"]
+"./mahjong/hand_calculating/divider.py" = ["D"]
+"./mahjong/hand_calculating/fu.py" = ["D"]
+"./mahjong/hand_calculating/hand_config.py" = ["D"]
+"./mahjong/hand_calculating/hand_response.py" = ["D"]
+"./mahjong/hand_calculating/hand.py" = ["D"]
+"./mahjong/hand_calculating/scores.py" = ["D"]
+"./mahjong/hand_calculating/yaku_config.py" = ["D"]
+"./mahjong/hand_calculating/yaku.py" = ["D"]
+"./mahjong/hand_calculating/yaku_list/*" = ["D"]
+
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
 "mahjong/hand_calculating/yaku_list/*.py" = ["ARG002"] # for `is_condition_met()`
