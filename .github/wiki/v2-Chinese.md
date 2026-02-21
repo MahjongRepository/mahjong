@@ -152,20 +152,82 @@ print(result.yaku)
 
 ## 向听数计算
 
+向听数表示手牌到达听牌（差一张即可和牌）所需的最少换牌次数。`0` 表示听牌，`-1` 表示手牌已经和牌（完成形）。
+
+`calculate_shanten` 会计算一般形、七对子和国士无双三种形式的向听数，并返回最小值。也可以单独计算每种形式的向听数。
+
 ```python
 from mahjong.shanten import Shanten
 from mahjong.tile import TilesConverter
 
+# 一般形，2向听
 tiles = TilesConverter.string_to_34_array(man='13569', pin='123459', sou='443')
-result = Shanten.calculate_shanten(tiles)
+print("一般形向听数:", Shanten.calculate_shanten(tiles))
 
-print(result)
+# 听牌（0向听，差一张即可和牌）
+tiles = TilesConverter.string_to_34_array(sou='111345677', pin='11', man='567')
+print("听牌:", Shanten.calculate_shanten(tiles))
+
+# 和牌形（-1向听，已经完成）
+tiles = TilesConverter.string_to_34_array(sou='111234567', pin='11', man='567')
+print("和牌形:", Shanten.calculate_shanten(tiles))
+
+# 单独计算特定形式的向听数
+tiles = TilesConverter.string_to_34_array(sou='114477', pin='114477', man='76')
+print("七对子向听数:", Shanten.calculate_shanten_for_chiitoitsu_hand(tiles))
+
+tiles = TilesConverter.string_to_34_array(sou='129', pin='19', man='19', honors='1234567')
+print("国士无双向听数:", Shanten.calculate_shanten_for_kokushi_hand(tiles))
 ```
 
 输出：
 
 ```
-2
+一般形向听数: 2
+听牌: 0
+和牌形: -1
+七对子向听数: 0
+国士无双向听数: 0
+```
+
+## 和牌判定
+
+和牌判定检查给定的手牌是否构成完成形（4面子1雀头、七对子或国士无双）。此功能仅验证牌的组合结构，不判断役种或点数。该方法比检查向听数是否为`-1`更快，因此当只需判断手牌是否完成时，建议使用`Agari.is_agari()`。
+
+```python
+from mahjong.agari import Agari
+from mahjong.tile import TilesConverter
+
+# 完成形：123s 456s 789s 123p 33m
+tiles = TilesConverter.string_to_34_array(sou='123456789', pin='123', man='33')
+print("一般形:", Agari.is_agari(tiles))
+
+# 未完成形：123s 456s 789s 12345p
+tiles = TilesConverter.string_to_34_array(sou='123456789', pin='12345')
+print("未完成形:", Agari.is_agari(tiles))
+
+# 七对子：1133557799s 1199p
+tiles = TilesConverter.string_to_34_array(sou='1133557799', pin='1199')
+print("七对子:", Agari.is_agari(tiles))
+
+# 国士无双：19s 19p 199m 1234567z
+tiles = TilesConverter.string_to_34_array(sou='19', pin='19', man='199', honors='1234567')
+print("国士无双:", Agari.is_agari(tiles))
+
+# 包含副露（杠子）：1111m 123456789p 22s
+tiles = TilesConverter.string_to_34_array(man='1111', pin='123456789', sou='22')
+open_set = [0, 0, 0, 0]  # 一万的杠子（34牌格式中索引为0）
+print("包含副露（杠子）:", Agari.is_agari(tiles, [open_set]))
+```
+
+输出：
+
+```
+一般形: True
+未完成形: False
+七对子: True
+国士无双: True
+副露手（杠子）: True
 ```
 
 ## 青天井规则
