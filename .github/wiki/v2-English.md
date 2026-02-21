@@ -153,7 +153,7 @@ Output:
 
 ## Shanten calculation
 
-Shanten number indicates how many tiles away a hand is from winning. A value of `0` means tenpai (one tile away), and `-1` means the hand is already complete (agari).
+Shanten number indicates the minimum number of tile exchanges still required for the hand to reach tenpai (one tile away from winning). A value of `0` means tenpai, and `-1` means the hand is already complete (agari).
 
 `calculate_shanten` returns the minimum shanten across regular hand, chiitoitsu (seven pairs), and kokushi (thirteen orphans) forms. You can also calculate shanten for each form individually.
 
@@ -193,7 +193,7 @@ Kokushi shanten: 0
 
 ## Agari (winning hand detection)
 
-Agari check determines whether the given tiles form a complete hand structure (4 melds + 1 pair, seven pairs, or thirteen orphans). It only validates the tile arrangement, not yaku or scoring.
+Agari check determines whether the given tiles form a complete hand structure (4 melds + 1 pair, seven pairs, or thirteen orphans). It only validates the tile arrangement, not yaku or scoring. It is faster than checking if the shanten number is `-1`, so prefer `Agari.is_agari()` when you only need to know whether a hand is complete.
 
 ```python
 from mahjong.agari import Agari
