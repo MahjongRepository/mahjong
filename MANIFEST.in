@@ -1,2 +1,2 @@
-exclude tests/*
-recursive-exclude tests *
+prune examples
+prune tests
