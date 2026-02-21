@@ -192,7 +192,7 @@ print("国士無双シャンテン数:", Shanten.calculate_shanten_for_kokushi_h
 
 ## 和了判定
 
-和了判定は手牌が完成形（4面子1雀頭、七対子、国士無双）かどうかを判定します。牌の構成のみを検証し、役や点数の判定は行いません。向聴数が`-1`かどうかを確認するよりも高速なため、手牌が完成形かどうかだけを確認したい場合は`Agari.is_agari()`を使用してください。
+和了判定は、与えられた手牌が完成形（4面子1雀頭、七対子、国士無双）かどうかを判定します。牌の構成のみを検証し、役や点数の判定は行いません。シャンテン数が`-1`かどうかを確認するよりも高速なため、手牌が完成形かどうかだけを確認したい場合は`Agari.is_agari()`を使用してください。
 
 ```python
 from mahjong.agari import Agari
@@ -214,10 +214,10 @@ print("七対子:", Agari.is_agari(tiles))
 tiles = TilesConverter.string_to_34_array(sou='19', pin='19', man='199', honors='1234567')
 print("国士無双:", Agari.is_agari(tiles))
 
-# 副露手（槓子）：1111m 123456789p 22s
+# 副露あり（槓子）：1111m 123456789p 22s
 tiles = TilesConverter.string_to_34_array(man='1111', pin='123456789', sou='22')
 open_set = [0, 0, 0, 0]  # 一萬の槓子（34牌形式のインデックス0）
-print("副露手（槓子）:", Agari.is_agari(tiles, [open_set]))
+print("副露あり（槓子）:", Agari.is_agari(tiles, [open_set]))
 ```
 
 出力:

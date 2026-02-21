@@ -214,10 +214,10 @@ print("七对子:", Agari.is_agari(tiles))
 tiles = TilesConverter.string_to_34_array(sou='19', pin='19', man='199', honors='1234567')
 print("国士无双:", Agari.is_agari(tiles))
 
-# 副露手（杠子）：1111m 123456789p 22s
+# 包含副露（杠子）：1111m 123456789p 22s
 tiles = TilesConverter.string_to_34_array(man='1111', pin='123456789', sou='22')
 open_set = [0, 0, 0, 0]  # 一万的杠子（34牌格式中索引为0）
-print("副露手（杠子）:", Agari.is_agari(tiles, [open_set]))
+print("包含副露:", Agari.is_agari(tiles, [open_set]))
 ```
 
 输出：
