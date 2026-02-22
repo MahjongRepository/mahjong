@@ -15,10 +15,19 @@ Wind yakuhai are now represented as individual yaku classes per direction: `Seat
 ## Improvements
 
 ### Faster hand calculation
-A redesigned hand division algorithm and a more streamlined yaku detection process have reduced the overall hand calculation time to roughly 1/3 of the previous version.
+A redesigned hand division algorithm (roughly 3x faster), more streamlined yaku detection, and more efficient data structures make the overall hand calculation roughly 6x faster than the previous version.
 
 #### Benchmark
-(TODO)
+Benchmark for hand calculation (han, fu, yaku scores) was run 5 times to calculate median, with 500,000 hands per iteration.
+
+For `1.4.0` version:
+- Throughput: 5925 hands/sec (based on median)
+- Avg per hand: 0.169ms (based on median)
+
+For `2.0.0` version:
+- Throughput: 35364 hands/sec (based on median)
+- Avg per hand: 0.028ms (based on median)
+
 
 ### TypedDict return types for scores, fu, and hand calculations
 Plain `dict` return types have been replaced with `TypedDict` classes for improved type safety and IDE auto-completion:

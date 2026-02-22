@@ -26,7 +26,7 @@ It supports optional features like:
 | Disable or enable extra yakuman for all honors 7 pairs | `has_daichisei` | `False` |
 | Disable or enable paarenchan without any yaku | `paarenchan_needs_yaku` | `True` |
 
-The code was validated on tenhou.net phoenix replays in total on **11,120,125 hands**.
+The code was validated on tenhou.net phoenix replays in total on **26,148,038 hands**.
 
 So, we can say that our hand calculator works the same way that tenhou.net hand calculation.
 
