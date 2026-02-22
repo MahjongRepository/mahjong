@@ -28,7 +28,6 @@ For `2.0.0` version:
 - Throughput: 35364 hands/sec (based on median)
 - Avg per hand: 0.028ms (based on median)
 
-
 ### TypedDict return types for scores, fu, and hand calculations
 Plain `dict` return types have been replaced with `TypedDict` classes for improved type safety and IDE auto-completion:
 - `ScoresResult` — returned by `ScoresCalculator.calculate_scores()` and `Aotenjou.calculate_scores()`
