@@ -85,6 +85,7 @@ ignore = [
     "FBT001",  # boolean-type-hint-positional-argument
     "FBT002",  # boolean-default-value-positional-argument
     "FBT003",  # boolean-positional-value-in-call
+    "D100",    # missing-docstring-in-public-module
 ]
 
 [tool.ruff.lint.pycodestyle]
@@ -107,7 +108,6 @@ convention = "pep257"
 
 # temporary
 "./mahjong/__init__.py" = ["D"]
-"./mahjong/agari.py" = ["D"]
 "./mahjong/constants.py" = ["D"]
 "./mahjong/meld.py" = ["D"]
 "./mahjong/shanten.py" = ["D"]
