@@ -20,6 +20,8 @@ temp.py
 .coverage
 htmlcov
 
+docs/build/
+
 uv.lock
 
 benchmark

@@ -48,6 +48,7 @@ dev = [
     { include-group = "lint" },
     { include-group = "typing" },
     { include-group = "test" },
+    { include-group = "docs" },
 ]
 lint = [
     "ruff>=0.15.0,<0.16",
@@ -58,6 +59,10 @@ typing = [
 test = [
     "pytest>=9.0.2,<10",
     "pytest-cov>=7.0.0,<8",
+]
+docs = [
+    "sphinx>=8.1.3",
+    "sphinx-rtd-theme>=3.1.0",
 ]
 
 [tool.ruff]
@@ -96,6 +101,7 @@ ignore-overlong-task-comments = true
 convention = "pep257"
 
 [tool.ruff.lint.extend-per-file-ignores]
+"./docs/*" = ["ALL"]
 "./examples/*" = [
     "D",       # pydocstyle
     "T201",    # print
