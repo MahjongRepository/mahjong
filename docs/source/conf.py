@@ -8,7 +8,7 @@
 
 project = "mahjong"
 copyright = "2017, mahjong Python library contributors"
-author = "mahjong Python library contributors"
+author = "Alexey Lisikhin"
 release = "2017"
 
 # -- General configuration ---------------------------------------------------
