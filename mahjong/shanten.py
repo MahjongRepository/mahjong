@@ -4,16 +4,42 @@ from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 
 
 class Shanten:
+    """
+    Shanten (minimum tiles to tenpai/agari) calculation.
+
+    The shanten number represents how many tiles away a hand is from being complete (agari).
+    A shanten of 0 means the hand is tenpai (one tile away from winning),
+    and -1 means the hand is already complete.
+
+    Supports three hand types: regular (4 melds + 1 pair), chiitoitsu (seven pairs),
+    and kokushi musou (thirteen orphans).
+    """
+
     TENPAI_STATE = 0
     AGARI_STATE = -1
 
     @staticmethod
     def calculate_shanten(tiles_34: Sequence[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
         """
-        Return the minimum shanten for provided hand,
-        it will consider chiitoitsu and kokushi options if possible.
-        """
+        Return the minimum shanten across regular, chiitoitsu, and kokushi hand types.
 
+        A pair alone is a complete hand (remaining melds are implied open):
+        >>> tiles_34 = [0] * 34
+        >>> tiles_34[0] = 2
+        >>> Shanten.calculate_shanten(tiles_34)
+        -1
+
+        A triplet without a pair is tenpai (one tile needed for the pair):
+        >>> tiles_34 = [0] * 34
+        >>> tiles_34[0] = 3
+        >>> Shanten.calculate_shanten(tiles_34)
+        0
+
+        :param tiles_34: hand in 34 tiles format array
+        :param use_chiitoitsu: include seven pairs pattern in calculation
+        :param use_kokushi: include thirteen orphans pattern in calculation
+        :return: minimum shanten number (-1 for agari, 0 for tenpai, positive for tiles needed)
+        """
         shanten_results = [Shanten.calculate_shanten_for_regular_hand(tiles_34)]
         if use_chiitoitsu:
             shanten_results.append(Shanten.calculate_shanten_for_chiitoitsu_hand(tiles_34))
@@ -25,7 +51,23 @@ class Shanten:
     @staticmethod
     def calculate_shanten_for_chiitoitsu_hand(tiles_34: Sequence[int]) -> int:
         """
-        Calculate the number of shanten for chiitoitsu hand
+        Calculate the shanten number for a chiitoitsu (seven pairs) hand.
+
+        Count the number of pairs and unique tile kinds to determine
+        how far the hand is from completing seven distinct pairs.
+
+        Seven distinct pairs form a complete hand:
+        >>> tiles_34 = [2, 2, 2, 2, 2, 2, 2] + [0] * 27
+        >>> Shanten.calculate_shanten_for_chiitoitsu_hand(tiles_34)
+        -1
+
+        Six pairs with two singles — tenpai:
+        >>> tiles_34 = [2, 2, 2, 2, 2, 2, 1, 1] + [0] * 26
+        >>> Shanten.calculate_shanten_for_chiitoitsu_hand(tiles_34)
+        0
+
+        :param tiles_34: hand in 34 tiles format array
+        :return: shanten number for chiitoitsu (-1 for complete, 0-6 otherwise)
         """
         pairs = len([x for x in tiles_34 if x >= 2])
         if pairs == 7:
@@ -37,7 +79,22 @@ class Shanten:
     @staticmethod
     def calculate_shanten_for_kokushi_hand(tiles_34: Sequence[int]) -> int:
         """
-        Calculate the number of shanten for kokushi musou hand
+        Calculate the shanten number for a kokushi musou (thirteen orphans) hand.
+
+        Kokushi requires one of each terminal (1, 9 of each suit) and each honor tile,
+        plus one duplicate. Count how many of the 13 required tiles are present
+        and whether any appears twice.
+
+        All 13 terminal/honor tiles with one duplicate form a complete hand:
+        >>> tiles_34 = [0] * 34
+        >>> for i in [0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33]:
+        ...    tiles_34[i] = 1
+        >>> tiles_34[33] = 2
+        >>> Shanten.calculate_shanten_for_kokushi_hand(tiles_34)
+        -1
+
+        :param tiles_34: hand in 34 tiles format array
+        :return: shanten number for kokushi (-1 for complete, 0-13 otherwise)
         """
         completed_terminals = 0
         terminals = 0
@@ -50,7 +107,26 @@ class Shanten:
     @staticmethod
     def calculate_shanten_for_regular_hand(tiles_34: Sequence[int]) -> int:
         """
-        Calculate the number of shanten for regular hand
+        Calculate the shanten number for a regular hand (4 melds + 1 pair).
+
+        Use a depth-first search over all possible meld/pair/tatsu decompositions
+        of the suited tiles (indices 0-26), after pre-processing honor tiles (indices 27-33).
+
+        A pair alone is a complete hand (remaining melds are implied open):
+        >>> tiles_34 = [0] * 34
+        >>> tiles_34[0] = 2
+        >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
+        -1
+
+        A triplet without a pair is tenpai:
+        >>> tiles_34 = [0] * 34
+        >>> tiles_34[0] = 3
+        >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
+        0
+
+        :param tiles_34: hand in 34 tiles format array
+        :return: shanten number for regular hand (-1 for complete, 0+ otherwise)
+        :raises ValueError: if the hand contains more than 14 tiles
         """
         return _RegularShanten(tiles_34).calculate()
 
