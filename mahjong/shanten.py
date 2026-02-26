@@ -27,12 +27,14 @@ class Shanten:
         Return the minimum shanten number across regular, chiitoitsu, and kokushi hand types.
 
         A pair alone is a complete hand (remaining melds are implied open):
+
         >>> tiles_34 = [0] * 34
         >>> tiles_34[0] = 2
         >>> Shanten.calculate_shanten(tiles_34)
         -1
 
         A triplet without a pair is tenpai (one tile needed for the pair):
+
         >>> tiles_34 = [0] * 34
         >>> tiles_34[0] = 3
         >>> Shanten.calculate_shanten(tiles_34)
@@ -61,11 +63,13 @@ class Shanten:
         how far the hand is from completing seven distinct pairs.
 
         Seven distinct pairs form a complete hand:
+
         >>> tiles_34 = [2, 2, 2, 2, 2, 2, 2] + [0] * 27
         >>> Shanten.calculate_shanten_for_chiitoitsu_hand(tiles_34)
         -1
 
         Six pairs with two singles — tenpai:
+
         >>> tiles_34 = [2, 2, 2, 2, 2, 2, 1, 1] + [0] * 26
         >>> Shanten.calculate_shanten_for_chiitoitsu_hand(tiles_34)
         0
@@ -90,6 +94,7 @@ class Shanten:
         and whether any appears twice.
 
         All 13 terminal/honor tiles with one duplicate form a complete hand:
+
         >>> tiles_34 = [0] * 34
         >>> for i in [0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33]:
         ...    tiles_34[i] = 1
@@ -117,12 +122,14 @@ class Shanten:
         of the suited tiles (indices 0-26), after pre-processing honor tiles (indices 27-33).
 
         A pair alone is a complete hand (remaining melds are implied open):
+
         >>> tiles_34 = [0] * 34
         >>> tiles_34[0] = 2
         >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
         -1
 
         A triplet without a pair is tenpai:
+
         >>> tiles_34 = [0] * 34
         >>> tiles_34[0] = 3
         >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
