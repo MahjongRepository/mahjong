@@ -14,3 +14,24 @@ mahjong documentation
 
 .. automodule:: mahjong
    :members:
+
+.. automodule:: mahjong.agari
+   :members:
+
+.. automodule:: mahjong.constants
+   :members:
+
+.. automodule:: mahjong.meld
+   :members:
+
+.. automodule:: mahjong.shanten
+   :members:
+
+.. automodule:: mahjong.tile
+   :members:
+
+.. automodule:: mahjong.utils
+   :members:
+
+.. automodule:: mahjong.hand_calculating
+   :members:
