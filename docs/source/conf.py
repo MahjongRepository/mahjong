@@ -17,7 +17,7 @@ release = "2017"
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path("..", "docs").resolve()))
+sys.path.insert(0, str(Path("../..").resolve()))
 
 extensions = [
     "sphinx.ext.autodoc",
