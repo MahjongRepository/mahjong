@@ -15,11 +15,11 @@ class Shanten:
     and kokushi musou (thirteen orphans).
     """
 
-    #: Hand is tenpai — one tile away from winning.
     TENPAI_STATE = 0
+    """Hand is tenpai — one tile away from winning."""
 
-    #: Hand is complete (agari).
     AGARI_STATE = -1
+    """Hand is complete (agari)."""
 
     @staticmethod
     def calculate_shanten(tiles_34: Sequence[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
