@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path("../..").resolve()))
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
     "sphinx_rtd_theme",
 ]
 
