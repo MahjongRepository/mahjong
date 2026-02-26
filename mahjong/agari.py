@@ -17,16 +17,22 @@ class Agari:
         for any number of melds (0-4) plus 1 pair:
 
         0 melds + 1 pair (valid hand):
-        >>> tiles_34 = [0] * 34
-        >>> tiles_34[0] = 2
-        >>> Agari.is_agari(tiles_34)
-        True
+
+        .. code-block:: pycon
+
+            >>> tiles_34 = [0] * 34
+            >>> tiles_34[0] = 2
+            >>> Agari.is_agari(tiles_34)
+            True
 
         1 meld (triplet) without a pair is not a valid hand:
-        >>> tiles_34 = [0] * 34
-        >>> tiles_34[0] = 3
-        >>> Agari.is_agari(tiles_34)
-        False
+
+        .. code-block:: pycon
+
+            >>> tiles_34 = [0] * 34
+            >>> tiles_34[0] = 3
+            >>> Agari.is_agari(tiles_34)
+            False
 
         :param tiles_34: hand in 34 tiles format array
         :param open_sets_34: declared melds as arrays of tile indices in 34 format
