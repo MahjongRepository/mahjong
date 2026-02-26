@@ -8,20 +8,23 @@ class Shanten:
     Shanten (minimum tiles to tenpai/agari) calculation.
 
     The shanten number represents how many tiles away a hand is from being complete (agari).
-    A shanten of 0 means the hand is tenpai (one tile away from winning),
+    A shanten number of 0 means the hand is tenpai (one tile away from winning),
     and -1 means the hand is already complete.
 
     Supports three hand types: regular (4 melds + 1 pair), chiitoitsu (seven pairs),
     and kokushi musou (thirteen orphans).
     """
 
+    #: Hand is tenpai — one tile away from winning.
     TENPAI_STATE = 0
+
+    #: Hand is complete (agari).
     AGARI_STATE = -1
 
     @staticmethod
     def calculate_shanten(tiles_34: Sequence[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
         """
-        Return the minimum shanten across regular, chiitoitsu, and kokushi hand types.
+        Return the minimum shanten number across regular, chiitoitsu, and kokushi hand types.
 
         A pair alone is a complete hand (remaining melds are implied open):
         >>> tiles_34 = [0] * 34
@@ -39,6 +42,7 @@ class Shanten:
         :param use_chiitoitsu: include seven pairs pattern in calculation
         :param use_kokushi: include thirteen orphans pattern in calculation
         :return: minimum shanten number (-1 for agari, 0 for tenpai, positive for tiles needed)
+        :raises ValueError: if the hand contains more than 14 tiles
         """
         shanten_results = [Shanten.calculate_shanten_for_regular_hand(tiles_34)]
         if use_chiitoitsu:
