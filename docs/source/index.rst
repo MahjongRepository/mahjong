@@ -22,3 +22,8 @@ mahjong documentation
    modules/tile
    modules/utils
    modules/hand_calculating/index
+
+Indices and Tables
+==================
+
+* :ref:`genindex`
