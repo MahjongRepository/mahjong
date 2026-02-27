@@ -130,7 +130,6 @@ convention = "pep257"
 "./mahjong/hand_calculating/yaku_list/*" = ["D"]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
 "mahjong/hand_calculating/yaku_list/*.py" = ["ARG002"] # for `is_condition_met()`
 
 [tool.ty.src]

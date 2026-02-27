@@ -18,3 +18,26 @@ from mahjong.hand_calculating.yaku_list.yakuman.suuankou_tanki import SuuankouTa
 from mahjong.hand_calculating.yaku_list.yakuman.suukantsu import Suukantsu
 from mahjong.hand_calculating.yaku_list.yakuman.tenhou import Tenhou
 from mahjong.hand_calculating.yaku_list.yakuman.tsuisou import Tsuuiisou
+
+__all__ = [
+    "Chiihou",
+    "Chinroutou",
+    "ChuurenPoutou",
+    "DaburuChuurenPoutou",
+    "DaburuKokushiMusou",
+    "DaiSuushii",
+    "Daichisei",
+    "Daisangen",
+    "Daisharin",
+    "KokushiMusou",
+    "Paarenchan",
+    "RenhouYakuman",
+    "Ryuuiisou",
+    "Sashikomi",
+    "Shousuushii",
+    "Suuankou",
+    "SuuankouTanki",
+    "Suukantsu",
+    "Tenhou",
+    "Tsuuiisou",
+]
