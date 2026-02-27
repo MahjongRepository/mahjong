@@ -10,4 +10,4 @@ Modules
    shanten
    tile
    utils
-   hand_calculating
+   hand_calculating/index
