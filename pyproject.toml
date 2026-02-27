@@ -26,6 +26,7 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/MahjongRepository/mahjong"
+Documentation = "https://mahjongrepository.github.io/mahjong"
 Wiki = "https://github.com/MahjongRepository/mahjong/wiki"
 
 [build-system]
