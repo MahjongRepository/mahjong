@@ -12,6 +12,13 @@ mahjong documentation
    :members:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :caption: Modules:
 
-   modules/index
+   modules/agari
+   modules/constants
+   modules/meld
+   modules/shanten
+   modules/tile
+   modules/utils
+   modules/hand_calculating/index
