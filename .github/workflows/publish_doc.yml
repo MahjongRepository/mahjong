@@ -1,0 +1,55 @@
+name: Build documentation
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - docs/**
+      - mahjong/**
+      - .github/workflows/publish_doc.yml
+  pull_request:
+    branches:
+      - master
+    paths:
+      - docs/**
+      - mahjong/**
+      - .github/workflows/publish_doc.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Build documentation
+        working-directory: docs
+        run: make clean html
+
+      - name: Deploy
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs/build/html
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: build-docs
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
