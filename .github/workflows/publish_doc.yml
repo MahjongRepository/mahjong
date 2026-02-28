@@ -35,7 +35,9 @@ jobs:
 
       - name: Build documentation
         working-directory: docs
-        run: make clean html
+        run: |
+          ../.venv/Scripts/activate
+          make clean html
 
       - name: Deploy
         uses: actions/upload-pages-artifact@v4
