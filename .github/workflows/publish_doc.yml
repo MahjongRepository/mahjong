@@ -36,7 +36,7 @@ jobs:
       - name: Build documentation
         working-directory: docs
         run: |
-          ../.venv/Scripts/activate
+          ../.venv/bin/activate
           make clean html
 
       - name: Deploy
