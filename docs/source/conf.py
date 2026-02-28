@@ -25,6 +25,13 @@ extensions = [
     "sphinx_rtd_theme",
 ]
 
+autodoc_default_options = {
+    "members": True,
+    "undoc-members": True,
+    "member-order": "bysource",
+    "special-members": "__init__",
+}
+
 templates_path = ["_templates"]
 exclude_patterns = ["build", "Thumbs.db", ".DS_Store"]
 
