@@ -31,13 +31,14 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Install libs
-        run: uv sync --no-group dev --group docs
+        run: |
+          uv sync --no-group dev --group docs
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
+          echo "VIRTUAL_ENV=$GITHUB_WORKSPACE/.venv" >> $GITHUB_ENV
 
       - name: Build documentation
         working-directory: docs
-        run: |
-          ../.venv/bin/activate
-          make clean html
+        run: make clean html
 
       - name: Deploy
         uses: actions/upload-pages-artifact@v4
