@@ -9,7 +9,6 @@ mahjong documentation
 =====================
 
 .. automodule:: mahjong
-   :members:
 
 .. toctree::
    :maxdepth: 1

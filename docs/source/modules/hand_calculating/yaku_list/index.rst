@@ -7,5 +7,4 @@ mahjong.hand_calculating.yaku_list
    yakuman/index
 
 .. automodule:: mahjong.hand_calculating.yaku_list
-   :members:
    :show-inheritance:
