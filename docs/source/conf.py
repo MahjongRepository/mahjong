@@ -25,6 +25,7 @@ extensions = [
     "sphinx_rtd_theme",
 ]
 
+autodoc_typehints = "description"
 autodoc_default_options = {
     "members": True,
     "undoc-members": True,
