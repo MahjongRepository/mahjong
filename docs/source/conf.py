@@ -28,7 +28,6 @@ extensions = [
 autodoc_typehints = "description"
 autodoc_default_options = {
     "members": True,
-    "undoc-members": True,
     "member-order": "bysource",
     "special-members": "__init__",
 }
