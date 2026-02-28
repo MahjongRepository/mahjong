@@ -5,7 +5,7 @@
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/mahjong.svg)](https://pypi.python.org/pypi/mahjong)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/mahjong.svg?label=PyPI%20downloads)](https://pypi.org/project/mahjong/)
 [![Linters and tests](https://github.com/MahjongRepository/mahjong/actions/workflows/lint_and_test.yml/badge.svg)](https://github.com/MahjongRepository/mahjong/actions/workflows/lint_and_test.yml)
-[![API Docs](https://img.shields.io/badge/api-main-yellow.svg)](https://mahjongrepository.github.io/mahjong)
+[![API Docs](https://img.shields.io/badge/api-master-yellow.svg)](https://mahjongrepository.github.io/mahjong)
 
 This library can calculate hand cost (han, fu with details, yaku, and scores) for riichi mahjong (Japanese version).
 
