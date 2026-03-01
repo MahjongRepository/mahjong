@@ -40,7 +40,7 @@ class Shanten:
         >>> Shanten.calculate_shanten(tiles_34)
         0
 
-        :param tiles_34: hand in 34 tiles format array
+        :param tiles_34: hand in 34-format count array (length 34)
         :param use_chiitoitsu: include seven pairs pattern in calculation
         :param use_kokushi: include thirteen orphans pattern in calculation
         :return: minimum shanten number (-1 for agari, 0 for tenpai, positive for tiles needed)
@@ -74,7 +74,7 @@ class Shanten:
         >>> Shanten.calculate_shanten_for_chiitoitsu_hand(tiles_34)
         0
 
-        :param tiles_34: hand in 34 tiles format array
+        :param tiles_34: hand in 34-format count array (length 34)
         :return: shanten number for chiitoitsu (-1 for complete, 0-6 otherwise)
         """
         pairs = len([x for x in tiles_34 if x >= 2])
@@ -102,7 +102,7 @@ class Shanten:
         >>> Shanten.calculate_shanten_for_kokushi_hand(tiles_34)
         -1
 
-        :param tiles_34: hand in 34 tiles format array
+        :param tiles_34: hand in 34-format count array (length 34)
         :return: shanten number for kokushi (-1 for complete, 0-13 otherwise)
         """
         completed_terminals = 0
@@ -135,7 +135,7 @@ class Shanten:
         >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
         0
 
-        :param tiles_34: hand in 34 tiles format array
+        :param tiles_34: hand in 34-format count array (length 34)
         :return: shanten number for regular hand (-1 for complete, 0+ otherwise)
         :raises ValueError: if the hand contains more than 14 tiles
         """
