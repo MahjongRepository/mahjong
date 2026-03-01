@@ -30,8 +30,8 @@ class Agari:
         >>> Agari.is_agari(tiles_34)
         False
 
-        :param tiles_34: hand in 34 tiles format array
-        :param open_sets_34: declared melds as arrays of tile indices in 34 format
+        :param tiles_34: hand in 34-format count array (length 34)
+        :param open_sets_34: declared melds as arrays of tile indices in 34-format
         :return: True if the hand is complete
         """
         if open_sets_34:
