@@ -8,6 +8,7 @@ tile index:
 
 * :func:`is_man`, :func:`is_pin`, :func:`is_sou`, :func:`is_honor` - suit membership checks
 * :func:`is_terminal` - whether a tile is a terminal (1 or 9 of any suit)
+* :func:`is_dora_indicator_for_terminal` - whether a tile is a dora indicator that points to a terminal
 * :func:`is_sangenpai` - whether a tile is a dragon (haku, hatsu, or chun)
 * :func:`simplify` - reduce a tile index to its rank (0-8) within its suit
 
@@ -201,6 +202,9 @@ def is_chi(item: Sequence[int]) -> bool:
     True
 
     >>> is_chi([0, 0, 0])
+    False
+
+    >>> is_chi([2, 1, 0])
     False
 
     :param item: array of tile indices in 34-format
