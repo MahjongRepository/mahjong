@@ -26,6 +26,8 @@ class Meld:
     >>> meld = Meld(meld_type=Meld.CHI, tiles=tiles)
     >>> meld.type
     'chi'
+    >>> meld.tiles
+    (0, 4, 8)
 
     Create a closed kan:
 
@@ -33,6 +35,19 @@ class Meld:
     >>> meld = Meld(meld_type=Meld.KAN, tiles=tiles, opened=False)
     >>> meld.opened
     False
+
+    :ivar type: one of the meld type constants (CHI, PON, KAN, SHOUMINKAN, NUKI)
+    :vartype type: str | None
+    :ivar tiles: tile indices in 136 format, stored as an immutable tuple
+    :vartype tiles: tuple[int, ...]
+    :ivar opened: True for open melds (called from another player), False for closed kan
+    :vartype opened: bool
+    :ivar called_tile: the specific tile index (136 format) that was called to form this meld
+    :vartype called_tile: int | None
+    :ivar who: seat index (0-3) of the player who declared the meld
+    :vartype who: int | None
+    :ivar from_who: seat index (0-3) of the player who discarded the called tile
+    :vartype from_who: int | None
     """
 
     CHI = "chi"
@@ -93,14 +108,17 @@ class Meld:
         self.from_who = from_who
 
     def __setattr__(self, name: str, value: object) -> None:
+        """Invalidate the tiles_34 cache when tiles are reassigned."""
         super().__setattr__(name, value)
         if name == "tiles" and "tiles_34" in self.__dict__:
             del self.__dict__["tiles_34"]
 
     def __str__(self) -> str:
+        """Return a human-readable string with meld type and tiles."""
         return f"Type: {self.type}, Tiles: {TilesConverter.to_one_line_string(self.tiles)} {self.tiles}"
 
     def __repr__(self) -> str:
+        """Return the same representation as __str__."""
         return self.__str__()
 
     @cached_property
