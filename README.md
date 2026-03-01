@@ -15,15 +15,16 @@ The code was validated on tenhou.net phoenix replays in total on **26,148,038 ha
 
 So, we can say that our hand calculator works the same way that tenhou.net hand calculation.
 
+## Documentation
+
+- [API reference](https://mahjongrepository.github.io/mahjong)
+- [Wiki](https://github.com/MahjongRepository/mahjong/wiki) — Supported rules and usage examples
+
 ## How to install
 
 ```bash
 pip install mahjong
 ```
-
-## Supported rules and usage examples
-
-You can find usage examples and information about all supported rules variations in the [wiki](https://github.com/MahjongRepository/mahjong/wiki)
 
 ## Local development setup
 
