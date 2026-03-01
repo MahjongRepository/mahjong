@@ -51,7 +51,7 @@ def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
     >>> is_aka_dora(16, aka_enabled=False)
     False
 
-    :param tile_136: tile index in 136 format
+    :param tile_136: tile index in 136-format
     :param aka_enabled: whether aka dora rules are active
     :return: True if the tile is a red five and aka dora is enabled
     """
@@ -80,8 +80,8 @@ def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora:
     >>> plus_dora(4, [0, 1])
     2
 
-    :param tile_136: tile index in 136 format
-    :param dora_indicators_136: collection of dora indicator tile indices in 136 format
+    :param tile_136: tile index in 136-format
+    :param dora_indicators_136: collection of dora indicator tile indices in 136-format
     :param add_aka_dora: include aka dora (red five) bonus in the count
     :return: total dora count for this tile
     """
@@ -157,7 +157,7 @@ def build_dora_count_map(dora_indicators_136: Collection[int]) -> dict[int, int]
     >>> build_dora_count_map([0, 1])
     {1: 2}
 
-    :param dora_indicators_136: collection of dora indicator tile indices in 136 format
+    :param dora_indicators_136: collection of dora indicator tile indices in 136-format
     :return: dictionary mapping 34-format tile index to dora count
     """
     dora_map: dict[int, int] = {}
@@ -194,6 +194,8 @@ def is_chi(item: Sequence[int]) -> bool:
     """
     Check if a set of tiles forms a chi (sequence of three consecutive tiles).
 
+    The indices must be in ascending order.
+
     >>> from mahjong.utils import is_chi
     >>> is_chi([0, 1, 2])
     True
@@ -201,7 +203,7 @@ def is_chi(item: Sequence[int]) -> bool:
     >>> is_chi([0, 0, 0])
     False
 
-    :param item: array of tile indices in 34 format
+    :param item: array of tile indices in 34-format
     :return: True if the tiles form a chi
     """
     if len(item) != 3:
@@ -220,7 +222,7 @@ def is_pon(item: Sequence[int]) -> bool:
     >>> is_pon([0, 1, 2])
     False
 
-    :param item: array of tile indices in 34 format
+    :param item: array of tile indices in 34-format
     :return: True if the tiles form a pon
     """
     if len(item) != 3:
@@ -230,7 +232,7 @@ def is_pon(item: Sequence[int]) -> bool:
 
 def is_kan(item: Sequence[int]) -> bool:
     """
-    Check if a set of tiles forms a kan (quad).
+    Check if a set of tiles forms a kan (quad of identical tiles).
 
     >>> from mahjong.utils import is_kan
     >>> is_kan([0, 0, 0, 0])
@@ -239,7 +241,7 @@ def is_kan(item: Sequence[int]) -> bool:
     >>> is_kan([0, 0, 0])
     False
 
-    :param item: array of tile indices in 34 format
+    :param item: array of tile indices in 34-format
     :return: True if the tiles form a kan
     """
     return len(item) == 4
@@ -259,7 +261,7 @@ def is_pon_or_kan(item: Sequence[int]) -> bool:
     >>> is_pon_or_kan([0, 1, 2])
     False
 
-    :param item: array of tile indices in 34 format
+    :param item: array of tile indices in 34-format
     :return: True if the tiles form a pon or kan
     """
     length = len(item)
@@ -281,7 +283,7 @@ def is_pair(item: Sequence[int]) -> bool:
     >>> is_pair([0, 0, 0])
     False
 
-    :param item: array of tile indices in 34 format
+    :param item: array of tile indices in 34-format
     :return: True if the tiles form a pair
     """
     return len(item) == 2
@@ -298,8 +300,8 @@ def has_pon_or_kan_of(hand: Collection[Sequence[int]], tile: int) -> bool:
     >>> has_pon_or_kan_of([[0, 1, 2], [3, 3, 3]], 0)
     False
 
-    :param hand: collection of tile sets, each a sequence of tile indices in 34 format
-    :param tile: tile index in 34 format to search for
+    :param hand: collection of tile sets, each a sequence of tile indices in 34-format
+    :param tile: tile index in 34-format to search for
     :return: True if the hand contains a pon or kan of the given tile
     """
     for item in hand:
@@ -321,7 +323,7 @@ def classify_hand_suits(hand: Collection[Sequence[int]]) -> tuple[int, int]:
     >>> classify_hand_suits([[0, 1, 2], [27, 27, 27]])
     (4, 1)
 
-    :param hand: collection of tile sets, each a sequence of tile indices in 34 format
+    :param hand: collection of tile sets, each a sequence of tile indices in 34-format
     :return: tuple of (suit_mask, honor_count)
     """
     suit_mask = 0
@@ -350,7 +352,7 @@ def is_man(tile: int) -> bool:
     >>> is_man(9)
     False
 
-    :param tile: tile index in 34 format
+    :param tile: tile index in 34-format
     :return: True if the tile is a man tile (indices 0-8)
     """
     return tile <= 8
@@ -367,7 +369,7 @@ def is_pin(tile: int) -> bool:
     >>> is_pin(0)
     False
 
-    :param tile: tile index in 34 format
+    :param tile: tile index in 34-format
     :return: True if the tile is a pin tile (indices 9-17)
     """
     return 8 < tile <= 17
@@ -384,7 +386,7 @@ def is_sou(tile: int) -> bool:
     >>> is_sou(0)
     False
 
-    :param tile: tile index in 34 format
+    :param tile: tile index in 34-format
     :return: True if the tile is a sou tile (indices 18-26)
     """
     return 17 < tile <= 26
@@ -401,7 +403,7 @@ def is_honor(tile: int) -> bool:
     >>> is_honor(26)
     False
 
-    :param tile: tile index in 34 format
+    :param tile: tile index in 34-format
     :return: True if the tile is an honor tile (indices 27-33)
     """
     return tile >= 27
@@ -418,7 +420,7 @@ def is_sangenpai(tile_34: int) -> bool:
     >>> is_sangenpai(27)
     False
 
-    :param tile_34: tile index in 34 format
+    :param tile_34: tile index in 34-format
     :return: True if the tile is a dragon (indices 31-33)
     """
     return tile_34 >= 31
@@ -438,7 +440,7 @@ def is_terminal(tile: int) -> bool:
     >>> is_terminal(1)
     False
 
-    :param tile: tile index in 34 format
+    :param tile: tile index in 34-format
     :return: True if the tile is a terminal
     """
     return tile in TERMINAL_INDICES
@@ -459,7 +461,7 @@ def is_dora_indicator_for_terminal(tile: int) -> bool:
     >>> is_dora_indicator_for_terminal(0)
     False
 
-    :param tile: tile index in 34 format
+    :param tile: tile index in 34-format
     :return: True if the tile is a dora indicator for a terminal
     """
     return tile in {7, 8, 16, 17, 25, 26}
@@ -476,7 +478,7 @@ def contains_terminals(hand_set: Collection[int]) -> bool:
     >>> contains_terminals([1, 2, 3])
     False
 
-    :param hand_set: collection of tile indices in 34 format
+    :param hand_set: collection of tile indices in 34-format
     :return: True if any tile in the set is a terminal
     """
     return any(x in TERMINAL_INDICES for x in hand_set)
@@ -496,7 +498,7 @@ def simplify(tile: int) -> int:
     >>> simplify(20)
     2
 
-    :param tile: tile index in 34 format
+    :param tile: tile index in 34-format
     :return: rank within the suit (0-8)
     """
     return tile % 9
@@ -565,7 +567,7 @@ def is_tile_strictly_isolated(hand_34: Sequence[int], tile_34: int) -> bool:
     False
 
     :param hand_34: hand in 34-format tile count array
-    :param tile_34: tile index in 34 format to check
+    :param tile_34: tile index in 34-format to check
     :return: True if the tile is strictly isolated
     """
     # honor tiles have no neighbors to check
