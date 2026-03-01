@@ -30,8 +30,7 @@ Honors (`z`) use ranks to distinguish individual tiles:
 * `6` - Green dragon (發, hatsu)
 * `7` - Red dragon (中, chun)
 
-Multiple tiles may be concatenated without separators to form a string that represents a
-hand or collection. For example:
+Multiple tiles may be concatenated without separators to form a string that represents a collection. For example:
 
 ``123m406p789s11555z``
 
