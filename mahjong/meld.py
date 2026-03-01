@@ -38,11 +38,11 @@ class Meld:
 
     :ivar type: one of the meld type constants (CHI, PON, KAN, SHOUMINKAN, NUKI)
     :vartype type: str | None
-    :ivar tiles: tile indices in 136 format, stored as an immutable tuple
+    :ivar tiles: tile indices in 136-format, stored as an immutable tuple
     :vartype tiles: tuple[int, ...]
     :ivar opened: True for open melds (called from another player), False for closed kan
     :vartype opened: bool
-    :ivar called_tile: the specific tile index (136 format) that was called to form this meld
+    :ivar called_tile: the specific tile index (136-format) that was called to form this meld
     :vartype called_tile: int | None
     :ivar who: seat index (0-3) of the player who declared the meld
     :vartype who: int | None
@@ -94,9 +94,9 @@ class Meld:
         0
 
         :param meld_type: one of the meld type constants (CHI, PON, KAN, SHOUMINKAN, NUKI)
-        :param tiles: tile indices in 136 format
+        :param tiles: tile indices in 136-format
         :param opened: True for open melds (called from another player), False for closed kan
-        :param called_tile: the specific tile index (136 format) that was called to form this meld
+        :param called_tile: the specific tile index (136-format) that was called to form this meld
         :param who: seat index (0-3) of the player who declared the meld
         :param from_who: seat index (0-3) of the player who discarded the called tile
         """
