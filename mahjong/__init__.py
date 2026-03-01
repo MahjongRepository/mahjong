@@ -1,5 +1,5 @@
 """
-_summary_
+_summary_.
 
 Tile representation
 ###################

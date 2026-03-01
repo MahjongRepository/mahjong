@@ -114,7 +114,6 @@ convention = "pep257"
 ]
 
 # temporary
-"./mahjong/__init__.py" = ["D"]
 "./mahjong/constants.py" = ["D"]
 "./mahjong/tile.py" = ["D"]
 "./mahjong/utils.py" = ["D"]
