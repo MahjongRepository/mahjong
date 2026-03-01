@@ -56,3 +56,7 @@ To set up the project locally for development:
     ```bash
     make check   # Runs format, lint, and tests
     ```
+
+## License
+
+This library is licensed under the [MIT license](LICENSE.txt).
