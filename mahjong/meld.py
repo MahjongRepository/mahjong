@@ -114,7 +114,16 @@ class Meld:
             del self.__dict__["tiles_34"]
 
     def __str__(self) -> str:
-        """Return a human-readable string with meld type and tiles."""
+        """
+        Return a human-readable string with meld type and tiles.
+
+        >>> from mahjong.meld import Meld
+        >>> from mahjong.tile import TilesConverter
+        >>> tiles = TilesConverter.string_to_136_array(man="123")
+        >>> meld = Meld(meld_type=Meld.CHI, tiles=tiles)
+        >>> str(meld)
+        'Type: chi, Tiles: 123m (0, 4, 8)'
+        """
         return f"Type: {self.type}, Tiles: {TilesConverter.to_one_line_string(self.tiles)} {self.tiles}"
 
     def __repr__(self) -> str:
