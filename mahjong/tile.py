@@ -9,8 +9,8 @@ class Tile:
     """
     Container for a single discarded tile record.
 
-    Each instance holds a tile index and a flag indicating whether the discard
-    was tsumogiri (the drawn tile was immediately discarded).
+    Not used internally by the library. Provided as a convenience data class
+    for consumers that need to track discards with tsumogiri information.
 
     :ivar value: tile index (typically in 136-format)
     :ivar is_tsumogiri: True if the tile was discarded immediately after drawing it
