@@ -6,21 +6,54 @@ from mahjong.constants import FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU
 
 
 class Tile:
+    """
+    Container for a single discarded tile record.
+
+    Each instance holds a tile index and a flag indicating whether the discard
+    was tsumogiri (the drawn tile was immediately discarded).
+
+    :ivar value: tile index (typically in 136-format)
+    :ivar is_tsumogiri: True if the tile was discarded immediately after drawing it
+    """
+
     value: Any
     is_tsumogiri: Any
 
     def __init__(self, value: Any, is_tsumogiri: Any) -> None:  # noqa: ANN401
+        """
+        Initialize a tile record.
+
+        :param value: tile index (typically in 136-format)
+        :param is_tsumogiri: True if the tile was discarded immediately after drawing it
+        """
         self.value = value
         self.is_tsumogiri = is_tsumogiri
 
 
 class TilesConverter:
+    """
+    Utility class for converting between tile representation formats.
+
+    All methods are static — no instance is needed. The class supports conversion
+    between mpsz-notation strings, 34-format arrays, and 136-format arrays.
+    """
+
     @staticmethod
     def to_one_line_string(tiles: Collection[int], print_aka_dora: bool = False) -> str:
         """
-        Convert 136 tiles array to the one line string
-        Example of output with print_aka_dora=False: 1244579m3p57z
-        Example of output with print_aka_dora=True:  1244079m3p57z
+        Convert a collection of 136-format tile indices to an mpsz-notation string.
+
+        When ``print_aka_dora`` is False, red fives are printed as ``5``.
+        When True, they are printed as ``0``.
+
+        >>> TilesConverter.to_one_line_string([0, 4, 8, 12, 16, 24, 32])
+        '1234579m'
+        >>> TilesConverter.to_one_line_string([0, 4, 8, 12, 16, 24, 32], print_aka_dora=True)
+        '1234079m'
+
+        :param tiles: tile indices in 136-format
+        :param print_aka_dora: render red fives as ``0`` instead of ``5``
+        :return: mpsz-notation string representing the tiles
         """
         tiles = sorted(tiles)
 
@@ -44,7 +77,16 @@ class TilesConverter:
     @staticmethod
     def to_34_array(tiles: Collection[int]) -> list[int]:
         """
-        Convert 136 array to the 34 tiles array
+        Convert a collection of 136-format tile indices to a 34-format count array.
+
+        Each element of the returned list holds the number of copies present
+        for that tile type.
+
+        >>> TilesConverter.to_34_array([0, 1, 2, 3])
+        [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        :param tiles: tile indices in 136-format
+        :return: list of length 34 with tile counts
         """
         results = [0] * 34
         for tile in tiles:
@@ -54,7 +96,17 @@ class TilesConverter:
     @staticmethod
     def to_136_array(tiles: Sequence[int]) -> list[int]:
         """
-        Convert 34 array to the 136 tiles array
+        Convert a 34-format count array to a list of 136-format tile indices.
+
+        For each tile type with count *n*, the first *n* physical tile indices are
+        selected (e.g., count 2 of 1m yields indices ``[0, 1]``).
+
+        >>> tiles_34 = [2] + [0] * 33
+        >>> TilesConverter.to_136_array(tiles_34)
+        [0, 1]
+
+        :param tiles: 34-format count array (length 34)
+        :return: list of tile indices in 136-format
         """
         results: list[int] = []
         for index, count in enumerate(tiles):
@@ -97,11 +149,23 @@ class TilesConverter:
         has_aka_dora: bool = False,
     ) -> list[int]:
         """
-        Method to convert one line string tiles format to the 136 array.
-        You can pass r or 0 instead of 5 for it to become a red five from
-        that suit. To prevent old usage without red,
-        has_aka_dora has to be True for this to do that.
-        We need it to increase readability of our tests
+        Convert per-suit digit strings to a list of 136-format tile indices.
+
+        Each suit string contains digit characters representing tile ranks.
+        When ``has_aka_dora`` is True, ``0`` or ``r`` in a suit string produces
+        the red five for that suit.
+
+        >>> TilesConverter.string_to_136_array(man="123")
+        [0, 4, 8]
+        >>> TilesConverter.string_to_136_array(man="0", has_aka_dora=True)
+        [16]
+
+        :param sou: souzu (bamboo) tile ranks
+        :param pin: pinzu (circles) tile ranks
+        :param man: manzu (characters) tile ranks
+        :param honors: honor tile ranks (1-7 for East through Red dragon)
+        :param has_aka_dora: enable red five handling (``0`` and ``r`` map to aka dora)
+        :return: list of tile indices in 136-format
         """
         results = TilesConverter._split_string(man, 0, FIVE_RED_MAN if has_aka_dora else None)
         results += TilesConverter._split_string(pin, 36, FIVE_RED_PIN if has_aka_dora else None)
@@ -117,8 +181,18 @@ class TilesConverter:
         honors: str | None = None,
     ) -> list[int]:
         """
-        Method to convert one line string tiles format to the 34 array
-        We need it to increase readability of our tests
+        Convert per-suit digit strings to a 34-format count array.
+
+        Equivalent to calling :meth:`string_to_136_array` followed by :meth:`to_34_array`.
+
+        >>> TilesConverter.string_to_34_array(man="111")
+        [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        :param sou: souzu (bamboo) tile ranks
+        :param pin: pinzu (circles) tile ranks
+        :param man: manzu (characters) tile ranks
+        :param honors: honor tile ranks (1-7 for East through Red dragon)
+        :return: list of length 34 with tile counts
         """
         results = TilesConverter.string_to_136_array(sou, pin, man, honors)
         return TilesConverter.to_34_array(results)
@@ -126,12 +200,20 @@ class TilesConverter:
     @staticmethod
     def find_34_tile_in_136_array(tile34: int | None, tiles: Collection[int]) -> int | None:
         """
-        Our shanten calculator will operate with 34 tiles format,
-        after calculations we need to find calculated 34 tile
-        in player's 136 tiles.
+        Find the first 136-format index that corresponds to a given 34-format tile type.
 
-        For example we had 0 tile from 34 array
-        in 136 array it can be present as 0, 1, 2, 3
+        A single 34-format index maps to four possible 136-format indices
+        (e.g., tile type 0 maps to indices 0, 1, 2, 3). Return the first one
+        present in *tiles*, or ``None`` if no match is found.
+
+        >>> TilesConverter.find_34_tile_in_136_array(0, [1, 4, 8])
+        1
+        >>> TilesConverter.find_34_tile_in_136_array(0, [4, 8]) is None
+        True
+
+        :param tile34: tile type index in 34-format, or None
+        :param tiles: collection of tile indices in 136-format to search
+        :return: first matching 136-format index, or None
         """
         if tile34 is None or tile34 > 33:
             return None
@@ -151,12 +233,24 @@ class TilesConverter:
     @staticmethod
     def one_line_string_to_136_array(string: str, has_aka_dora: bool = False) -> list[int]:
         """
-        Method to convert one line string tiles format to the 136 array, like
-        "123s456p789m11222z". 's' stands for sou, 'p' stands for pin,
-        'm' stands for man and 'z' or 'h' stands for honor.
-        You can pass r or 0 instead of 5 for it to become a red five from
-        that suit. To prevent old usage without red,
-        has_aka_dora has to be True for this to do that.
+        Parse a combined mpsz-notation string into a list of 136-format tile indices.
+
+        The string contains digit sequences terminated by suit letters:
+        ``m`` (man), ``p`` (pin), ``s`` (sou), ``z`` or ``h`` (honors).
+        For example, ``"123m456p789s11z"`` represents 1-2-3 man, 4-5-6 pin,
+        7-8-9 sou, and a pair of East winds.
+
+        When ``has_aka_dora`` is True, ``0`` or ``r`` in the string produces
+        the red five for the corresponding suit.
+
+        >>> TilesConverter.one_line_string_to_136_array("123m456s")
+        [0, 4, 8, 84, 88, 92]
+        >>> TilesConverter.one_line_string_to_136_array("0m", has_aka_dora=True)
+        [16]
+
+        :param string: mpsz-notation string (e.g., ``"123m456p789s11z"``)
+        :param has_aka_dora: enable red five handling (``0`` and ``r`` map to aka dora)
+        :return: list of tile indices in 136-format
         """
         sou = ""
         pin = ""
@@ -184,12 +278,17 @@ class TilesConverter:
     @staticmethod
     def one_line_string_to_34_array(string: str, has_aka_dora: bool = False) -> list[int]:
         """
-        Method to convert one line string tiles format to the 34 array, like
-        "123s456p789m11222z". 's' stands for sou, 'p' stands for pin,
-        'm' stands for man and 'z' or 'h' stands for honor.
-        You can pass r or 0 instead of 5 for it to become a red five from
-        that suit. To prevent old usage without red,
-        has_aka_dora has to be True for this to do that.
+        Parse a combined mpsz-notation string into a 34-format count array.
+
+        Equivalent to calling :meth:`one_line_string_to_136_array` followed by
+        :meth:`to_34_array`.
+
+        >>> TilesConverter.one_line_string_to_34_array("111m")
+        [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        :param string: mpsz-notation string (e.g., ``"123m456p789s11z"``)
+        :param has_aka_dora: enable red five handling (``0`` and ``r`` map to aka dora)
+        :return: list of length 34 with tile counts
         """
         results = TilesConverter.one_line_string_to_136_array(string, has_aka_dora)
         return TilesConverter.to_34_array(results)
