@@ -144,6 +144,22 @@ class FuCalculator:
         >>> {"fu": 4, "reason": FuCalculator.CLOSED_PON} in fu_details
         True
 
+        A double valued pair with an open terminal pon:
+
+        >>> from mahjong.meld import Meld
+        >>> hand = [[2, 3, 4], [9, 10, 11], [18, 19, 20], [33, 33, 33], [27, 27]]
+        >>> win_tile = 8
+        >>> win_group = [2, 3, 4]
+        >>> valued_tiles = [27, 27]
+        >>> melds = [Meld(meld_type=Meld.PON, tiles=[132, 133, 134], opened=True)]
+        >>> fu_details, fu = FuCalculator.calculate_fu(hand, win_tile, win_group, HandConfig(), valued_tiles, melds)
+        >>> fu
+        30
+        >>> {"fu": 4, "reason": FuCalculator.DOUBLE_VALUED_PAIR} in fu_details
+        True
+        >>> {"fu": 4, "reason": FuCalculator.OPEN_TERMINAL_PON} in fu_details
+        True
+
         :param hand: decomposed hand as a collection of tile sets, each a sequence of tile
             indices in 34-format: a pair (length 2), chi (length 3 with consecutive tiles),
             pon (length 3 with identical tiles), or kan (length 4);
@@ -154,7 +170,7 @@ class FuCalculator:
         :param config: hand configuration with win method and optional rule settings
         :param valued_tiles: tile indices in 34-format for tiles that grant pair fu
             (dragons, player wind, round wind); pass the same index twice for double-valued
-        :param melds: declared melds (open chi, open/closed pon, open/closed kan)
+        :param melds: declared melds (chi, pon, kan)
         :return: tuple of (fu component list, total fu rounded up to nearest 10)
         """
         # chiitoitsu: always 25 fu
