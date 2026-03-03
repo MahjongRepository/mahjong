@@ -7,6 +7,16 @@ from mahjong.meld import Meld
 
 
 class FuDetail(TypedDict):
+    """
+    A single fu component with its point value and reason.
+
+    Each entry in the fu breakdown returned by :meth:`FuCalculator.calculate_fu`
+    describes one source of fu (e.g., base fu, a closed pon, or a wait type).
+
+    :param fu: fu points awarded for this component
+    :param reason: identifier string matching one of the :class:`FuCalculator` reason constants
+    """
+
     fu: int
     reason: str
 
@@ -20,26 +30,61 @@ _IS_KAN = 2
 
 
 class FuCalculator:
+    """
+    Calculate fu (minipoints) for a winning hand decomposition.
+
+    Fu are computed from the hand's meld structure, wait type, pair, and winning method.
+    The result is a detailed breakdown of fu components and the total fu rounded up to
+    the nearest 10.
+    """
+
     BASE = "base"
+    """Base fu: 20 for open/tsumo, 30 for closed ron, 25 for chiitoitsu."""
+
     PENCHAN = "penchan"
+    """Penchan (edge wait): 2 fu for completing 1-2-3 with the 3, or 7-8-9 with the 7."""
+
     KANCHAN = "kanchan"
+    """Kanchan (closed wait): 2 fu for waiting on the middle tile of a sequence."""
+
     VALUED_PAIR = "valued_pair"
+    """Valued pair: 2 fu for a pair of dragon, seat wind, or round wind tiles."""
+
     DOUBLE_VALUED_PAIR = "double_valued_pair"
+    """Double valued pair: 4 fu when the pair tile is both seat wind and round wind."""
+
     PAIR_WAIT = "pair_wait"
+    """Pair wait: 2 fu for winning on the pair tile."""
+
     TSUMO = "tsumo"
+    """Tsumo: 2 fu for winning by self-draw."""
+
     HAND_WITHOUT_FU = "hand_without_fu"
+    """Open pinfu: 2 fu for an open hand with no other fu sources."""
 
     CLOSED_PON = "closed_pon"
+    """Closed pon of simple tiles: 4 fu."""
+
     OPEN_PON = "open_pon"
+    """Open pon of simple tiles: 2 fu."""
 
     CLOSED_TERMINAL_PON = "closed_terminal_pon"
+    """Closed pon of terminal or honor tiles: 8 fu."""
+
     OPEN_TERMINAL_PON = "open_terminal_pon"
+    """Open pon of terminal or honor tiles: 4 fu."""
 
     CLOSED_KAN = "closed_kan"
+    """Closed kan of simple tiles: 16 fu."""
+
     OPEN_KAN = "open_kan"
+    """Open kan of simple tiles: 8 fu."""
 
     CLOSED_TERMINAL_KAN = "closed_terminal_kan"
+    """Closed kan of terminal or honor tiles: 32 fu."""
+
     OPEN_TERMINAL_KAN = "open_terminal_kan"
+    """Open kan of terminal or honor tiles: 16 fu."""
 
     # lookup table indexed by [is_terminal_or_honor][is_kan][is_open] -> (fu, reason)
     _PON_KAN_FU_TABLE = (
@@ -63,14 +108,70 @@ class FuCalculator:
         melds: Collection[Meld] | None = None,
     ) -> tuple[list[FuDetail], int]:
         """
-        Calculate hand fu with explanations
-        :param hand:
-        :param win_tile: 136 tile format
-        :param win_group: one set where win tile exists
-        :param config: HandConfig object
-        :param valued_tiles: dragons, player wind, round wind
-        :param melds: opened sets
-        :return:
+        Calculate fu for a winning hand decomposition.
+
+        Analyze the hand's meld structure, wait type, pair, and winning method to produce
+        a detailed breakdown of fu components and the total fu rounded up to the nearest 10.
+
+        Chiitoitsu (seven pairs) always receives 25 fu:
+
+        >>> from mahjong.hand_calculating.fu import FuCalculator
+        >>> from mahjong.hand_calculating.hand_config import HandConfig
+        >>> hand = [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6]]
+        >>> win_tile = 24
+        >>> win_group = [6, 6]
+        >>> fu_details, fu = FuCalculator.calculate_fu(hand, win_tile, win_group, HandConfig())
+        >>> fu
+        25
+
+        A closed ron hand with only chi melds and a non-valued pair (pinfu) receives 30 fu:
+
+        >>> hand = [[0, 1, 2], [3, 4, 5], [9, 10, 11], [18, 19, 20], [27, 27]]
+        >>> win_tile = 20
+        >>> win_group = [3, 4, 5]
+        >>> fu_details, fu = FuCalculator.calculate_fu(hand, win_tile, win_group, HandConfig())
+        >>> fu
+        30
+
+        A closed pon of simple tiles adds 4 fu:
+
+        >>> hand = [[2, 2, 2], [3, 4, 5], [9, 10, 11], [18, 19, 20], [27, 27]]
+        >>> win_tile = 20
+        >>> win_group = [3, 4, 5]
+        >>> fu_details, fu = FuCalculator.calculate_fu(hand, win_tile, win_group, HandConfig())
+        >>> fu
+        40
+        >>> {"fu": 4, "reason": FuCalculator.CLOSED_PON} in fu_details
+        True
+
+        A double valued pair with an open terminal pon:
+
+        >>> from mahjong.meld import Meld
+        >>> hand = [[2, 3, 4], [9, 10, 11], [18, 19, 20], [33, 33, 33], [27, 27]]
+        >>> win_tile = 8
+        >>> win_group = [2, 3, 4]
+        >>> valued_tiles = [27, 27]
+        >>> melds = [Meld(meld_type=Meld.PON, tiles=[132, 133, 134], opened=True)]
+        >>> fu_details, fu = FuCalculator.calculate_fu(hand, win_tile, win_group, HandConfig(), valued_tiles, melds)
+        >>> fu
+        30
+        >>> {"fu": 4, "reason": FuCalculator.DOUBLE_VALUED_PAIR} in fu_details
+        True
+        >>> {"fu": 4, "reason": FuCalculator.OPEN_TERMINAL_PON} in fu_details
+        True
+
+        :param hand: decomposed hand as a collection of tile sets, each a sequence of tile
+            indices in 34-format: a pair (length 2), chi (length 3 with consecutive tiles),
+            pon (length 3 with identical tiles), or kan (length 4);
+            chiitoitsu hands have 7 pairs
+        :param win_tile: the winning tile index in 136-format
+        :param win_group: the tile set (from ``hand``) that contains the winning tile,
+            as tile indices in 34-format
+        :param config: hand configuration with win method and optional rule settings
+        :param valued_tiles: tile indices in 34-format for tiles that grant pair fu
+            (dragons, player wind, round wind); pass the same index twice for double-valued
+        :param melds: declared melds (chi, pon, kan)
+        :return: tuple of (fu component list, total fu rounded up to nearest 10)
         """
         # chiitoitsu: always 25 fu
         if len(hand) == 7:
