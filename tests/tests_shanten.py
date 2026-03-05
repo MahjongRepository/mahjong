@@ -60,7 +60,6 @@ def test_calculate_shanten_for_regular_hand(sou: str, pin: str, man: str, honors
     ("sou", "pin", "man", "honors", "shanten_number"),
     [
         ("111345677", "1", "567", "", 1),
-        ("111345677", "", "567", "", 1),
         ("111345677", "", "56", "", 0),
         ("", "", "123456789", "1111", 1),
         ("112233", "123", "1111", "", 1),
@@ -161,3 +160,30 @@ def test_calculate_shanten_for_chiitoitsu_hand_can_call_as_static_method() -> No
 def test_calculate_shanten_for_kokushi_hand_can_call_as_static_method() -> None:
     tiles = TilesConverter.string_to_34_array(sou="19", pin="19", man="19", honors="12345677")
     assert Shanten.calculate_shanten_for_kokushi_hand(tiles) == Shanten.AGARI_STATE
+
+
+@pytest.mark.parametrize(
+    ("sou", "pin", "man", "honors"),
+    [
+        ("", "", "", ""),
+        ("123", "", "", ""),
+        ("111", "", "123", ""),
+        ("111345", "123", "", ""),
+        ("111345677", "", "567", ""),
+    ],
+)
+def test_calculate_shanten_for_regular_hand_raises_error_for_3n_tile_count(
+    sou: str,
+    pin: str,
+    man: str,
+    honors: str,
+) -> None:
+    tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
+    with pytest.raises(ValueError, match="Invalid tile count"):
+        Shanten.calculate_shanten_for_regular_hand(tiles)
+
+
+def test_calculate_shanten_raises_error_for_3n_tile_count() -> None:
+    tiles = TilesConverter.string_to_34_array(man="123")
+    with pytest.raises(ValueError, match="Invalid tile count"):
+        Shanten.calculate_shanten(tiles)
