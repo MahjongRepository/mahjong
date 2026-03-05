@@ -110,6 +110,7 @@ The following methods are now available as static methods:
 - Yakuhai detection (hatsu, haku, chun, winds) now uses `has_pon_or_kan_of()` instead of counting triplets. Behavior changes for invalid hands with two or more identical triplets of the same tile.
 - Fixed an issue where `KokushiMusou.is_condition_met()` would return `None` if the condition was not met. It now consistently returns a `bool` value. Remove any `None` checks in the code that relied on the previous behavior.
 - `Shanten.calculate_shanten()` and `Shanten.calculate_shanten_for_regular_hand()` now raises `ValueError` instead of `assert` when the number of tiles is 15 or more.
+- `Shanten.calculate_shanten()` and `Shanten.calculate_shanten_for_regular_hand()` now raises `ValueError` for tile counts divisible by 3 (0, 3, 6, 9, 12). These counts never occur in real riichi mahjong gameplay. Valid tile counts are 1, 2, 4, 5, 7, 8, 10, 11, 13, 14.
 - `HandDivider.divide_hand()` now determines block type from `Meld.type` instead of inferring it from `Meld.tiles`. Behavior may differ for invalid `Meld.tiles` or inconsistent `Meld.type` and `Meld.tiles` combinations.
 - Removed `HandCalculator.ERR_HAND_NOT_CORRECT`. Hands that previously returned `ERR_HAND_NOT_CORRECT` now return `ERR_HAND_NOT_WINNING` instead.
 - `Meld.tiles` is now a `tuple[int, ...]` instead of `list[int]`. Code that mutates `Meld.tiles` in place (e.g., `append()`, `sort()`, item assignment) must be updated.

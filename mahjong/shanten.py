@@ -11,6 +11,10 @@ class Shanten:
     A shanten number of 0 means the hand is tenpai (one tile away from winning),
     and -1 means the hand is already complete.
 
+    Accepts tile counts that correspond to valid game states: 1, 2, 4, 5, 7, 8, 10, 11, 13, or 14.
+    Tile counts divisible by 3 (0, 3, 6, 9, 12) are rejected because they never occur
+    in real riichi mahjong gameplay (a hand is always 3n+1 or 3n+2 tiles).
+
     Supports three hand types: regular (4 melds + 1 pair), chiitoitsu (seven pairs),
     and kokushi musou (thirteen orphans).
     """
@@ -33,10 +37,11 @@ class Shanten:
         >>> Shanten.calculate_shanten(tiles_34)
         -1
 
-        A triplet without a pair is tenpai (one tile needed for the pair):
+        A triplet with an isolated tile is tenpai (one tile needed for the pair):
 
         >>> tiles_34 = [0] * 34
         >>> tiles_34[0] = 3
+        >>> tiles_34[1] = 1
         >>> Shanten.calculate_shanten(tiles_34)
         0
 
@@ -44,7 +49,7 @@ class Shanten:
         :param use_chiitoitsu: include seven pairs pattern in calculation
         :param use_kokushi: include thirteen orphans pattern in calculation
         :return: minimum shanten number (-1 for agari, 0 for tenpai, positive for tiles needed)
-        :raises ValueError: if the hand contains more than 14 tiles
+        :raises ValueError: if tile count exceeds 14 or is divisible by 3
         """
         shanten_results = [Shanten.calculate_shanten_for_regular_hand(tiles_34)]
         if use_chiitoitsu:
@@ -128,16 +133,17 @@ class Shanten:
         >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
         -1
 
-        A triplet without a pair is tenpai:
+        A triplet with an isolated tile is tenpai:
 
         >>> tiles_34 = [0] * 34
         >>> tiles_34[0] = 3
+        >>> tiles_34[1] = 1
         >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
         0
 
         :param tiles_34: hand in 34-format count array (length 34)
         :return: shanten number for regular hand (-1 for complete, 0+ otherwise)
-        :raises ValueError: if the hand contains more than 14 tiles
+        :raises ValueError: if tile count exceeds 14 or is divisible by 3
         """
         return _RegularShanten(tiles_34).calculate()
 
@@ -158,6 +164,10 @@ class _RegularShanten:
         count_of_tiles = sum(self._tiles)
         if count_of_tiles > 14:
             msg = f"Too many tiles = {count_of_tiles}"
+            raise ValueError(msg)
+
+        if count_of_tiles % 3 == 0:
+            msg = f"Invalid tile count = {count_of_tiles}. Valid counts: 1, 2, 4, 5, 7, 8, 10, 11, 13, 14."
             raise ValueError(msg)
 
         self._remove_character_tiles(count_of_tiles)
