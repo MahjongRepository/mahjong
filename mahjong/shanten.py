@@ -41,7 +41,7 @@ class Shanten:
 
         >>> tiles_34 = [0] * 34
         >>> tiles_34[0] = 3
-        >>> tiles_34[1] = 1
+        >>> tiles_34[9] = 1
         >>> Shanten.calculate_shanten(tiles_34)
         0
 
@@ -137,7 +137,7 @@ class Shanten:
 
         >>> tiles_34 = [0] * 34
         >>> tiles_34[0] = 3
-        >>> tiles_34[1] = 1
+        >>> tiles_34[9] = 1
         >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
         0
 
