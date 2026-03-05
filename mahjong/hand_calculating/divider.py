@@ -60,7 +60,7 @@ class HandDivider:
     Each decomposition is a list of blocks, where each block is a list of tile indices
     in 34-format:
 
-    - pair: ``[tile, tile]`` (length 2)
+    - pair: ``[tile, tile]`` (length 2, identical tiles)
     - triplet: ``[tile, tile, tile]`` (length 3, identical tiles)
     - sequence: ``[tile, tile+1, tile+2]`` (length 3, consecutive tiles)
     - quad: ``[tile, tile, tile, tile]`` (length 4, identical tiles)
@@ -93,6 +93,17 @@ class HandDivider:
         >>> result = HandDivider.divide_hand(tiles_34)
         >>> result
         [[[0, 0, 0], [1, 1, 1], [2, 2, 2], [7, 7, 7], [8, 8]], [[0, 1, 2], [0, 1, 2], [0, 1, 2], [7, 7, 7], [8, 8]]]
+
+        Ryanpeikou form (decomposes into both 4 melds + 1 pair and chiitoitsu):
+
+        >>> tiles_34 = TilesConverter.one_line_string_to_34_array("11223344556677m")
+        >>> result = HandDivider.divide_hand(tiles_34)
+        >>> len(result)
+        4
+        >>> [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6]] in result
+        True
+        >>> [[0, 1, 2], [0, 1, 2], [3, 4, 5], [3, 4, 5], [6, 6]] in result
+        True
 
         Hands with declared melds:
 
