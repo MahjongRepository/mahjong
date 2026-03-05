@@ -59,11 +59,11 @@ class ScoresCalculator:
 
         # kazoe hand
         if han >= 13 and not is_yakuman:
-            # Hands over 26+ han don't count as double yakuman
+            # kazoe hands capped at single yakuman
             if config.options.kazoe_limit == HandConfig.KAZOE_LIMITED:
                 han = 13
                 yaku_level = "kazoe yakuman"
-            # Hands over 13+ is a sanbaiman
+            # kazoe hands capped at sanbaiman
             elif config.options.kazoe_limit == HandConfig.KAZOE_SANBAIMAN:
                 han = 12
                 yaku_level = "kazoe sanbaiman"

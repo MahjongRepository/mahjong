@@ -169,7 +169,7 @@ class FuCalculator:
             as tile indices in 34-format
         :param config: hand configuration with win method and optional rule settings
         :param valued_tiles: tile indices in 34-format for tiles that grant pair fu
-            (dragons, player wind, round wind); pass the same index twice for double-valued
+            (dragons, seat wind, round wind); pass the same index twice for double-valued
         :param melds: declared melds (chi, pon, kan)
         :return: tuple of (fu component list, total fu rounded up to nearest 10)
         """

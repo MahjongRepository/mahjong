@@ -115,7 +115,6 @@ convention = "pep257"
 
 # temporary
 "./mahjong/hand_calculating/__init__.py" = ["D"]
-"./mahjong/hand_calculating/hand_config.py" = ["D"]
 "./mahjong/hand_calculating/hand_response.py" = ["D"]
 "./mahjong/hand_calculating/hand.py" = ["D"]
 "./mahjong/hand_calculating/scores.py" = ["D"]
