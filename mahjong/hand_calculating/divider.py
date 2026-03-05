@@ -50,16 +50,81 @@ _Blocks = tuple[_Block, ...]
 
 
 class HandDivider:
+    """
+    Decompose a winning hand into all possible block combinations.
+
+    A valid combination consists of 4 melds (sequences, triplets, or quads) plus 1 pair.
+    Chiitoitsu (seven pairs) is also recognized when no melds are declared.
+    Multiple valid decompositions may exist for the same hand.
+
+    Each decomposition is a list of blocks, where each block is a list of tile indices
+    in 34-format:
+
+    - pair: ``[tile, tile]`` (length 2, identical tiles)
+    - triplet: ``[tile, tile, tile]`` (length 3, identical tiles)
+    - sequence: ``[tile, tile+1, tile+2]`` (length 3, consecutive tiles)
+    - quad: ``[tile, tile, tile, tile]`` (length 4, identical tiles)
+    """
+
     @staticmethod
     def divide_hand(
         tiles_34: Sequence[int],
         melds: Collection[Meld] | None = None,
     ) -> list[list[list[int]]]:
         """
-        Return a list of possible hands.
-        :param tiles_34:
-        :param melds: list of Meld objects
-        :return:
+        Return all valid decompositions of the hand into blocks.
+
+        Decompose the full hand (including any declared melds) into every possible
+        combination of 4 melds + 1 pair, or 7 pairs (chiitoitsu, only when no melds
+        are declared).
+
+        Single decomposition (one triplet, three sequences, and a pair):
+
+        >>> from mahjong.hand_calculating.divider import HandDivider
+        >>> from mahjong.tile import TilesConverter
+        >>> tiles_34 = TilesConverter.one_line_string_to_34_array("234567m23455s777z")
+        >>> result = HandDivider.divide_hand(tiles_34)
+        >>> result
+        [[[1, 2, 3], [4, 5, 6], [19, 20, 21], [22, 22], [33, 33, 33]]]
+
+        Multiple decompositions (triplets vs. sequences):
+
+        >>> tiles_34 = TilesConverter.one_line_string_to_34_array("11122233388899m")
+        >>> result = HandDivider.divide_hand(tiles_34)
+        >>> result
+        [[[0, 0, 0], [1, 1, 1], [2, 2, 2], [7, 7, 7], [8, 8]], [[0, 1, 2], [0, 1, 2], [0, 1, 2], [7, 7, 7], [8, 8]]]
+
+        Ryanpeikou form (decomposes into both 4 melds + 1 pair and chiitoitsu):
+
+        >>> tiles_34 = TilesConverter.one_line_string_to_34_array("11223344556677m")
+        >>> result = HandDivider.divide_hand(tiles_34)
+        >>> len(result)
+        4
+        >>> [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6]] in result
+        True
+        >>> [[0, 1, 2], [0, 1, 2], [3, 4, 5], [3, 4, 5], [6, 6]] in result
+        True
+
+        Hands with declared melds:
+
+        >>> from mahjong.meld import Meld
+        >>> tiles_34 = TilesConverter.string_to_34_array(pin="234777888999", honors="22")
+        >>> chi_1 = Meld(meld_type=Meld.CHI, tiles=TilesConverter.string_to_136_array(pin="789"))
+        >>> chi_2 = Meld(meld_type=Meld.CHI, tiles=TilesConverter.string_to_136_array(pin="234"))
+        >>> result = HandDivider.divide_hand(tiles_34, [chi_1, chi_2])
+        >>> result
+        [[[10, 11, 12], [15, 16, 17], [15, 16, 17], [15, 16, 17], [28, 28]]]
+
+        Invalid hands return an empty list:
+
+        >>> HandDivider.divide_hand([5] * 34)
+        []
+
+        :param tiles_34: hand in 34-format count array (length 34), including tiles from melds
+        :param melds: declared melds (:class:`~mahjong.meld.Meld` objects); their tiles are
+            subtracted from ``tiles_34`` before decomposing the concealed portion
+        :return: list of decompositions, where each decomposition is a list of blocks
+            (each block is a list of tile indices in 34-format)
         """
         if not HandDivider._validate_tiles(tiles_34):
             return []
