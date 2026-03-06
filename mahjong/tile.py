@@ -13,7 +13,9 @@ class Tile:
     for consumers that need to track discards with tsumogiri information.
 
     :ivar value: tile index (typically in 136-format)
+    :vartype value: Any
     :ivar is_tsumogiri: True if the tile was discarded immediately after drawing it
+    :vartype is_tsumogiri: Any
     """
 
     value: Any
