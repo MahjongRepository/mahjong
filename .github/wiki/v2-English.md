@@ -16,7 +16,7 @@ It supports optional features like:
 | Disable or enable double yakuman (like suuanko tanki) | `has_double_yakuman` | `True` |
 | Upper limit for cumulative han of non-yakuman yaku (counted yakuman / counted sanbaiman / no limit) | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
 | Support kiriage mangan | `kiriage` | `False` |
-| Allow to disable additional +2 fu in open hand (you can make 1-20 hand with that setting) | `fu_for_open_pinfu` | `True` |
+| Whether to add 2 fu for open pinfu-form ron (totaling 30 fu); when disabled, 1 han 20 fu hands become possible | `fu_for_open_pinfu` | `True` |
 | Disable or enable pinfu tsumo | `fu_for_pinfu_tsumo` | `False` |
 | Counting renhou as 5 han or yakuman | `renhou_as_yakuman` | `False` |
 | Disable or enable Daisharin yakuman | `has_daisharin` | `False` |
