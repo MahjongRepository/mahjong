@@ -43,9 +43,9 @@ class OptionalRules:
         :attr:`HandConstants.KAZOE_LIMITED`, :attr:`HandConstants.KAZOE_SANBAIMAN`,
         or :attr:`HandConstants.KAZOE_NO_LIMIT`
     :vartype kazoe_limit: int
-    :ivar kiriage: round up to mangan when han/fu are at the boundary (e.g. 4 han 30 fu)
+    :ivar kiriage: round up to mangan when han/fu are at the boundary (4 han 30 fu or 3 han 60 fu)
     :vartype kiriage: bool
-    :ivar fu_for_open_pinfu: award 2 fu for open hands with no other fu sources;
+    :ivar fu_for_open_pinfu: add 2 fu for open pinfu-form ron (totaling 30 fu);
         when False, 1 han 20 fu hands become possible
     :vartype fu_for_open_pinfu: bool
     :ivar fu_for_pinfu_tsumo: award 2 fu for tsumo on pinfu hands (disabling the 0-fu
@@ -53,12 +53,12 @@ class OptionalRules:
     :vartype fu_for_pinfu_tsumo: bool
     :ivar renhou_as_yakuman: treat renhou as yakuman instead of mangan
     :vartype renhou_as_yakuman: bool
-    :ivar has_daisharin: enable daisharin (seven consecutive pairs in one suit) as yakuman;
+    :ivar has_daisharin: enable daisharin 22334455667788p as yakuman;
         automatically set to True when ``has_daisharin_other_suits`` is True
     :vartype has_daisharin: bool
-    :ivar has_daisharin_other_suits: allow daisharin in pin and sou suits (not only man)
+    :ivar has_daisharin_other_suits: allow daisharin in man and sou suits (not only pin)
     :vartype has_daisharin_other_suits: bool
-    :ivar has_daichisei: enable daichisei (seven pairs of honor tiles) as yakuman
+    :ivar has_daichisei: enable daichisei (tsuuiisou / all honors as seven pairs) as yakuman
     :vartype has_daichisei: bool
     :ivar has_sashikomi_yakuman: enable sashikomi (intentional deal-in for open riichi)
         as yakuman
