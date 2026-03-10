@@ -38,29 +38,59 @@ class HandCalculator:
     valid decompositions exist, the highest-scoring result is returned.
     """
 
+    # basic hand validation
     ERR_NO_WINNING_TILE = "winning_tile_not_in_hand"
-    ERR_OPEN_HAND_RIICHI = "open_hand_riichi_not_allowed"
-    ERR_OPEN_HAND_DABURI = "open_hand_daburi_not_allowed"
-    ERR_IPPATSU_WITHOUT_RIICHI = "ippatsu_without_riichi_not_allowed"
+    """``win_tile`` index is not present in the ``tiles`` array."""
     ERR_HAND_NOT_WINNING = "hand_not_winning"
+    """No valid decomposition exists; the hand is not a winning hand."""
     ERR_NO_YAKU = "no_yaku"
-    ERR_CHANKAN_WITH_TSUMO = "chankan_with_tsumo_not_allowed"
-    ERR_RINSHAN_WITHOUT_TSUMO = "rinshan_without_tsumo_not_allowed"
-    ERR_HAITEI_WITHOUT_TSUMO = "haitei_without_tsumo_not_allowed"
-    ERR_HOUTEI_WITH_TSUMO = "houtei_with_tsumo_not_allowed"
-    ERR_HAITEI_WITH_RINSHAN = "haitei_with_rinshan_not_allowed"
-    ERR_HOUTEI_WITH_CHANKAN = "houtei_with_chankan_not_allowed"
-    ERR_TENHOU_NOT_AS_DEALER = "tenhou_not_as_dealer_not_allowed"
-    ERR_TENHOU_WITHOUT_TSUMO = "tenhou_without_tsumo_not_allowed"
-    ERR_TENHOU_WITH_MELD = "tenhou_with_meld_not_allowed"
-    ERR_CHIIHOU_AS_DEALER = "chiihou_as_dealer_not_allowed"
-    ERR_CHIIHOU_WITHOUT_TSUMO = "chiihou_without_tsumo_not_allowed"
-    ERR_CHIIHOU_WITH_MELD = "chiihou_with_meld_not_allowed"
-    ERR_RENHOU_AS_DEALER = "renhou_as_dealer_not_allowed"
-    ERR_RENHOU_WITH_TSUMO = "renhou_with_tsumo_not_allowed"
-    ERR_RENHOU_WITH_MELD = "renhou_with_meld_not_allowed"
+    """Hand can be decomposed but has zero han (no yaku applies)."""
 
-    # more possible errors, like tenhou and haitei can't be together (so complicated :<)
+    # riichi constraints
+    ERR_OPEN_HAND_RIICHI = "open_hand_riichi_not_allowed"
+    """Riichi declared on an open hand (open melds present)."""
+    ERR_OPEN_HAND_DABURI = "open_hand_daburi_not_allowed"
+    """Double riichi declared on an open hand."""
+    ERR_IPPATSU_WITHOUT_RIICHI = "ippatsu_without_riichi_not_allowed"
+    """Ippatsu claimed without riichi or double riichi."""
+
+    # win-condition conflicts
+    ERR_CHANKAN_WITH_TSUMO = "chankan_with_tsumo_not_allowed"
+    """Chankan (robbing a kan) is a ron-only yaku; cannot combine with tsumo."""
+    ERR_RINSHAN_WITHOUT_TSUMO = "rinshan_without_tsumo_not_allowed"
+    """Rinshan kaihou (win after kan) requires a tsumo win."""
+    ERR_HAITEI_WITHOUT_TSUMO = "haitei_without_tsumo_not_allowed"
+    """Haitei raoyue (last-tile draw) requires a tsumo win."""
+    ERR_HOUTEI_WITH_TSUMO = "houtei_with_tsumo_not_allowed"
+    """Houtei raoyui (last-tile discard) is a ron-only yaku; cannot combine with tsumo."""
+    ERR_HAITEI_WITH_RINSHAN = "haitei_with_rinshan_not_allowed"
+    """Haitei and rinshan are mutually exclusive (different last-tile sources)."""
+    ERR_HOUTEI_WITH_CHANKAN = "houtei_with_chankan_not_allowed"
+    """Houtei and chankan are mutually exclusive."""
+
+    # tenhou (blessing of heaven) constraints
+    ERR_TENHOU_NOT_AS_DEALER = "tenhou_not_as_dealer_not_allowed"
+    """Tenhou is exclusive to the dealer (East player)."""
+    ERR_TENHOU_WITHOUT_TSUMO = "tenhou_without_tsumo_not_allowed"
+    """Tenhou requires a tsumo win on the dealer's first draw."""
+    ERR_TENHOU_WITH_MELD = "tenhou_with_meld_not_allowed"
+    """Tenhou requires a closed hand with no declared melds."""
+
+    # chiihou (blessing of earth) constraints
+    ERR_CHIIHOU_AS_DEALER = "chiihou_as_dealer_not_allowed"
+    """Chiihou is exclusive to non-dealer players; dealer uses tenhou instead."""
+    ERR_CHIIHOU_WITHOUT_TSUMO = "chiihou_without_tsumo_not_allowed"
+    """Chiihou requires a tsumo win on the player's first draw."""
+    ERR_CHIIHOU_WITH_MELD = "chiihou_with_meld_not_allowed"
+    """Chiihou requires a closed hand with no declared melds."""
+
+    # renhou (blessing of man) constraints
+    ERR_RENHOU_AS_DEALER = "renhou_as_dealer_not_allowed"
+    """Renhou is exclusive to non-dealer players."""
+    ERR_RENHOU_WITH_TSUMO = "renhou_with_tsumo_not_allowed"
+    """Renhou requires a ron win before the player's first draw."""
+    ERR_RENHOU_WITH_MELD = "renhou_with_meld_not_allowed"
+    """Renhou requires a closed hand with no declared melds."""
 
     @staticmethod
     def estimate_hand_value(
@@ -104,6 +134,10 @@ class HandCalculator:
         3
         >>> result.fu
         20
+        >>> result.cost["main"]
+        1300
+        >>> result.cost["additional"]
+        700
 
         Dealer tsumo with riichi and ippatsu:
 
@@ -133,7 +167,7 @@ class HandCalculator:
         True
 
         :param tiles: hand tiles in 136-format (14 tiles including the winning tile;
-            16 with one kan, 18 with two, etc.)
+            15 with one kan, 16 with two, etc.)
         :param win_tile: the winning tile index in 136-format (must be present in ``tiles``)
         :param melds: declared melds (:class:`~mahjong.meld.Meld` objects for chi, pon, kan)
         :param dora_indicators: dora indicator tile indices in 136-format
