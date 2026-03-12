@@ -56,13 +56,13 @@ class HandCalculator:
 
     # win-condition conflicts
     ERR_CHANKAN_WITH_TSUMO = "chankan_with_tsumo_not_allowed"
-    """Chankan (robbing a kan) is a ron-only yaku; cannot combine with tsumo."""
+    """Chankan (robbing a kan) requires a ron win."""
     ERR_RINSHAN_WITHOUT_TSUMO = "rinshan_without_tsumo_not_allowed"
     """Rinshan kaihou (win after kan) requires a tsumo win."""
     ERR_HAITEI_WITHOUT_TSUMO = "haitei_without_tsumo_not_allowed"
     """Haitei raoyue (last-tile draw) requires a tsumo win."""
     ERR_HOUTEI_WITH_TSUMO = "houtei_with_tsumo_not_allowed"
-    """Houtei raoyui (last-tile discard) is a ron-only yaku; cannot combine with tsumo."""
+    """Houtei raoyui (last-tile discard) requires a ron win."""
     ERR_HAITEI_WITH_RINSHAN = "haitei_with_rinshan_not_allowed"
     """Haitei and rinshan are mutually exclusive (different last-tile sources)."""
     ERR_HOUTEI_WITH_CHANKAN = "houtei_with_chankan_not_allowed"
@@ -78,7 +78,7 @@ class HandCalculator:
 
     # chiihou (blessing of earth) constraints
     ERR_CHIIHOU_AS_DEALER = "chiihou_as_dealer_not_allowed"
-    """Chiihou is exclusive to non-dealer players; dealer uses tenhou instead."""
+    """Chiihou is exclusive to non-dealer players."""
     ERR_CHIIHOU_WITHOUT_TSUMO = "chiihou_without_tsumo_not_allowed"
     """Chiihou requires a tsumo win on the player's first draw."""
     ERR_CHIIHOU_WITH_MELD = "chiihou_with_meld_not_allowed"
