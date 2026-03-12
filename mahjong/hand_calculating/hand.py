@@ -29,29 +29,68 @@ _DEFAULT_CONFIG = HandConfig()
 
 
 class HandCalculator:
-    ERR_NO_WINNING_TILE = "winning_tile_not_in_hand"
-    ERR_OPEN_HAND_RIICHI = "open_hand_riichi_not_allowed"
-    ERR_OPEN_HAND_DABURI = "open_hand_daburi_not_allowed"
-    ERR_IPPATSU_WITHOUT_RIICHI = "ippatsu_without_riichi_not_allowed"
-    ERR_HAND_NOT_WINNING = "hand_not_winning"
-    ERR_NO_YAKU = "no_yaku"
-    ERR_CHANKAN_WITH_TSUMO = "chankan_with_tsumo_not_allowed"
-    ERR_RINSHAN_WITHOUT_TSUMO = "rinshan_without_tsumo_not_allowed"
-    ERR_HAITEI_WITHOUT_TSUMO = "haitei_without_tsumo_not_allowed"
-    ERR_HOUTEI_WITH_TSUMO = "houtei_with_tsumo_not_allowed"
-    ERR_HAITEI_WITH_RINSHAN = "haitei_with_rinshan_not_allowed"
-    ERR_HOUTEI_WITH_CHANKAN = "houtei_with_chankan_not_allowed"
-    ERR_TENHOU_NOT_AS_DEALER = "tenhou_not_as_dealer_not_allowed"
-    ERR_TENHOU_WITHOUT_TSUMO = "tenhou_without_tsumo_not_allowed"
-    ERR_TENHOU_WITH_MELD = "tenhou_with_meld_not_allowed"
-    ERR_CHIIHOU_AS_DEALER = "chiihou_as_dealer_not_allowed"
-    ERR_CHIIHOU_WITHOUT_TSUMO = "chiihou_without_tsumo_not_allowed"
-    ERR_CHIIHOU_WITH_MELD = "chiihou_with_meld_not_allowed"
-    ERR_RENHOU_AS_DEALER = "renhou_as_dealer_not_allowed"
-    ERR_RENHOU_WITH_TSUMO = "renhou_with_tsumo_not_allowed"
-    ERR_RENHOU_WITH_MELD = "renhou_with_meld_not_allowed"
+    """
+    Hand value estimator.
 
-    # more possible errors, like tenhou and haitei can't be together (so complicated :<)
+    Evaluate a winning hand's han, fu, yaku, and payment amounts. Accepts tiles in
+    136-format, an optional :class:`~mahjong.hand_calculating.hand_config.HandConfig` for
+    win conditions and rule variants, and optional melds and dora/ura-dora indicators. When multiple
+    valid decompositions exist, the highest-scoring result is returned.
+    """
+
+    # basic hand validation
+    ERR_NO_WINNING_TILE = "winning_tile_not_in_hand"
+    """``win_tile`` index is not present in the ``tiles`` array."""
+    ERR_HAND_NOT_WINNING = "hand_not_winning"
+    """No valid decomposition exists; the hand is not a winning hand."""
+    ERR_NO_YAKU = "no_yaku"
+    """Hand can be decomposed but has zero han (no yaku applies)."""
+
+    # riichi constraints
+    ERR_OPEN_HAND_RIICHI = "open_hand_riichi_not_allowed"
+    """Riichi declared on an open hand (open melds present)."""
+    ERR_OPEN_HAND_DABURI = "open_hand_daburi_not_allowed"
+    """Double riichi declared on an open hand."""
+    ERR_IPPATSU_WITHOUT_RIICHI = "ippatsu_without_riichi_not_allowed"
+    """Ippatsu claimed without riichi or double riichi."""
+
+    # win-condition conflicts
+    ERR_CHANKAN_WITH_TSUMO = "chankan_with_tsumo_not_allowed"
+    """Chankan (robbing a kan) requires a ron win."""
+    ERR_RINSHAN_WITHOUT_TSUMO = "rinshan_without_tsumo_not_allowed"
+    """Rinshan kaihou (win after kan) requires a tsumo win."""
+    ERR_HAITEI_WITHOUT_TSUMO = "haitei_without_tsumo_not_allowed"
+    """Haitei raoyue (last-tile draw) requires a tsumo win."""
+    ERR_HOUTEI_WITH_TSUMO = "houtei_with_tsumo_not_allowed"
+    """Houtei raoyui (last-tile discard) requires a ron win."""
+    ERR_HAITEI_WITH_RINSHAN = "haitei_with_rinshan_not_allowed"
+    """Haitei and rinshan are mutually exclusive (different last-tile sources)."""
+    ERR_HOUTEI_WITH_CHANKAN = "houtei_with_chankan_not_allowed"
+    """Houtei and chankan are mutually exclusive."""
+
+    # tenhou (blessing of heaven) constraints
+    ERR_TENHOU_NOT_AS_DEALER = "tenhou_not_as_dealer_not_allowed"
+    """Tenhou is exclusive to the dealer (East player)."""
+    ERR_TENHOU_WITHOUT_TSUMO = "tenhou_without_tsumo_not_allowed"
+    """Tenhou requires a tsumo win on the dealer's first draw."""
+    ERR_TENHOU_WITH_MELD = "tenhou_with_meld_not_allowed"
+    """Tenhou requires a closed hand with no declared melds."""
+
+    # chiihou (blessing of earth) constraints
+    ERR_CHIIHOU_AS_DEALER = "chiihou_as_dealer_not_allowed"
+    """Chiihou is exclusive to non-dealer players."""
+    ERR_CHIIHOU_WITHOUT_TSUMO = "chiihou_without_tsumo_not_allowed"
+    """Chiihou requires a tsumo win on the player's first draw."""
+    ERR_CHIIHOU_WITH_MELD = "chiihou_with_meld_not_allowed"
+    """Chiihou requires a closed hand with no declared melds."""
+
+    # renhou (blessing of man) constraints
+    ERR_RENHOU_AS_DEALER = "renhou_as_dealer_not_allowed"
+    """Renhou is exclusive to non-dealer players."""
+    ERR_RENHOU_WITH_TSUMO = "renhou_with_tsumo_not_allowed"
+    """Renhou requires a ron win before the player's first draw."""
+    ERR_RENHOU_WITH_MELD = "renhou_with_meld_not_allowed"
+    """Renhou requires a closed hand with no declared melds."""
 
     @staticmethod
     def estimate_hand_value(
@@ -64,16 +103,84 @@ class HandCalculator:
         ura_dora_indicators: Collection[int] | None = None,
     ) -> HandResponse:
         """
-        :param tiles: array with 14 tiles in 136-tile format
-        :param win_tile: 136-tile format tile that caused win (ron or tsumo)
-        :param melds: array with Meld objects
-        :param dora_indicators: array of tiles in 136-tile format
-        :param config: HandConfig object
-        :param scores_calculator_factory: ScoresCalculator class or subclass
-        :param ura_dora_indicators: array of tiles in 136-tile format (only counted with riichi)
-        :return: HandResponse object
-        """
+        Estimate the point value of a winning hand.
 
+        Validate the hand and win conditions, decompose the hand into all possible
+        block combinations, evaluate yaku and fu for each decomposition, and return
+        the highest-scoring result as a :class:`~mahjong.hand_calculating.hand_response.HandResponse`.
+
+        Basic closed ron with tanyao:
+
+        >>> from mahjong.hand_calculating.hand import HandCalculator
+        >>> from mahjong.tile import TilesConverter
+        >>> tiles = TilesConverter.string_to_136_array(man="22444", pin="333567", sou="444")
+        >>> win_tile = TilesConverter.string_to_136_array(sou="4")[0]
+        >>> result = HandCalculator.estimate_hand_value(tiles, win_tile)
+        >>> result.han
+        1
+        >>> result.fu
+        40
+        >>> result.cost["main"]
+        1300
+
+        Tsumo win with riichi and pinfu:
+
+        >>> from mahjong.hand_calculating.hand_config import HandConfig
+        >>> tiles = TilesConverter.string_to_136_array(man="234789", pin="12345666")
+        >>> win_tile = TilesConverter.string_to_136_array(pin="6")[0]
+        >>> config = HandConfig(is_tsumo=True, is_riichi=True)
+        >>> result = HandCalculator.estimate_hand_value(tiles, win_tile, config=config)
+        >>> result.han
+        3
+        >>> result.fu
+        20
+        >>> result.cost["main"]
+        1300
+        >>> result.cost["additional"]
+        700
+
+        Dealer tsumo with riichi and ippatsu:
+
+        >>> from mahjong.constants import EAST
+        >>> config = HandConfig(is_tsumo=True, is_riichi=True, is_ippatsu=True, player_wind=EAST)
+        >>> result = HandCalculator.estimate_hand_value(tiles, win_tile, config=config)
+        >>> result.error is None
+        True
+
+        Open hand with melds and dora:
+
+        >>> from mahjong.meld import Meld
+        >>> tiles = TilesConverter.string_to_136_array(man="234567", pin="22", sou="234", honors="555")
+        >>> win_tile = TilesConverter.string_to_136_array(man="7")[0]
+        >>> melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(honors="555"))]
+        >>> dora_indicators = [TilesConverter.string_to_136_array(man="6")[0]]
+        >>> result = HandCalculator.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=dora_indicators)
+        >>> result.han
+        2
+
+        Invalid hand returns an error:
+
+        >>> tiles = TilesConverter.string_to_136_array(man="12345")
+        >>> win_tile = TilesConverter.string_to_136_array(man="1")[0]
+        >>> result = HandCalculator.estimate_hand_value(tiles, win_tile)
+        >>> result.error == HandCalculator.ERR_HAND_NOT_WINNING
+        True
+
+        :param tiles: hand tiles in 136-format (14 tiles including the winning tile;
+            15 with one kan, 16 with two, etc.)
+        :param win_tile: the winning tile index in 136-format (must be present in ``tiles``)
+        :param melds: declared melds (:class:`~mahjong.meld.Meld` objects for chi, pon, kan)
+        :param dora_indicators: dora indicator tile indices in 136-format
+        :param config: hand configuration with win conditions, wind context, and optional rules;
+            defaults to a closed ron with no special conditions
+        :param scores_calculator_factory: scoring calculator class; pass
+            :class:`~mahjong.hand_calculating.scores.Aotenjou` for aotenjou (limitless) scoring
+        :param ura_dora_indicators: ura dora indicator tile indices in 136-format
+            (counted only when riichi or double riichi is declared)
+        :return: :class:`~mahjong.hand_calculating.hand_response.HandResponse` with scoring
+            details on success, or with :attr:`~mahjong.hand_calculating.hand_response.HandResponse.error`
+            set on failure
+        """
         if not melds:
             melds = []
 
