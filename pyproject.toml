@@ -132,7 +132,16 @@ invalid-method-override = "ignore"
 
 [tool.pytest]
 python_files = ["tests_*.py"]
-addopts = ["-p", "no:warnings", "--no-header", "--tb=short", "-qq", "--cov", "--cov-report=term:skip-covered", "--doctest-modules"]
+addopts = [
+    "-p",
+    "no:warnings",
+    "--no-header",
+    "--tb=short",
+    "-qq",
+    "--cov",
+    "--cov-report=term:skip-covered",
+    "--doctest-modules",
+]
 
 [tool.coverage.run]
 source = ["mahjong"]
