@@ -165,18 +165,10 @@ class YakuConfig:
     to instantiate it directly. Direct instantiation is useful for checking individual
     yaku conditions outside the full hand evaluation pipeline.
 
-    Check a yaku condition directly:
-
-    >>> from mahjong.hand_calculating.yaku_config import YakuConfig
-    >>> from mahjong.tile import TilesConverter
-    >>> config = YakuConfig()
-    >>> tiles = TilesConverter.string_to_34_array(sou="234567", man="234567", pin="22")
-    >>> hand = [[i] * tiles[i] for i in range(34) if tiles[i]]
-    >>> config.tanyao.is_condition_met(hand)
-    True
-
     Access yaku metadata:
 
+    >>> from mahjong.hand_calculating.yaku_config import YakuConfig
+    >>> config = YakuConfig()
     >>> config.riichi.name
     'Riichi'
     >>> config.riichi.han_closed
