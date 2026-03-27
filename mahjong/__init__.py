@@ -52,11 +52,8 @@ Honors (`z`) use ranks to distinguish individual tiles:
 * `6` - Green dragon (發, hatsu)
 * `7` - Red dragon (中, chun)
 
-Multiple tiles may be concatenated without separators to form a string that represents a collection. For example:
-
-``123m406p789s11555z``
-
-is equivalent to ``1m2m3m4p0p6p7s8s9s1z1z5z5z5z``.
+Multiple tiles may be concatenated without separators to form a string that represents a collection
+(e.g., ``123m406p789s11555z`` is equivalent to ``1m2m3m4p0p6p7s8s9s1z1z5z5z5z``).
 
 34-format
 ---------
