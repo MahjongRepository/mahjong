@@ -1,8 +1,11 @@
 mahjong.hand_calculating
 ========================
 
+.. automodule:: mahjong.hand_calculating
+
 .. toctree::
    :maxdepth: 1
+   :caption: Modules:
 
    divider
    fu
