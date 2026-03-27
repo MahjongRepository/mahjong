@@ -1,5 +1,27 @@
 """
-_summary_.
+Japanese riichi mahjong hand calculator library.
+
+Compute hand cost (han, fu, yaku, and scores), validate winning hands, and calculate shanten (minimum tiles to tenpai).
+
+.. rubric:: Main entry points
+
+* :class:`~mahjong.hand_calculating.hand.HandCalculator` — estimate hand value (han, fu, cost,
+  and yaku list) given tiles, win tile, melds, and dora indicators.
+* :class:`~mahjong.agari.Agari` — check whether tiles form a complete (winning) hand structure.
+* :class:`~mahjong.shanten.Shanten` — calculate how many tiles away a hand is from winning.
+
+.. rubric:: Tile and meld utilities
+
+* :class:`~mahjong.tile.TilesConverter` — convert between mpsz-notation strings, 34-format count
+  arrays, and 136-format tile index lists.
+* :class:`~mahjong.meld.Meld` — represent declared melds (chi, pon, kan).
+
+.. rubric:: Configuration and results
+
+* :class:`~mahjong.hand_calculating.hand_config.HandConfig` — configure win conditions (tsumo/ron),
+  wind context, and optional rule variants (open tanyao, aka dora, double yakuman, etc.).
+* :class:`~mahjong.hand_calculating.hand_response.HandResponse` — structured result containing
+  han, fu, fu details, cost breakdown, and yaku list.
 
 Tile representation
 ###################
