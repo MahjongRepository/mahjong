@@ -1,3 +1,22 @@
+"""
+Yaku configuration and ID mappings.
+
+.. rubric:: Data
+
+* :data:`YAKU_ID_TO_TENHOU_ID` - mapping from library yaku IDs to Tenhou yaku IDs
+
+.. rubric:: Classes
+
+* :class:`YakuConfig` - pre-instantiated collection of all yaku for condition checking
+
+Look up a Tenhou yaku ID:
+
+>>> from mahjong.hand_calculating.yaku_config import YAKU_ID_TO_TENHOU_ID
+>>> from mahjong.hand_calculating.yaku_list import Riichi
+>>> YAKU_ID_TO_TENHOU_ID[Riichi.yaku_id]
+1
+"""
+
 from mahjong.hand_calculating.yaku_list import (
     AkaDora,
     Chankan,
@@ -123,9 +142,39 @@ YAKU_ID_TO_TENHOU_ID: dict[int, int] = {
     UraDora.yaku_id: 53,
     AkaDora.yaku_id: 54,
 }
+"""
+Mapping from library :attr:`~mahjong.hand_calculating.yaku.Yaku.yaku_id` values
+to `Tenhou <https://tenhou.net/>`_ yaku IDs.
+
+Useful for integrating with Tenhou log formats or displaying results
+in Tenhou-compatible order.
+"""
 
 
 class YakuConfig:
+    """
+    Pre-instantiated collection of all yaku (winning patterns) for condition checking.
+
+    Each attribute is a :class:`~mahjong.hand_calculating.yaku.Yaku` instance that can
+    check whether its condition is met for a given hand decomposition. Yaku are grouped
+    by han value: situational yaku, 1-han, 2-han, 3-han, 6-han, yakuman,
+    double yakuman, yakuman situations, and bonus dora.
+
+    A ``YakuConfig`` is automatically created as part of
+    :class:`~mahjong.hand_calculating.hand_config.HandConfig`, so most users do not need
+    to instantiate it directly. Direct instantiation is useful for checking individual
+    yaku conditions outside the full hand evaluation pipeline.
+
+    Access yaku metadata:
+
+    >>> from mahjong.hand_calculating.yaku_config import YakuConfig
+    >>> config = YakuConfig()
+    >>> config.riichi.name
+    'Riichi'
+    >>> config.riichi.han_closed
+    1
+    """
+
     def __init__(self) -> None:
         # Yaku situations
         self.tsumo = Tsumo()
