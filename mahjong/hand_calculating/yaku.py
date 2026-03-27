@@ -10,18 +10,18 @@ class Yaku(ABC):
     :meth:`is_condition_met`.  A han value of ``0`` means the yaku is
     unavailable for that hand type (open or closed).
 
-    >>> from mahjong.hand_calculating.yaku_list import Toitoi
-    >>> toitoi = Toitoi()
-    >>> toitoi.yaku_id
-    30
-    >>> toitoi.han_open
-    2
-    >>> toitoi.han_closed
-    2
-    >>> toitoi.is_yakuman
+    >>> from mahjong.hand_calculating.yaku_list import Iipeiko
+    >>> iipeiko = Iipeiko()
+    >>> iipeiko.yaku_id
+    14
+    >>> iipeiko.han_open
+    0
+    >>> iipeiko.han_closed
+    1
+    >>> iipeiko.is_yakuman
     False
-    >>> str(toitoi)
-    'Toitoi'
+    >>> str(iipeiko)
+    'Iipeiko'
 
     :ivar yaku_id: unique numeric identifier for this yaku
     :vartype yaku_id: int
