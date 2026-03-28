@@ -5,9 +5,7 @@ from mahjong.utils import is_pon_or_kan
 
 
 class Suuankou(Yaku):
-    """
-    Four closed pon sets
-    """
+    """Four closed pon sets."""
 
     yaku_id = 102
     name = "Suu Ankou"
@@ -15,6 +13,14 @@ class Suuankou(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], win_tile: int, is_tsumo: bool) -> bool:
+        """
+        Check whether the hand contains four closed pon sets.
+
+        :param hand: decomposed hand as a collection of tile groups in 34-format
+        :param win_tile: winning tile index in 136-format
+        :param is_tsumo: True if the win is by self-draw
+        :return: True if the hand contains exactly four closed pon sets
+        """
         win_tile //= 4
         closed_hand = []
         for item in hand:

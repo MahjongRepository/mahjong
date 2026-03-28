@@ -4,13 +4,12 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Chiitoitsu(Yaku):
-    """
-    Hand contains only pairs
-    """
+    """Hand contains only pairs."""
 
     yaku_id = 34
     name = "Chiitoitsu"
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand consists of seven pairs."""
         return len(hand) == 7

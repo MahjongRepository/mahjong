@@ -4,9 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Rinshan(Yaku):
-    """
-    Yaku situation
-    """
+    """Win on a replacement tile after calling kan."""
 
     yaku_id = 5
     name = "Rinshan Kaihou"
@@ -14,5 +12,5 @@ class Rinshan(Yaku):
     han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        # was it here or not is controlling by superior code
+        """Return True unconditionally; this yaku is awarded by the hand evaluation logic."""
         return True

@@ -6,9 +6,7 @@ from mahjong.utils import is_pon_or_kan
 
 
 class Daisangen(Yaku):
-    """
-    The hand contains three sets of dragons
-    """
+    """The hand contains three sets of dragons."""
 
     yaku_id = 103
     name = "Daisangen"
@@ -17,6 +15,7 @@ class Daisangen(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand contains pon or kan sets of all three dragons."""
         count_of_dragon_pon_sets = 0
         for item in hand:
             if item[0] not in DRAGONS:

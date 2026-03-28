@@ -6,9 +6,7 @@ from mahjong.utils import is_pair, is_pon_or_kan
 
 
 class Shousuushii(Yaku):
-    """
-    The hand contains three sets of winds and a pair of the remaining wind
-    """
+    """The hand contains three sets of winds and a pair of the remaining wind."""
 
     yaku_id = 104
     name = "Shousuushii"
@@ -17,6 +15,7 @@ class Shousuushii(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand has three wind pon/kan sets and one wind pair."""
         count_of_wind_sets = 0
         wind_pair = 0
 

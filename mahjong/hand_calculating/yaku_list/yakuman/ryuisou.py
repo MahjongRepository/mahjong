@@ -8,9 +8,7 @@ _GREEN_INDICES = frozenset([19, 20, 21, 23, 25, HATSU])
 
 
 class Ryuuiisou(Yaku):
-    """
-    Hand composed entirely of green tiles. Green tiles are: green dragons and 2, 3, 4, 6 and 8 of sou.
-    """
+    """Hand composed entirely of green tiles. Green tiles are: green dragons and 2, 3, 4, 6 and 8 of sou."""
 
     yaku_id = 105
     name = "Ryuuiisou"
@@ -19,4 +17,5 @@ class Ryuuiisou(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether all tiles in the hand are green tiles."""
         return all(tile in _GREEN_INDICES for item in hand for tile in item)

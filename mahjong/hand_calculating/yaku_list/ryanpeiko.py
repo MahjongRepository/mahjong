@@ -5,15 +5,14 @@ from mahjong.utils import is_chi
 
 
 class Ryanpeikou(Yaku):
-    """
-    The hand contains two different Iipeikou's
-    """
+    """Two pairs of identical chi sequences (two iipeiko in the same hand)."""
 
     yaku_id = 38
     name = "Ryanpeikou"
     han_closed = 3
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand contains two pairs of identical chi sequences."""
         # count occurrences of each chi set (first tile uniquely identifies a chi)
         chi_counts: dict[int, int] = {}
         for item in hand:

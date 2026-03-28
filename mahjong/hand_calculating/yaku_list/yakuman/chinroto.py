@@ -6,6 +6,8 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Chinroutou(Yaku):
+    """Hand composed entirely of terminal tiles."""
+
     yaku_id = 108
     name = "Chinroutou"
     han_open = 13
@@ -13,10 +15,6 @@ class Chinroutou(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        """
-        Hand composed entirely of terminal tiles.
-        :param hand: list of hand's sets
-        :return: boolean
-        """
+        """Check whether all tiles in the hand are terminals."""
         indices = chain.from_iterable(hand)
         return all(x in TERMINAL_INDICES for x in indices)

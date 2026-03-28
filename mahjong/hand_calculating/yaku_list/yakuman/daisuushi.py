@@ -6,9 +6,7 @@ from mahjong.utils import is_pon_or_kan
 
 
 class DaiSuushii(Yaku):
-    """
-    The hand contains four sets of winds
-    """
+    """The hand contains four sets of winds."""
 
     yaku_id = 111
     name = "Dai Suushii"
@@ -17,6 +15,7 @@ class DaiSuushii(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand contains pon or kan sets of all four winds."""
         count_wind_sets = 0
 
         for item in hand:

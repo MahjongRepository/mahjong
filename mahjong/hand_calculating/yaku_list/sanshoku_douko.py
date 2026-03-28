@@ -5,9 +5,7 @@ from mahjong.utils import is_pon_or_kan
 
 
 class SanshokuDoukou(Yaku):
-    """
-    Three pon sets consisting of the same numbers in all three suits
-    """
+    """Three pon sets consisting of the same numbers in all three suits."""
 
     yaku_id = 33
     name = "Sanshoku Doukou"
@@ -15,6 +13,7 @@ class SanshokuDoukou(Yaku):
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand contains pon sets of the same number in all three suits."""
         # bitmask per suit: bit i = pon at simplified position i
         sou_mask = 0
         pin_mask = 0

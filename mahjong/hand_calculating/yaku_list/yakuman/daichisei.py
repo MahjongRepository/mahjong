@@ -6,9 +6,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Daichisei(Yaku):
-    """
-    Yaku situation
-    """
+    """Seven pairs of honor tiles."""
 
     yaku_id = 110
     name = "Daichisei"
@@ -16,5 +14,6 @@ class Daichisei(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand is seven pairs composed entirely of honor tiles."""
         indices = chain.from_iterable(hand)
         return all(x in HONOR_INDICES for x in indices) and len(hand) == 7
