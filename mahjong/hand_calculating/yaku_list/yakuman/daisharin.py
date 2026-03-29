@@ -30,7 +30,11 @@ class Daisharin(Yaku):
         self.name = "Daichikurin"
 
     def rename(self, hand: Sequence[Sequence[int]]) -> None:
-        """Set the yaku name based on the suit of the hand."""
+        """
+        Set the yaku name based on the suit of the hand.
+
+        :param hand: decomposed hand as a sequence of tile groups in 34-format
+        """
         if is_sou(hand[0][0]):
             self.set_sou()
         elif is_pin(hand[0][0]):

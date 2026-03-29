@@ -14,7 +14,7 @@ class Shosangen(Yaku):
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        """Check whether the hand has two dragon pon/kan sets and one dragon pair."""
+        """Check whether the hand has two dragon pon or kan sets and one dragon pair."""
         count_of_conditions = 0
         for item in hand:
             if item[0] not in DRAGONS:

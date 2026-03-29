@@ -21,13 +21,13 @@ class Sanankou(Yaku):
         is_tsumo: bool,
     ) -> bool:
         """
-        Check whether the hand contains three closed pon sets.
+        Check whether the hand contains three closed pon or kan sets.
 
         :param hand: decomposed hand as a collection of tile groups in 34-format
         :param win_tile: winning tile index in 136-format
         :param melds: declared melds
         :param is_tsumo: True if the win is by self-draw
-        :return: True if the hand contains exactly three closed pon sets
+        :return: True if the hand contains exactly three closed pon or kan sets
         """
         win_tile_34 = win_tile // 4
 

@@ -14,12 +14,12 @@ class Suuankou(Yaku):
 
     def is_condition_met(self, hand: Collection[Sequence[int]], win_tile: int, is_tsumo: bool) -> bool:
         """
-        Check whether the hand contains four closed pon sets.
+        Check whether the hand contains four closed pon or kan sets.
 
         :param hand: decomposed hand as a collection of tile groups in 34-format
         :param win_tile: winning tile index in 136-format
         :param is_tsumo: True if the win is by self-draw
-        :return: True if the hand contains exactly four closed pon sets
+        :return: True if the hand contains exactly four closed pon or kan sets
         """
         win_tile //= 4
         closed_hand = []
