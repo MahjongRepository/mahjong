@@ -35,7 +35,7 @@ Python 3.10以上に対応しています。
 
 ![image](https://user-images.githubusercontent.com/475367/30796350-3d30431a-a204-11e7-99e5-aab144c82f97.png)
 
-### 断幺九ロン
+### 断么九ロン
 
 ```python
 from mahjong.hand_calculating.hand import HandCalculator
