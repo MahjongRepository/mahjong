@@ -5,8 +5,9 @@ from mahjong.hand_calculating.yaku import Yaku
 
 class KokushiMusou(Yaku):
     """
-    A hand composed of one of each of the terminals and honour tiles plus
-    any tile that matches anything else in the hand.
+    国士無双: A hand composed of one of each terminal and honor tile plus one duplicate.
+
+    The duplicate tile determines the winning wait.
     """
 
     yaku_id = 100
@@ -15,6 +16,13 @@ class KokushiMusou(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]] | None, tiles_34: Sequence[int], *args) -> bool:
+        """
+        Check whether the hand is a complete thirteen orphans.
+
+        :param hand: not used for kokushi; pass None
+        :param tiles_34: hand in 34-format count array
+        :return: True if the hand contains one of each terminal and honor with exactly one duplicate
+        """
         return (
             tiles_34[0]
             * tiles_34[8]

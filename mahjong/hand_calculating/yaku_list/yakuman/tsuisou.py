@@ -6,9 +6,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Tsuuiisou(Yaku):
-    """
-    Hand composed entirely of honour tiles
-    """
+    """字一色: Hand composed entirely of honor tiles."""
 
     yaku_id = 107
     name = "Tsuu Iisou"
@@ -17,10 +15,6 @@ class Tsuuiisou(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        """
-        Hand composed entirely of honour tiles.
-        :param hand: list of hand's sets
-        :return: boolean
-        """
+        """Check whether all tiles in the hand are honors."""
         indices = chain.from_iterable(hand)
         return all(x in HONOR_INDICES for x in indices)

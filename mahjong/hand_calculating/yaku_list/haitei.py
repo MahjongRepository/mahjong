@@ -4,9 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Haitei(Yaku):
-    """
-    Yaku situation
-    """
+    """海底撈月: Win by self-draw on the last tile from the wall."""
 
     yaku_id = 6
     name = "Haitei Raoyue"
@@ -14,5 +12,5 @@ class Haitei(Yaku):
     han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        # was it here or not is controlling by superior code
+        """Return True unconditionally; this yaku is awarded by the hand evaluation logic."""
         return True

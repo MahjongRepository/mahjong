@@ -5,9 +5,7 @@ from mahjong.utils import is_pon_or_kan
 
 
 class Toitoi(Yaku):
-    """
-    The hand consists of all pon sets (and of course a pair), no sequences.
-    """
+    """対々和: The hand consists of all pon sets (and of course a pair), no sequences."""
 
     yaku_id = 30
     name = "Toitoi"
@@ -15,5 +13,6 @@ class Toitoi(Yaku):
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand contains four pon or kan sets."""
         count_of_pon = sum(1 for item in hand if is_pon_or_kan(item))
         return count_of_pon == 4

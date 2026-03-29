@@ -4,14 +4,12 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class DaburuRiichi(Yaku):
-    """
-    Yaku situation
-    """
+    """ダブル立直: Riichi declared on the player's first turn."""
 
     yaku_id = 8
     name = "Double Riichi"
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        # was it here or not is controlling by superior code
+        """Return True unconditionally; this yaku is awarded by the hand evaluation logic."""
         return True

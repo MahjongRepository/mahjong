@@ -7,8 +7,9 @@ from mahjong.utils import is_chi
 
 class Chantai(Yaku):
     """
-    Every set must have at least one terminal or honour tile, and the pair must be of
-    a terminal or honour tile. Must contain at least one sequence (123 or 789)
+    混全帯么九: Every set must have at least one terminal or honor tile.
+
+    The pair must also be a terminal or honor. Must contain at least one sequence (123 or 789).
     """
 
     yaku_id = 28
@@ -17,6 +18,7 @@ class Chantai(Yaku):
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether every set contains a terminal or honor, with at least one chi."""
         honor_sets = 0
         terminal_sets = 0
         count_of_chi = 0

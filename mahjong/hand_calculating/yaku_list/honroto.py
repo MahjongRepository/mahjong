@@ -6,9 +6,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Honroto(Yaku):
-    """
-    All tiles are terminals or honours
-    """
+    """混老頭: All tiles are terminals or honors."""
 
     yaku_id = 29
     name = "Honroutou"
@@ -16,5 +14,6 @@ class Honroto(Yaku):
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether all tiles in the hand are terminals or honors."""
         indices = chain.from_iterable(hand)
         return all(x in TERMINAL_AND_HONOR_INDICES for x in indices)

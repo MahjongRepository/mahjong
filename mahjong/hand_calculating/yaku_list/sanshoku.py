@@ -4,9 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Sanshoku(Yaku):
-    """
-    The same chi in three suits
-    """
+    """三色同順: The same chi in three suits."""
 
     yaku_id = 26
     name = "Sanshoku Doujun"
@@ -14,6 +12,7 @@ class Sanshoku(Yaku):
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand contains the same chi sequence in all three suits."""
         # bitmask per suit: bit i = chi starting at simplified position i
         sou_mask = 0
         pin_mask = 0

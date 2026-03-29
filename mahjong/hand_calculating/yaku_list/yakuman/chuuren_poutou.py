@@ -6,9 +6,7 @@ from mahjong.utils import classify_hand_suits, simplify
 
 
 class ChuurenPoutou(Yaku):
-    """
-    The hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit.
-    """
+    """九蓮宝燈: The hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit."""
 
     yaku_id = 101
     name = "Chuuren Poutou"
@@ -16,6 +14,7 @@ class ChuurenPoutou(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 plus one extra tile of the same suit."""
         suit_mask, honor_count = classify_hand_suits(hand)
         if honor_count > 0 or suit_mask not in (1, 2, 4):
             return False

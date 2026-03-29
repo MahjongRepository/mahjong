@@ -4,9 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class RenhouYakuman(Yaku):
-    """
-    Yaku situation
-    """
+    """人和 (役満): Non-dealer wins on the first go-around before any calls, scored as yakuman (optional rule)."""
 
     yaku_id = 117
     name = "Renhou (yakuman)"
@@ -14,5 +12,5 @@ class RenhouYakuman(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        # was it here or not is controlling by superior code
+        """Return True unconditionally; this yaku is awarded by the hand evaluation logic."""
         return True

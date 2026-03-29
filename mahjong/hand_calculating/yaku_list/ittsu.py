@@ -4,9 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Ittsu(Yaku):
-    """
-    Three sets of same suit: 1-2-3, 4-5-6, 7-8-9
-    """
+    """一気通貫: Three sets of same suit: 1-2-3, 4-5-6, 7-8-9."""
 
     yaku_id = 27
     name = "Ittsu"
@@ -14,6 +12,7 @@ class Ittsu(Yaku):
     han_closed = 2
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether the hand contains 1-2-3, 4-5-6, and 7-8-9 sequences of the same suit."""
         # bitmask per suit: bit 0 = chi at 0, bit 1 = chi at 3, bit 2 = chi at 6
         sou_mask = 0
         pin_mask = 0

@@ -7,9 +7,9 @@ from mahjong.utils import is_chi
 
 class Junchan(Yaku):
     """
-    Every set must have at least one terminal, and the pair must be of
-    a terminal tile. Must contain at least one sequence (123 or 789).
-    Honours are not allowed
+    純全帯么九: Every set must have at least one terminal, and the pair must be a terminal.
+
+    Must contain at least one sequence (123 or 789). Honors are not allowed.
     """
 
     yaku_id = 37
@@ -18,6 +18,7 @@ class Junchan(Yaku):
     han_closed = 3
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
+        """Check whether every set contains a terminal, with at least one chi and no honors."""
         terminal_sets = 0
         count_of_chi = 0
         for item in hand:

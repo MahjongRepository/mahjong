@@ -6,9 +6,7 @@ from mahjong.utils import has_pon_or_kan_of
 
 
 class SeatWindEast(Yaku):
-    """
-    Seat wind east yakuhai
-    """
+    """自風牌 東: Pon of seat wind east."""
 
     yaku_id = 18
     name = "Yakuhai (seat wind east)"
@@ -16,6 +14,13 @@ class SeatWindEast(Yaku):
     han_closed = 1
 
     def is_condition_met(self, hand: Collection[Sequence[int]], player_wind: int | None, *args) -> bool:
+        """
+        Check whether the hand contains a pon or kan of the seat wind.
+
+        :param hand: decomposed hand as a collection of tile groups in 34-format
+        :param player_wind: tile index in 34-format of the player's seat wind
+        :return: True if the player's seat wind matches and the hand has a pon or kan of it
+        """
         if player_wind != EAST:
             return False
         return has_pon_or_kan_of(hand, EAST)
