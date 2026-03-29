@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Tenhou(Yaku):
-    """Dealer wins on the initial draw."""
+    """天和: Dealer wins on the initial draw."""
 
     yaku_id = 115
     name = "Tenhou"

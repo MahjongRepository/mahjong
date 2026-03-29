@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class DaburuKokushiMusou(Yaku):
-    """Kokushi Musou with a thirteen-sided wait (double yakuman)."""
+    """国士無双十三面待ち: Kokushi Musou with a thirteen-sided wait (double yakuman)."""
 
     yaku_id = 112
     name = "Kokushi Musou Juusanmen Matchi"

@@ -5,7 +5,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 class KokushiMusou(Yaku):
     """
-    A hand composed of one of each terminal and honor tile plus one duplicate.
+    国士無双: A hand composed of one of each terminal and honor tile plus one duplicate.
 
     The duplicate tile determines the winning wait.
     """

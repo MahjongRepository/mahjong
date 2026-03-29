@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Chiihou(Yaku):
-    """Non-dealer wins on the initial draw."""
+    """地和: Non-dealer wins on the initial draw."""
 
     yaku_id = 116
     name = "Chiihou"

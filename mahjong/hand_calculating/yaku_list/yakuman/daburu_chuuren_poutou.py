@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class DaburuChuurenPoutou(Yaku):
-    """Chuuren Poutou with a nine-sided wait (double yakuman)."""
+    """純正九蓮宝燈: Chuuren Poutou with a nine-sided wait (double yakuman)."""
 
     yaku_id = 114
     name = "Daburu Chuuren Poutou"

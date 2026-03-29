@@ -6,7 +6,7 @@ from mahjong.utils import is_pair, is_pon_or_kan
 
 
 class Shousuushii(Yaku):
-    """The hand contains three sets of winds and a pair of the remaining wind."""
+    """小四喜: The hand contains three sets of winds and a pair of the remaining wind."""
 
     yaku_id = 104
     name = "Shousuushii"

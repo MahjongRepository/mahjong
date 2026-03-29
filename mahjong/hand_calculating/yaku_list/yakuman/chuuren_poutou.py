@@ -6,7 +6,7 @@ from mahjong.utils import classify_hand_suits, simplify
 
 
 class ChuurenPoutou(Yaku):
-    """The hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit."""
+    """九蓮宝燈: The hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit."""
 
     yaku_id = 101
     name = "Chuuren Poutou"

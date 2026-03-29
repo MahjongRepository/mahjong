@@ -5,7 +5,7 @@ from mahjong.meld import Meld
 
 
 class SanKantsu(Yaku):
-    """The hand with three kan sets."""
+    """三槓子: The hand with three kan sets."""
 
     yaku_id = 32
     name = "San Kantsu"

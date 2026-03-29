@@ -5,7 +5,7 @@ from mahjong.utils import is_pon_or_kan
 
 
 class Toitoi(Yaku):
-    """The hand consists of all pon sets (and of course a pair), no sequences."""
+    """対々和: The hand consists of all pon sets (and of course a pair), no sequences."""
 
     yaku_id = 30
     name = "Toitoi"

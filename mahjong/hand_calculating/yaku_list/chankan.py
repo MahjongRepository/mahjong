@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Chankan(Yaku):
-    """Win by robbing another player's kan declaration."""
+    """搶槓: Win by robbing another player's kan declaration."""
 
     yaku_id = 4
     name = "Chankan"

@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Paarenchan(Yaku):
-    """Consecutive dealer wins, scored as yakuman when the threshold is reached (optional rule)."""
+    """八連荘: Consecutive dealer wins, scored as yakuman when the threshold is reached (optional rule)."""
 
     yaku_id = 119
     name = "Paarenchan"

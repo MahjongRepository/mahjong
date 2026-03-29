@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class UraDora(Yaku):
-    """Bonus han from ura dora indicators revealed after a riichi win."""
+    """裏ドラ: Bonus han from ura dora indicators revealed after a riichi win."""
 
     yaku_id = 122
     name = "Ura Dora"

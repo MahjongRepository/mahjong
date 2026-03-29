@@ -6,7 +6,7 @@ from mahjong.utils import has_pon_or_kan_of
 
 
 class Haku(Yaku):
-    """Pon of white dragons."""
+    """白: Pon of white dragons."""
 
     yaku_id = 15
     name = "Yakuhai (haku)"

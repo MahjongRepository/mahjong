@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Pinfu(Yaku):
-    """All sequences with a valueless pair and a two-sided wait."""
+    """平和: All sequences with a valueless pair and a two-sided wait."""
 
     yaku_id = 12
     name = "Pinfu"

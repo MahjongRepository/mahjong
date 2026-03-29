@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class DaburuRiichi(Yaku):
-    """Riichi declared on the player's first turn."""
+    """ダブル立直: Riichi declared on the player's first turn."""
 
     yaku_id = 8
     name = "Double Riichi"

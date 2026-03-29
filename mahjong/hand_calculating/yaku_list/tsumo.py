@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Tsumo(Yaku):
-    """Win by self-draw with a closed hand."""
+    """門前清自摸和: Win by self-draw with a closed hand."""
 
     yaku_id = 0
     name = "Menzen Tsumo"

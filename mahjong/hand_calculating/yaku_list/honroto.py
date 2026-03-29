@@ -6,7 +6,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Honroto(Yaku):
-    """All tiles are terminals or honors."""
+    """混老頭: All tiles are terminals or honors."""
 
     yaku_id = 29
     name = "Honroutou"

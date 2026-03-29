@@ -5,7 +5,7 @@ from mahjong.utils import is_chi
 
 
 class Iipeiko(Yaku):
-    """Hand with two identical chi."""
+    """一盃口: Hand with two identical chi."""
 
     yaku_id = 14
     name = "Iipeiko"

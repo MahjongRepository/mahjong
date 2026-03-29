@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Ippatsu(Yaku):
-    """Win within one turn of declaring riichi."""
+    """一発: Win within one turn of declaring riichi."""
 
     yaku_id = 3
     name = "Ippatsu"

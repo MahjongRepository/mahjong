@@ -6,7 +6,7 @@ from mahjong.utils import is_pon_or_kan
 
 
 class Daisangen(Yaku):
-    """The hand contains three sets of dragons."""
+    """大三元: The hand contains three sets of dragons."""
 
     yaku_id = 103
     name = "Daisangen"

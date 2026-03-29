@@ -6,7 +6,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Chinroutou(Yaku):
-    """Hand composed entirely of terminal tiles."""
+    """清老頭: Hand composed entirely of terminal tiles."""
 
     yaku_id = 108
     name = "Chinroutou"

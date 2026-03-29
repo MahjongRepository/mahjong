@@ -7,7 +7,7 @@ from mahjong.utils import is_chi
 
 class Chantai(Yaku):
     """
-    Every set must have at least one terminal or honor tile.
+    混全帯么九: Every set must have at least one terminal or honor tile.
 
     The pair must also be a terminal or honor. Must contain at least one sequence (123 or 789).
     """

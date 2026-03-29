@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Riichi(Yaku):
-    """Declared ready hand."""
+    """立直: Declared ready hand."""
 
     yaku_id = 1
     name = "Riichi"

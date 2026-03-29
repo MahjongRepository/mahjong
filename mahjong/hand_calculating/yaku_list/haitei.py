@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Haitei(Yaku):
-    """Win by self-draw on the last tile from the wall."""
+    """海底撈月: Win by self-draw on the last tile from the wall."""
 
     yaku_id = 6
     name = "Haitei Raoyue"

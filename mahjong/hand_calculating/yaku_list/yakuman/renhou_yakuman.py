@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class RenhouYakuman(Yaku):
-    """Non-dealer wins on the first go-around before any calls, scored as yakuman (optional rule)."""
+    """人和 (役満): Non-dealer wins on the first go-around before any calls, scored as yakuman (optional rule)."""
 
     yaku_id = 117
     name = "Renhou (yakuman)"

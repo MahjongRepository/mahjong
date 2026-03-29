@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class NagashiMangan(Yaku):
-    """All discards are terminals and honors with no calls against them."""
+    """流し満貫: All discards are terminals and honors with no calls against them."""
 
     yaku_id = 10
     name = "Nagashi Mangan"

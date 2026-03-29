@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class SuuankouTanki(Yaku):
-    """Four closed pon sets with a pair wait (double yakuman)."""
+    """四暗刻単騎: Four closed pon sets with a pair wait (double yakuman)."""
 
     yaku_id = 113
     name = "Suu Ankou Tanki"

@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Dora(Yaku):
-    """Bonus han from dora indicator tiles."""
+    """ドラ: Bonus han from dora indicator tiles."""
 
     yaku_id = 120
     name = "Dora"

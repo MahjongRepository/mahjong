@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Sanshoku(Yaku):
-    """The same chi in three suits."""
+    """三色同順: The same chi in three suits."""
 
     yaku_id = 26
     name = "Sanshoku Doujun"

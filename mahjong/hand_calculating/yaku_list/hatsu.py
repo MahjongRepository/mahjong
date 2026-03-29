@@ -6,7 +6,7 @@ from mahjong.utils import has_pon_or_kan_of
 
 
 class Hatsu(Yaku):
-    """Pon of green dragons."""
+    """發: Pon of green dragons."""
 
     yaku_id = 16
     name = "Yakuhai (hatsu)"

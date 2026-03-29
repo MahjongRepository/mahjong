@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Houtei(Yaku):
-    """Win on the last discard of the round."""
+    """河底撈魚: Win on the last discard of the round."""
 
     yaku_id = 7
     name = "Houtei Raoyui"

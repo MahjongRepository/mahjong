@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Ittsu(Yaku):
-    """Three sets of same suit: 1-2-3, 4-5-6, 7-8-9."""
+    """一気通貫: Three sets of same suit: 1-2-3, 4-5-6, 7-8-9."""
 
     yaku_id = 27
     name = "Ittsu"

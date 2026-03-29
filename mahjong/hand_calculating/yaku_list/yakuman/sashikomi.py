@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Sashikomi(Yaku):
-    """Intentional deal-in for open riichi, scored as yakuman (optional rule)."""
+    """差し込み: Intentional deal-in for open riichi, scored as yakuman (optional rule)."""
 
     yaku_id = 118
     name = "Sashikomi"

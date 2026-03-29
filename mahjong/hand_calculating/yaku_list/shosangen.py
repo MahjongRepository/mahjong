@@ -6,7 +6,7 @@ from mahjong.utils import is_pair, is_pon_or_kan
 
 
 class Shosangen(Yaku):
-    """Hand with two dragon pon sets and one dragon pair."""
+    """小三元: Hand with two dragon pon sets and one dragon pair."""
 
     yaku_id = 35
     name = "Shou Sangen"

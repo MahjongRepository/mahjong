@@ -6,7 +6,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Tsuuiisou(Yaku):
-    """Hand composed entirely of honor tiles."""
+    """字一色: Hand composed entirely of honor tiles."""
 
     yaku_id = 107
     name = "Tsuu Iisou"

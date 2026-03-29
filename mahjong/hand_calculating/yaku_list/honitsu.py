@@ -5,7 +5,7 @@ from mahjong.utils import classify_hand_suits
 
 
 class Honitsu(Yaku):
-    """The hand contains tiles from a single suit plus honors."""
+    """混一色: The hand contains tiles from a single suit plus honors."""
 
     yaku_id = 36
     name = "Honitsu"

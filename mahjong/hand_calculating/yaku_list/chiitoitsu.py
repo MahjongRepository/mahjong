@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Chiitoitsu(Yaku):
-    """Hand contains only pairs."""
+    """七対子: Hand contains only pairs."""
 
     yaku_id = 34
     name = "Chiitoitsu"

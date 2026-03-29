@@ -6,7 +6,7 @@ from mahjong.utils import has_pon_or_kan_of
 
 
 class RoundWindSouth(Yaku):
-    """Pon of round wind south."""
+    """場風牌 南: Pon of round wind south."""
 
     yaku_id = 23
     name = "Yakuhai (round wind south)"

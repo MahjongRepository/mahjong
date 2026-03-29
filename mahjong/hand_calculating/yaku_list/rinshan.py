@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Rinshan(Yaku):
-    """Win on a replacement tile after calling kan."""
+    """嶺上開花: Win on a replacement tile after calling kan."""
 
     yaku_id = 5
     name = "Rinshan Kaihou"

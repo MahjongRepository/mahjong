@@ -6,7 +6,7 @@ from mahjong.utils import classify_hand_suits, is_pin, is_sou
 
 class Daisharin(Yaku):
     """
-    Seven pairs of 2-3-4-5-6-7-8 in a single suit (optional yakuman).
+    大車輪: Seven pairs of 2-3-4-5-6-7-8 in a single suit (optional yakuman).
 
     By default only the pin suit qualifies (daisharin). When other suits are allowed,
     the yaku is renamed to daisuurin (man) or daichikurin (sou).

@@ -4,7 +4,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class OpenRiichi(Yaku):
-    """Open riichi declaration where the hand is revealed (optional rule)."""
+    """オープン立直: Open riichi declaration where the hand is revealed (optional rule)."""
 
     yaku_id = 2
     name = "Open Riichi"

@@ -6,7 +6,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Daichisei(Yaku):
-    """Seven pairs of honor tiles."""
+    """大七星: Seven pairs of honor tiles."""
 
     yaku_id = 110
     name = "Daichisei"

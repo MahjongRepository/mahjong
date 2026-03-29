@@ -6,7 +6,7 @@ from mahjong.utils import is_chi, is_pon_or_kan
 
 
 class Sanankou(Yaku):
-    """Three closed pon sets, the other sets need not be closed."""
+    """三暗刻: Three closed pon sets, the other sets need not be closed."""
 
     yaku_id = 31
     name = "San Ankou"

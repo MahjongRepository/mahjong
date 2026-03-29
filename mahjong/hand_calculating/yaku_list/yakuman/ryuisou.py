@@ -8,7 +8,7 @@ _GREEN_INDICES = frozenset([19, 20, 21, 23, 25, HATSU])
 
 
 class Ryuuiisou(Yaku):
-    """Hand composed entirely of green tiles. Green tiles are: green dragons and 2, 3, 4, 6 and 8 of sou."""
+    """緑一色: Hand composed entirely of green tiles. Green tiles are: green dragons and 2, 3, 4, 6 and 8 of sou."""
 
     yaku_id = 105
     name = "Ryuuiisou"

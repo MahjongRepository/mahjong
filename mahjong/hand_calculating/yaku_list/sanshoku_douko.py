@@ -5,7 +5,7 @@ from mahjong.utils import is_pon_or_kan
 
 
 class SanshokuDoukou(Yaku):
-    """Three pon sets consisting of the same numbers in all three suits."""
+    """三色同刻: Three pon sets consisting of the same numbers in all three suits."""
 
     yaku_id = 33
     name = "Sanshoku Doukou"

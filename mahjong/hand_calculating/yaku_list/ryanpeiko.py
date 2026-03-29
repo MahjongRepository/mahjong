@@ -5,7 +5,7 @@ from mahjong.utils import is_chi
 
 
 class Ryanpeikou(Yaku):
-    """Two pairs of identical chi sequences (two iipeiko in the same hand)."""
+    """二盃口: Two pairs of identical chi sequences (two iipeiko in the same hand)."""
 
     yaku_id = 38
     name = "Ryanpeikou"

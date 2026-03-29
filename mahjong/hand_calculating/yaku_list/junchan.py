@@ -7,7 +7,7 @@ from mahjong.utils import is_chi
 
 class Junchan(Yaku):
     """
-    Every set must have at least one terminal, and the pair must be a terminal.
+    純全帯么九: Every set must have at least one terminal, and the pair must be a terminal.
 
     Must contain at least one sequence (123 or 789). Honors are not allowed.
     """

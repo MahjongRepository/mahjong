@@ -5,7 +5,7 @@ from mahjong.utils import is_pon_or_kan
 
 
 class Suuankou(Yaku):
-    """Four closed pon sets."""
+    """四暗刻: Four closed pon sets."""
 
     yaku_id = 102
     name = "Suu Ankou"

@@ -6,7 +6,7 @@ from mahjong.hand_calculating.yaku import Yaku
 
 
 class Tanyao(Yaku):
-    """Hand without 1, 9, dragons and winds."""
+    """断么九: Hand without 1, 9, dragons and winds."""
 
     yaku_id = 13
     name = "Tanyao"
