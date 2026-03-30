@@ -15,7 +15,7 @@ class Shousuushii(Yaku):
     is_yakuman = True
 
     def is_condition_met(self, hand: Collection[Sequence[int]], *args) -> bool:
-        """Check whether the hand has three wind pon/kan sets and one wind pair."""
+        """Check whether the hand has three wind pon or kan sets and one wind pair."""
         count_of_wind_sets = 0
         wind_pair = 0
 
