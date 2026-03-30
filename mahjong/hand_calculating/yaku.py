@@ -1,3 +1,15 @@
+"""
+Abstract base for yaku pattern detection.
+
+Defines the :class:`Yaku` base class that every concrete yaku inherits.
+Each subclass represents one scoring pattern (e.g., tanyao, riichi, kokushi musou)
+and implements :meth:`~Yaku.is_condition_met` to test whether the pattern is
+present in a given hand decomposition.
+
+Concrete yaku are located in the :mod:`~mahjong.hand_calculating.yaku_list`
+and :mod:`~mahjong.hand_calculating.yaku_list.yakuman` packages.
+"""
+
 from abc import ABC, abstractmethod
 from collections.abc import Collection, Sequence
 
