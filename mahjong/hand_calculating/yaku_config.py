@@ -176,6 +176,12 @@ class YakuConfig:
     """
 
     def __init__(self) -> None:
+        """
+        Instantiate one instance of every yaku and yakuman for condition checking.
+
+        Attributes are organized by han value: situational yaku, 1-han through
+        6-han pattern yaku, yakuman, double yakuman, yakuman situations, and bonus dora.
+        """
         # Yaku situations
         self.tsumo = Tsumo()
         self.riichi = Riichi()

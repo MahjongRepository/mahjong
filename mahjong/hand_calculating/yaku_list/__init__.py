@@ -1,3 +1,13 @@
+"""
+Concrete :class:`~mahjong.hand_calculating.yaku.Yaku` subclasses for standard yaku (non-yakuman).
+
+Each class implements :meth:`~mahjong.hand_calculating.yaku.Yaku.is_condition_met`
+to test whether the pattern is present in a given hand decomposition.
+
+All classes are re-exported here for convenient access via
+``from mahjong.hand_calculating.yaku_list import <ClassName>``.
+"""
+
 from mahjong.hand_calculating.yaku_list.aka_dora import AkaDora
 from mahjong.hand_calculating.yaku_list.chankan import Chankan
 from mahjong.hand_calculating.yaku_list.chantai import Chantai
