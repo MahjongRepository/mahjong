@@ -123,6 +123,11 @@ class Shanten:
         """
         Calculate the shanten number for a regular hand (4 melds + 1 pair).
 
+        The number of melds to be calculated is determined based on the number of tiles in the hand.
+        The number of melds is determined as ``number_of_tiles // 3``
+        (e.g., 0 for 1-2 tiles, 1 for 4-5 tiles, ..., 4 for 13-14 tiles).
+        If there are fewer than 4 melds, the remaining melds are treated as open melds.
+
         Use a depth-first search over all possible meld/pair/tatsu decompositions
         of the suited tiles (indices 0-26), after pre-processing honor tiles (indices 27-33).
 
