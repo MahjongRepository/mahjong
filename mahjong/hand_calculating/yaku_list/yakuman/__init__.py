@@ -1,3 +1,10 @@
+"""
+Concrete :class:`~mahjong.hand_calculating.yaku.Yaku` subclasses for yakuman-level patterns.
+
+All classes are re-exported here for convenient access via
+``from mahjong.hand_calculating.yaku_list.yakuman import <ClassName>``.
+"""
+
 from mahjong.hand_calculating.yaku_list.yakuman.chiihou import Chiihou
 from mahjong.hand_calculating.yaku_list.yakuman.chinroto import Chinroutou
 from mahjong.hand_calculating.yaku_list.yakuman.chuuren_poutou import ChuurenPoutou
