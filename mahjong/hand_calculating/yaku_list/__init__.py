@@ -4,6 +4,8 @@ Concrete :class:`~mahjong.hand_calculating.yaku.Yaku` subclasses for standard ya
 Each class implements :meth:`~mahjong.hand_calculating.yaku.Yaku.is_condition_met`
 to test whether the pattern is present in a given hand decomposition.
 
+For yakuman-level patterns see :mod:`~mahjong.hand_calculating.yaku_list.yakuman`.
+
 All classes are re-exported here for convenient access via
 ``from mahjong.hand_calculating.yaku_list import <ClassName>``.
 """

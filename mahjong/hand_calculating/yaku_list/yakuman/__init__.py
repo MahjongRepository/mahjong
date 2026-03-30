@@ -1,6 +1,8 @@
 """
 Concrete :class:`~mahjong.hand_calculating.yaku.Yaku` subclasses for yakuman-level patterns.
 
+Yakuman are the highest-value hands in mahjong.
+
 All classes are re-exported here for convenient access via
 ``from mahjong.hand_calculating.yaku_list.yakuman import <ClassName>``.
 """
