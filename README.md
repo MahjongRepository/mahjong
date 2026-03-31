@@ -7,9 +7,9 @@
 [![Linters and tests](https://github.com/MahjongRepository/mahjong/actions/workflows/lint_and_test.yml/badge.svg)](https://github.com/MahjongRepository/mahjong/actions/workflows/lint_and_test.yml)
 [![API Docs](https://img.shields.io/badge/api-master-yellow.svg)](https://mahjongrepository.github.io/mahjong)
 
-This library can calculate hand cost (han, fu with details, yaku, and scores) for riichi mahjong (Japanese version).
+Japanese riichi mahjong hand calculator library.
 
-Also calculating of shanten is supported.
+Compute hand cost (han, fu, yaku, and scores), validate winning hands, and calculate shanten (minimum tiles to tenpai).
 
 The code was validated on tenhou.net phoenix replays in total on **26,148,038 hands**.
 
