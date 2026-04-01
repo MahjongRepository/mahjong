@@ -259,6 +259,7 @@ The following methods are now available as static methods:
 * docs: Clarify shanten calculation details and target hand structure in docstring by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/263
 * docs: add missed doc strings by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/264
 * docs: Improve README by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/265
+* fix: Ignore chiitoitsu and kokushi when melds exist in shanten calculation by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/268
 
 **Full Changelog**: https://github.com/MahjongRepository/mahjong/compare/v1.4.0...v2.0.0
 
