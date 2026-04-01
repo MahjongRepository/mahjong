@@ -1,7 +1,7 @@
 Releases History
 ================
 
-2.0.0 (TBD)
+2.0.0
 -------------------
 
 ## New features
@@ -119,7 +119,149 @@ The following methods are now available as static methods:
 - Hands without yaku no longer count dora. `HandResponse` now returns only `error` with all other fields as `None`, instead of returning `han`, `fu`, and dora yaku alongside the error.
 
 ## What's Changed
-- Placeholder. It would be filled on release automatically
+* refactor: Simplify to_136_array implementation by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/93
+* feat: Change instance methods to static methods by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/92
+* feat: Rewrite `HandDivider.divide_hand()` with a backtracking-based algorithm and caching improvements by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/94
+* feat: Remove deprecated `Meld.CHANKAN` property by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/95
+* feat: Remove deprecated `Yaku.english` and `Yaku.japanese` properties by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/96
+* refactor: Eliminate an unnecessary generator expression by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/97
+* refactor: Use list comprehension in `_decompose_chiitoitsu` by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/98
+* fix: Fix type hint for `fu_details` parameter of `HandResponse.__init__()` by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/100
+* feat: Migrate class variables to type annotations by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/99
+* refactor: Simplify `TilesConverter.to_one_line_string()` implementation by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/101
+* fix: Fix type hint for `valued_tiles` parameter of `FuCalculator.calculate_fu()` by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/102
+* refactor: Simplify `is_dora_indicator_for_terminal()` implementation by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/106
+* refactor: Simplify `simplify()` implementation by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/107
+* test: Split agari multi‑assert tests into parameterized tests by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/123
+* test: Split shanten multi‑assert tests into parameterized tests by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/124
+* test: Split utils multi‑assert tests into parameterized tests by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/126
+* feat: Add `Shanten.TENPAI_STATE` by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/127
+* refactor!: Improve performance across the project by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/128
+* refactor!: drop support for Python 3.9 by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/131
+* chore: Update Ruff Configuration to `select = ["ALL"]` by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/132
+* refactor: Fix lint print-empty-string (FURB105) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/133
+* docs: Update CHANGELOG.md by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/130
+* chore: improve tests coverage by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/134
+* fix: Check that no melds are present when decomposing chiitoitsu by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/135
+* refactor: Use match statement in _decompose_honors_hand() by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/136
+* refactor: Streamline the determination of ChuurenPoutou by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/138
+* feat: Add DRAGONS by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/139
+* refactor: Fix lint yoda-conditions (SIM300) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/143
+* refactor! redo yaku_id system by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/137
+* refactor! refactor yaku class further by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/144
+* refactor: Fix lint implicit-return-value (RET502) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/145
+* refactor: Fix lint utf8-encoding-declaration (UP009) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/146
+* refactor: Fix lint repeated-equality-comparison (PLR1714) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/148
+* feat: add ura dora yaku by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/147
+* refactor: Fix lint reimplemented-builtin (SIM110) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/149
+* refactor: Fix lint len-test (PLC1802) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/150
+* refactor: Fix lint unnecessary-range-start (PIE808) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/151
+* refactor: Fix lint parenthesize-chained-operators (RUF021) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/153
+* feat: improve yakuhai yaku by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/152
+* refactor: Fix lint collection-literal-concatenation (RUF005) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/155
+* chore: Update actions/checkout by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/156
+* refactor!: improve performance of fu calculations by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/157
+* chore: Add maintainers by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/154
+* chore: Install only the packages required by CI by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/158
+* refactor: Fix lint invalid-assert-message-literal-argument (RUF040) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/159
+* refactor: Fix lint unnecessary-iterable-allocation-for-first-element (RUF015) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/160
+* refactor: Fix lint unnecessary-assign (RET504) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/161
+* refactor: Fix lint superfluous-else-return (RET505) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/162
+* fix: Fix reutrn value of KokushiMusou.is_condition_met() by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/163
+* refactor: Fix lint implicit-return (RET503) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/164
+* refactor: Fix lint unused-unpacked-variable (RUF059) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/165
+* refactor: Fix lint manual-list-comprehension (PERF401) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/166
+* refactor: Fix lint if-stmt-min-max (PLR1730) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/167
+* refactor: Fix lint f-string (UP032) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/168
+* refactor: improve dora calculations performance by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/169
+* refactor: improve Agari.is_agari performace by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/170
+* refactor: Fix lint collapsible-else-if (PLR5501) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/172
+* refactor: Fix lint collapsible-if (SIM102) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/173
+* chore: publish wiki from source code by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/174
+* refactor: Fix lint if-else-block-instead-of-if-exp (SIM108) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/175
+* refactor: Fix lint eq-without-hash (PLW1641) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/176
+* refactor: Fix lint blanket-type-ignore (PGH003) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/177
+* refactor: Fix lint unused-static-method-argument (ARG004) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/178
+* chore: Ignore lint unused-method-argument (ARG002) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/180
+* refactor: Fix lint redefined-loop-name (PLW2901) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/181
+* chore: Update Ruff by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/182
+* style: Fix lint missing-trailing-comma (COM812) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/183
+* feat!: Replace assert with `ValueError` for tile count validation in `Shanten.calculate_shanten_for_regular_hand()` by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/184
+* chore: add wiki v2 pages by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/179
+* refactor: Simplify `TilesConverter.string_to_136_array()` implementation by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/186
+* refactor: improve hand divider performance a bit by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/185
+* docs: Add Japanese wiki by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/188
+* refactor: optimize performance for hand calculations by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/189
+* chore: Add wiki URL to `[project.urls]` by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/191
+* fix: Add validation for hand decomposition by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/190
+* chore: Ignore lint missing-trailing-comma (COM812) by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/194
+* refactor: improve performance for hand calculations further by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/192
+* docs: Add trailing commas to code examples on the wiki by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/196
+* docs: Split the examples into separate files by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/197
+* test: add parametrize for some pytest tests by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/193
+* refactor: rename aka doras const by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/201
+* refactor: change meld tiles from list to tuple by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/200
+* fix: Fix type error of Meld.tiles by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/202
+* refactor: replace dict responses with typed dicts by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/203
+* fix: Allow round and seat wind parameters to be optional in condition checks by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/204
+* bug: hands without yaku but with dora should be rejected by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/206
+* docs: Fix description for kazoe_limit parameter in Wiki by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/208
+* chore: Add ty to dev dependencies by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/209
+* chore: Limit the type checking to only the library by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/211
+* docs: Align the explanation of daichisei in the Chinese version of the Wiki with the English and Japanese versions by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/212
+* chore: Add type checking to make commands and CI by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/213
+* chore: Add format check to lint command by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/214
+* docs: Translate `Output` in Japanese Wiki by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/215
+* docs: add v2 version link for v1 pages by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/216
+* docs: fix license copyright by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/218
+* chore: add codeowners file by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/217
+* chore: Add ruff settings for docstring by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/220
+* chore: Update MANIFEST.in by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/221
+* docs: add agari section to wiki, extend shanten section by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/219
+* docs: Update examples by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/222
+* docs: add validation results by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/223
+* docs: add doc for agari class by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/224
+* docs: add shanten doc by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/225
+* docs: Introduce Sphinx by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/226
+* feat: Add each yaku to `__all__` in `__init__.py` by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/227
+* docs: Add API documentation by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/228
+* docs: add meld doc by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/229
+* docs: Add the description for tile representations to the pacakege docstring by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/230
+* chore: Improve sphinx options by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/231
+* docs: Fix the package docstring by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/232
+* docs: add doc for constants by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/233
+* docs: Update documentation links in README by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/234
+* docs: add tiles documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/235
+* docs: Add a license section to README by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/237
+* docs: add utils documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/236
+* docs: Unify tile representation by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/238
+* docs: Match the nuances of the Chinese and Japanese wikis to the English version by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/240
+* docs: add fu doc by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/239
+* bug: stabilize shanten input validation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/242
+* docs: add hand divider documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/243
+* refactor: Avoid creating instances of `Yaku` for `yaku_id` references by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/247
+* docs: add hand config documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/244
+* docs: add hand response documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/248
+* docs: add scores documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/250
+* docs: add hand documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/249
+* chore: Tweak pyproject.toml settings by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/251
+* docs: add init modules documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/254
+* docs: add yaku config documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/252
+* docs: add yaku abstract class documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/253
+* chore: Update actions/deploy-pages by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/255
+* chore: Specify ruff ignore for each individual yaku by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/256
+* docs: Add the hand_calculating module docstring by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/257
+* docs: Simplify docstring by inlining mpsz-notation example by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/258
+* docs: add yaku and yakuman documentation by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/259
+* docs: Normalize terminology in Japanese wiki by replacing "断幺九" with the standard mahjong notation "断么九" by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/260
+* docs: Correct "pon/kan" to "pon or kan" by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/261
+* docs: add missed doc strings by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/262
+* docs: Clarify shanten calculation details and target hand structure in docstring by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/263
+* docs: add missed doc strings by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/264
+* docs: Improve README by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/265
+* fix: Ignore chiitoitsu and kokushi when melds exist in shanten calculation by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/268
+
+**Full Changelog**: https://github.com/MahjongRepository/mahjong/compare/v1.4.0...v2.0.0
 
 1.4.0 (Oct 20, 2025)
 -------------------
