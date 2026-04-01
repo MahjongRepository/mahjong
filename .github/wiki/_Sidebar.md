@@ -1,6 +1,6 @@
 # Documentation
 
-**v2** (in development)
+**v2**
 - [[v2-English]]
 - [[v2-Chinese]]
 - [[v2-Japanese]]
