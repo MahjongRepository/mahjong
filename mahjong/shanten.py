@@ -51,11 +51,14 @@ class Shanten:
         :return: minimum shanten number (-1 for agari, 0 for tenpai, positive for tiles needed)
         :raises ValueError: if tile count exceeds 14 or is divisible by 3
         """
-        shanten_results = [Shanten.calculate_shanten_for_regular_hand(tiles_34)]
-        if use_chiitoitsu:
-            shanten_results.append(Shanten.calculate_shanten_for_chiitoitsu_hand(tiles_34))
-        if use_kokushi:
-            shanten_results.append(Shanten.calculate_shanten_for_kokushi_hand(tiles_34))
+        count_of_tiles = sum(tiles_34)
+        shanten_results = [_RegularShanten(tiles_34).calculate(count_of_tiles)]
+
+        if count_of_tiles >= 13:
+            if use_chiitoitsu:
+                shanten_results.append(Shanten.calculate_shanten_for_chiitoitsu_hand(tiles_34))
+            if use_kokushi:
+                shanten_results.append(Shanten.calculate_shanten_for_kokushi_hand(tiles_34))
 
         return min(shanten_results)
 
@@ -150,7 +153,8 @@ class Shanten:
         :return: shanten number for regular hand (-1 for complete, 0+ otherwise)
         :raises ValueError: if tile count exceeds 14 or is divisible by 3
         """
-        return _RegularShanten(tiles_34).calculate()
+        count_of_tiles = sum(tiles_34)
+        return _RegularShanten(tiles_34).calculate(count_of_tiles)
 
 
 class _RegularShanten:
@@ -165,8 +169,7 @@ class _RegularShanten:
         self._flag_isolated_tiles = 0
         self._min_shanten = 8
 
-    def calculate(self) -> int:
-        count_of_tiles = sum(self._tiles)
+    def calculate(self, count_of_tiles: int) -> int:
         if count_of_tiles > 14:
             msg = f"Too many tiles = {count_of_tiles}"
             raise ValueError(msg)
