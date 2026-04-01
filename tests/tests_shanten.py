@@ -187,3 +187,12 @@ def test_calculate_shanten_raises_error_for_3n_tile_count() -> None:
     tiles = TilesConverter.string_to_34_array(man="123")
     with pytest.raises(ValueError, match="Invalid tile count"):
         Shanten.calculate_shanten(tiles)
+
+
+def test_calculate_shanten_kokushi_should_be_ignored_when_melds_exist() -> None:
+    tiles = TilesConverter.string_to_34_array(sou="19", pin="19", man="19", honors="12345")
+    shanten_with_kokushi = Shanten.calculate_shanten(tiles, use_kokushi=True)
+    shanten_without_kokushi = Shanten.calculate_shanten(tiles, use_kokushi=False)
+
+    # Expected: kokushi path must be ignored, so results should match
+    assert shanten_with_kokushi == shanten_without_kokushi
