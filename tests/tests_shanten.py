@@ -196,3 +196,37 @@ def test_calculate_shanten_kokushi_should_be_ignored_when_melds_exist() -> None:
 
     # Expected: kokushi path must be ignored, so results should match
     assert shanten_with_kokushi == shanten_without_kokushi
+
+
+@pytest.mark.parametrize(
+    ("sou", "pin", "man", "honors", "shanten_number"),
+    [
+        ("111345677", "567", "1", "", 1),
+        ("111345677", "56", "", "", 0),
+        ("", "123456789", "", "1111", 1),
+        ("112233", "1111", "123", "", 1),
+        ("", "", "", "1111222333444", 1),
+        ("", "", "9999", "222333444", 1),
+        ("", "11", "", "11112222333", 2),
+        ("", "11", "11119999", "111", 2),
+        ("", "23", "", "11112222333", 2),
+        ("", "", "", "1111222233334", 3),
+        ("", "", "11119", "22223333", 3),
+    ],
+)
+def test_calculate_shanten_for_regular_hand_3p_for_not_completed_hand(
+    sou: str,
+    pin: str,
+    man: str,
+    honors: str,
+    shanten_number: int,
+) -> None:
+    tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
+    assert Shanten.calculate_shanten_for_regular_hand_3p(tiles) == shanten_number
+
+
+@pytest.mark.parametrize("man", ["2", "3", "4", "5", "6", "7", "8"])
+def test_calculate_shanten_raises_error_for_manzu(man: str) -> None:
+    tiles = TilesConverter.string_to_34_array(man=man)
+    with pytest.raises(ValueError, match="Invalid tile for three player"):
+        Shanten.calculate_shanten_for_regular_hand_3p(tiles)
