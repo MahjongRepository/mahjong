@@ -452,12 +452,12 @@ class _RegularShanten:
         four_copies = 0
         isolated = 0
 
-        for i in range(27, 34):
+        for flag_pos, i in enumerate([*range(27, 34), 0, 8]):
             if self._tiles[i] == 4:
                 self._number_melds += 1
                 self._number_jidahai += 1
-                four_copies |= 1 << (i - 27)
-                isolated |= 1 << (i - 27)
+                four_copies |= 1 << flag_pos
+                isolated |= 1 << flag_pos
 
             if self._tiles[i] == 3:
                 self._number_melds += 1
@@ -466,23 +466,7 @@ class _RegularShanten:
                 self._number_pairs += 1
 
             if self._tiles[i] == 1:
-                isolated |= 1 << (i - 27)
-
-        for index, i in enumerate([0, 8]):
-            if self._tiles[i] == 4:
-                self._number_melds += 1
-                self._number_jidahai += 1
-                four_copies |= 1 << (index + 7)
-                isolated |= 1 << (index + 7)
-
-            if self._tiles[i] == 3:
-                self._number_melds += 1
-
-            if self._tiles[i] == 2:
-                self._number_pairs += 1
-
-            if self._tiles[i] == 1:
-                isolated |= 1 << (index + 7)
+                isolated |= 1 << flag_pos
 
         if self._number_jidahai and (nc % 3) == 2:
             self._number_jidahai -= 1
