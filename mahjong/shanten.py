@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from itertools import chain
 
 from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 
@@ -452,7 +453,7 @@ class _RegularShanten:
         four_copies = 0
         isolated = 0
 
-        for flag_pos, i in enumerate([*range(27, 34), 0, 8]):
+        for flag_pos, i in enumerate(chain(range(27, 34), [0, 8])):
             if self._tiles[i] == 4:
                 self._number_melds += 1
                 self._number_jidahai += 1
