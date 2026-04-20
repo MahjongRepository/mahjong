@@ -188,7 +188,7 @@ class _RegularShanten:
             msg = f"Invalid tile count = {count_of_tiles}. Valid counts: 1, 2, 4, 5, 7, 8, 10, 11, 13, 14."
             raise ValueError(msg)
 
-        self._remove_character_tiles(count_of_tiles, is_three_player)
+        self._remove_honor_tiles(count_of_tiles, is_three_player)
 
         init_mentsu = (14 - count_of_tiles) // 3
         self._scan(init_mentsu, is_three_player)
@@ -399,7 +399,7 @@ class _RegularShanten:
         self._tiles[k] += 1
         self._flag_isolated_tiles &= ~(1 << k)
 
-    def _remove_character_tiles(self, nc: int, is_three_player: bool) -> None:
+    def _remove_honor_tiles(self, nc: int, is_three_player: bool) -> None:
         four_copies = 0
         isolated = 0
 
