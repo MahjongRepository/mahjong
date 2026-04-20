@@ -27,7 +27,12 @@ class Shanten:
     """Hand is complete (agari)."""
 
     @staticmethod
-    def calculate_shanten(tiles_34: Sequence[int], use_chiitoitsu: bool = True, use_kokushi: bool = True) -> int:
+    def calculate_shanten(
+        tiles_34: Sequence[int],
+        use_chiitoitsu: bool = True,
+        use_kokushi: bool = True,
+        is_three_player: bool = False,
+    ) -> int:
         """
         Return the minimum shanten number across regular, chiitoitsu, and kokushi hand types.
 
@@ -53,7 +58,7 @@ class Shanten:
         :raises ValueError: if tile count exceeds 14 or is divisible by 3
         """
         count_of_tiles = sum(tiles_34)
-        shanten_results = [_RegularShanten(tiles_34).calculate(count_of_tiles)]
+        shanten_results = [_RegularShanten(tiles_34).calculate(count_of_tiles, is_three_player)]
 
         if count_of_tiles >= 13:
             if use_chiitoitsu:
@@ -123,7 +128,7 @@ class Shanten:
         return 13 - terminals - (1 if completed_terminals else 0)
 
     @staticmethod
-    def calculate_shanten_for_regular_hand(tiles_34: Sequence[int]) -> int:
+    def calculate_shanten_for_regular_hand(tiles_34: Sequence[int], is_three_player: bool = False) -> int:
         """
         Calculate the shanten number for a regular hand (4 melds + 1 pair).
 
@@ -155,12 +160,7 @@ class Shanten:
         :raises ValueError: if tile count exceeds 14 or is divisible by 3
         """
         count_of_tiles = sum(tiles_34)
-        return _RegularShanten(tiles_34).calculate(count_of_tiles)
-
-    @staticmethod
-    def calculate_shanten_for_regular_hand_3p(tiles_34: Sequence[int]) -> int:
-        count_of_tiles = sum(tiles_34)
-        return _RegularShanten(tiles_34).calculate_3p(count_of_tiles)
+        return _RegularShanten(tiles_34).calculate(count_of_tiles, is_three_player)
 
 
 class _RegularShanten:
@@ -175,24 +175,8 @@ class _RegularShanten:
         self._flag_isolated_tiles = 0
         self._min_shanten = 8
 
-    def calculate(self, count_of_tiles: int) -> int:
-        if count_of_tiles > 14:
-            msg = f"Too many tiles = {count_of_tiles}"
-            raise ValueError(msg)
-
-        if count_of_tiles % 3 == 0:
-            msg = f"Invalid tile count = {count_of_tiles}. Valid counts: 1, 2, 4, 5, 7, 8, 10, 11, 13, 14."
-            raise ValueError(msg)
-
-        self._remove_character_tiles(count_of_tiles)
-
-        init_mentsu = (14 - count_of_tiles) // 3
-        self._scan(init_mentsu)
-
-        return self._min_shanten
-
-    def calculate_3p(self, count_of_tiles: int) -> int:
-        if any(self._tiles[1:8]):
+    def calculate(self, count_of_tiles: int, is_three_player: bool) -> int:
+        if is_three_player and any(self._tiles[1:8]):
             msg = "Invalid tile for three player"
             raise ValueError(msg)
 
@@ -204,24 +188,18 @@ class _RegularShanten:
             msg = f"Invalid tile count = {count_of_tiles}. Valid counts: 1, 2, 4, 5, 7, 8, 10, 11, 13, 14."
             raise ValueError(msg)
 
-        self._remove_character_tiles_3p(count_of_tiles)
+        self._remove_character_tiles(count_of_tiles, is_three_player)
 
         init_mentsu = (14 - count_of_tiles) // 3
-        self._scan_3p(init_mentsu)
+        self._scan(init_mentsu, is_three_player)
 
         return self._min_shanten
 
-    def _scan(self, init_mentsu: int) -> None:
+    def _scan(self, init_mentsu: int, is_three_player: bool) -> None:
         for i in range(27):
             self._flag_four_copies |= (self._tiles[i] == 4) << i
         self._number_melds += init_mentsu
-        self._run(0)
-
-    def _scan_3p(self, init_mentsu: int) -> None:
-        for i in range(27):
-            self._flag_four_copies |= (self._tiles[i] == 4) << i
-        self._number_melds += init_mentsu
-        self._run(9)
+        self._run(9 if is_three_player else 0)
 
     def _run(self, depth: int) -> None:
         if self._min_shanten == Shanten.AGARI_STATE:
@@ -421,39 +399,11 @@ class _RegularShanten:
         self._tiles[k] += 1
         self._flag_isolated_tiles &= ~(1 << k)
 
-    def _remove_character_tiles(self, nc: int) -> None:
+    def _remove_character_tiles(self, nc: int, is_three_player: bool) -> None:
         four_copies = 0
         isolated = 0
 
-        for i in range(27, 34):
-            if self._tiles[i] == 4:
-                self._number_melds += 1
-                self._number_jidahai += 1
-                four_copies |= 1 << (i - 27)
-                isolated |= 1 << (i - 27)
-
-            if self._tiles[i] == 3:
-                self._number_melds += 1
-
-            if self._tiles[i] == 2:
-                self._number_pairs += 1
-
-            if self._tiles[i] == 1:
-                isolated |= 1 << (i - 27)
-
-        if self._number_jidahai and (nc % 3) == 2:
-            self._number_jidahai -= 1
-
-        if isolated:
-            self._flag_isolated_tiles |= 1 << 27
-            if (four_copies | isolated) == four_copies:
-                self._flag_four_copies |= 1 << 27
-
-    def _remove_character_tiles_3p(self, nc: int) -> None:
-        four_copies = 0
-        isolated = 0
-
-        for flag_pos, i in enumerate(chain(range(27, 34), [0, 8])):
+        for flag_pos, i in enumerate(chain(range(27, 34), [0, 8] if is_three_player else [])):
             if self._tiles[i] == 4:
                 self._number_melds += 1
                 self._number_jidahai += 1
