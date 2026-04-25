@@ -54,8 +54,10 @@ class Shanten:
         :param tiles_34: hand in 34-format count array (length 34)
         :param use_chiitoitsu: include seven pairs pattern in calculation
         :param use_kokushi: include thirteen orphans pattern in calculation
+        :param is_three_player: if True, calculate using three-player rules where 2m-8m are unavailable
         :return: minimum shanten number (-1 for agari, 0 for tenpai, positive for tiles needed)
-        :raises ValueError: if tile count exceeds 14 or is divisible by 3
+        :raises ValueError: if tile count exceeds 14, is divisible by 3, or contains 2m-8m
+            when ``is_three_player`` is True
         """
         count_of_tiles = sum(tiles_34)
         shanten_results = [_RegularShanten(tiles_34).calculate(count_of_tiles, is_three_player)]
@@ -155,9 +157,20 @@ class Shanten:
         >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
         0
 
+        Three-player shanten can differ from four-player shanten:
+
+        >>> from mahjong.tile import TilesConverter
+        >>> tiles_34 = TilesConverter.one_line_string_to_34_array("1111m111122233z")
+        >>> Shanten.calculate_shanten_for_regular_hand(tiles_34)
+        1
+        >>> Shanten.calculate_shanten_for_regular_hand(tiles_34, is_three_player=True)
+        2
+
         :param tiles_34: hand in 34-format count array (length 34)
+        :param is_three_player: if True, calculate using three-player rules where 2m-8m are unavailable
         :return: shanten number for regular hand (-1 for complete, 0+ otherwise)
-        :raises ValueError: if tile count exceeds 14 or is divisible by 3
+        :raises ValueError: if tile count exceeds 14, is divisible by 3, or contains 2m-8m
+            when ``is_three_player`` is True
         """
         count_of_tiles = sum(tiles_34)
         return _RegularShanten(tiles_34).calculate(count_of_tiles, is_three_player)
