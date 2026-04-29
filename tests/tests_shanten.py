@@ -45,7 +45,7 @@ def test_calculate_shanten_raises_error_too_many_tiles() -> None:
         # hand where three consecutive tiles each have 3 copies with neighbors >= 2,
         # triggering double syuntsu extraction in _run
         ("1111", "", "333444555", "", 1),
-        # hand with an honor pair, triggering pair counting in _remove_character_tiles
+        # hand with an honor pair, triggering pair counting in honor tile pre-processing
         ("111234567", "11", "", "77", 0),
     ],
 )
@@ -216,7 +216,7 @@ def test_calculate_shanten_for_regular_hand_three_player(
     shanten_number: int,
 ) -> None:
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
-    assert Shanten.calculate_shanten_for_regular_hand(tiles, True) == shanten_number
+    assert Shanten.calculate_shanten_for_regular_hand(tiles, is_three_player=True) == shanten_number
 
 
 @pytest.mark.parametrize(
@@ -243,7 +243,7 @@ def test_calculate_shanten_for_regular_hand_three_player_for_not_completed_hand(
     shanten_number: int,
 ) -> None:
     tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
-    assert Shanten.calculate_shanten_for_regular_hand(tiles, True) == shanten_number
+    assert Shanten.calculate_shanten_for_regular_hand(tiles, is_three_player=True) == shanten_number
 
 
 @pytest.mark.parametrize("man", ["2", "3", "4", "5", "6", "7", "8"])
