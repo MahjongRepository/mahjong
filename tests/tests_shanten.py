@@ -45,7 +45,7 @@ def test_calculate_shanten_raises_error_too_many_tiles() -> None:
         # hand where three consecutive tiles each have 3 copies with neighbors >= 2,
         # triggering double syuntsu extraction in _run
         ("1111", "", "333444555", "", 1),
-        # hand with an honor pair, triggering pair counting in _remove_character_tiles
+        # hand with an honor pair, triggering pair counting in honor tile pre-processing
         ("111234567", "11", "", "77", 0),
     ],
 )
@@ -196,3 +196,58 @@ def test_calculate_shanten_kokushi_should_be_ignored_when_melds_exist() -> None:
 
     # Expected: kokushi path must be ignored, so results should match
     assert shanten_with_kokushi == shanten_without_kokushi
+
+
+@pytest.mark.parametrize(
+    ("sou", "pin", "man", "honors", "shanten_number"),
+    [
+        ("11123456788999", "", "", "", -1),
+        ("11122245679999", "", "", "", 0),
+        ("", "", "", "11112222333444", 1),
+        ("", "", "1111", "2222333444", 1),
+        ("", "11", "9999", "22223333", 2),
+    ],
+)
+def test_calculate_shanten_for_regular_hand_three_player(
+    sou: str,
+    pin: str,
+    man: str,
+    honors: str,
+    shanten_number: int,
+) -> None:
+    tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
+    assert Shanten.calculate_shanten_for_regular_hand(tiles, is_three_player=True) == shanten_number
+
+
+@pytest.mark.parametrize(
+    ("sou", "pin", "man", "honors", "shanten_number"),
+    [
+        ("111345677", "567", "1", "", 1),
+        ("111345677", "56", "", "", 0),
+        ("", "123456789", "", "1111", 1),
+        ("112233", "1111", "", "111", 1),
+        ("", "", "", "1111222333444", 1),
+        ("", "", "9999", "222333444", 1),
+        ("", "11", "", "11112222333", 2),
+        ("", "11", "11119999", "111", 2),
+        ("", "23", "", "11112222333", 2),
+        ("", "", "", "1111222233334", 3),
+        ("", "", "11119", "22223333", 3),
+    ],
+)
+def test_calculate_shanten_for_regular_hand_three_player_for_not_completed_hand(
+    sou: str,
+    pin: str,
+    man: str,
+    honors: str,
+    shanten_number: int,
+) -> None:
+    tiles = TilesConverter.string_to_34_array(sou=sou, pin=pin, man=man, honors=honors)
+    assert Shanten.calculate_shanten_for_regular_hand(tiles, is_three_player=True) == shanten_number
+
+
+@pytest.mark.parametrize("man", ["2", "3", "4", "5", "6", "7", "8"])
+def test_calculate_shanten_raises_error_for_manzu_in_three_player(man: str) -> None:
+    tiles = TilesConverter.string_to_34_array(man=man)
+    with pytest.raises(ValueError, match="Invalid tile for three player"):
+        Shanten.calculate_shanten(tiles, is_three_player=True)
