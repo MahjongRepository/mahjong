@@ -1,5 +1,4 @@
 from collections.abc import Sequence
-from itertools import chain
 
 from mahjong.constants import TERMINAL_AND_HONOR_INDICES
 
@@ -201,7 +200,7 @@ class _RegularShanten:
             msg = f"Invalid tile count = {count_of_tiles}. Valid counts: 1, 2, 4, 5, 7, 8, 10, 11, 13, 14."
             raise ValueError(msg)
 
-        self._remove_honor_tiles(count_of_tiles, is_three_player)
+        self._remove_honor_and_terminal_man_tiles(count_of_tiles, is_three_player)
 
         init_mentsu = (14 - count_of_tiles) // 3
         self._scan(init_mentsu, is_three_player)
@@ -212,6 +211,9 @@ class _RegularShanten:
         for i in range(27):
             self._flag_four_copies |= (self._tiles[i] == 4) << i
         self._number_melds += init_mentsu
+        # Four-player hands scan from 1m. Three-player hands skip the manzu suit,
+        # and start from 1p. The 1m and 9m are pre-processed with honors,
+        # and 2m-8m are unavailable.
         self._run(9 if is_three_player else 0)
 
     def _run(self, depth: int) -> None:
@@ -412,11 +414,14 @@ class _RegularShanten:
         self._tiles[k] += 1
         self._flag_isolated_tiles &= ~(1 << k)
 
-    def _remove_honor_tiles(self, nc: int, is_three_player: bool) -> None:
+    def _remove_honor_and_terminal_man_tiles(self, nc: int, is_three_player: bool) -> None:
         four_copies = 0
         isolated = 0
+        indices = list(range(27, 34))
+        if is_three_player:
+            indices.extend([0, 8])
 
-        for flag_pos, i in enumerate(chain(range(27, 34), [0, 8] if is_three_player else [])):
+        for flag_pos, i in enumerate(indices):
             if self._tiles[i] == 4:
                 self._number_melds += 1
                 self._number_jidahai += 1
