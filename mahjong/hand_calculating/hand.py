@@ -178,6 +178,7 @@ class HandCalculator:
             :class:`~mahjong.hand_calculating.scores.Aotenjou` for aotenjou (limitless) scoring
         :param ura_dora_indicators: ura dora indicator tile indices in 136-format
             (counted only when riichi or double riichi is declared)
+        :param num_nuki_dora: the number of nuki dora (north wind extraction)
         :return: :class:`~mahjong.hand_calculating.hand_response.HandResponse` with scoring
             details on success, or with :attr:`~mahjong.hand_calculating.hand_response.HandResponse.error`
             set on failure
