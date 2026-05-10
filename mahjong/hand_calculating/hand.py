@@ -25,8 +25,6 @@ class _CalculatedHand(TypedDict):
 # suit bitmask: sou=1, pin=2, man=4
 _ALL_SUITS_MASK = 7
 
-_DEFAULT_CONFIG = HandConfig()
-
 
 class HandCalculator:
     """
@@ -190,7 +188,7 @@ class HandCalculator:
         if not ura_dora_indicators:
             ura_dora_indicators = []
 
-        config = config or _DEFAULT_CONFIG
+        config = config or HandConfig()
 
         hand_yaku = []
         scores_calculator = scores_calculator_factory()
