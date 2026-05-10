@@ -101,6 +101,7 @@ class HandCalculator:
         config: HandConfig | None = None,
         scores_calculator_factory: type[ScoresCalculator] = ScoresCalculator,
         ura_dora_indicators: Collection[int] | None = None,
+        num_nuki_dora: int = 0,
     ) -> HandResponse:
         """
         Estimate the point value of a winning hand.
@@ -280,7 +281,7 @@ class HandCalculator:
 
         # precompute dora counts, invariant across all hand decompositions
         dora_count_map = build_dora_count_map(dora_indicators)
-        precomputed_dora = count_dora_for_hand(tiles_34, dora_count_map)
+        precomputed_dora = count_dora_for_hand(tiles_34, dora_count_map) + max(num_nuki_dora, 0)
 
         precomputed_aka_dora = 0
         if config.options.has_aka_dora:

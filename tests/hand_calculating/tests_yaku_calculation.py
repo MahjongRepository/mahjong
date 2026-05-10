@@ -1375,6 +1375,18 @@ def test_aka_dora() -> None:
     assert hand_calculation.han == 6
 
 
+@pytest.mark.parametrize(("num_nuki_dora", "han"), [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (-1, 1)])
+def test_nuki_dora(num_nuki_dora: int, han: int) -> None:
+    tiles = TilesConverter.string_to_136_array(sou="345", pin="456", man="12355599", has_aka_dora=True)
+    win_tile = _string_to_136_tile(man="9")
+
+    hand_config = HandConfig(is_tsumo=True, options=OptionalRules(has_aka_dora=True))
+
+    result = HandCalculator.estimate_hand_value(tiles, win_tile, config=hand_config, num_nuki_dora=num_nuki_dora)
+    assert result.error is None
+    assert result.han == han
+
+
 class TestYakuBaseClass:
     """
     Test the abstract Yaku base class methods
