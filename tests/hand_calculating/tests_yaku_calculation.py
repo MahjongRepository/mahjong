@@ -1326,9 +1326,9 @@ def test_aka_dora() -> None:
 
     # three red old style, but not that useful
     tiles = TilesConverter.string_to_136_array(sou="345", pin="456", man="12355599", has_aka_dora=False)
-    hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-    assert hand_calculation.error is None
-    assert hand_calculation.han == 4
+    result = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+    assert result.error is None
+    assert result.han == 4
 
     # zero red
     tiles = TilesConverter.string_to_136_array(sou="345", pin="456", man="12355599", has_aka_dora=True)
@@ -1336,43 +1336,43 @@ def test_aka_dora() -> None:
 
     hand_config = HandConfig(is_tsumo=True, options=OptionalRules(has_aka_dora=True))
 
-    hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-    assert hand_calculation.error is None
-    assert hand_calculation.han == 1
+    result = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+    assert result.error is None
+    assert result.han == 1
 
     # one red
     tiles = TilesConverter.string_to_136_array(sou="34r", pin="456", man="12355599", has_aka_dora=True)
 
-    hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-    assert hand_calculation.error is None
-    assert hand_calculation.han == 2
+    result = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+    assert result.error is None
+    assert result.han == 2
 
     # two red
     tiles = TilesConverter.string_to_136_array(sou="34r", pin="4r6", man="12355599", has_aka_dora=True)
 
-    hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-    assert hand_calculation.error is None
-    assert hand_calculation.han == 3
+    result = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+    assert result.error is None
+    assert result.han == 3
 
     # three red
     tiles = TilesConverter.string_to_136_array(sou="34r", pin="4r6", man="123r5599", has_aka_dora=True)
 
-    hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-    assert hand_calculation.error is None
-    assert hand_calculation.han == 4
+    result = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+    assert result.error is None
+    assert result.han == 4
 
     # four red
     tiles = TilesConverter.string_to_136_array(sou="34r", pin="4r6", man="123rr599", has_aka_dora=True)
-    hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-    assert hand_calculation.error is None
-    assert hand_calculation.han == 5
+    result = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+    assert result.error is None
+    assert result.han == 5
 
     # five+ red (technically not legal in mahjong but not the fault of evaluator, really)
     tiles = TilesConverter.string_to_136_array(sou="34r", pin="4r6", man="123rrr99", has_aka_dora=True)
 
-    hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
-    assert hand_calculation.error is None
-    assert hand_calculation.han == 6
+    result = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
+    assert result.error is None
+    assert result.han == 6
 
 
 class TestYakuBaseClass:
