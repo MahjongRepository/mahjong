@@ -1,7 +1,7 @@
 from collections.abc import Collection
 from typing import TypedDict
 
-from mahjong.constants import AKA_DORAS, CHUN, HAKU, HATSU
+from mahjong.constants import AKA_DORAS, CHUN, HAKU, HATSU, NORTH
 from mahjong.hand_calculating.divider import HandDivider
 from mahjong.hand_calculating.fu import FuCalculator, FuDetail
 from mahjong.hand_calculating.hand_config import HandConfig
@@ -99,6 +99,7 @@ class HandCalculator:
         config: HandConfig | None = None,
         scores_calculator_factory: type[ScoresCalculator] = ScoresCalculator,
         ura_dora_indicators: Collection[int] | None = None,
+        num_nuki_dora: int = 0,
     ) -> HandResponse:
         """
         Estimate the point value of a winning hand.
@@ -175,6 +176,7 @@ class HandCalculator:
             :class:`~mahjong.hand_calculating.scores.Aotenjou` for aotenjou (limitless) scoring
         :param ura_dora_indicators: ura dora indicator tile indices in 136-format
             (counted only when riichi or double riichi is declared)
+        :param num_nuki_dora: the number of nuki dora (north wind extraction)
         :return: :class:`~mahjong.hand_calculating.hand_response.HandResponse` with scoring
             details on success, or with :attr:`~mahjong.hand_calculating.hand_response.HandResponse.error`
             set on failure
@@ -279,6 +281,8 @@ class HandCalculator:
         # precompute dora counts, invariant across all hand decompositions
         dora_count_map = build_dora_count_map(dora_indicators)
         precomputed_dora = count_dora_for_hand(tiles_34, dora_count_map)
+        if num_nuki_dora > 0:
+            precomputed_dora += dora_count_map.get(NORTH, 0) * num_nuki_dora + num_nuki_dora
 
         precomputed_aka_dora = 0
         if config.options.has_aka_dora:
@@ -288,6 +292,8 @@ class HandCalculator:
         if config.is_riichi or config.is_daburu_riichi:
             ura_count_map = build_dora_count_map(ura_dora_indicators)
             precomputed_ura_dora = count_dora_for_hand(tiles_34, ura_count_map)
+            if num_nuki_dora > 0:
+                precomputed_ura_dora += ura_count_map.get(NORTH, 0) * num_nuki_dora
 
         yakuhai_seat_wind_yaku = (
             config.yaku.seat_wind_east,
