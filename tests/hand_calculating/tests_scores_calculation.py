@@ -148,6 +148,46 @@ def test_calculate_scores_with_bonus() -> None:
     assert result["total"] == 13500
 
 
+def test_calculate_scores_with_bonus_three_player() -> None:
+    hand = ScoresCalculator()
+
+    config = HandConfig(player_wind=EAST, is_tsumo=True, tsumi_number=2, kyoutaku_number=3)
+    result = hand.calculate_scores(han=3, fu=30, config=config)
+    assert result["main"] == 2000
+    assert result["additional"] == 2000
+    assert result["main_bonus"] == 200
+    assert result["additional_bonus"] == 200
+    assert result["kyoutaku_bonus"] == 3000
+    assert result["total"] == 7400
+
+    config = HandConfig(player_wind=WEST, is_tsumo=True, tsumi_number=4, kyoutaku_number=1)
+    result = hand.calculate_scores(han=4, fu=30, config=config)
+    assert result["main"] == 3900
+    assert result["additional"] == 2000
+    assert result["main_bonus"] == 400
+    assert result["additional_bonus"] == 400
+    assert result["kyoutaku_bonus"] == 1000
+    assert result["total"] == 7700
+
+    config = HandConfig(player_wind=WEST, tsumi_number=5)
+    result = hand.calculate_scores(han=6, fu=30, config=config)
+    assert result["main"] == 12000
+    assert result["additional"] == 0
+    assert result["main_bonus"] == 1000
+    assert result["additional_bonus"] == 0
+    assert result["kyoutaku_bonus"] == 0
+    assert result["total"] == 13000
+
+    config = HandConfig(player_wind=EAST, tsumi_number=5)
+    result = hand.calculate_scores(han=5, fu=30, config=config)
+    assert result["main"] == 12000
+    assert result["additional"] == 0
+    assert result["main_bonus"] == 1000
+    assert result["additional_bonus"] == 0
+    assert result["kyoutaku_bonus"] == 0
+    assert result["total"] == 13000
+
+
 @pytest.mark.parametrize(
     ("player_wind", "han", "fu", "expected_main"),
     [
