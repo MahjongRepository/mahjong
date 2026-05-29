@@ -161,10 +161,3 @@ def test_kiriage_mangan(player_wind: int | None, han: int, fu: int, expected_mai
     config = HandConfig(player_wind=player_wind, options=OptionalRules(kiriage=True))
     result = ScoresCalculator.calculate_scores(han=han, fu=fu, config=config)
     assert result["main"] == expected_main
-
-
-def test_calculate_scores_can_call_as_static_method() -> None:
-    config = HandConfig(options=OptionalRules(kazoe_limit=HandConfig.KAZOE_NO_LIMIT))
-
-    result = ScoresCalculator.calculate_scores(han=1, fu=30, config=config)
-    assert result["main"] == 1000
