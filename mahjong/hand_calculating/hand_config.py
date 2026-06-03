@@ -83,6 +83,7 @@ class OptionalRules:
     has_sashikomi_yakuman: bool
     limit_to_sextuple_yakuman: bool
     paarenchan_needs_yaku: bool
+    is_three_player: bool
 
     def __init__(
         self,
@@ -100,6 +101,7 @@ class OptionalRules:
         limit_to_sextuple_yakuman: bool = True,
         paarenchan_needs_yaku: bool = True,
         has_daichisei: bool = False,
+        is_three_player: bool = False,
     ) -> None:
         """
         Initialize optional rules.
@@ -140,6 +142,7 @@ class OptionalRules:
         self.limit_to_sextuple_yakuman = limit_to_sextuple_yakuman
         self.has_daichisei = has_daichisei
         self.paarenchan_needs_yaku = paarenchan_needs_yaku
+        self.is_three_player = is_three_player
 
 
 class HandConfig(HandConstants):
