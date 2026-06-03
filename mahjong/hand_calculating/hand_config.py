@@ -67,6 +67,8 @@ class OptionalRules:
     :vartype limit_to_sextuple_yakuman: bool
     :ivar paarenchan_needs_yaku: require at least one yaku for paarenchan to count
     :vartype paarenchan_needs_yaku: bool
+    :ivar is_three_player: enable three-player rules
+    :vartype is_three_player: bool
     """
 
     has_open_tanyao: bool
@@ -127,6 +129,7 @@ class OptionalRules:
         :param limit_to_sextuple_yakuman: cap yakuman multiplier at 6x
         :param paarenchan_needs_yaku: require yaku for paarenchan
         :param has_daichisei: enable daichisei yakuman
+        :param is_three_player: enable three-player rules
         """
         self.has_open_tanyao = has_open_tanyao
         self.has_aka_dora = has_aka_dora
