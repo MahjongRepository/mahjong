@@ -192,7 +192,7 @@ class HandCalculator:
 
         config = config or HandConfig()
 
-        hand_yaku = []
+        hand_yaku: list[Yaku] = []
         scores_calculator = scores_calculator_factory()
         tiles_34 = TilesConverter.to_34_array(tiles)
 
@@ -535,7 +535,7 @@ class HandCalculator:
                     if not is_aotenjou:
                         hand_yaku = yakuman_list
                     else:
-                        scores_calculator.aotenjou_filter_yaku(hand_yaku, config)  # ty: ignore[unresolved-attribute]
+                        scores_calculator.aotenjou_filter_yaku(hand_yaku, config)
                         yakuman_list = []
 
                 # calculate han
