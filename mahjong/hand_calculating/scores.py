@@ -196,11 +196,12 @@ class ScoresCalculator:
         else:  # ron
             additional = 0
             additional_bonus = 0
-            main_bonus = 300 * config.tsumi_number
+            main_bonus = (200 if config.options.is_three_player else 300) * config.tsumi_number
             main = six_rounded if config.is_dealer else four_rounded
 
+        num_additional = 1 if config.options.is_three_player else 2
         kyoutaku_bonus = 1000 * config.kyoutaku_number
-        total = (main + main_bonus) + 2 * (additional + additional_bonus) + kyoutaku_bonus
+        total = (main + main_bonus) + num_additional * (additional + additional_bonus) + kyoutaku_bonus
 
         if config.is_nagashi_mangan:
             yaku_level = "nagashi mangan"
