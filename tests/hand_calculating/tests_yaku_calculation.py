@@ -1398,7 +1398,11 @@ def test_nuki_dora_with_dora_indicators(num_nuki_dora: int, num_dora_indicators:
     tiles = TilesConverter.string_to_136_array(sou="345", pin="456", man="12355599", has_aka_dora=True)
     win_tile = _string_to_136_tile(man="9")
 
-    hand_config = HandConfig(is_tsumo=True, options=OptionalRules(has_aka_dora=True))
+    hand_config = HandConfig(
+        is_tsumo=True,
+        options=OptionalRules(has_aka_dora=True),
+        num_nuki_dora=num_nuki_dora,
+    )
     dora_indicators = TilesConverter.string_to_136_array(honors="3" * num_dora_indicators)
 
     result = HandCalculator.estimate_hand_value(
@@ -1406,7 +1410,6 @@ def test_nuki_dora_with_dora_indicators(num_nuki_dora: int, num_dora_indicators:
         win_tile,
         config=hand_config,
         dora_indicators=dora_indicators,
-        num_nuki_dora=num_nuki_dora,
     )
     assert result.error is None
     assert result.han == han
@@ -1435,7 +1438,11 @@ def test_nuki_dora_with_ura_dora_indicators(num_nuki_dora: int, num_ura_dora_ind
     tiles = TilesConverter.string_to_136_array(sou="345", pin="456", man="12355599", has_aka_dora=True)
     win_tile = _string_to_136_tile(man="9")
 
-    hand_config = HandConfig(is_riichi=True, options=OptionalRules(has_aka_dora=True))
+    hand_config = HandConfig(
+        is_riichi=True,
+        options=OptionalRules(has_aka_dora=True),
+        num_nuki_dora=num_nuki_dora,
+    )
     ura_dora_indicators = TilesConverter.string_to_136_array(honors="3" * num_ura_dora_indicators)
 
     result = HandCalculator.estimate_hand_value(
@@ -1443,7 +1450,6 @@ def test_nuki_dora_with_ura_dora_indicators(num_nuki_dora: int, num_ura_dora_ind
         win_tile,
         config=hand_config,
         ura_dora_indicators=ura_dora_indicators,
-        num_nuki_dora=num_nuki_dora,
     )
     assert result.error is None
     assert result.han == han

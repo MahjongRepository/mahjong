@@ -220,6 +220,8 @@ class HandConfig(HandConstants):
     :vartype kyoutaku_number: int
     :ivar tsumi_number: number of honba counters (100 points each per counter)
     :vartype tsumi_number: int
+    :ivar num_nuki_dora: the number of nuki dora (north wind extraction)
+    :vartype num_nuki_dora: int
     """
 
     yaku: YakuConfig
@@ -246,6 +248,7 @@ class HandConfig(HandConstants):
 
     kyoutaku_number: int
     tsumi_number: int
+    num_nuki_dora: int
 
     def __init__(
         self,
@@ -268,6 +271,7 @@ class HandConfig(HandConstants):
         tsumi_number: int = 0,
         paarenchan: int = 0,
         options: OptionalRules | None = None,
+        num_nuki_dora: int = 0,
     ) -> None:
         """
         Initialize hand configuration.
@@ -306,6 +310,7 @@ class HandConfig(HandConstants):
         :param paarenchan: consecutive dealer wins count for paarenchan check
         :param options: optional rule settings; defaults to :class:`OptionalRules` with
             all defaults when None
+        :param num_nuki_dora: the number of nuki dora (north wind extraction)
         """
         self.yaku = YakuConfig()
         self.options = options or OptionalRules()
@@ -331,3 +336,4 @@ class HandConfig(HandConstants):
 
         self.kyoutaku_number = kyoutaku_number
         self.tsumi_number = tsumi_number
+        self.num_nuki_dora = num_nuki_dora
