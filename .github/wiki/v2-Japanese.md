@@ -24,6 +24,7 @@ Python 3.10以上に対応しています。
 | 役満複合の上限を6にするかどうか（最高 192000 点） | `limit_to_sextuple_yakuman` | `True` |
 | 大七星（字一色七対子）を有効にするかどうか | `has_daichisei` | `False` |
 | 八連荘に役が必要かどうか | `paarenchan_needs_yaku` | `True` |
+| 点数の計算に三人麻雀ルールを使用するかどうか | `is_three_player` | `False` |
 
 コードはtenhou.net（天鳳）鳳凰卓の牌譜**26,148,038局**で検証済みです。
 
