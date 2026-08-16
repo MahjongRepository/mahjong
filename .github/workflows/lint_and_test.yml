@@ -26,7 +26,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install libs
-        run: uv sync --no-default-groups --group lint
+        run: uv sync --no-default-groups --group lint --no-install-project
 
       - name: Lint files
         run: make lint
@@ -45,7 +45,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install libs
-        run: uv sync --no-default-groups --group typing
+        run: uv sync --no-default-groups --group typing --no-install-project
 
       - name: Check files
         run: make type
