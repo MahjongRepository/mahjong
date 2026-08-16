@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: Andrew-Chen-Wang/github-wiki-action@v5
         with:
           path: .github/wiki/
