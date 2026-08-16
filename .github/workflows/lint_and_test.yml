@@ -26,7 +26,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install libs
-        run: uv sync --no-group dev --group lint
+        run: uv sync --no-default-groups --group lint --no-install-project
 
       - name: Lint files
         run: make lint
@@ -45,7 +45,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install libs
-        run: uv sync --no-group dev --group typing
+        run: uv sync --no-default-groups --group typing --no-install-project
 
       - name: Check files
         run: make type
@@ -66,6 +66,9 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Install libs
+        run: uv sync --no-default-groups --group test
 
       - name: Test with python ${{ matrix.python-version }}
         run: make tests
