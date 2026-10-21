@@ -22,6 +22,4 @@ htmlcov
 
 docs/build/
 
-uv.lock
-
 benchmark
