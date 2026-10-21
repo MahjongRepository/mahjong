@@ -68,7 +68,7 @@ jobs:
           - "pypy3.12"
           - "graalpy3.10"
           - "graalpy3.11"
-          #- "graalpy3.12"
+          - "graalpy3.12"
           - "graalpy3.13"
     steps:
       - uses: actions/checkout@v7
@@ -95,9 +95,15 @@ jobs:
           .venv/bin/python -m pip install -r "$RUNNER_TEMP/requirements-test.txt" -e .
 
       - name: Test with python ${{ matrix.python-version }}
-        if: matrix.python-version != 'graalpy3.10'
+        if: matrix.python-version != 'graalpy3.10' && matrix.python-version != 'graalpy3.12'
         run: make tests
 
       - name: Test with GraalPy 3.10
         if: matrix.python-version == 'graalpy3.10'
         run: .venv/bin/python -m pytest
+
+      # coverage 7.16.2's PUSH_EXC_INFO filter misidentifies executed lines on GraalPy 3.12.
+      # Run the full suite without coverage here; other interpreters still require 100% coverage.
+      - name: Test with GraalPy 3.12 without coverage
+        if: matrix.python-version == 'graalpy3.12'
+        run: uv run --no-sync pytest --no-cov
