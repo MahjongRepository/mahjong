@@ -1,17 +1,17 @@
 format:
-	uv run ruff format
-	uv run ruff check --fix
+	uv run --no-sync ruff format
+	uv run --no-sync ruff check --fix
 
 lint:
-	uv run ruff format --check
-	uv run ruff check
+	uv run --no-sync ruff format --check
+	uv run --no-sync ruff check
 
 type:
-	uv run ty check
+	uv run --no-sync ty check
 
 .PHONY: tests
 tests:
-	uv run pytest
+	uv run --no-sync pytest
 
 check: format lint type tests
 

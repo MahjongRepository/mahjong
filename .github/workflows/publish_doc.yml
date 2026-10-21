@@ -32,7 +32,7 @@ jobs:
 
       - name: Install libs
         run: |
-          uv sync --no-group dev --group docs
+          uv sync --no-default-groups --group docs
           echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
           echo "VIRTUAL_ENV=$GITHUB_WORKSPACE/.venv" >> $GITHUB_ENV
 
