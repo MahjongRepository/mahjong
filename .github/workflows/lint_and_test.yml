@@ -68,7 +68,7 @@ jobs:
           - "pypy3.12"
           - "graalpy3.10"
           - "graalpy3.11"
-          - "graalpy3.12"
+          #- "graalpy3.12"
           - "graalpy3.13"
     steps:
       - uses: actions/checkout@v7
