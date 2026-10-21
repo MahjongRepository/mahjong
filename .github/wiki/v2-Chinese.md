@@ -24,6 +24,7 @@
 | 多倍役满是否上限为6倍（最高得点192000） | `limit_to_sextuple_yakuman` | `True` |
 | 是否有大七星役满役种（字一色七对子） | `has_daichisei` | `False` |
 | 八连庄是否需要有役才能成立 | `paarenchan_needs_yaku` | `True` |
+| 是否使用三人麻将规则计算得分 | `is_three_player` | `False` |
 
 本软件包经过tenhou.net（天凤）**26,148,038局**凤凰对局测试验证。
 

@@ -25,6 +25,7 @@ It supports optional features like:
 | Limit yakuman calculation to 6 (maximum score 192000) | `limit_to_sextuple_yakuman` | `True` |
 | Disable or enable extra yakuman for all honors 7 pairs | `has_daichisei` | `False` |
 | Disable or enable paarenchan without any yaku | `paarenchan_needs_yaku` | `True` |
+| Calculate scores using three-player mahjong rules | `is_three_player` | `False` |
 
 The code was validated on tenhou.net phoenix replays in total on **26,148,038 hands**.
 
