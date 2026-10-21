@@ -66,7 +66,7 @@ jobs:
           - "pypy3.10"
           - "pypy3.11"
           - "pypy3.12"
-          # - "graalpy3.10"
+          - "graalpy3.10"
           - "graalpy3.11"
           - "graalpy3.12"
           - "graalpy3.13"
@@ -81,7 +81,23 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install libs
+        if: matrix.python-version != 'graalpy3.10'
         run: uv sync --no-default-groups --group test
 
+      # GraalPy 24.0 expects a different pyvenv.cfg home than uv generates.
+      # Use its standard venv and pip, including for isolated builds.
+      - name: Install libs with GraalPy 3.10 workaround
+        if: matrix.python-version == 'graalpy3.10'
+        run: |
+          uv python install graalpy3.10
+          "$(uv python find graalpy3.10)" -m venv .venv
+          uv export --no-default-groups --group test --no-emit-project --no-hashes --output-file "$RUNNER_TEMP/requirements-test.txt"
+          .venv/bin/python -m pip install -r "$RUNNER_TEMP/requirements-test.txt" -e .
+
       - name: Test with python ${{ matrix.python-version }}
+        if: matrix.python-version != 'graalpy3.10'
         run: make tests
+
+      - name: Test with GraalPy 3.10
+        if: matrix.python-version == 'graalpy3.10'
+        run: .venv/bin/python -m pytest
