@@ -26,7 +26,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install libs
-        run: uv sync --no-default-groups --group lint --no-install-project
+        run: uv sync --locked --no-default-groups --group lint --no-install-project
 
       - name: Lint files
         run: make lint
@@ -45,7 +45,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install libs
-        run: uv sync --no-default-groups --group typing --no-install-project
+        run: uv sync --locked --no-default-groups --group typing --no-install-project
 
       - name: Check files
         run: make type
@@ -82,7 +82,7 @@ jobs:
 
       - name: Install libs
         if: matrix.python-version != 'graalpy3.10'
-        run: uv sync --no-default-groups --group test
+        run: uv sync --locked --no-default-groups --group test
 
       # GraalPy 24.0 expects a different pyvenv.cfg home than uv generates.
       # Use its standard venv and pip, including for isolated builds.
@@ -91,7 +91,7 @@ jobs:
         run: |
           uv python install graalpy3.10
           "$(uv python find graalpy3.10)" -m venv .venv
-          uv export --no-default-groups --group test --no-emit-project --no-hashes --output-file "$RUNNER_TEMP/requirements-test.txt"
+          uv export --locked --no-default-groups --group test --no-emit-project --no-hashes --output-file "$RUNNER_TEMP/requirements-test.txt"
           .venv/bin/python -m pip install -r "$RUNNER_TEMP/requirements-test.txt" -e .
 
       - name: Test with python ${{ matrix.python-version }}
