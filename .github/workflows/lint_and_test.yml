@@ -56,7 +56,20 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15", "pypy3.10", "pypy3.11", "pypy3.12"]
+        python-version:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
+          - "3.15"
+          - "pypy3.10"
+          - "pypy3.11"
+          - "pypy3.12"
+          - "graalpy3.10"
+          - "graalpy3.11"
+          - "graalpy3.12"
+          - "graalpy3.13"
     steps:
       - uses: actions/checkout@v7
         with:
@@ -68,7 +81,29 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install libs
+        if: matrix.python-version != 'graalpy3.10'
         run: uv sync --no-default-groups --group test
 
+      # GraalPy 24.0 expects a different pyvenv.cfg home than uv generates.
+      # Use its standard venv and pip, including for isolated builds.
+      - name: Install libs with GraalPy 3.10 workaround
+        if: matrix.python-version == 'graalpy3.10'
+        run: |
+          uv python install graalpy3.10
+          "$(uv python find graalpy3.10)" -m venv .venv
+          uv export --no-default-groups --group test --no-emit-project --no-hashes --output-file "$RUNNER_TEMP/requirements-test.txt"
+          .venv/bin/python -m pip install -r "$RUNNER_TEMP/requirements-test.txt" -e .
+
       - name: Test with python ${{ matrix.python-version }}
+        if: matrix.python-version != 'graalpy3.10' && matrix.python-version != 'graalpy3.12'
         run: make tests
+
+      - name: Test with GraalPy 3.10
+        if: matrix.python-version == 'graalpy3.10'
+        run: .venv/bin/python -m pytest
+
+      # coverage 7.16.2's PUSH_EXC_INFO filter misidentifies executed lines on GraalPy 3.12.
+      # Run the full suite without coverage here; other interpreters still require 100% coverage.
+      - name: Test with GraalPy 3.12 without coverage
+        if: matrix.python-version == 'graalpy3.12'
+        run: uv run --no-sync pytest --no-cov
