@@ -53,7 +53,7 @@ dev = [
     { include-group = "docs" },
 ]
 lint = [
-    "ruff>=0.15.0,<0.16",
+    "ruff>=0.17.1,<0.18",
 ]
 typing = [
     "ty>=0.0.42",
@@ -70,6 +70,7 @@ docs = [
 [tool.ruff]
 line-length = 120
 extend-exclude = [
+    "*.md",
     "build",
 
     # Project related excludes
@@ -87,10 +88,12 @@ ignore = [
     "PLR0912", # too-many-branches
     "PLR0913", # too-many-arguments
     "PLR0915", # too-many-statements
+    "PLR0917", # too-many-positional-arguments
     "PLR2004", # magic-value-comparison
     "FBT001",  # boolean-type-hint-positional-argument
     "FBT002",  # boolean-default-value-positional-argument
     "FBT003",  # boolean-positional-value-in-call
+    "CPY001",  # missing-copyright-notice
     "D100",    # missing-docstring-in-public-module
 ]
 
