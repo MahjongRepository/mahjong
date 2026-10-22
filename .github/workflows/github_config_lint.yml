@@ -1,4 +1,4 @@
-name: Workflow lint
+name: GitHub configuration lint
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Audit workflows
+      - name: Audit GitHub configuration
         uses: zizmorcore/zizmor-action@85b2b9fb8e3325e7a23d7d0a9d7ba5ae0f999e3e # v0.7.1
         with:
           version: v1.31.1
