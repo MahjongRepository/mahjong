@@ -2,14 +2,25 @@ name: Linters and tests
 
 on:
   push:
-    paths:
-      - mahjong/**
     branches:
       - master
-
+    paths:
+      - mahjong/**
+      - tests/**
+      - pyproject.toml
+      - uv.lock
+      - Makefile
+      - .github/workflows/lint_and_test.yml
   pull_request:
     branches:
       - master
+    paths:
+      - mahjong/**
+      - tests/**
+      - pyproject.toml
+      - uv.lock
+      - Makefile
+      - .github/workflows/lint_and_test.yml
 
 permissions:
   contents: read
