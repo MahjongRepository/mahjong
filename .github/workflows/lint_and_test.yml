@@ -7,6 +7,9 @@ on:
     paths:
       - mahjong/**
       - tests/**
+      - pyproject.toml
+      - uv.lock
+      - Makefile
       - .github/workflows/lint_and_test.yml
   pull_request:
     branches:
@@ -14,6 +17,9 @@ on:
     paths:
       - mahjong/**
       - tests/**
+      - pyproject.toml
+      - uv.lock
+      - Makefile
       - .github/workflows/lint_and_test.yml
 
 permissions:
