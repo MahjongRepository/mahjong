@@ -2,14 +2,19 @@ name: Linters and tests
 
 on:
   push:
-    paths:
-      - mahjong/**
     branches:
       - master
-
+    paths:
+      - mahjong/**
+      - tests/**
+      - .github/workflows/lint_and_test.yml
   pull_request:
     branches:
       - master
+    paths:
+      - mahjong/**
+      - tests/**
+      - .github/workflows/lint_and_test.yml
 
 permissions:
   contents: read
