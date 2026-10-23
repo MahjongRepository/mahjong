@@ -57,6 +57,7 @@ dev = [
     { include-group = "docs" },
 ]
 lint = [
+    "prek>=0.5.7,<0.6",
     "ruff>=0.17.1,<0.18",
 ]
 typing = [

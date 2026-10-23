@@ -43,7 +43,25 @@ To set up the project locally for development:
     uv sync
     ```
 
-3. Run tests to verify setup:
+3. Install the Git hooks using [prek](https://prek.j178.dev/):
+
+    ```bash
+    uv run prek install
+    ```
+
+    The hooks run Ruff lint fixes and formatting on staged Python files before each commit,
+    using the Ruff version installed from `uv.lock`. Review any automatic fixes and stage
+    the updated files before committing again. After changing the hook configuration,
+    check all tracked files with:
+
+    ```bash
+    uv run prek run --all-files
+    ```
+
+    CI runs the same hooks on all tracked files and fails if a hook reports an error or changes files.
+    Run `uv sync` after dependency updates to keep the hook tools up to date.
+
+4. Run tests to verify setup:
 
     ```bash
     make tests
@@ -51,11 +69,13 @@ To set up the project locally for development:
     uv run pytest
     ```
 
-4. Run full checks before committing:
+5. Run full checks before committing:
 
     ```bash
-    make check   # Runs format, lint, and tests
+    make check   # Runs format, lint, type checks, and tests
     ```
+
+    The Git hooks only run Ruff; run type checks and tests separately as part of the full checks above.
 
 ## License
 
