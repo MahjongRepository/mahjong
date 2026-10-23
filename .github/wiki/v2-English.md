@@ -27,7 +27,7 @@ It supports optional features like:
 | Disable or enable paarenchan without any yaku | `paarenchan_needs_yaku` | `True` |
 | Calculate scores using three-player mahjong rules | `is_three_player` | `False` |
 
-The code was validated on tenhou.net phoenix replays in total on **26,148,038 hands**.
+The code was validated on tenhou.net phoenix replays: **26,148,050** four-player and **8,406,421** three-player winning hands.
 
 So, we can say that our hand calculator works the same way that tenhou.net hand calculation.
 
@@ -152,6 +152,48 @@ Output:
 [Menzen Tsumo, Riichi, Tanyao, San Ankou, Dora 2, Ura Dora 3]
 ```
 
+### Three-player mahjong
+
+Enable three-player rules with `OptionalRules(is_three_player=True)` and pass the number of extracted North tiles via `HandConfig(num_nuki_dora=...)`. As on tenhou.net, nuki dora are included in the Dora count (and in the Ura Dora count when the ura dora indicator is West), tsumo payments omit the missing North seat's share (tsumo loss), and each honba adds 200 points instead of 300.
+
+```python
+tiles = TilesConverter.string_to_136_array(man='99', pin='123456789', sou='234')
+win_tile = TilesConverter.string_to_136_array(sou='4')[0]
+# west indicators make north the dora and the ura dora,
+# so each extracted north is worth 3 han (nuki dora + dora + ura dora)
+dora_indicators = TilesConverter.string_to_136_array(honors='3')
+ura_dora_indicators = TilesConverter.string_to_136_array(honors='3')
+
+result = HandCalculator.estimate_hand_value(
+    tiles,
+    win_tile,
+    dora_indicators=dora_indicators,
+    ura_dora_indicators=ura_dora_indicators,
+    config=HandConfig(
+        is_riichi=True,
+        is_tsumo=True,
+        tsumi_number=1,
+        num_nuki_dora=1,
+        options=OptionalRules(is_three_player=True),
+    ),
+)
+
+print(result.han, result.fu)
+# each of the two other players pays 100 per honba
+print(result.cost['main'] + result.cost['main_bonus'], result.cost['additional'] + result.cost['additional_bonus'])
+print(result.cost['total'])
+print(result.yaku)
+```
+
+Output:
+
+```
+8 20
+8100 4100
+12200
+[Menzen Tsumo, Riichi, Pinfu, Ittsu, Dora 2, Ura Dora 1]
+```
+
 ## Shanten calculation
 
 Shanten number indicates the minimum number of tile exchanges still required for the hand to reach tenpai (one tile away from winning). A value of `0` means tenpai, and `-1` means the hand is already complete (agari).
@@ -190,6 +232,22 @@ Tenpai hand: 0
 Complete hand: -1
 Chiitoitsu shanten: 0
 Kokushi shanten: 0
+```
+
+For three-player mahjong, where 2m-8m are not used, pass `is_three_player=True`:
+
+```python
+# the spare 1m can form a sequence only in four-player mahjong
+tiles = TilesConverter.string_to_34_array(man='1111', honors='111122233')
+print("Four-player shanten:", Shanten.calculate_shanten(tiles))
+print("Three-player shanten:", Shanten.calculate_shanten(tiles, is_three_player=True))
+```
+
+Output:
+
+```
+Four-player shanten: 1
+Three-player shanten: 2
 ```
 
 ## Agari (winning hand detection)

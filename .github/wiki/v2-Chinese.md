@@ -26,7 +26,7 @@
 | 八连庄是否需要有役才能成立 | `paarenchan_needs_yaku` | `True` |
 | 是否使用三人麻将规则计算得分 | `is_three_player` | `False` |
 
-本软件包经过tenhou.net（天凤）**26,148,038局**凤凰对局测试验证。
+本软件包经过tenhou.net（天凤）凤凰对局测试验证，其中四人麻将和牌**26,148,050**次，三人麻将和牌**8,406,421**次。
 
 因此，我们可以认为本手牌计算器的行为与天凤的手牌计算方式相同。
 
@@ -151,6 +151,48 @@ print(result.yaku)
 [Menzen Tsumo, Riichi, Tanyao, San Ankou, Dora 2, Ura Dora 3]
 ```
 
+### 三人麻将
+
+通过 `OptionalRules(is_three_player=True)` 启用三人麻将规则，并通过 `HandConfig` 的 `num_nuki_dora` 参数传递拔北宝牌（拔出的北）的数量。与天凤相同，拔北宝牌按宝牌计算（里宝牌指示牌为西时也按里宝牌计算），自摸时不补足不存在的北家应付的点数（自摸损），每个本场加算200点而非300点。
+
+```python
+tiles = TilesConverter.string_to_136_array(man='99', pin='123456789', sou='234')
+win_tile = TilesConverter.string_to_136_array(sou='4')[0]
+# 宝牌指示牌和里宝牌指示牌均为西，
+# 因此每张拔出的北计3番（拔北1番、宝牌1番、里宝牌1番）
+dora_indicators = TilesConverter.string_to_136_array(honors='3')
+ura_dora_indicators = TilesConverter.string_to_136_array(honors='3')
+
+result = HandCalculator.estimate_hand_value(
+    tiles,
+    win_tile,
+    dora_indicators=dora_indicators,
+    ura_dora_indicators=ura_dora_indicators,
+    config=HandConfig(
+        is_riichi=True,
+        is_tsumo=True,
+        tsumi_number=1,
+        num_nuki_dora=1,
+        options=OptionalRules(is_three_player=True),
+    ),
+)
+
+print(result.han, result.fu)
+# 另外两家每个本场各支付100点
+print(result.cost['main'] + result.cost['main_bonus'], result.cost['additional'] + result.cost['additional_bonus'])
+print(result.cost['total'])
+print(result.yaku)
+```
+
+输出：
+
+```
+8 20
+8100 4100
+12200
+[Menzen Tsumo, Riichi, Pinfu, Ittsu, Dora 2, Ura Dora 1]
+```
+
 ## 向听数计算
 
 向听数表示手牌到达听牌（差一张即可和牌）所需的最少换牌次数。`0` 表示听牌，`-1` 表示手牌已经和牌（完成形）。
@@ -189,6 +231,22 @@ print("国士无双向听数:", Shanten.calculate_shanten_for_kokushi_hand(tiles
 和牌形: -1
 七对子向听数: 0
 国士无双向听数: 0
+```
+
+三人麻将不使用2m～8m，计算时传入 `is_three_player=True`：
+
+```python
+# 多出的1m只有在四人麻将中才能用于组成顺子
+tiles = TilesConverter.string_to_34_array(man='1111', honors='111122233')
+print("四人麻将向听数:", Shanten.calculate_shanten(tiles))
+print("三人麻将向听数:", Shanten.calculate_shanten(tiles, is_three_player=True))
+```
+
+输出：
+
+```
+四人麻将向听数: 1
+三人麻将向听数: 2
 ```
 
 ## 和牌判定
