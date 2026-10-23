@@ -665,11 +665,11 @@ class HandCalculator:
             return HandResponse(error=HandCalculator.ERR_HAND_NOT_WINNING)
 
         # find most expensive hand
-        calculated_hands = sorted(calculated_hands, key=_hand_priority, reverse=True)
+        calculated_hands.sort(key=_hand_priority, reverse=True)
         # correctly sort expensive hands by fu details
         top_priority = _hand_priority(calculated_hands[0])
         calculated_hands = [x for x in calculated_hands if _hand_priority(x) == top_priority]
-        calculated_hands = sorted(calculated_hands, key=lambda x: sum([y["fu"] for y in x["fu_details"]]), reverse=True)
+        calculated_hands.sort(key=lambda x: sum([y["fu"] for y in x["fu_details"]]), reverse=True)
         calculated_hand = calculated_hands[0]
 
         error = calculated_hand["error"]
