@@ -11,7 +11,7 @@ Japanese riichi mahjong hand calculator library.
 
 Compute hand cost (han, fu, yaku, and scores), validate winning hands, and calculate shanten (minimum tiles to tenpai).
 
-The code was validated on tenhou.net phoenix replays in total on **26,148,038 hands**.
+The code was validated on tenhou.net phoenix replays: **26,148,050 four-player hands** and **8,406,421 three-player hands**.
 
 So, we can say that our hand calculator works the same way that tenhou.net hand calculation.
 

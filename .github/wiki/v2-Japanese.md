@@ -26,7 +26,7 @@ Python 3.10以上に対応しています。
 | 八連荘に役が必要かどうか | `paarenchan_needs_yaku` | `True` |
 | 点数の計算に三人麻雀ルールを使用するかどうか | `is_three_player` | `False` |
 
-コードはtenhou.net（天鳳）鳳凰卓の牌譜**26,148,038局**で検証済みです。
+コードはtenhou.net（天鳳）鳳凰卓の牌譜（四人麻雀**26,148,050局**、三人麻雀**8,406,421局**）で検証済みです。
 
 したがって、本パッケージの手牌計算機は天鳳の手牌計算と同様に動作すると言えます。
 
@@ -151,6 +151,40 @@ print(result.yaku)
 [Menzen Tsumo, Riichi, Tanyao, San Ankou, Dora 2, Ura Dora 3]
 ```
 
+### 三人麻雀
+
+三人麻雀ルールは `OptionalRules(is_three_player=True)` で有効になり、抜きドラ（抜いた北）の枚数は `HandConfig` の `num_nuki_dora` パラメーターで指定できます。天鳳と同様に、抜きドラはドラとしてカウントされ、ツモ和了時は存在しない北家の支払い分を補いません（ツモ損）。
+
+```python
+tiles = TilesConverter.string_to_136_array(man='99', pin='123456789', sou='234')
+win_tile = TilesConverter.string_to_136_array(sou='4')[0]
+# ドラ表示牌が西なので、抜いた北1枚につき2飜（抜きドラ1飜＋ドラ1飜）
+dora_indicators = TilesConverter.string_to_136_array(honors='3')
+
+result = HandCalculator.estimate_hand_value(
+    tiles,
+    win_tile,
+    dora_indicators=dora_indicators,
+    config=HandConfig(
+        is_tsumo=True,
+        num_nuki_dora=1,
+        options=OptionalRules(is_three_player=True),
+    ),
+)
+
+print(result.han, result.fu)
+print(result.cost['main'], result.cost['additional'], result.cost['total'])
+print(result.yaku)
+```
+
+出力:
+
+```
+6 20
+6000 3000 9000
+[Menzen Tsumo, Pinfu, Ittsu, Dora 2]
+```
+
 ## シャンテン数計算
 
 シャンテン数はテンパイ（あと1枚で和了）に到達するまでに必要な最小の牌交換回数を示します。`0` はテンパイ、`-1` は既に和了形（完成形）であることを意味します。
@@ -189,6 +223,22 @@ print("国士無双シャンテン数:", Shanten.calculate_shanten_for_kokushi_h
 和了形: -1
 七対子シャンテン数: 0
 国士無双シャンテン数: 0
+```
+
+2m〜8mを使わない三人麻雀では `is_three_player=True` を指定します:
+
+```python
+# 余った1mを順子に使えるのは四人麻雀だけ
+tiles = TilesConverter.string_to_34_array(man='1111', honors='111122233')
+print("四人麻雀シャンテン数:", Shanten.calculate_shanten(tiles))
+print("三人麻雀シャンテン数:", Shanten.calculate_shanten(tiles, is_three_player=True))
+```
+
+出力:
+
+```
+四人麻雀シャンテン数: 1
+三人麻雀シャンテン数: 2
 ```
 
 ## 和了判定
