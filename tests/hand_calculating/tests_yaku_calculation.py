@@ -1455,6 +1455,32 @@ def test_nuki_dora_with_ura_dora_indicators(num_nuki_dora: int, num_ura_dora_ind
     assert result.han == han
 
 
+@pytest.mark.parametrize(
+    ("is_three_player", "han"),
+    [
+        (True, 7),
+        (False, 1),
+    ],
+)
+def test_three_player_man_one_dora_indicator(is_three_player: bool, han: int) -> None:
+    tiles = TilesConverter.string_to_136_array(sou="345", pin="456789", man="99", honors="111")
+    win_tile = _string_to_136_tile(man="9")
+
+    hand_config = HandConfig(is_riichi=True, options=OptionalRules(is_three_player=is_three_player))
+    dora_indicators = [_string_to_136_tile(man="1")]
+    ura_dora_indicators = [_string_to_136_tile(man="1") + 1, _string_to_136_tile(man="1") + 2]
+
+    result = HandCalculator.estimate_hand_value(
+        tiles,
+        win_tile,
+        config=hand_config,
+        dora_indicators=dora_indicators,
+        ura_dora_indicators=ura_dora_indicators,
+    )
+    assert result.error is None
+    assert result.han == han
+
+
 class TestYakuBaseClass:
     """
     Test the abstract Yaku base class methods

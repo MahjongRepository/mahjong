@@ -62,7 +62,12 @@ def is_aka_dora(tile_136: int, aka_enabled: bool) -> bool:
     return tile_136 in AKA_DORAS
 
 
-def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora: bool = False) -> int:
+def plus_dora(
+    tile_136: int,
+    dora_indicators_136: Collection[int],
+    add_aka_dora: bool = False,
+    is_three_player: bool = False,
+) -> int:
     """
     Calculate the number of dora for a single tile given dora indicators.
 
@@ -81,9 +86,15 @@ def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora:
     >>> plus_dora(4, [0, 1])
     2
 
+    In three-player mahjong 2m-8m are removed, so indicator 0 (1m) points to 9m:
+
+    >>> plus_dora(32, [0], is_three_player=True)
+    1
+
     :param tile_136: tile index in 136-format
     :param dora_indicators_136: collection of dora indicator tile indices in 136-format
     :param add_aka_dora: include aka dora (red five) bonus in the count
+    :param is_three_player: if True, use three-player rules where 1m indicator points to 9m
     :return: total dora count for this tile
     """
     tile_index = tile_136 // 4
@@ -100,6 +111,9 @@ def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora:
             # with indicator 9, dora will be 1
             if dora == 8:
                 dora = -1
+            # three-player has no 2m-8m, so with indicator 1m dora will be 9m
+            elif dora == 0 and is_three_player:
+                dora = 7
             elif dora == 17:
                 dora = 8
             elif dora == 26:
@@ -128,8 +142,12 @@ def plus_dora(tile_136: int, dora_indicators_136: Collection[int], add_aka_dora:
     return dora_count
 
 
-def _indicator_to_dora_34(indicator_34: int) -> int:
+def _indicator_to_dora_34(indicator_34: int, is_three_player: bool = False) -> int:
     """Convert a dora indicator (34-format) to the actual dora tile (34-format)."""
+    # three-player has no 2m-8m, so 1m points to 9m
+    if is_three_player and indicator_34 == 0:
+        return 8
+
     # suited tiles wrap within each suit of 9
     if indicator_34 < EAST:
         suit_base = (indicator_34 // 9) * 9
@@ -143,7 +161,7 @@ def _indicator_to_dora_34(indicator_34: int) -> int:
     return HAKU + (indicator_34 - HAKU + 1) % 3
 
 
-def build_dora_count_map(dora_indicators_136: Collection[int]) -> dict[int, int]:
+def build_dora_count_map(dora_indicators_136: Collection[int], is_three_player: bool = False) -> dict[int, int]:
     """
     Build a mapping from tile type (34-format) to dora count for the given indicators.
 
@@ -158,12 +176,18 @@ def build_dora_count_map(dora_indicators_136: Collection[int]) -> dict[int, int]
     >>> build_dora_count_map([0, 1])
     {1: 2}
 
+    In three-player mahjong 2m-8m are removed, so indicator 0 (1m) points to dora 9m (index 8):
+
+    >>> build_dora_count_map([0], is_three_player=True)
+    {8: 1}
+
     :param dora_indicators_136: collection of dora indicator tile indices in 136-format
+    :param is_three_player: if True, use three-player rules where 1m indicator points to 9m
     :return: dictionary mapping 34-format tile index to dora count
     """
     dora_map: dict[int, int] = {}
     for indicator in dora_indicators_136:
-        dora_34 = _indicator_to_dora_34(indicator // 4)
+        dora_34 = _indicator_to_dora_34(indicator // 4, is_three_player)
         dora_map[dora_34] = dora_map.get(dora_34, 0) + 1
     return dora_map
 

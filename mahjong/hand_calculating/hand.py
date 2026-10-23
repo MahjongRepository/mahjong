@@ -277,7 +277,7 @@ class HandCalculator:
         hand_options = HandDivider.divide_hand(tiles_34, melds)
 
         # precompute dora counts, invariant across all hand decompositions
-        dora_count_map = build_dora_count_map(dora_indicators)
+        dora_count_map = build_dora_count_map(dora_indicators, config.options.is_three_player)
         precomputed_dora = count_dora_for_hand(tiles_34, dora_count_map)
         if config.num_nuki_dora > 0:
             precomputed_dora += dora_count_map.get(NORTH, 0) * config.num_nuki_dora + config.num_nuki_dora
@@ -288,7 +288,7 @@ class HandCalculator:
 
         precomputed_ura_dora = 0
         if config.is_riichi or config.is_daburu_riichi:
-            ura_count_map = build_dora_count_map(ura_dora_indicators)
+            ura_count_map = build_dora_count_map(ura_dora_indicators, config.options.is_three_player)
             precomputed_ura_dora = count_dora_for_hand(tiles_34, ura_count_map)
             if config.num_nuki_dora > 0:
                 precomputed_ura_dora += ura_count_map.get(NORTH, 0) * config.num_nuki_dora
@@ -624,7 +624,7 @@ class HandCalculator:
 
                 count_of_dora = 0
                 for tile in tiles_for_dora:
-                    count_of_dora += plus_dora(tile, dora_indicators)
+                    count_of_dora += plus_dora(tile, dora_indicators, is_three_player=config.options.is_three_player)
 
                 if count_of_dora:
                     config.yaku.dora.han_open = count_of_dora
@@ -635,7 +635,9 @@ class HandCalculator:
                 if config.is_riichi or config.is_daburu_riichi:
                     count_of_ura_dora = 0
                     for tile in tiles_for_dora:
-                        count_of_ura_dora += plus_dora(tile, ura_dora_indicators)
+                        count_of_ura_dora += plus_dora(
+                            tile, ura_dora_indicators, is_three_player=config.options.is_three_player
+                        )
 
                     if count_of_ura_dora:
                         config.yaku.ura_dora.han_closed = count_of_ura_dora

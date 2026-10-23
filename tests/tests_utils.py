@@ -292,6 +292,27 @@ def test_plus_dora(tile_136: int, dora_indicators_136: list[int], add_aka_dora: 
 
 
 @pytest.mark.parametrize(
+    ("tile_136", "dora_indicators_136", "expected"),
+    [
+        # 1m indicator points to 9m in three-player
+        (_string_to_136_tile(man="9"), [_string_to_136_tile(man="1")], 1),
+        # 1m indicator does not point to 2m in three-player
+        (_string_to_136_tile(man="2"), [_string_to_136_tile(man="1")], 0),
+        # 9m indicator still wraps dora to 1m
+        (_string_to_136_tile(man="1"), [_string_to_136_tile(man="9")], 1),
+        # pin and sou are not affected
+        (_string_to_136_tile(pin="2"), [_string_to_136_tile(pin="1")], 1),
+        (_string_to_136_tile(sou="2"), [_string_to_136_tile(sou="1")], 1),
+        (_string_to_136_tile(pin="1"), [_string_to_136_tile(pin="9")], 1),
+        # honors are not affected
+        (_string_to_136_tile(honors="1"), [_string_to_136_tile(honors="4")], 1),
+    ],
+)
+def test_plus_dora_three_player(tile_136: int, dora_indicators_136: list[int], expected: int) -> None:
+    assert plus_dora(tile_136, dora_indicators_136, is_three_player=True) == expected
+
+
+@pytest.mark.parametrize(
     ("tile_34", "expected"),
     [
         (_string_to_34_tile(honors="5"), True),
@@ -396,6 +417,12 @@ def test_build_dora_count_map_duplicate_indicators() -> None:
 def test_build_dora_count_map_different_indicators() -> None:
     result = build_dora_count_map([_string_to_136_tile(man="1"), _string_to_136_tile(pin="1")])
     assert result == {_string_to_34_tile(man="2"): 1, _string_to_34_tile(pin="2"): 1}
+
+
+def test_build_dora_count_map_three_player() -> None:
+    indicators = [_string_to_136_tile(man="1"), _string_to_136_tile(man="9"), _string_to_136_tile(pin="1")]
+    result = build_dora_count_map(indicators, is_three_player=True)
+    assert result == {_string_to_34_tile(man="9"): 1, _string_to_34_tile(man="1"): 1, _string_to_34_tile(pin="2"): 1}
 
 
 def test_count_dora_for_hand_no_dora() -> None:

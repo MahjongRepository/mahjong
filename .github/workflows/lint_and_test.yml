@@ -111,15 +111,15 @@ jobs:
           .venv/bin/python -m pip install -r "$RUNNER_TEMP/requirements-test.txt" -e .
 
       - name: Test with python ${{ matrix.python-version }}
-        if: matrix.python-version != 'graalpy3.10' && matrix.python-version != 'graalpy3.12'
+        if: ${{ !startsWith(matrix.python-version, 'graalpy') }}
         run: make tests
 
-      - name: Test with GraalPy 3.10
+      # coverage misidentifies executed lines on GraalPy, so run the full suite without coverage there.
+      # Other interpreters still require 100% coverage.
+      - name: Test with GraalPy 3.10 without coverage
         if: matrix.python-version == 'graalpy3.10'
-        run: .venv/bin/python -m pytest
+        run: .venv/bin/python -m pytest --no-cov
 
-      # coverage 7.16.2's PUSH_EXC_INFO filter misidentifies executed lines on GraalPy 3.12.
-      # Run the full suite without coverage here; other interpreters still require 100% coverage.
-      - name: Test with GraalPy 3.12 without coverage
-        if: matrix.python-version == 'graalpy3.12'
+      - name: Test with ${{ matrix.python-version }} without coverage
+        if: startsWith(matrix.python-version, 'graalpy') && matrix.python-version != 'graalpy3.10'
         run: uv run --no-sync pytest --no-cov
