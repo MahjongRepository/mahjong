@@ -785,3 +785,48 @@ def test_kokushi_with_paarenchan() -> None:
     assert config.yaku.daburu_kokushi in result.yaku
     assert config.yaku.paarenchan in result.yaku
     assert result.han == 39
+
+
+@pytest.mark.parametrize(
+    ("is_three_player", "num_nuki_dora", "dora_indicators"),
+    [
+        # tenhou 3-player log: 3 nuki dora and a west indicator make the iipeikou reading 14 han
+        (True, 3, TilesConverter.string_to_136_array(honors="3")),
+        (False, 0, TilesConverter.string_to_136_array(pin="67")),
+    ],
+)
+def test_suuankou_wins_over_kazoe_yakuman_with_same_cost(
+    is_three_player: bool, num_nuki_dora: int, dora_indicators: list[int]
+) -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(pin="111144777888999")
+    win_tile = _string_to_136_tile(pin="8")
+    melds = [_make_meld(Meld.KAN, pin="1111", is_open=False)]
+    config = HandConfig(
+        is_tsumo=True,
+        num_nuki_dora=num_nuki_dora,
+        options=OptionalRules(is_three_player=is_three_player),
+    )
+
+    result = hand.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=dora_indicators, config=config)
+    assert result.error is None
+    assert result.han == 13
+    assert [yaku.name for yaku in result.yaku] == ["Suu Ankou"]
+    assert result.cost["total"] == (24000 if is_three_player else 32000)
+
+
+def test_suuankou_wins_over_kazoe_capped_at_sanbaiman() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(pin="111144777888999")
+    win_tile = _string_to_136_tile(pin="8")
+    melds = [_make_meld(Meld.KAN, pin="1111", is_open=False)]
+    dora_indicators = TilesConverter.string_to_136_array(pin="67")
+    config = HandConfig(is_tsumo=True, options=OptionalRules(kazoe_limit=HandConfig.KAZOE_SANBAIMAN))
+
+    result = hand.estimate_hand_value(tiles, win_tile, melds=melds, dora_indicators=dora_indicators, config=config)
+    assert result.error is None
+    assert result.han == 13
+    assert [yaku.name for yaku in result.yaku] == ["Suu Ankou"]
+    assert result.cost["total"] == 32000
