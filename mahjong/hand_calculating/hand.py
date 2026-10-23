@@ -22,6 +22,18 @@ class _CalculatedHand(TypedDict):
     fu_details: list[FuDetail]
 
 
+def _hand_priority(hand: _CalculatedHand) -> tuple[int, bool, int, int]:
+    """
+    Rank a hand decomposition, the most expensive one is used.
+
+    The highest score wins, and on an equal score a real yakuman wins over counted (kazoe)
+    yakuman built from regular yaku, as on Tenhou.
+    """
+    total = hand["cost"]["total"] if hand["cost"] else -1
+    has_yakuman = any(yaku.is_yakuman for yaku in hand["hand_yaku"])
+    return total, has_yakuman, hand["han"], hand["fu"]
+
+
 # suit bitmask: sou=1, pin=2, man=4
 _ALL_SUITS_MASK = 7
 
@@ -653,13 +665,10 @@ class HandCalculator:
             return HandResponse(error=HandCalculator.ERR_HAND_NOT_WINNING)
 
         # find most expensive hand
-        calculated_hands = sorted(calculated_hands, key=lambda x: (x["han"], x["fu"]), reverse=True)
+        calculated_hands = sorted(calculated_hands, key=_hand_priority, reverse=True)
         # correctly sort expensive hands by fu details
-        calculated_hands = [
-            x
-            for x in calculated_hands
-            if x["han"] == calculated_hands[0]["han"] and x["fu"] == calculated_hands[0]["fu"]
-        ]
+        top_priority = _hand_priority(calculated_hands[0])
+        calculated_hands = [x for x in calculated_hands if _hand_priority(x) == top_priority]
         calculated_hands = sorted(calculated_hands, key=lambda x: sum([y["fu"] for y in x["fu_details"]]), reverse=True)
         calculated_hand = calculated_hands[0]
 
