@@ -54,13 +54,8 @@ uv run --no-sync prek run --all-files
 uv run --no-sync pytest
 ```
 
-The hooks run Ruff lint fixes, Ruff formatting, and then ty type checks, using the versions installed
-from `uv.lock`. Changes to `.py` or `.pyi` files, `pyproject.toml`, `uv.lock`, or the hook configuration
-trigger all three hooks. Each tool checks its configured project scope; ty currently checks `mahjong`.
-
-Hooks stop at the first failure or automatic change. Review the changes, stage the updated files,
-and rerun the hooks until they pass. The hooks do not run tests. CI runs the same hooks on all tracked
-files and runs the test suite across its configured Python implementations and versions.
+Some checks may modify files automatically. Review and stage any changes, then rerun the checks.
+These checks also run in CI.
 
 For individual checks without automatic fixes:
 
