@@ -1,6 +1,6 @@
 # Contributing to mahjong
 
-Welcome to the mahjong community! We're glad you're interested in contributing.
+Welcome! We're glad you're interested in contributing.
 
 ## Issues
 
