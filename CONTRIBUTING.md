@@ -1,10 +1,10 @@
 # Contributing to mahjong
 
-Contributions to hand calculation, tests, documentation, and development tooling are welcome.
-For substantial changes to algorithms, public APIs, or rule interpretation, discuss the approach
-in an issue before investing in a large implementation.
+Welcome! Bug reports, fixes, documentation improvements, and other contributions are welcome.
 
-## Report a bug or propose a change
+## Issues
+
+For larger changes, consider opening an issue first to discuss the approach.
 
 Search the existing [issues](https://github.com/MahjongRepository/mahjong/issues) and
 [pull requests](https://github.com/MahjongRepository/mahjong/pulls) before opening a new one.
@@ -20,7 +20,9 @@ For hand-calculation or rule-related reports, it helps to include:
 
 The [Wiki](https://github.com/MahjongRepository/mahjong/wiki) describes supported rules and usage examples.
 
-## Set up a development environment
+## Pull requests
+
+### Set up a development environment
 
 Use a supported Python version (currently Python 3.10 or newer) and install
 [uv](https://docs.astral.sh/uv/getting-started/installation/).
@@ -43,7 +45,7 @@ Dependency definitions and tool settings live in [pyproject.toml](pyproject.toml
 If you intentionally change dependencies, update [uv.lock](uv.lock) with `uv lock` and include
 any resulting lockfile changes in your pull request. Do not edit the lockfile by hand.
 
-## Run checks
+### Run checks
 
 Run these commands from the repository root before submitting a pull request:
 
@@ -72,7 +74,7 @@ If you use Make, the existing `make lint`, `make type`, and `make tests` targets
 `make check` also applies formatting and lint fixes before running the checks and tests.
 The direct uv commands work without Make, including on Windows.
 
-## Add regression tests
+### Add regression tests
 
 Tests live in [tests/](tests/). Pytest discovers files named `tests_*.py`, as configured in `pyproject.toml`.
 Add a regression test alongside related tests and use `pytest.mark.parametrize` when several cases
@@ -92,7 +94,7 @@ uv run --no-sync pytest --no-cov tests/tests_shanten.py
 The full test command above includes doctests and requires 100% line coverage. Always run it after
 the focused checks; passing a subset with `--no-cov` does not replace full-suite validation.
 
-## Update documentation
+### Update documentation
 
 - Public API documentation is built from [docs/source/](docs/source/) and Python docstrings.
 - Runnable examples live in [examples/](examples/).
@@ -116,7 +118,7 @@ uv run --no-sync .\make.bat html
 Open `build/html/index.html` to review the result and inspect the build output for warnings.
 Run examples from the repository root with `uv run --no-sync examples/FILE.py` and check the output.
 
-## Prepare a pull request
+### Submit a pull request
 
 - Keep each pull request focused on one problem or improvement, and link the related issue if there is one.
 - Briefly describe the change. If an issue already explains it, a reference such as `Fixes #123`
