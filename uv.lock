@@ -442,6 +442,11 @@ docs = [
     { name = "sphinx", version = "9.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13'" },
     { name = "sphinx-rtd-theme" },
 ]
+hooks = [
+    { name = "prek" },
+    { name = "ruff" },
+    { name = "ty" },
+]
 lint = [
     { name = "ruff" },
 ]
@@ -468,6 +473,11 @@ dev = [
 docs = [
     { name = "sphinx", specifier = ">=8.1.3" },
     { name = "sphinx-rtd-theme", specifier = ">=3.1.0" },
+]
+hooks = [
+    { name = "prek", specifier = ">=0.5.7,<0.6" },
+    { name = "ruff", specifier = ">=0.17.1,<0.18" },
+    { name = "ty", specifier = ">=0.0.42" },
 ]
 lint = [{ name = "ruff", specifier = ">=0.17.1,<0.18" }]
 test = [

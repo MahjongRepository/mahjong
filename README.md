@@ -58,7 +58,17 @@ To set up the project locally for development:
     uv run prek run --all-files
     ```
 
-    CI runs Ruff and ty directly through `make lint` and `make type`; it does not run prek.
+    Hooks stop at the first failure or automatic change. Rerun them after fixing and staging changes;
+    ty runs only after both Ruff hooks pass.
+
+    CI runs the same hooks in a single job using `uv run --no-sync prek run --all-files`.
+    It installs only the `hooks` dependency group (prek, Ruff, and ty), without test or documentation dependencies:
+
+    ```bash
+    uv sync --locked --no-default-groups --group hooks --no-install-project
+    ```
+
+    Hook commands use `--no-sync` to reuse the prepared environment without installing the default `dev` group.
     Run `uv sync` after dependency updates to keep the hook tools up to date.
 
 4. Run tests to verify setup:
