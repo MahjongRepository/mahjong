@@ -51,15 +51,14 @@ To set up the project locally for development:
 
     The hooks run Ruff lint fixes and formatting on staged Python files, followed by ty type checks
     on the entire `mahjong` package before each commit, using the tool versions installed from `uv.lock`.
-    Review any automatic fixes and stage
-    the updated files before committing again. After changing the hook configuration,
+    Review any automatic fixes and stage the updated files before committing again. After changing the hook configuration,
     check all tracked files with:
 
     ```bash
     uv run prek run --all-files
     ```
 
-    CI runs the same hooks on all tracked files and fails if a hook reports an error or changes files.
+    CI runs Ruff and ty directly through `make lint` and `make type`; it does not run prek.
     Run `uv sync` after dependency updates to keep the hook tools up to date.
 
 4. Run tests to verify setup:

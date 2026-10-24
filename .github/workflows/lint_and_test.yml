@@ -7,9 +7,6 @@ on:
     paths:
       - mahjong/**
       - tests/**
-      - examples/**
-      - docs/**/*.py
-      - .pre-commit-config.yaml
       - pyproject.toml
       - uv.lock
       - Makefile
@@ -20,9 +17,6 @@ on:
     paths:
       - mahjong/**
       - tests/**
-      - examples/**
-      - docs/**/*.py
-      - .pre-commit-config.yaml
       - pyproject.toml
       - uv.lock
       - Makefile
@@ -46,10 +40,10 @@ jobs:
           python-version: "3.10"
 
       - name: Install libs
-        run: uv sync --locked --no-default-groups --group lint --group typing --no-install-project
+        run: uv sync --locked --no-default-groups --group lint --no-install-project
 
-      - name: Run pre-commit hooks
-        run: uv run --no-sync prek run --all-files
+      - name: Lint files
+        run: make lint
 
   typecheck:
     runs-on: ubuntu-latest

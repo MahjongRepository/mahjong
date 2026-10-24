@@ -443,7 +443,6 @@ docs = [
     { name = "sphinx-rtd-theme" },
 ]
 lint = [
-    { name = "prek" },
     { name = "ruff" },
 ]
 test = [
@@ -470,10 +469,7 @@ docs = [
     { name = "sphinx", specifier = ">=8.1.3" },
     { name = "sphinx-rtd-theme", specifier = ">=3.1.0" },
 ]
-lint = [
-    { name = "prek", specifier = ">=0.5.7,<0.6" },
-    { name = "ruff", specifier = ">=0.17.1,<0.18" },
-]
+lint = [{ name = "ruff", specifier = ">=0.17.1,<0.18" }]
 test = [
     { name = "pytest", specifier = ">=9.0.2,<10" },
     { name = "pytest-cov", specifier = ">=7.0.0,<8" },

@@ -51,13 +51,13 @@ mahjong = ["py.typed"]
 
 [dependency-groups]
 dev = [
+    "prek>=0.5.7,<0.6",
     { include-group = "lint" },
     { include-group = "typing" },
     { include-group = "test" },
     { include-group = "docs" },
 ]
 lint = [
-    "prek>=0.5.7,<0.6",
     "ruff>=0.17.1,<0.18",
 ]
 typing = [
