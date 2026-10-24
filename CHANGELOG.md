@@ -1,6 +1,63 @@
 Releases History
 ================
 
+2.1.0 (Oct 24, 2026)
+-------------------
+
+## New features
+
+### Three-player mahjong (sanma) support
+- `Shanten.calculate_shanten()` and `Shanten.calculate_shanten_for_regular_hand()` now accept an `is_three_player` parameter. With it, 2m-8m cannot be used to build melds, and a hand containing 2m-8m raises `ValueError`.
+- `OptionalRules` now accepts an `is_three_player` parameter. With it, a tsumo total counts two payers instead of three, each honba counter is worth 200 points instead of 300 (on tsumo each of the two payers pays 100), and a 1m dora indicator points to 9m (for both dora and ura dora).
+- `plus_dora()` and `build_dora_count_map()` now accept an `is_three_player` parameter.
+
+### Nuki dora support
+`HandConfig` now accepts a `num_nuki_dora` parameter. Each extracted north wind counts as one dora, plus the north wind dora count from the dora indicators. With riichi, the north wind ura dora count is added as well.
+
+### Python 3.15 support
+Python 3.15 is now officially supported. The test suite also runs on PyPy 3.12, GraalPy, and free-threaded CPython.
+
+## Bug fixes
+- `HandCalculator.estimate_hand_value()` now picks the hand decomposition with the highest score. Previously it ranked decompositions by han and fu, so a counted (kazoe) yakuman of 14 han beat suuankou of 13 han, and with kazoe capped at sanbaiman the hand paid 24000 instead of 32000. On an equal score a real yakuman now wins over kazoe yakuman, as on Tenhou.
+- `HandCalculator.estimate_hand_value()` now creates a new `HandConfig` when `config=None` instead of sharing a module-level instance, which could produce wrong dora counts when used from multiple threads.
+
+## What's Changed
+* feat: Add the shanten calculation for three player mahjong by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/269
+* test: Unify the variable names of the calculation results by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/272
+* chore: Update astral-sh/setup-uv by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/273
+* chore: Update actions/upload-pages-artifact by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/274
+* fix: Create a new `HandConfig` instance when `config=None` in `HandCalculator.estimate_hand_value` by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/271
+* feat: Support nuki dora for hand yaku calculations by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/270
+* refactor: Add a type hint for hand_yaku by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/275
+* refactor: move num_nuki_dora to HandConfig by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/276
+* feat: Support the honba counters calculation for three-player by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/277
+* docs: Add support for three-player mahjong scoring rules in Wiki by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/278
+* chore: Update actions/checkout by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/279
+* chore: Update astral-sh/setup-uv by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/280
+* chore: Avoid installing unnecessary dependencies in CI by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/281
+* chore: Update astral-sh/setup-uv by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/285
+* feat: add Python 3.15 to supported versions by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/286
+* ci: add PyPy 3.12 to CI Python version matrix by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/288
+* ci: add GraalPy to CI Python version matrix by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/289
+* chore: update Ruff by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/291
+* chore: commit uv.lock by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/292
+* ci: pin GitHub Actions to full commit SHAs by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/293
+* ci: add Dependabot by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/294
+* ci: quote environment file paths in documentation workflow by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/295
+* ci: add seven-day cooldowns to Dependabot updates by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/296
+* ci: restrict lint and test workflow token permissions by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/297
+* ci: disable credential persistence in Wiki checkout by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/298
+* ci: add GitHub configuration lint by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/300
+* ci: narrow lint test triggers by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/301
+* ci: add free-threaded Python versions to test matrix by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/302
+* chore: refine package classifiers by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/306
+* fix: point 1m dora indicator to 9m in three-player mahjong by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/304
+* docs: add three-player mahjong usage and validation results to Wiki by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/305
+* fix: pick the hand decomposition with the highest cost by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/307
+* perf: sort calculated hands in place by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/308
+
+**Full Changelog**: https://github.com/MahjongRepository/mahjong/compare/v2.0.0...v2.1.0
+
 2.0.0 (Apr 02, 2026)
 -------------------
 
