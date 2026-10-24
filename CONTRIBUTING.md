@@ -99,14 +99,16 @@ the focused checks; passing a subset with `--no-cov` does not replace full-suite
 - Wiki sources live in [.github/wiki/](.github/wiki/); edit these files so changes can be reviewed
   and published by the existing workflow.
 
-Build the API documentation locally from the repository root:
+Build the API documentation from `docs/`:
 
 ```bash
-uv run --no-sync sphinx-build -b html docs/source docs/build/html
+cd docs
+uv run --no-sync make html
 ```
 
-Open `docs/build/html/index.html` to review the result and inspect the build output for warnings.
-When adding or changing an example, run it with `uv run --no-sync examples/FILE.py` and check the output.
+On Windows without Make, use `uv run --no-sync .\make.bat html` instead.
+Open `build/html/index.html` to review the result and inspect the build output for warnings.
+Run examples from the repository root with `uv run --no-sync examples/FILE.py` and check the output.
 
 ## Prepare a pull request
 
