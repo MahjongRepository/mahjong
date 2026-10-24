@@ -77,13 +77,15 @@ make check  # Applies formatting and lint fixes, then runs all checks and tests.
 ### Add regression tests
 
 Tests live in [tests/](tests/). Pytest discovers files named `tests_*.py`, as configured in `pyproject.toml`.
-Add a regression test alongside related tests and use `pytest.mark.parametrize` when several cases
-exercise the same behavior. Reuse the helpers in [tests/utils_for_tests.py](tests/utils_for_tests.py)
-where they make the inputs easier to read.
 
-For a bug fix, confirm that the new test reproduces the bug before the fix and passes afterward.
-Keep the example small, and make any non-default rule settings explicit. Assert the expected result,
-including relevant error conditions or scoring details, rather than only checking that the call succeeds.
+When adding regression tests:
+
+- Place them alongside related tests.
+- Use `pytest.mark.parametrize` when several cases exercise the same behavior.
+- Reuse the helpers in [tests/utils_for_tests.py](tests/utils_for_tests.py) where they make the inputs easier to read.
+- For a bug fix, confirm that the test fails before the fix and passes afterward.
+- Keep examples small and make any non-default rule settings explicit.
+- Assert the expected result, including relevant error conditions or scoring details.
 
 During development, run a focused subset without the full-suite coverage requirement:
 
@@ -91,8 +93,8 @@ During development, run a focused subset without the full-suite coverage require
 uv run --no-sync pytest --no-cov tests/tests_shanten.py
 ```
 
-The full test command above includes doctests and requires 100% line coverage. Always run it after
-the focused checks; passing a subset with `--no-cov` does not replace full-suite validation.
+The full test command above includes doctests and requires 100% line coverage.
+Run the full suite after the focused checks; `--no-cov` is only for running a subset during development.
 
 ### Update documentation
 
