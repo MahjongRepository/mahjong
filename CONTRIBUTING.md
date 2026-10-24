@@ -119,12 +119,12 @@ Run examples from the repository root with `uv run --no-sync examples/FILE.py` a
 ## Prepare a pull request
 
 - Keep each pull request focused on one problem or improvement, and link the related issue if there is one.
-- Explain the previous behavior, the intended result, and the reason for the change. List the checks
-  you ran and mention any checks you could not run.
+- Briefly describe the change. If an issue already explains it, a reference such as `Fixes #123`
+  or `Closes #123` is enough.
 - Preserve existing public APIs and default rule behavior where possible. Discuss intentional compatibility
   changes explicitly, and update affected examples and documentation.
-- Add a [CHANGELOG.md](CHANGELOG.md) entry for user-visible changes, following its existing structure.
-  Describe breaking changes and migration steps when applicable.
+- Updating [CHANGELOG.md](CHANGELOG.md) is not required in pull requests; the project owner updates it
+  before each release.
 - Use a descriptive title with an appropriate Conventional Commit prefix, such as `fix:`, `feat:`,
   `docs:`, or `ci:`, consistent with the repository's recent history.
 - Submit upstream contributions against `MahjongRepository/mahjong`'s `master` branch unless a maintainer
