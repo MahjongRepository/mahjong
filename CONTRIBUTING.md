@@ -106,7 +106,12 @@ cd docs
 uv run --no-sync make html
 ```
 
-On Windows without Make, use `uv run --no-sync .\make.bat html` instead.
+On Windows without Make, use:
+
+```powershell
+uv run --no-sync .\make.bat html
+```
+
 Open `build/html/index.html` to review the result and inspect the build output for warnings.
 Run examples from the repository root with `uv run --no-sync examples/FILE.py` and check the output.
 
