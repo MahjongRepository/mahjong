@@ -1,6 +1,6 @@
 # Contributing to mahjong
 
-Welcome! Bug reports, fixes, documentation improvements, and other contributions are welcome.
+Welcome to the mahjong community! We're glad you're interested in contributing.
 
 ## Issues
 
