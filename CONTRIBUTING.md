@@ -106,7 +106,7 @@ cd docs
 uv run --no-sync make html
 ```
 
-On Windows without Make, use:
+On Windows without Make, run the following from the `docs/` directory:
 
 ```powershell
 uv run --no-sync .\make.bat html
