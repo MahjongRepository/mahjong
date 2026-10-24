@@ -65,9 +65,14 @@ uv run --no-sync ruff format --check
 uv run --no-sync ty check
 ```
 
-If you use Make, the existing `make lint`, `make type`, and `make tests` targets run these checks.
-`make check` also applies formatting and lint fixes before running the checks and tests.
-The direct uv commands work without Make, including on Windows.
+If Make is available, you can also use:
+
+```bash
+make lint
+make type
+make tests
+make check  # Applies formatting and lint fixes, then runs all checks and tests.
+```
 
 ### Add regression tests
 
