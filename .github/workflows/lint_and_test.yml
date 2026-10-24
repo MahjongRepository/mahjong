@@ -6,9 +6,7 @@ on:
       - master
     paths:
       - mahjong/**
-      - tests/**
-      - examples/**
-      - docs/**/*.py
+      - '**/*.py'
       - .pre-commit-config.yaml
       - pyproject.toml
       - uv.lock
@@ -19,9 +17,7 @@ on:
       - master
     paths:
       - mahjong/**
-      - tests/**
-      - examples/**
-      - docs/**/*.py
+      - '**/*.py'
       - .pre-commit-config.yaml
       - pyproject.toml
       - uv.lock
