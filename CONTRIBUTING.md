@@ -101,7 +101,8 @@ Run the full suite after the focused checks; `--no-cov` is only for running a su
 - Public API documentation is built from [docs/source/](docs/source/) and Python docstrings.
 - Runnable examples live in [examples/](examples/).
 - Wiki sources live in [.github/wiki/](.github/wiki/); edit these files so changes can be reviewed
-  and published by the existing workflow.
+  and published by the existing workflow. When adding or updating a Wiki code example, also add
+  a corresponding runnable example in [examples/](examples/), or update the existing one.
 
 Build the API documentation from `docs/`:
 
