@@ -1,0 +1,84 @@
+name: Build and check distributions
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - mahjong/**
+      - pyproject.toml
+      - uv.lock
+      - MANIFEST.in
+      - README.md
+      - LICENSE.txt
+      - tests/check_distribution.py
+      - .github/workflows/check_package.yml
+  pull_request:
+    branches: [master]
+    paths:
+      - mahjong/**
+      - pyproject.toml
+      - uv.lock
+      - MANIFEST.in
+      - README.md
+      - LICENSE.txt
+      - tests/check_distribution.py
+      - .github/workflows/check_package.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      artifact-name: ${{ steps.package.outputs.artifact-name }}
+      package-version: ${{ steps.package.outputs.package_version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Builds the wheel from the sdist, checks its contents and PyPI metadata,
+      # and uploads the distributions for the installation checks and review.
+      - name: Build and inspect distributions
+        id: package
+        uses: hynek/build-and-inspect-python-package@2abe76da66d0a6a4a227101f9348ee855797cfa5 # v3.0.1
+
+  install:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        format: [wheel, sdist]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv and the minimum supported Python
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          python-version: "3.10"
+
+      - name: Download distributions
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.build.outputs.artifact-name }}
+          path: ${{ runner.temp }}/packages
+
+      - name: Check an isolated installation
+        working-directory: ${{ runner.temp }}
+        env:
+          DISTRIBUTION_FORMAT: ${{ matrix.format }}
+          EXPECTED_VERSION: ${{ needs.build.outputs.package-version }}
+        run: |
+          case "$DISTRIBUTION_FORMAT" in
+            wheel) distributions=(packages/*.whl) ;;
+            sdist) distributions=(packages/*.tar.gz) ;;
+          esac
+          test "${#distributions[@]}" -eq 1
+          uv run --isolated --no-project --with "${distributions[0]}" \
+            python -I "$GITHUB_WORKSPACE/tests/check_distribution.py" "$EXPECTED_VERSION"
