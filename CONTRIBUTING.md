@@ -8,8 +8,8 @@ For larger changes, consider opening an issue first to discuss the approach.
 
 Search the existing [issues](https://github.com/MahjongRepository/mahjong/issues) and
 [pull requests](https://github.com/MahjongRepository/mahjong/pulls) before opening a new one.
-Include a small runnable example. If the behavior differs between `mahjong` versions, Python versions,
-or operating systems, mention those differences.
+Include a small runnable example. If the behavior differs between Python versions or operating systems,
+mention those differences.
 
 For hand-calculation or rule-related reports, it helps to include:
 
