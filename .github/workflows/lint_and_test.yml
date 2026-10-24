@@ -46,7 +46,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install libs
-        run: uv sync --locked --no-default-groups --group lint --no-install-project
+        run: uv sync --locked --no-default-groups --group lint --group typing --no-install-project
 
       - name: Run pre-commit hooks
         run: uv run --no-sync prek run --all-files
