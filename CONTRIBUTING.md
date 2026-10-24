@@ -22,22 +22,41 @@ The [Wiki](https://github.com/MahjongRepository/mahjong/wiki) describes supporte
 
 ## Pull requests
 
+### Prerequisites
+
+- Git
+- Python 3.10 or newer
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+
 ### Set up a development environment
 
-Use a supported Python version (currently Python 3.10 or newer) and install
-[uv](https://docs.astral.sh/uv/getting-started/installation/).
-Fork the repository on GitHub, clone your fork, and create a branch for your change:
+1. Fork the repository on GitHub and clone your fork. Replace `YOUR-USERNAME` with your GitHub username:
 
-```bash
-git clone https://github.com/YOUR-USERNAME/mahjong.git
-cd mahjong
-git switch -c your-change
-uv sync --locked
-uv run --no-sync prek install
-```
+    ```bash
+    git clone https://github.com/YOUR-USERNAME/mahjong.git
+    cd mahjong
+    ```
 
-Replace `YOUR-USERNAME` and `your-change` with your GitHub username and branch name.
-The default `dev` dependency group includes the tools for hooks, tests, and documentation.
+2. Create a branch for your change. Replace `your-change` with your branch name:
+
+    ```bash
+    git switch -c your-change
+    ```
+
+3. Install development dependencies:
+
+    ```bash
+    uv sync --locked
+    ```
+
+    The default `dev` dependency group includes the tools for hooks, tests, and documentation.
+
+4. Install the Git hooks:
+
+    ```bash
+    uv run --no-sync prek install
+    ```
+
 Run `uv sync --locked` again after switching branches or pulling dependency updates, especially
 if you previously installed only a subset of dependency groups.
 
