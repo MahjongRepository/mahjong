@@ -54,7 +54,7 @@ The [Wiki](https://github.com/MahjongRepository/mahjong/wiki) describes supporte
 4. Install the Git hooks:
 
     ```bash
-    uv run --no-sync prek install
+    uv run prek install
     ```
 
 Run `uv sync --locked` again after switching branches or pulling dependency updates, especially
@@ -69,8 +69,8 @@ any resulting lockfile changes in your pull request. Do not edit the lockfile by
 Run these commands from the repository root before submitting a pull request:
 
 ```bash
-uv run --no-sync prek run --all-files
-uv run --no-sync pytest
+uv run prek run --all-files
+uv run pytest
 ```
 
 Some checks may modify files automatically. Review and stage any changes, then rerun the checks.
@@ -79,9 +79,9 @@ These checks also run in CI.
 For individual checks without automatic fixes:
 
 ```bash
-uv run --no-sync ruff check
-uv run --no-sync ruff format --check
-uv run --no-sync ty check
+uv run ruff check
+uv run ruff format --check
+uv run ty check
 ```
 
 If Make is available, you can also use:
@@ -109,7 +109,7 @@ When adding regression tests:
 During development, run a focused subset without the full-suite coverage requirement:
 
 ```bash
-uv run --no-sync pytest --no-cov tests/tests_shanten.py
+uv run pytest --no-cov tests/tests_shanten.py
 ```
 
 The full test command above includes doctests and requires 100% line coverage.
@@ -126,21 +126,21 @@ Build the API documentation from `docs/`:
 
 ```bash
 cd docs
-uv run --no-sync make html
+uv run make html
 ```
 
 On Windows without Make, use:
 
 ```powershell
 cd docs
-uv run --no-sync .\make.bat html
+uv run .\make.bat html
 ```
 
 Open `build/html/index.html` to review the result and inspect the build output for warnings.
 
 When adding or updating a Wiki code example, also add a corresponding runnable example in
 [examples/](examples/), or update the existing one.
-Run examples from the repository root with `uv run --no-sync examples/FILE.py` and check the output.
+Run examples from the repository root with `uv run examples/FILE.py` and check the output.
 
 ### Submit a pull request
 
