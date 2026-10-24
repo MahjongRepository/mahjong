@@ -7,12 +7,14 @@ repos:
         language: system
         types_or: [python, pyi]
         require_serial: true
+
       - id: ruff-format
         name: Ruff format
         entry: uv run --no-sync ruff format --exit-non-zero-on-format --force-exclude
         language: system
         types_or: [python, pyi]
         require_serial: true
+
       - id: ty-check
         name: ty check
         entry: uv run --no-sync ty check
