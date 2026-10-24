@@ -76,8 +76,7 @@ make check  # Applies formatting and lint fixes, then runs all checks and tests.
 
 ### Add regression tests
 
-Tests live in [tests/](tests/). Name test files `tests_*.py`, not `test_*.py`,
-as this project uses a naming convention that differs from pytest's default.
+Tests live in [tests/](tests/). Name test files `tests_*.py`, not `test_*.py` (unlike pytest's default).
 
 When adding regression tests:
 
