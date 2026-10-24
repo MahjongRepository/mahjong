@@ -77,7 +77,7 @@ make check  # Applies formatting and lint fixes, then runs all checks and tests.
 ### Add regression tests
 
 Tests live in [tests/](tests/). Name test files `tests_*.py`, not `test_*.py`,
-to match the discovery pattern configured in `pyproject.toml`.
+as this project uses a naming convention that differs from pytest's default.
 
 When adding regression tests:
 
