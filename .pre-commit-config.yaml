@@ -1,4 +1,5 @@
 fail_fast: true
+files: '\.pyi?$|^(pyproject\.toml|uv\.lock|\.pre-commit-config\.yaml)$'
 
 repos:
   - repo: local
@@ -7,14 +8,14 @@ repos:
         name: Ruff lint
         entry: uv run --no-sync ruff check --fix --exit-non-zero-on-fix --force-exclude
         language: system
-        types_or: [python, pyi]
+        pass_filenames: false
         require_serial: true
 
       - id: ruff-format
         name: Ruff format
         entry: uv run --no-sync ruff format --exit-non-zero-on-format --force-exclude
         language: system
-        types_or: [python, pyi]
+        pass_filenames: false
         require_serial: true
 
       - id: ty-check
@@ -22,4 +23,3 @@ repos:
         entry: uv run --no-sync ty check
         language: system
         pass_filenames: false
-        always_run: true

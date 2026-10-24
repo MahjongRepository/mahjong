@@ -49,8 +49,9 @@ To set up the project locally for development:
     uv run prek install
     ```
 
-    The hooks run Ruff lint fixes and formatting on staged Python files, followed by ty type checks
-    on the entire `mahjong` package before each commit, using the tool versions installed from `uv.lock`.
+    Changes to Python files (`.py` or `.pyi`), `pyproject.toml`, `uv.lock`, or `.pre-commit-config.yaml`
+    trigger all three hooks. Ruff runs lint fixes and formatting across its configured project scope,
+    followed by ty type checks on the entire `mahjong` package, using the tool versions installed from `uv.lock`.
     Review any automatic fixes and stage the updated files before committing again. After changing the hook configuration,
     check all tracked files with:
 
