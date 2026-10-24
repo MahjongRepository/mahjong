@@ -8,15 +8,11 @@ in an issue before investing in a large implementation.
 
 Search the existing [issues](https://github.com/MahjongRepository/mahjong/issues) and
 [pull requests](https://github.com/MahjongRepository/mahjong/pulls) before opening a new one.
-Include a minimal runnable example, the installed `mahjong` version, Python version, and operating system.
+Include a small runnable example. If the behavior differs between `mahjong` versions, Python versions,
+or operating systems, mention those differences.
 
-For hand-calculation or rule-related reports, also provide:
+For hand-calculation or rule-related reports, it helps to include:
 
-- The tiles and their representation (one-line string, 34-format, or 136-format), the winning tile,
-  and all melds, including their type and whether they are open.
-- The complete `HandConfig` and `OptionalRules` settings needed to reproduce the result, including
-  three-player rules, dealer/seat/round winds, riichi, and ron or tsumo where relevant.
-- Dora and ura dora indicators, red fives, and other inputs used in the example.
 - Expected and actual yaku, han, fu, points, or error. For shanten or agari reports, give the expected
   and actual shanten number or winning-hand result instead.
 - The rule reference or comparison result supporting the expectation. Identify differences in optional
