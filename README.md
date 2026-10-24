@@ -26,67 +26,10 @@ So, we can say that our hand calculator works the same way that tenhou.net hand 
 pip install mahjong
 ```
 
-## Local development setup
+## Contributing
 
-To set up the project locally for development:
-
-1. Clone the repository:
-
-    ```bash
-    git clone https://github.com/MahjongRepository/mahjong.git
-    cd mahjong
-    ```
-
-2. Setup env using [uv](https://github.com/astral-sh/uv):
-
-    ```bash
-    uv sync
-    ```
-
-3. Install the Git hooks using [prek](https://prek.j178.dev/):
-
-    ```bash
-    uv run prek install
-    ```
-
-    Changes to Python files (`.py` or `.pyi`), `pyproject.toml`, `uv.lock`, or `.pre-commit-config.yaml`
-    trigger all three hooks. Ruff runs lint fixes and formatting across its configured project scope,
-    followed by ty type checks on the entire `mahjong` package, using the tool versions installed from `uv.lock`.
-    Review any automatic fixes and stage the updated files before committing again. After changing the hook configuration,
-    check all tracked files with:
-
-    ```bash
-    uv run prek run --all-files
-    ```
-
-    Hooks stop at the first failure or automatic change. Rerun them after fixing and staging changes;
-    ty runs only after both Ruff hooks pass.
-
-    CI runs the same hooks in a single job using `uv run --no-sync prek run --all-files`.
-    It installs only the `hooks` dependency group (prek, Ruff, and ty), without test or documentation dependencies:
-
-    ```bash
-    uv sync --locked --no-default-groups --group hooks --no-install-project
-    ```
-
-    Hook commands use `--no-sync` to reuse the prepared environment without installing the default `dev` group.
-    Run `uv sync` after dependency updates to keep the hook tools up to date.
-
-4. Run tests to verify setup:
-
-    ```bash
-    make tests
-    # Or directly:
-    uv run pytest
-    ```
-
-5. Run full checks before committing:
-
-    ```bash
-    make check   # Runs format, lint, type checks, and tests
-    ```
-
-    The Git hooks run Ruff and ty; run tests separately as part of the full checks above.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, checks, regression tests,
+documentation, and pull request guidance, including the information needed to report hand-calculation bugs.
 
 ## License
 
