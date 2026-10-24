@@ -28,8 +28,8 @@ pip install mahjong
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, checks, regression tests,
-documentation, and pull request guidance, including the information needed to report hand-calculation bugs.
+For guidance on setting up a development environment and contributing to mahjong,
+see [Contributing to mahjong](CONTRIBUTING.md).
 
 ## License
 
