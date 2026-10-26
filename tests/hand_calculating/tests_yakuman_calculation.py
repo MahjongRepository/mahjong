@@ -178,7 +178,7 @@ def test_kokushi_with_extra_tiles_is_rejected(man: str) -> None:
 
 
 def test_kokushi_with_closed_kan_is_rejected() -> None:
-    tiles = TilesConverter.string_to_136_array(sou="119", man="19", pin="19", honors="1234567")
+    tiles = TilesConverter.string_to_136_array(sou="119", man="19", pin="155559", honors="1234567")
     win_tile = _string_to_136_tile(sou="1")
     melds = [_make_meld(Meld.KAN, is_open=False, pin="5555")]
 
