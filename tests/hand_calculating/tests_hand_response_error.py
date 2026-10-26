@@ -65,6 +65,23 @@ def test_hand_not_winning() -> None:
     assert result.error == HandCalculator.ERR_HAND_NOT_WINNING
 
 
+@pytest.mark.parametrize(
+    "honors",
+    [
+        "1",  # single tile, 15 tiles in total
+        "1111",  # four tiles without a declared kan, 18 tiles in total
+    ],
+)
+def test_hand_with_honors_that_cannot_be_decomposed_is_not_winning(honors: str) -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(man="234567", pin="23455", sou="678", honors=honors)
+    win_tile = _string_to_136_tile(sou="8")
+
+    result = hand.estimate_hand_value(tiles, win_tile)
+    assert result.error == HandCalculator.ERR_HAND_NOT_WINNING
+
+
 def test_no_yaku() -> None:
     hand = HandCalculator()
 
