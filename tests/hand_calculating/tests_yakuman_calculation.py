@@ -158,6 +158,34 @@ def test_is_kokushi() -> None:
     assert len(result.yaku) == 1
 
 
+@pytest.mark.parametrize(
+    ("man", "honors"),
+    [
+        pytest.param("12349", "1234567", id="extra_sequence"),
+        pytest.param("122229", "1234567", id="extra_four_of_a_kind"),
+        pytest.param("1559", "1234567", id="extra_pair"),
+    ],
+)
+def test_kokushi_with_extra_tiles_is_rejected(man: str, honors: str) -> None:
+    config = YakuConfig()
+    tiles = TilesConverter.string_to_136_array(sou="119", man=man, pin="19", honors=honors)
+    win_tile = _string_to_136_tile(sou="1")
+
+    assert not config.kokushi.is_condition_met(None, TilesConverter.to_34_array(tiles))
+
+    result = HandCalculator.estimate_hand_value(tiles, win_tile)
+    assert result.error == HandCalculator.ERR_HAND_NOT_WINNING
+
+
+def test_kokushi_with_closed_kan_is_rejected() -> None:
+    tiles = TilesConverter.string_to_136_array(sou="119", man="19", pin="19", honors="1234567")
+    win_tile = _string_to_136_tile(sou="1")
+    melds = [_make_meld(Meld.KAN, is_open=False, pin="5555")]
+
+    result = HandCalculator.estimate_hand_value(tiles, win_tile, melds=melds)
+    assert result.error == HandCalculator.ERR_HAND_NOT_WINNING
+
+
 def test_is_ryuisou() -> None:
     hand = HandCalculator()
     config = YakuConfig()

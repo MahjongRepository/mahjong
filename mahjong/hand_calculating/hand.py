@@ -596,7 +596,7 @@ class HandCalculator:
                 calculated_hands.append(calculated_hand)
 
         # exception hand
-        if not is_open_hand and config.yaku.kokushi.is_condition_met(None, tiles_34):
+        if not melds and config.yaku.kokushi.is_condition_met(None, tiles_34):
             if tiles_34[win_tile // 4] == 2:
                 hand_yaku.append(config.yaku.daburu_kokushi)
             else:
