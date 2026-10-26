@@ -153,7 +153,7 @@ class Meld:
         Check that the meld tiles match its type and that only a kan is closed.
 
         A chi is three consecutive tiles of one suit, a pon is three identical tiles, a kan
-        or shouminkan is four identical tiles, a nuki is a single north wind. Chi, pon and
+        or shouminkan is four identical tiles, a nuki is one to four north winds. Chi, pon and
         shouminkan are always called, so only a kan or a nuki may be closed. Unknown types
         are not valid.
 
@@ -179,7 +179,7 @@ class Meld:
             case Meld.KAN | Meld.SHOUMINKAN:
                 is_valid_shape = len(tiles_34) == 4 and len(set(tiles_34)) == 1
             case Meld.NUKI:
-                is_valid_shape = tiles_34 == [NORTH]
+                is_valid_shape = 0 < len(tiles_34) <= 4 and all(tile == NORTH for tile in tiles_34)
             case _:
                 return False
 

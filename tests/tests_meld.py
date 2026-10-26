@@ -38,6 +38,8 @@ def test_tiles_34_updates_on_tiles_reassignment() -> None:
         pytest.param(_make_meld(Meld.SHOUMINKAN, man="1111"), id="shouminkan"),
         pytest.param(_make_meld(Meld.NUKI, honors="4"), id="nuki"),
         pytest.param(_make_meld(Meld.NUKI, is_open=False, honors="4"), id="closed_nuki"),
+        pytest.param(_make_meld(Meld.NUKI, honors="44"), id="nuki_two_tiles"),
+        pytest.param(_make_meld(Meld.NUKI, honors="4444"), id="nuki_four_tiles"),
     ],
 )
 def test_is_valid(meld: Meld) -> None:
@@ -49,7 +51,8 @@ def test_is_valid(meld: Meld) -> None:
     [
         pytest.param("bad", TilesConverter.string_to_136_array(man="111"), id="unknown_type"),
         pytest.param(Meld.NUKI, TilesConverter.string_to_136_array(honors="1"), id="nuki_not_north"),
-        pytest.param(Meld.NUKI, TilesConverter.string_to_136_array(honors="44"), id="nuki_two_tiles"),
+        pytest.param(Meld.NUKI, TilesConverter.string_to_136_array(honors="14"), id="nuki_mixed_tiles"),
+        pytest.param(Meld.NUKI, [*TilesConverter.string_to_136_array(honors="4444"), 120], id="nuki_five_tiles"),
         pytest.param(Meld.NUKI, [], id="nuki_empty"),
         pytest.param(Meld.CHI, TilesConverter.string_to_136_array(man="89", pin="1"), id="chi_across_suits"),
         pytest.param(Meld.CHI, TilesConverter.string_to_136_array(sou="9", honors="12"), id="chi_into_honors"),
