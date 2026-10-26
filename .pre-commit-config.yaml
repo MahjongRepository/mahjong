@@ -1,0 +1,25 @@
+fail_fast: true
+files: '\.pyi?$|^(pyproject\.toml|uv\.lock|\.pre-commit-config\.yaml)$'
+
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: Ruff lint
+        entry: uv run --no-sync ruff check --fix --exit-non-zero-on-fix --force-exclude
+        language: system
+        pass_filenames: false
+        require_serial: true
+
+      - id: ruff-format
+        name: Ruff format
+        entry: uv run --no-sync ruff format --exit-non-zero-on-format --force-exclude
+        language: system
+        pass_filenames: false
+        require_serial: true
+
+      - id: ty-check
+        name: ty check
+        entry: uv run --no-sync ty check
+        language: system
+        pass_filenames: false
