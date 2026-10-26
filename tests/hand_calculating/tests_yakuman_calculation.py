@@ -159,16 +159,16 @@ def test_is_kokushi() -> None:
 
 
 @pytest.mark.parametrize(
-    ("man", "honors"),
+    "man",
     [
-        pytest.param("12349", "1234567", id="extra_sequence"),
-        pytest.param("122229", "1234567", id="extra_four_of_a_kind"),
-        pytest.param("1559", "1234567", id="extra_pair"),
+        pytest.param("12349", id="extra_sequence"),
+        pytest.param("122229", id="extra_four_of_a_kind"),
+        pytest.param("1559", id="extra_pair"),
     ],
 )
-def test_kokushi_with_extra_tiles_is_rejected(man: str, honors: str) -> None:
+def test_kokushi_with_extra_tiles_is_rejected(man: str) -> None:
     config = YakuConfig()
-    tiles = TilesConverter.string_to_136_array(sou="119", man=man, pin="19", honors=honors)
+    tiles = TilesConverter.string_to_136_array(sou="119", man=man, pin="19", honors="1234567")
     win_tile = _string_to_136_tile(sou="1")
 
     assert not config.kokushi.is_condition_met(None, TilesConverter.to_34_array(tiles))
