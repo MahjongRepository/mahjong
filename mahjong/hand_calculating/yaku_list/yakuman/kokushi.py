@@ -21,9 +21,9 @@ class KokushiMusou(Yaku):
 
         :param hand: not used for kokushi; pass None
         :param tiles_34: hand in 34-format count array
-        :return: True if the hand contains one of each terminal and honor with exactly one duplicate
+        :return: True if the hand is exactly 14 tiles: one of each terminal and honor with exactly one duplicate
         """
-        return (
+        return sum(tiles_34) == 14 and (
             tiles_34[0]
             * tiles_34[8]
             * tiles_34[9]
