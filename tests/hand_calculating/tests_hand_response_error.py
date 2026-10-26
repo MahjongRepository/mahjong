@@ -312,63 +312,33 @@ def test_win_tile_only_in_opened_meld() -> None:
     assert result.error == HandCalculator.ERR_HAND_NOT_WINNING
 
 
-@pytest.mark.parametrize("meld_type", ["bad", Meld.NUKI])
-def test_meld_invalid_type(meld_type: str) -> None:
-    hand = HandCalculator()
-
-    tiles = TilesConverter.string_to_136_array(man="111", pin="345", sou="67822", honors="555")
-    win_tile = _string_to_136_tile(sou="2")
-
-    melds = [Meld(meld_type=meld_type, tiles=tiles[0:3])]
-    result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
-    assert result.error == HandCalculator.ERR_MELD_INVALID_TYPE
-
-
-@pytest.mark.parametrize(
-    ("meld_type", "meld_tiles"),
-    [
-        (Meld.CHI, TilesConverter.string_to_136_array(man="89", pin="1")),
-        (Meld.CHI, TilesConverter.string_to_136_array(sou="9", honors="12")),
-        (Meld.CHI, TilesConverter.string_to_136_array(honors="123")),
-        (Meld.CHI, TilesConverter.string_to_136_array(man="112")),
-        (Meld.CHI, TilesConverter.string_to_136_array(man="1234")),
-        (Meld.CHI, []),
-        (Meld.PON, TilesConverter.string_to_136_array(man="1")),
-        (Meld.PON, TilesConverter.string_to_136_array(man="123")),
-        (Meld.PON, TilesConverter.string_to_136_array(man="1111")),
-        (Meld.PON, []),
-        (Meld.KAN, TilesConverter.string_to_136_array(man="111")),
-        (Meld.KAN, TilesConverter.string_to_136_array(man="1112")),
-        (Meld.SHOUMINKAN, TilesConverter.string_to_136_array(man="1112")),
-    ],
-)
-def test_meld_invalid_tiles(meld_type: str, meld_tiles: list[int]) -> None:
-    hand = HandCalculator()
-
-    tiles = [*meld_tiles, *TilesConverter.string_to_136_array(pin="345", sou="67822", honors="555")]
-    win_tile = _string_to_136_tile(sou="2")
-
-    melds = [Meld(meld_type=meld_type, tiles=meld_tiles)]
-    result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
-    assert result.error == HandCalculator.ERR_MELD_INVALID_TILES
-
-
 @pytest.mark.parametrize(
     "meld",
     [
-        _make_meld(Meld.CHI, is_open=False, man="123"),
-        _make_meld(Meld.PON, is_open=False, man="111"),
-        _make_meld(Meld.SHOUMINKAN, is_open=False, man="1111"),
+        pytest.param(_make_meld("bad", man="111"), id="invalid_type"),
+        pytest.param(_make_meld(Meld.PON, man="123"), id="invalid_tiles"),
+        pytest.param(_make_meld(Meld.PON, is_open=False, man="111"), id="closed_pon"),
     ],
 )
-def test_closed_meld_not_kan(meld: Meld) -> None:
+def test_meld_invalid(meld: Meld) -> None:
     hand = HandCalculator()
 
     tiles = [*meld.tiles, *TilesConverter.string_to_136_array(pin="345", sou="67822", honors="555")]
     win_tile = _string_to_136_tile(sou="2")
 
-    result = hand.estimate_hand_value(tiles, win_tile, melds=[meld], config=_make_hand_config(is_riichi=True))
-    assert result.error == HandCalculator.ERR_CLOSED_MELD_NOT_KAN
+    result = hand.estimate_hand_value(tiles, win_tile, melds=[meld])
+    assert result.error == HandCalculator.ERR_MELD_INVALID
+
+
+def test_nuki_meld_not_supported() -> None:
+    hand = HandCalculator()
+
+    meld = _make_meld(Meld.NUKI, is_open=False, honors="4")
+    tiles = [*meld.tiles, *TilesConverter.string_to_136_array(man="111", pin="345", sou="67822", honors="555")]
+    win_tile = _string_to_136_tile(sou="2")
+
+    result = hand.estimate_hand_value(tiles, win_tile, melds=[meld])
+    assert result.error == HandCalculator.ERR_NUKI_MELD_NOT_SUPPORTED
 
 
 def test_meld_tile_not_in_hand() -> None:

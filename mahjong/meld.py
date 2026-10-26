@@ -1,7 +1,9 @@
 from collections.abc import Sequence
 from functools import cached_property
 
+from mahjong.constants import NORTH
 from mahjong.tile import TilesConverter
+from mahjong.utils import is_chi, is_honor, is_pon
 
 
 class Meld:
@@ -145,3 +147,40 @@ class Meld:
         :return: list of tile indices in 34-format
         """
         return [x // 4 for x in self.tiles]
+
+    def is_valid(self) -> bool:
+        """
+        Check that the meld tiles match its type and that only a kan is closed.
+
+        A chi is three consecutive tiles of one suit, a pon is three identical tiles, a kan
+        or shouminkan is four identical tiles, a nuki is a single north wind. Chi, pon and
+        shouminkan are always called, so only a kan or a nuki may be closed. Unknown types
+        are not valid.
+
+        >>> from mahjong.meld import Meld
+        >>> from mahjong.tile import TilesConverter
+        >>> Meld(meld_type=Meld.CHI, tiles=TilesConverter.string_to_136_array(man="123")).is_valid()
+        True
+
+        >>> Meld(meld_type=Meld.CHI, tiles=TilesConverter.string_to_136_array(man="89", pin="1")).is_valid()
+        False
+
+        >>> Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man="111"), opened=False).is_valid()
+        False
+
+        :return: True if the meld is valid
+        """
+        tiles_34 = sorted(self.tiles_34)
+        match self.type:
+            case Meld.CHI:
+                is_valid_shape = is_chi(tiles_34) and not is_honor(tiles_34[0]) and tiles_34[0] // 9 == tiles_34[2] // 9
+            case Meld.PON:
+                is_valid_shape = is_pon(tiles_34)
+            case Meld.KAN | Meld.SHOUMINKAN:
+                is_valid_shape = len(tiles_34) == 4 and len(set(tiles_34)) == 1
+            case Meld.NUKI:
+                is_valid_shape = tiles_34 == [NORTH]
+            case _:
+                return False
+
+        return is_valid_shape and (self.opened or self.type in (Meld.KAN, Meld.NUKI))
