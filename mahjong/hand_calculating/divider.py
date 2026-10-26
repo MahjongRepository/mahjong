@@ -2,6 +2,7 @@ from collections.abc import Collection, Sequence
 from dataclasses import dataclass
 from enum import IntEnum
 from functools import lru_cache
+from itertools import product
 from typing import Literal
 
 from mahjong.meld import Meld
@@ -160,29 +161,27 @@ class HandDivider:
         man_combinations = HandDivider._decompose_single_color_hand(hand[0:9], 0)
         pin_combinations = HandDivider._decompose_single_color_hand(hand[9:18], 9)
         sou_combinations = HandDivider._decompose_single_color_hand(hand[18:27], 18)
-        honors = HandDivider._decompose_honors_hand(hand[27:34])
+        honors_combinations = HandDivider._decompose_honors_hand(hand[27:34])
 
         combinations: list[list[_Block]] = []
 
         if not melds and (chiitoitsu := HandDivider._decompose_chiitoitsu(hand)):
             combinations.append(chiitoitsu)
 
-        for man in man_combinations:
-            for pin in pin_combinations:
-                for sou in sou_combinations:
-                    # For invalid suits, *_combinations will be [] and the loop will not be executed.
-                    all_blocks = [*man, *pin, *sou, *honors]
+        # For invalid suits or honors, *_combinations will be [] and the loop will not be executed.
+        for man, pin, sou, honors in product(man_combinations, pin_combinations, sou_combinations, honors_combinations):
+            all_blocks = [*man, *pin, *sou, *honors]
 
-                    num_pair = sum(block.ty == _BlockType.PAIR for block in all_blocks)
-                    if num_pair != 1:
-                        continue
+            num_pair = sum(block.ty == _BlockType.PAIR for block in all_blocks)
+            if num_pair != 1:
+                continue
 
-                    all_blocks.extend(melds)
-                    if len(all_blocks) != 5:
-                        continue
+            all_blocks.extend(melds)
+            if len(all_blocks) != 5:
+                continue
 
-                    all_blocks.sort()
-                    combinations.append(all_blocks)
+            all_blocks.sort()
+            combinations.append(all_blocks)
 
         combinations.sort()
         return tuple(tuple(blocks) for blocks in combinations)
@@ -282,7 +281,9 @@ class HandDivider:
         return combinations
 
     @staticmethod
-    def _decompose_honors_hand(honors_hand: list[int]) -> list[_Block]:
+    def _decompose_honors_hand(honors_hand: list[int]) -> list[list[_Block]]:
+        # If there is no honor tile, returns [[]].
+        # If the honors cannot be decomposed, returns [].
         has_pair = False
         blocks: list[_Block] = []
         for i, count in enumerate(honors_hand):
@@ -299,4 +300,4 @@ class HandDivider:
                 case _:
                     return []
 
-        return blocks
+        return [blocks]

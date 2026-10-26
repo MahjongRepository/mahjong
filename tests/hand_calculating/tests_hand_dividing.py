@@ -163,6 +163,26 @@ def test_decompose_honors_hand_rejects_invalid_tile_count() -> None:
     assert result == []
 
 
+def test_divide_hand_skips_combinations_with_pairs_in_several_suits() -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="11456", pin="22789", sou="33", honors="44")
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
+@pytest.mark.parametrize(
+    "honors",
+    [
+        "1",  # single tile
+        "1122",  # two pairs
+        "1111",  # four tiles without a declared kan
+    ],
+)
+def test_divide_hand_rejects_honors_that_cannot_be_decomposed(honors: str) -> None:
+    tiles_34 = TilesConverter.string_to_34_array(man="234567", pin="23455", sou="678", honors=honors)
+    result = HandDivider.divide_hand(tiles_34)
+    assert result == []
+
+
 def test_decompose_chiitoitsu_rejects_hand_with_melds() -> None:
     tiles_34 = TilesConverter.string_to_34_array(man="2288", pin="2288", sou="22", honors="2244")
     melds = [Meld(meld_type=Meld.PON, tiles=TilesConverter.string_to_136_array(man="111"))]
