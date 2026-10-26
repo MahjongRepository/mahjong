@@ -56,6 +56,15 @@ class HandCalculator:
     ERR_NO_YAKU = "no_yaku"
     """Hand can be decomposed but has zero han (no yaku applies)."""
 
+    # meld validation
+    ERR_MELD_INVALID = "meld_invalid"
+    """A meld fails :meth:`Meld.is_valid`: its tiles don't match its type, its type is unknown,
+    or a meld other than a kan or a nuki is closed."""
+    ERR_NUKI_MELD_NOT_SUPPORTED = "nuki_meld_not_supported"
+    """A nuki meld was passed; pass nuki through ``HandConfig.num_nuki_dora`` instead."""
+    ERR_MELD_TILE_NOT_IN_HAND = "meld_tile_not_in_hand"
+    """A meld tile index is not present in the ``tiles`` array."""
+
     # riichi constraints
     ERR_OPEN_HAND_RIICHI = "open_hand_riichi_not_allowed"
     """Riichi declared on an open hand (open melds present)."""
@@ -221,6 +230,10 @@ class HandCalculator:
 
         if win_tile not in tiles:
             return HandResponse(error=HandCalculator.ERR_NO_WINNING_TILE)
+
+        for meld in melds:
+            if meld_error := HandCalculator._validate_meld(meld, tiles):
+                return HandResponse(error=meld_error)
 
         if config.is_riichi and not config.is_daburu_riichi and is_open_hand:
             return HandResponse(error=HandCalculator.ERR_OPEN_HAND_RIICHI)
@@ -685,6 +698,19 @@ class HandCalculator:
             calculated_hand["fu_details"],
             is_open_hand,
         )
+
+    @staticmethod
+    def _validate_meld(meld: Meld, tiles: Collection[int]) -> str | None:
+        if not meld.is_valid():
+            return HandCalculator.ERR_MELD_INVALID
+
+        if meld.type == Meld.NUKI:
+            return HandCalculator.ERR_NUKI_MELD_NOT_SUPPORTED
+
+        if any(tile not in tiles for tile in meld.tiles):
+            return HandCalculator.ERR_MELD_TILE_NOT_IN_HAND
+
+        return None
 
     @staticmethod
     def _find_win_groups(win_tile: int, hand: list[list[int]], opened_melds: list[list[int]]) -> list[list[int]]:

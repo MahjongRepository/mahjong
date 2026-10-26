@@ -330,6 +330,46 @@ def test_win_tile_only_in_opened_meld() -> None:
 
 
 @pytest.mark.parametrize(
+    "meld",
+    [
+        pytest.param(_make_meld("bad", man="111"), id="invalid_type"),
+        pytest.param(_make_meld(Meld.PON, man="123"), id="invalid_tiles"),
+        pytest.param(_make_meld(Meld.PON, is_open=False, man="111"), id="closed_pon"),
+    ],
+)
+def test_meld_invalid(meld: Meld) -> None:
+    hand = HandCalculator()
+
+    tiles = [*meld.tiles, *TilesConverter.string_to_136_array(pin="345", sou="67822", honors="555")]
+    win_tile = _string_to_136_tile(sou="2")
+
+    result = hand.estimate_hand_value(tiles, win_tile, melds=[meld])
+    assert result.error == HandCalculator.ERR_MELD_INVALID
+
+
+def test_nuki_meld_not_supported() -> None:
+    hand = HandCalculator()
+
+    meld = _make_meld(Meld.NUKI, is_open=False, honors="4")
+    tiles = [*meld.tiles, *TilesConverter.string_to_136_array(man="111", pin="345", sou="67822", honors="555")]
+    win_tile = _string_to_136_tile(sou="2")
+
+    result = hand.estimate_hand_value(tiles, win_tile, melds=[meld])
+    assert result.error == HandCalculator.ERR_NUKI_MELD_NOT_SUPPORTED
+
+
+def test_meld_tile_not_in_hand() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(man="111", pin="345", sou="67822", honors="555")
+    win_tile = _string_to_136_tile(sou="2")
+
+    melds = [Meld(meld_type=Meld.PON, tiles=[1, 2, 3])]
+    result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
+    assert result.error == HandCalculator.ERR_MELD_TILE_NOT_IN_HAND
+
+
+@pytest.mark.parametrize(
     "error_string",
     [
         HandCalculator.ERR_HAND_NOT_WINNING,
