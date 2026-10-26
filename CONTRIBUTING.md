@@ -1,0 +1,160 @@
+# Contributing to mahjong
+
+Welcome! We're glad you're interested in contributing.
+
+## Issues
+
+For larger changes, consider opening an issue first to discuss the approach.
+
+Search the existing [issues](https://github.com/MahjongRepository/mahjong/issues) and
+[pull requests](https://github.com/MahjongRepository/mahjong/pulls) before opening a new one.
+Include a small runnable example. If the behavior differs between Python versions or operating systems,
+mention those differences.
+
+For hand-calculation or rule-related reports, it helps to include:
+
+- Expected and actual yaku, han, fu, points, or error. For shanten or agari reports, give the expected
+  and actual shanten number or winning-hand result instead.
+- The rule reference or comparison result supporting the expectation. Identify differences in optional
+  rules when comparing against another calculator.
+
+The [Wiki](https://github.com/MahjongRepository/mahjong/wiki) describes supported rules and usage examples.
+
+## Pull requests
+
+### Prerequisites
+
+- Git
+- Python 3.10 or newer
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+
+### Set up a development environment
+
+1. Fork the repository on GitHub and clone your fork. Replace `YOUR-USERNAME` with your GitHub username:
+
+    ```bash
+    git clone https://github.com/YOUR-USERNAME/mahjong.git
+    cd mahjong
+    ```
+
+2. Create a branch for your change. Replace `your-change` with your branch name:
+
+    ```bash
+    git switch -c your-change
+    ```
+
+3. Install development dependencies:
+
+    ```bash
+    uv sync --locked
+    ```
+
+    The default `dev` dependency group includes the tools for hooks, tests, and documentation.
+
+4. Install the Git hooks:
+
+    ```bash
+    uv run prek install
+    ```
+
+Run `uv sync --locked` again after switching branches or pulling dependency updates, especially
+if you previously installed only a subset of dependency groups.
+
+Dependency definitions and tool settings live in [pyproject.toml](pyproject.toml).
+If you intentionally change dependencies, update [uv.lock](uv.lock) with `uv lock` and include
+any resulting lockfile changes in your pull request. Do not edit the lockfile by hand.
+
+### Run checks
+
+Run these commands from the repository root before submitting a pull request:
+
+```bash
+uv run prek run --all-files
+uv run pytest
+```
+
+Some checks may modify files automatically. Review and stage any changes, then rerun the checks.
+These checks also run in CI.
+
+For individual checks without automatic fixes:
+
+```bash
+uv run ruff check
+uv run ruff format --check
+uv run ty check
+```
+
+If Make is available, you can also use:
+
+```bash
+make lint
+make type
+make tests
+make check  # Applies formatting and lint fixes, then runs all checks and tests.
+```
+
+### Add regression tests
+
+Tests live in [tests/](tests/). Name test files `tests_*.py`, not `test_*.py` (unlike pytest's default).
+
+When adding regression tests:
+
+- Place them alongside related tests.
+- Use `pytest.mark.parametrize` when several cases exercise the same behavior.
+- Reuse the helpers in [tests/utils_for_tests.py](tests/utils_for_tests.py) where they make the inputs easier to read.
+- For a bug fix, confirm that the test fails before the fix and passes afterward.
+- Keep examples small and make any non-default rule settings explicit.
+- Assert the expected result, including relevant error conditions or scoring details.
+
+During development, run a focused subset without the full-suite coverage requirement:
+
+```bash
+uv run pytest --no-cov tests/tests_shanten.py
+```
+
+The full test command above includes doctests and requires 100% line coverage.
+Run the full suite after the focused checks; `--no-cov` is only for running a subset during development.
+
+### Update documentation
+
+- Public API documentation is built from [docs/source/](docs/source/) and Python docstrings.
+- Runnable examples live in [examples/](examples/).
+- Wiki sources live in [.github/wiki/](.github/wiki/); edit these files so changes can be reviewed
+  and published by the existing workflow.
+
+Build the API documentation from `docs/`:
+
+```bash
+cd docs
+uv run make html
+```
+
+On Windows without Make, use:
+
+```powershell
+cd docs
+uv run .\make.bat html
+```
+
+Open `build/html/index.html` to review the result and inspect the build output for warnings.
+
+When adding or updating a Wiki code example, also add a corresponding runnable example in
+[examples/](examples/), or update the existing one.
+Run examples from the repository root with `uv run examples/FILE.py` and check the output.
+
+### Submit a pull request
+
+- Keep each pull request focused on one problem or improvement, and link the related issue if there is one.
+- Briefly describe the change. If an issue already explains it, a reference such as `Fixes #123`
+  or `Closes #123` is enough.
+- Preserve existing public APIs and default rule behavior where possible. Discuss intentional compatibility
+  changes explicitly, and update affected examples and documentation.
+- Updating [CHANGELOG.md](CHANGELOG.md) is not required in pull requests; the project owner updates it
+  before each release.
+- Use a descriptive title with an appropriate Conventional Commit prefix, such as `fix:`, `feat:`,
+  `docs:`, or `ci:`, consistent with the repository's recent history.
+- Submit upstream contributions against `MahjongRepository/mahjong`'s `master` branch unless a maintainer
+  has agreed on another target. If a pull request depends on an unmerged change, state the dependency
+  and intended merge order clearly; a draft pull request can make the proposal available for review.
+
+Review the repository's [MIT license](LICENSE.txt) when preparing contributions.
