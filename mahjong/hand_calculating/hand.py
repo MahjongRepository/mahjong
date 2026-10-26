@@ -10,7 +10,15 @@ from mahjong.hand_calculating.scores import Aotenjou, ScoresCalculator, ScoresRe
 from mahjong.hand_calculating.yaku import Yaku
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
-from mahjong.utils import build_dora_count_map, classify_hand_suits, count_dora_for_hand, plus_dora
+from mahjong.utils import (
+    build_dora_count_map,
+    classify_hand_suits,
+    count_dora_for_hand,
+    is_chi,
+    is_honor,
+    is_pon,
+    plus_dora,
+)
 
 
 class _CalculatedHand(TypedDict):
@@ -55,6 +63,17 @@ class HandCalculator:
     """No valid decomposition exists; the hand is not a winning hand."""
     ERR_NO_YAKU = "no_yaku"
     """Hand can be decomposed but has zero han (no yaku applies)."""
+
+    # meld validation
+    ERR_MELD_INVALID_TYPE = "meld_invalid_type"
+    """Meld type is not chi, pon, kan or shouminkan."""
+    ERR_MELD_INVALID_TILES = "meld_invalid_tiles"
+    """Meld tiles don't match its type: a chi is three consecutive tiles of one suit, a pon is
+    three identical tiles, a kan or shouminkan is four identical tiles."""
+    ERR_MELD_TILE_NOT_IN_HAND = "meld_tile_not_in_hand"
+    """A meld tile index is not present in the ``tiles`` array."""
+    ERR_CLOSED_MELD_NOT_KAN = "closed_meld_not_kan_not_allowed"
+    """Only a kan can be closed; chi, pon and shouminkan are always called."""
 
     # riichi constraints
     ERR_OPEN_HAND_RIICHI = "open_hand_riichi_not_allowed"
@@ -221,6 +240,10 @@ class HandCalculator:
 
         if win_tile not in tiles:
             return HandResponse(error=HandCalculator.ERR_NO_WINNING_TILE)
+
+        for meld in melds:
+            if meld_error := HandCalculator._validate_meld(meld, tiles):
+                return HandResponse(error=meld_error)
 
         if config.is_riichi and not config.is_daburu_riichi and is_open_hand:
             return HandResponse(error=HandCalculator.ERR_OPEN_HAND_RIICHI)
@@ -685,6 +708,30 @@ class HandCalculator:
             calculated_hand["fu_details"],
             is_open_hand,
         )
+
+    @staticmethod
+    def _validate_meld(meld: Meld, tiles: Collection[int]) -> str | None:
+        tiles_34 = sorted(meld.tiles_34)
+        match meld.type:
+            case Meld.CHI:
+                is_valid_shape = is_chi(tiles_34) and not is_honor(tiles_34[0]) and tiles_34[0] // 9 == tiles_34[2] // 9
+            case Meld.PON:
+                is_valid_shape = is_pon(tiles_34)
+            case Meld.KAN | Meld.SHOUMINKAN:
+                is_valid_shape = len(tiles_34) == 4 and len(set(tiles_34)) == 1
+            case _:
+                return HandCalculator.ERR_MELD_INVALID_TYPE
+
+        if not is_valid_shape:
+            return HandCalculator.ERR_MELD_INVALID_TILES
+
+        if not meld.opened and meld.type != Meld.KAN:
+            return HandCalculator.ERR_CLOSED_MELD_NOT_KAN
+
+        if any(tile not in tiles for tile in meld.tiles):
+            return HandCalculator.ERR_MELD_TILE_NOT_IN_HAND
+
+        return None
 
     @staticmethod
     def _find_win_groups(win_tile: int, hand: list[list[int]], opened_melds: list[list[int]]) -> list[list[int]]:
