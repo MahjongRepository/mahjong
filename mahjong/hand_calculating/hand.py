@@ -268,7 +268,7 @@ class HandCalculator:
 
         if (
             config.is_rinshan
-            and not config.num_nuki_dora
+            and config.num_nuki_dora <= 0
             and not any(x.type in (Meld.KAN, Meld.SHOUMINKAN) for x in melds)
         ):
             return HandResponse(error=HandCalculator.ERR_RINSHAN_WITHOUT_KAN)
