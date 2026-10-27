@@ -210,6 +210,21 @@ def test_hands_calculation() -> None:
     assert result.han == 1
 
 
+@pytest.mark.parametrize("order", [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)])
+def test_chi_tiles_in_any_order(order: tuple[int, int, int]) -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(man="234567", pin="789", sou="99", honors="555")
+    win_tile = _string_to_136_tile(honors="5")
+    chi_tiles = TilesConverter.string_to_136_array(pin="789")
+    melds = [Meld(meld_type=Meld.CHI, tiles=[chi_tiles[i] for i in order])]
+
+    result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
+    assert result.error is None
+    assert result.han == 1
+    assert result.fu == 30
+
+
 def test_is_riichi() -> None:
     hand = HandCalculator()
 

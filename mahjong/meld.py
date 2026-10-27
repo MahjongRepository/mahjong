@@ -135,7 +135,9 @@ class Meld:
     @cached_property
     def tiles_34(self) -> list[int]:
         """
-        Convert the meld's 136-format tile indices to 34-format tile indices.
+        Convert the meld's 136-format tile indices to sorted 34-format tile indices.
+
+        The result is sorted, so a chi given as 987p is returned as 789p.
 
         >>> from mahjong.meld import Meld
         >>> from mahjong.tile import TilesConverter
@@ -144,9 +146,16 @@ class Meld:
         >>> meld.tiles_34
         [0, 0, 0]
 
-        :return: list of tile indices in 34-format
+        >>> tiles = TilesConverter.string_to_136_array(pin="789")
+        >>> meld = Meld(meld_type=Meld.CHI, tiles=tiles[::-1])
+        >>> meld.tiles_34
+        [15, 16, 17]
+
+        :return: sorted list of tile indices in 34-format
         """
-        return [x // 4 for x in self.tiles]
+        tiles_34 = [x // 4 for x in self.tiles]
+        tiles_34.sort()
+        return tiles_34
 
     def is_valid(self) -> bool:
         """
@@ -170,7 +179,7 @@ class Meld:
 
         :return: True if the meld is valid
         """
-        tiles_34 = sorted(self.tiles_34)
+        tiles_34 = self.tiles_34
         match self.type:
             case Meld.CHI:
                 is_valid_shape = is_chi(tiles_34) and not is_honor(tiles_34[0]) and tiles_34[0] // 9 == tiles_34[2] // 9
