@@ -410,7 +410,7 @@ def test_incorrect_fu_calculation_test_case_2() -> None:
 
     tiles = TilesConverter.string_to_136_array(pin="555", man="11112233444")
     melds = [_make_meld(Meld.CHI, man="123")]
-    win_tile = _string_to_136_tile(man="1")
+    win_tile = TilesConverter.string_to_136_array(man="11")[1]
 
     result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=HandConfig(is_houtei=True))
     assert result.fu == 30

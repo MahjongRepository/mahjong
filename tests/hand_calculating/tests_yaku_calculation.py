@@ -104,7 +104,7 @@ def test_hands_calculation() -> None:
     assert result.han == 1
 
     tiles = TilesConverter.string_to_136_array(man="11156677899", honors="7777")
-    win_tile = _string_to_136_tile(man="7")
+    win_tile = TilesConverter.string_to_136_array(man="77")[1]
     melds = [
         _make_meld(Meld.KAN, honors="7777"),
         _make_meld(Meld.PON, man="111"),
@@ -115,14 +115,14 @@ def test_hands_calculation() -> None:
     assert result.han == 3
 
     tiles = TilesConverter.string_to_136_array(man="122223777888", honors="66")
-    win_tile = _string_to_136_tile(man="2")
+    win_tile = TilesConverter.string_to_136_array(man="22")[1]
     melds = [_make_meld(Meld.CHI, man="123"), _make_meld(Meld.PON, man="777")]
     result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
     assert result.fu == 30
     assert result.han == 2
 
     tiles = TilesConverter.string_to_136_array(pin="11144678888", honors="444")
-    win_tile = _string_to_136_tile(pin="8")
+    win_tile = TilesConverter.string_to_136_array(pin="8888")[3]
     melds = [
         _make_meld(Meld.PON, honors="444"),
         _make_meld(Meld.PON, pin="111"),
@@ -145,7 +145,7 @@ def test_hands_calculation() -> None:
     assert result.han == 2
 
     tiles = TilesConverter.string_to_136_array(pin="112233667788", honors="22")
-    win_tile = _string_to_136_tile(pin="3")
+    win_tile = TilesConverter.string_to_136_array(pin="33")[1]
     melds = [_make_meld(Meld.CHI, pin="123")]
     result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
     assert result.fu == 30
@@ -170,14 +170,14 @@ def test_hands_calculation() -> None:
 
     tiles = TilesConverter.string_to_136_array(sou="112233789", honors="55777")
     melds = [_make_meld(Meld.CHI, sou="123")]
-    win_tile = _string_to_136_tile(sou="2")
+    win_tile = TilesConverter.string_to_136_array(sou="22")[1]
     result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
     assert result.fu == 40
     assert result.han == 4
 
     tiles = TilesConverter.string_to_136_array(pin="234777888999", honors="22")
     melds = [_make_meld(Meld.CHI, pin="234"), _make_meld(Meld.CHI, pin="789")]
-    win_tile = _string_to_136_tile(pin="9")
+    win_tile = TilesConverter.string_to_136_array(pin="99")[1]
     result = hand.estimate_hand_value(tiles, win_tile, melds=melds)
     assert result.fu == 30
     assert result.han == 2
