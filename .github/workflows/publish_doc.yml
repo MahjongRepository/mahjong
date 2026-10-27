@@ -7,6 +7,8 @@ on:
     paths:
       - docs/**
       - mahjong/**
+      - pyproject.toml
+      - uv.lock
       - .github/workflows/publish_doc.yml
   pull_request:
     branches:
@@ -14,6 +16,8 @@ on:
     paths:
       - docs/**
       - mahjong/**
+      - pyproject.toml
+      - uv.lock
       - .github/workflows/publish_doc.yml
 
 permissions:
