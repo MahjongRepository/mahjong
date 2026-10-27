@@ -90,7 +90,8 @@ If Make is available, you can also use:
 make lint
 make type
 make tests
-make check  # Applies formatting and lint fixes, then runs all checks and tests.
+make check   # Runs all checks and tests without applying fixes.
+make format  # Applies formatting and lint fixes.
 ```
 
 ### Add regression tests

@@ -13,7 +13,7 @@ type:
 tests:
 	uv run --no-sync pytest
 
-check: format lint type tests
+check: lint type tests
 
 build-package:
 	rm -rf build dist mahjong.egg-info
