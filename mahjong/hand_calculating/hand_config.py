@@ -206,7 +206,7 @@ class HandConfig(HandConstants):
     :vartype is_daburu_riichi: bool
     :ivar is_nagashi_mangan: all discards are terminals and honors with no calls against them
     :vartype is_nagashi_mangan: bool
-    :ivar is_tenhou: dealer wins on the initial draw
+    :ivar is_tenhou: dealer wins on the initial draw; requires ``player_wind`` to be East
     :vartype is_tenhou: bool
     :ivar is_renhou: non-dealer wins on the first go-around before any calls
     :vartype is_renhou: bool
@@ -305,7 +305,7 @@ class HandConfig(HandConstants):
         :param is_houtei: win on the discard following the last drawable tile
         :param is_daburu_riichi: player declared double riichi
         :param is_nagashi_mangan: all discards are terminals and honors
-        :param is_tenhou: dealer wins on the initial draw
+        :param is_tenhou: dealer wins on the initial draw; requires ``player_wind`` to be East
         :param is_renhou: non-dealer wins on the first go-around
         :param is_chiihou: non-dealer wins on the initial draw
         :param is_open_riichi: player declared open riichi

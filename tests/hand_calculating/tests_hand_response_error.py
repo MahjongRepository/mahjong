@@ -185,9 +185,8 @@ def test_tenhou_not_as_dealer() -> None:
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
     win_tile = _string_to_136_tile(sou="4")
 
-    # no error when player wind is *not* specified
     result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_tenhou=True))
-    assert result.error is None
+    assert result.error == HandCalculator.ERR_TENHOU_NOT_AS_DEALER
 
     # raise error when player wind is specified and *not* EAST
     result = hand.estimate_hand_value(
@@ -204,7 +203,11 @@ def test_tenhou_without_tsumo() -> None:
     tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
     win_tile = _string_to_136_tile(sou="4")
 
-    result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=False, is_tenhou=True))
+    result = hand.estimate_hand_value(
+        tiles,
+        win_tile,
+        config=_make_hand_config(is_tsumo=False, is_tenhou=True, player_wind=EAST),
+    )
     assert result.error == HandCalculator.ERR_TENHOU_WITHOUT_TSUMO
 
 
@@ -219,7 +222,7 @@ def test_tenhou_with_meld() -> None:
         tiles,
         win_tile,
         melds=melds,
-        config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_tenhou=True),
+        config=_make_hand_config(is_tsumo=True, is_rinshan=True, is_tenhou=True, player_wind=EAST),
     )
     assert result.error == HandCalculator.ERR_TENHOU_WITH_MELD
 
