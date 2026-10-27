@@ -86,6 +86,10 @@ class HandCalculator:
     """Haitei and rinshan are mutually exclusive (different last-tile sources)."""
     ERR_HOUTEI_WITH_CHANKAN = "houtei_with_chankan_not_allowed"
     """Houtei and chankan are mutually exclusive."""
+    ERR_RINSHAN_WITHOUT_KAN = "rinshan_without_kan_not_allowed"
+    """Rinshan kaihou requires a kan meld, or an extracted north wind (nuki dora)."""
+    ERR_IPPATSU_WITH_RINSHAN = "ippatsu_with_rinshan_not_allowed"
+    """Ippatsu and rinshan are mutually exclusive (declaring a kan cancels ippatsu)."""
 
     # tenhou (blessing of heaven) constraints
     ERR_TENHOU_NOT_AS_DEALER = "tenhou_not_as_dealer_not_allowed"
@@ -261,6 +265,16 @@ class HandCalculator:
 
         if config.is_houtei and config.is_chankan:
             return HandResponse(error=HandCalculator.ERR_HOUTEI_WITH_CHANKAN)
+
+        if (
+            config.is_rinshan
+            and not config.num_nuki_dora
+            and not any(x.type in (Meld.KAN, Meld.SHOUMINKAN) for x in melds)
+        ):
+            return HandResponse(error=HandCalculator.ERR_RINSHAN_WITHOUT_KAN)
+
+        if config.is_rinshan and config.is_ippatsu:
+            return HandResponse(error=HandCalculator.ERR_IPPATSU_WITH_RINSHAN)
 
         # raise error only when player wind is defined (and is *not* EAST)
         if config.is_tenhou and config.player_wind and not config.is_dealer:

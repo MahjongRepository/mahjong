@@ -2,6 +2,7 @@ import pytest
 
 from mahjong.constants import EAST, SOUTH
 from mahjong.hand_calculating.hand import HandCalculator
+from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.hand_calculating.hand_response import HandResponse
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
@@ -177,6 +178,61 @@ def test_houtei_with_chankan() -> None:
         config=_make_hand_config(is_tsumo=False, is_chankan=True, is_houtei=True),
     )
     assert result.error == HandCalculator.ERR_HOUTEI_WITH_CHANKAN
+
+
+def test_rinshan_without_kan() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="123444", man="234456", pin="66")
+    win_tile = _string_to_136_tile(sou="4")
+
+    result = hand.estimate_hand_value(tiles, win_tile, config=_make_hand_config(is_tsumo=True, is_rinshan=True))
+    assert result.error == HandCalculator.ERR_RINSHAN_WITHOUT_KAN
+
+    melds = [_make_meld(Meld.PON, sou="444")]
+    result = hand.estimate_hand_value(
+        tiles,
+        win_tile,
+        melds=melds,
+        config=_make_hand_config(is_tsumo=True, is_rinshan=True),
+    )
+    assert result.error == HandCalculator.ERR_RINSHAN_WITHOUT_KAN
+
+
+def test_rinshan_after_nuki() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="123444", man="11199", pin="666")
+    win_tile = _string_to_136_tile(sou="4")
+
+    result = hand.estimate_hand_value(
+        tiles,
+        win_tile,
+        config=HandConfig(
+            is_tsumo=True,
+            is_rinshan=True,
+            num_nuki_dora=1,
+            options=OptionalRules(is_three_player=True),
+        ),
+    )
+    assert result.error is None
+    assert "Rinshan Kaihou" in [x.name for x in result.yaku]
+
+
+def test_ippatsu_with_rinshan() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="1234444", man="234456", pin="66")
+    win_tile = _string_to_136_tile(sou="1")
+
+    melds = [_make_meld(Meld.KAN, is_open=False, sou="4444")]
+    result = hand.estimate_hand_value(
+        tiles,
+        win_tile,
+        melds=melds,
+        config=_make_hand_config(is_tsumo=True, is_riichi=True, is_ippatsu=True, is_rinshan=True),
+    )
+    assert result.error == HandCalculator.ERR_IPPATSU_WITH_RINSHAN
 
 
 def test_tenhou_not_as_dealer() -> None:
