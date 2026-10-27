@@ -12,6 +12,7 @@ project = "mahjong"
 copyright = "2017, mahjong Python library contributors"
 author = "Alexey Lisikhin"
 release = package_version("mahjong")
+version = release
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
