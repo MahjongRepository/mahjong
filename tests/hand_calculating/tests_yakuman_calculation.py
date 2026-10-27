@@ -12,7 +12,7 @@ from tests.utils_for_tests import _hand, _make_hand_config, _make_meld, _string_
 @pytest.mark.parametrize(
     "config_kwargs",
     [
-        pytest.param({"is_tsumo": True, "is_tenhou": True}, id="tenhou"),
+        pytest.param({"is_tsumo": True, "is_tenhou": True, "player_wind": EAST}, id="tenhou"),
         pytest.param({"is_tsumo": True, "is_chiihou": True}, id="chiihou"),
     ],
 )
@@ -397,13 +397,13 @@ def test_sextuple_yakuman() -> None:
     tiles = TilesConverter.string_to_136_array(honors="11122233344455")
     win_tile = _string_to_136_tile(honors="5")
 
-    config = _make_hand_config(is_tsumo=True, is_tenhou=True, disable_double_yakuman=False)
+    config = _make_hand_config(is_tsumo=True, is_tenhou=True, player_wind=EAST, disable_double_yakuman=False)
 
     result = hand.estimate_hand_value(tiles, win_tile, config=config)
     assert result.error is None
     assert result.han == 78
     assert result.cost["main"] == 96000
-    assert result.cost["additional"] == 48000
+    assert result.cost["additional"] == 96000
 
     # 5z -11-z -22-z -33-z -44-z 5z suukantsu & tsuisou & daisushi & suuankou tanki
     tiles = TilesConverter.string_to_136_array(honors="111122223333444455")
@@ -443,7 +443,7 @@ def test_kokushi_musou_multiple_yakuman() -> None:
     assert hand_config.yaku.chiihou not in hand_calculation.yaku
     assert hand_calculation.han == 13
 
-    hand_config = HandConfig(is_tsumo=True, is_tenhou=True, is_chiihou=False)
+    hand_config = HandConfig(is_tsumo=True, is_tenhou=True, is_chiihou=False, player_wind=EAST)
 
     hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
 
@@ -484,7 +484,7 @@ def test_kokushi_musou_multiple_yakuman() -> None:
     assert hand_config.yaku.chiihou not in hand_calculation.yaku
     assert hand_calculation.han == 26
 
-    hand_config = HandConfig(is_tsumo=True, is_tenhou=True, is_chiihou=False)
+    hand_config = HandConfig(is_tsumo=True, is_tenhou=True, is_chiihou=False, player_wind=EAST)
 
     hand_calculation = hand_calculator.estimate_hand_value(tiles, win_tile, config=hand_config)
 

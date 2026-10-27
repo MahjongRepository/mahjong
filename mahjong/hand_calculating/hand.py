@@ -93,7 +93,7 @@ class HandCalculator:
 
     # tenhou (blessing of heaven) constraints
     ERR_TENHOU_NOT_AS_DEALER = "tenhou_not_as_dealer_not_allowed"
-    """Tenhou is exclusive to the dealer (East player)."""
+    """Tenhou is exclusive to the dealer: ``player_wind`` must be East."""
     ERR_TENHOU_WITHOUT_TSUMO = "tenhou_without_tsumo_not_allowed"
     """Tenhou requires a tsumo win on the dealer's first draw."""
     ERR_TENHOU_WITH_MELD = "tenhou_with_meld_not_allowed"
@@ -276,8 +276,7 @@ class HandCalculator:
         if config.is_rinshan and config.is_ippatsu:
             return HandResponse(error=HandCalculator.ERR_IPPATSU_WITH_RINSHAN)
 
-        # raise error only when player wind is defined (and is *not* EAST)
-        if config.is_tenhou and config.player_wind and not config.is_dealer:
+        if config.is_tenhou and not config.is_dealer:
             return HandResponse(error=HandCalculator.ERR_TENHOU_NOT_AS_DEALER)
 
         if config.is_tenhou and not config.is_tsumo:
