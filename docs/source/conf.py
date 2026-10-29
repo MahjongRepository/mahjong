@@ -6,10 +6,13 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+from importlib import metadata
+
 project = "mahjong"
 copyright = "2017, mahjong Python library contributors"
 author = "Alexey Lisikhin"
-release = "2017"
+release = metadata.version("mahjong")
+version = release
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
