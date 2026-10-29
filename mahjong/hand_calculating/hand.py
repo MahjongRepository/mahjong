@@ -74,8 +74,6 @@ class HandCalculator:
     """A nuki meld was passed; pass nuki through ``HandConfig.num_nuki_dora`` instead."""
     ERR_MELD_TILE_NOT_IN_HAND = "meld_tile_not_in_hand"
     """A meld tile index is not present in the ``tiles`` array."""
-    ERR_WINNING_TILE_IN_MELD = "winning_tile_in_meld"
-    """``win_tile`` index is one of the tiles of a declared meld."""
 
     # riichi constraints
     ERR_OPEN_HAND_RIICHI = "open_hand_riichi_not_allowed"
@@ -203,8 +201,7 @@ class HandCalculator:
 
         :param tiles: hand tiles in 136-format (14 tiles including the winning tile;
             15 with one kan, 16 with two, etc.)
-        :param win_tile: the winning tile index in 136-format (must be present in ``tiles``
-            and not in any of ``melds``)
+        :param win_tile: the winning tile index in 136-format (must be present in ``tiles``)
         :param melds: declared melds (:class:`~mahjong.meld.Meld` objects for chi, pon, kan)
         :param dora_indicators: dora indicator tile indices in 136-format
         :param config: hand configuration with win conditions, wind context, and optional rules;
