@@ -34,7 +34,7 @@ class Sanankou(Yaku):
         open_sets: set[tuple[int, ...]] = set()
         for m in melds:
             if m.opened:
-                open_sets.add(tuple(m.tiles_34))
+                open_sets.add(tuple(m._sorted_tiles_34))  # noqa: SLF001
 
         has_chi_with_win_tile = False
         closed_pon_count = 0

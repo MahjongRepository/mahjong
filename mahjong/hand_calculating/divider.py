@@ -22,7 +22,7 @@ class _Block:
 
     @classmethod
     def from_meld(cls, meld: Meld) -> "_Block":
-        tile_34 = meld.tiles_34[0]
+        tile_34 = meld._sorted_tiles_34[0]  # noqa: SLF001
         match meld.type:
             case Meld.CHI:
                 return cls(tile_34, _BlockType.SEQUENCE)

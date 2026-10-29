@@ -1,12 +1,6 @@
 Releases History
 ================
 
-2.2.0 (Unreleased)
-------------------
-
-## Breaking changes
-- `Meld.tiles_34` now returns the tile indices sorted. Previously it kept the order of `Meld.tiles`, so a chi given as 987p returned `[17, 16, 15]`; it now returns `[15, 16, 17]`. Code that relied on that order should read `Meld.tiles` instead, which still keeps the original order.
-
 2.1.0 (Oct 24, 2026)
 -------------------
 

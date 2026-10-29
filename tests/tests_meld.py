@@ -27,10 +27,19 @@ def test_tiles_34_updates_on_tiles_reassignment() -> None:
     assert meld.tiles_34 == [0, 0, 0, 0]
 
 
-def test_tiles_34_is_sorted() -> None:
+def test_tiles_34_keeps_tile_order() -> None:
     tiles = TilesConverter.string_to_136_array(pin="789")
     meld = Meld(meld_type=Meld.CHI, tiles=tiles[::-1])
-    assert meld.tiles_34 == [15, 16, 17]
+    assert meld.tiles_34 == [17, 16, 15]
+    assert meld.is_valid()
+
+
+def test_is_valid_updates_on_tiles_reassignment() -> None:
+    meld = Meld(meld_type=Meld.CHI, tiles=TilesConverter.string_to_136_array(pin="789"))
+    assert meld.is_valid()
+
+    meld.tiles = tuple(TilesConverter.string_to_136_array(pin="779"))
+    assert not meld.is_valid()
 
 
 @pytest.mark.parametrize(
