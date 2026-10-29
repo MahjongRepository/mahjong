@@ -56,6 +56,16 @@ class HandCalculator:
     ERR_NO_YAKU = "no_yaku"
     """Hand can be decomposed but has zero han (no yaku applies)."""
 
+    # count validation
+    ERR_NEGATIVE_TSUMI_NUMBER = "negative_tsumi_number_not_allowed"
+    """``HandConfig.tsumi_number`` (honba counters) is negative."""
+    ERR_NEGATIVE_KYOUTAKU_NUMBER = "negative_kyoutaku_number_not_allowed"
+    """``HandConfig.kyoutaku_number`` (riichi deposits) is negative."""
+    ERR_NEGATIVE_PAARENCHAN = "negative_paarenchan_not_allowed"
+    """``HandConfig.paarenchan`` (consecutive dealer wins) is negative."""
+    ERR_NEGATIVE_NUKI_DORA = "negative_nuki_dora_not_allowed"
+    """``HandConfig.num_nuki_dora`` (extracted north winds) is negative."""
+
     # meld validation
     ERR_MELD_INVALID = "meld_invalid"
     """A meld fails :meth:`Meld.is_valid`: its tiles don't match its type, its type is unknown,
@@ -224,6 +234,18 @@ class HandCalculator:
         opened_melds = [x.tiles_34 for x in melds if x.opened]
         is_open_hand = len(opened_melds) > 0
 
+        if config.tsumi_number < 0:
+            return HandResponse(error=HandCalculator.ERR_NEGATIVE_TSUMI_NUMBER)
+
+        if config.kyoutaku_number < 0:
+            return HandResponse(error=HandCalculator.ERR_NEGATIVE_KYOUTAKU_NUMBER)
+
+        if config.paarenchan < 0:
+            return HandResponse(error=HandCalculator.ERR_NEGATIVE_PAARENCHAN)
+
+        if config.num_nuki_dora < 0:
+            return HandResponse(error=HandCalculator.ERR_NEGATIVE_NUKI_DORA)
+
         # special situation
         if config.is_nagashi_mangan:
             hand_yaku.append(config.yaku.nagashi_mangan)
@@ -268,7 +290,7 @@ class HandCalculator:
 
         if (
             config.is_rinshan
-            and config.num_nuki_dora <= 0
+            and config.num_nuki_dora == 0
             and not any(x.type in (Meld.KAN, Meld.SHOUMINKAN) for x in melds)
         ):
             return HandResponse(error=HandCalculator.ERR_RINSHAN_WITHOUT_KAN)

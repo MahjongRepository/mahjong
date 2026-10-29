@@ -429,6 +429,60 @@ def test_meld_tile_not_in_hand() -> None:
 
 
 @pytest.mark.parametrize(
+    ("config", "error"),
+    [
+        pytest.param(HandConfig(tsumi_number=-1), HandCalculator.ERR_NEGATIVE_TSUMI_NUMBER, id="tsumi_number"),
+        pytest.param(HandConfig(kyoutaku_number=-1), HandCalculator.ERR_NEGATIVE_KYOUTAKU_NUMBER, id="kyoutaku_number"),
+        pytest.param(
+            HandConfig(paarenchan=-1, player_wind=EAST),
+            HandCalculator.ERR_NEGATIVE_PAARENCHAN,
+            id="paarenchan",
+        ),
+        pytest.param(
+            HandConfig(num_nuki_dora=-1, options=OptionalRules(is_three_player=True)),
+            HandCalculator.ERR_NEGATIVE_NUKI_DORA,
+            id="num_nuki_dora",
+        ),
+    ],
+)
+def test_negative_count(config: HandConfig, error: str) -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(pin="234567", sou="23455678")
+    win_tile = _string_to_136_tile(sou="8")
+
+    result = hand.estimate_hand_value(tiles, win_tile, config=config)
+    assert result.error == error
+
+
+@pytest.mark.parametrize(
+    ("tsumi_number", "kyoutaku_number", "error"),
+    [
+        pytest.param(-1, 0, HandCalculator.ERR_NEGATIVE_TSUMI_NUMBER, id="tsumi_number"),
+        pytest.param(0, -1, HandCalculator.ERR_NEGATIVE_KYOUTAKU_NUMBER, id="kyoutaku_number"),
+    ],
+)
+def test_negative_count_with_nagashi_mangan(tsumi_number: int, kyoutaku_number: int, error: str) -> None:
+    hand = HandCalculator()
+
+    config = HandConfig(is_nagashi_mangan=True, tsumi_number=tsumi_number, kyoutaku_number=kyoutaku_number)
+    result = hand.estimate_hand_value([], None, config=config)
+    assert result.error == error
+
+
+def test_zero_counts_are_allowed() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(pin="234567", sou="23455678")
+    win_tile = _string_to_136_tile(sou="8")
+
+    config = HandConfig(tsumi_number=0, kyoutaku_number=0, paarenchan=0, num_nuki_dora=0)
+    result = hand.estimate_hand_value(tiles, win_tile, config=config)
+    assert result.error is None
+    assert result.cost["total"] == 2000
+
+
+@pytest.mark.parametrize(
     "error_string",
     [
         HandCalculator.ERR_HAND_NOT_WINNING,
