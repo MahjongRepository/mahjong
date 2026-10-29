@@ -71,7 +71,8 @@ References: [GitHub environments](https://docs.github.com/en/actions/reference/w
    version to record the updated notes. Refresh also if `master` advances. Refresh replaces the
    generated list while preserving manual edits; conflicting edits to manual notes on both branches
    stop the workflow and must be reconciled explicitly. Edits to the generated list are replaced
-   on refresh; place enduring explanations in the manual block.
+   on refresh; place enduring explanations in the target version's manual block. Unrelated code
+   changes on the preparation branch stop refresh rather than being silently discarded.
 6. Approve bot-triggered CI runs if GitHub requests it. Review the final refreshed PR and merge it
    with a human account only when all required checks pass. Do not use a branch-update button to
    resolve a stale preparation: regenerate it from the current `master` instead.

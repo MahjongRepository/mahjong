@@ -413,3 +413,42 @@ def test_stale_release_pr_requires_regeneration(
     monkeypatch.setattr(release, "api", Mock(return_value={"object": {"sha": "c" * 40}}))
     with pytest.raises(ValueError, match="stale"):
         release.check_pr()
+
+
+@pytest.mark.parametrize("extra_change", [False, True])
+def test_refresh_preserves_reviewed_notes_and_refuses_unrelated_changes(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    extra_change: bool,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    Path(".github").mkdir()
+    current = release.UNRELEASED.format(manual="Original explanation")
+    release.CHANGELOG.write_text(current, encoding="utf-8")
+    edited = release.update_changelog(current, "2.2.0.dev1", "Reviewed explanation", "Old generated list", "2026-10-28")
+    monkeypatch.setenv("GITHUB_REPOSITORY", release.UPSTREAM)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/master")
+    monkeypatch.setenv("GITHUB_ACTOR", "Apricot-S")
+    old = {"version": "2.2.0.dev1", "source_sha": "b" * 40, "manual_source": "Original explanation"}
+    responses = {
+        ("uv", "version", "--short"): "2.1.0",
+        ("git", "rev-parse", "HEAD"): "a" * 40,
+        ("git", "tag", "--merged", "HEAD", "--list", "v*"): "v2.1.0",
+        ("git", "show", f"{'c' * 40}:.github/release.json"): json.dumps(old),
+        ("git", "show", f"{'c' * 40}:CHANGELOG.md"): edited,
+        ("git", "diff", "--name-only", "b" * 40, "c" * 40): "mahjong/tile.py" if extra_change else "CHANGELOG.md",
+    }
+    monkeypatch.setattr(release, "run", Mock(side_effect=lambda *args: responses.get(args, "")))
+    monkeypatch.setattr(release, "api", Mock(return_value={"body": "New generated list"}))
+    monkeypatch.setattr(release, "pypi_files", Mock(return_value={}))
+    pr = {"head": {"ref": "release/2.2.0.dev1", "sha": "c" * 40, "repo": {"full_name": release.UPSTREAM}}}
+    monkeypatch.setattr(release, "pages", Mock(side_effect=lambda path: [pr] if "/pulls?" in path else []))
+    if extra_change:
+        with pytest.raises(ValueError, match="other changes"):
+            release.prepare("2.2.0.dev1", dry_run=True)
+    else:
+        release.prepare("2.2.0.dev1", dry_run=True)
+        preview = Path("release-preview.md").read_text()
+        assert "Reviewed explanation" in preview
+        assert "New generated list" in preview
+        assert "Old generated list" not in preview
