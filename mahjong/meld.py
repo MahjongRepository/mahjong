@@ -110,10 +110,11 @@ class Meld:
         self.from_who = from_who
 
     def __setattr__(self, name: str, value: object) -> None:
-        """Invalidate the tiles_34 cache when tiles are reassigned."""
+        """Invalidate the tiles_34 caches when tiles are reassigned."""
         super().__setattr__(name, value)
-        if name == "tiles" and "tiles_34" in self.__dict__:
-            del self.__dict__["tiles_34"]
+        if name == "tiles":
+            self.__dict__.pop("tiles_34", None)
+            self.__dict__.pop("_sorted_tiles_34", None)
 
     def __str__(self) -> str:
         """
@@ -148,6 +149,15 @@ class Meld:
         """
         return [x // 4 for x in self.tiles]
 
+    @cached_property
+    def _sorted_tiles_34(self) -> list[int]:
+        """
+        Return the meld's 34-format tile indices sorted, so a chi given as 987p reads as 789p.
+
+        :return: sorted list of tile indices in 34-format
+        """
+        return sorted(self.tiles_34)
+
     def is_valid(self) -> bool:
         """
         Check that the meld tiles match its type and that only a kan is closed.
@@ -170,7 +180,7 @@ class Meld:
 
         :return: True if the meld is valid
         """
-        tiles_34 = sorted(self.tiles_34)
+        tiles_34 = self._sorted_tiles_34
         match self.type:
             case Meld.CHI:
                 is_valid_shape = is_chi(tiles_34) and not is_honor(tiles_34[0]) and tiles_34[0] // 9 == tiles_34[2] // 9

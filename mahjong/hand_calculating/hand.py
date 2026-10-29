@@ -221,7 +221,7 @@ class HandCalculator:
 
         is_aotenjou = isinstance(scores_calculator, Aotenjou)
 
-        opened_melds = [x.tiles_34 for x in melds if x.opened]
+        opened_melds = [x._sorted_tiles_34 for x in melds if x.opened]  # noqa: SLF001
         is_open_hand = len(opened_melds) > 0
 
         # special situation
