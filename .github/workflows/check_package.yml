@@ -48,10 +48,11 @@ jobs:
 
   install:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
         format: [wheel, sdist]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -70,6 +71,7 @@ jobs:
           path: ${{ runner.temp }}/packages
 
       - name: Check an isolated installation
+        shell: bash
         working-directory: ${{ runner.temp }}
         env:
           DISTRIBUTION_FORMAT: ${{ matrix.format }}
