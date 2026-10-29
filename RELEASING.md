@@ -134,6 +134,8 @@ Use **Re-run failed jobs** on the original Release run to retain the successful 
 validation record. Do not prepare a fresh run from the current `master` as a substitute. Approval is
 still required when the publication job runs again. Artifact retention/expiry is visible in the run;
 if artifacts have expired, stop and investigate rather than replacing them with an unreviewed build.
+Artifact names include the attempt number; downstream jobs use immutable IDs, including when a
+retry reuses successful build jobs from an earlier attempt.
 
 | State | Action |
 | --- | --- |
@@ -149,3 +151,7 @@ bad release, agree on yanking it and issuing a new version (for example the next
 Old token-based `make build-and-release` is removed; do not work around the review/approval flow by
 uploading a local build. Configuration changes, yanking and emergency publication remain owner-led
 operations and are not automated by these workflows.
+
+If an outdated preparation was merged despite the required checks, publication stops before creating
+a tag. Revert that preparation in a reviewed PR, reconcile any manual notes, then prepare the version
+again. Do not bypass the source-commit check or manually edit its manifest to claim a different base.

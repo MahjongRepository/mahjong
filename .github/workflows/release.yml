@@ -75,6 +75,8 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
+    outputs:
+      record-id: ${{ steps.record.outputs.artifact-id }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -92,8 +94,9 @@ jobs:
       - name: Record the validated files and reviewed notes
         run: uv run --no-project python scripts/release.py record
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        id: record
         with:
-          name: release-validation
+          name: release-validation-${{ github.run_attempt }}
           path: release-artifacts.json
           if-no-files-found: error
 
@@ -125,7 +128,8 @@ jobs:
           merge-multiple: true
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          name: release-validation
+          artifact-ids: ${{ needs.validated.outputs.record-id }}
+          merge-multiple: true
       - name: Verify artifacts, check retry state and create the tag
         id: state
         env:

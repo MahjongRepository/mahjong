@@ -444,4 +444,6 @@ if __name__ == "__main__":
         main()
     except (ValueError, KeyError, subprocess.CalledProcessError) as error:
         print(f"Release stopped: {error}", file=sys.stderr)  # noqa: T201
+        if isinstance(error, subprocess.CalledProcessError) and error.stderr:
+            print(error.stderr.strip(), file=sys.stderr)  # noqa: T201
         sys.exit(1)

@@ -43,7 +43,6 @@ jobs:
     timeout-minutes: 10
     outputs:
       artifact-id: ${{ steps.distributions.outputs.artifact-id }}
-      artifact-name: ${{ steps.package.outputs.artifact-name }}
       package-version: ${{ steps.package.outputs.package_version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -56,12 +55,14 @@ jobs:
       - name: Build and inspect distributions
         id: package
         uses: hynek/build-and-inspect-python-package@67230f7b8410ae0052b39c1efc89d89fff43ff10 # v3.0.2
+        with:
+          upload-name-suffix: -${{ github.run_attempt }}
 
       - name: Keep distributions by immutable artifact ID
         id: distributions
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: validated-distributions
+          name: validated-distributions-${{ github.run_attempt }}
           path: |
             ${{ steps.package.outputs.dist }}/*.whl
             ${{ steps.package.outputs.dist }}/*.tar.gz
