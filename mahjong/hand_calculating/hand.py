@@ -234,8 +234,7 @@ class HandCalculator:
 
         is_aotenjou = isinstance(scores_calculator, Aotenjou)
 
-        opened_melds = [x._sorted_tiles_34 for x in melds if x.opened]  # noqa: SLF001
-        is_open_hand = len(opened_melds) > 0
+        is_open_hand = any(meld.opened for meld in melds)
 
         if config.tsumi_number < 0:
             return HandResponse(error=HandCalculator.ERR_NEGATIVE_TSUMI_NUMBER)
@@ -263,9 +262,6 @@ class HandCalculator:
         for meld in melds:
             if meld_error := HandCalculator._validate_meld(meld, tiles):
                 return HandResponse(error=meld_error)
-
-        if any(win_tile in meld.tiles for meld in melds):
-            return HandResponse(error=HandCalculator.ERR_WINNING_TILE_IN_MELD)
 
         if config.is_riichi and not config.is_daburu_riichi and is_open_hand:
             return HandResponse(error=HandCalculator.ERR_OPEN_HAND_RIICHI)
@@ -373,6 +369,7 @@ class HandCalculator:
         )
 
         calculated_hands: list[_CalculatedHand] = []
+        meld_blocks = [meld._sorted_tiles_34 for meld in melds]  # noqa: SLF001
         for hand in hand_options:
             is_chiitoitsu = config.yaku.chiitoitsu.is_condition_met(hand)
             valued_tiles = [HAKU, HATSU, CHUN, config.player_wind, config.round_wind]
@@ -396,7 +393,7 @@ class HandCalculator:
             suit_mask, honor_count = classify_hand_suits(hand)
             has_honors = honor_count > 0
 
-            win_groups = HandCalculator._find_win_groups(win_tile, hand, opened_melds)
+            win_groups = HandCalculator._find_win_groups(win_tile, hand, meld_blocks)
             for win_group in win_groups:
                 cost = None
                 error = None
@@ -754,25 +751,25 @@ class HandCalculator:
         return None
 
     @staticmethod
-    def _find_win_groups(win_tile: int, hand: list[list[int]], opened_melds: list[list[int]]) -> list[list[int]]:
+    def _find_win_groups(win_tile: int, hand: list[list[int]], meld_blocks: list[list[int]]) -> list[list[int]]:
         win_tile_34 = (win_tile or 0) // 4
 
-        # track which opened melds have been matched using a consumed flags array
-        consumed = [False] * len(opened_melds)
+        # track which declared melds have been matched using a consumed flags array
+        consumed = [False] * len(meld_blocks)
 
-        # collect closed sets and find unique win groups in a single pass
+        # collect undeclared sets and find unique win groups in a single pass
         seen: set[tuple[int, ...]] = set()
         win_groups: list[list[int]] = []
         for x in hand:
-            # check if this set matches an unconsumed opened meld
-            is_opened_meld = False
-            for i, meld in enumerate(opened_melds):
+            # check if this set matches an unconsumed declared meld
+            is_declared_meld = False
+            for i, meld in enumerate(meld_blocks):
                 if not consumed[i] and x == meld:
                     consumed[i] = True
-                    is_opened_meld = True
+                    is_declared_meld = True
                     break
 
-            if is_opened_meld:
+            if is_declared_meld:
                 continue
 
             # for forms like 45666 and ron on 6
