@@ -373,19 +373,41 @@ def test_renhou_with_meld() -> None:
     assert result.error == HandCalculator.ERR_RENHOU_WITH_MELD
 
 
-def test_win_tile_only_in_opened_meld() -> None:
-    """
-    Verify that a hand where the win tile exists only in an opened meld
-    returns hand_not_correct instead of crashing.
-    """
+@pytest.mark.parametrize(
+    ("hand_tiles", "meld"),
+    [
+        pytest.param(
+            {"man": "111234", "pin": "456", "sou": "789", "honors": "11"},
+            Meld(meld_type=Meld.PON, tiles=[0, 1, 2], opened=True, called_tile=0, who=0),
+            id="win_tile_only_in_pon",
+        ),
+        pytest.param(
+            {"man": "1111234", "pin": "456", "sou": "789", "honors": "11"},
+            Meld(meld_type=Meld.KAN, tiles=[0, 1, 2, 3], opened=False),
+            id="closed_kan",
+        ),
+    ],
+)
+def test_winning_tile_in_meld(hand_tiles: dict[str, str], meld: Meld) -> None:
     hand = HandCalculator()
 
-    tiles = TilesConverter.string_to_136_array(man="111234", pin="456", sou="789", honors="11")
+    tiles = TilesConverter.string_to_136_array(**hand_tiles)
+
+    result = hand.estimate_hand_value(tiles, 0, melds=[meld])
+    assert result.error == HandCalculator.ERR_HAND_NOT_WINNING
+
+
+def test_same_kind_winning_tile_in_meld_is_accepted() -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(man="111123", pin="456", sou="789", honors="55")
     win_tile = tiles[0]
 
-    meld = Meld(meld_type=Meld.PON, tiles=tiles[0:3], opened=True, called_tile=tiles[0], who=0)
-    result = hand.estimate_hand_value(tiles, win_tile, melds=[meld])
-    assert result.error == HandCalculator.ERR_HAND_NOT_WINNING
+    melds = [Meld(meld_type=Meld.PON, tiles=[0, 1, 2], opened=True, called_tile=0, who=0)]
+    result = hand.estimate_hand_value(tiles, win_tile, melds=melds, config=_make_hand_config(is_houtei=True))
+    assert result.error is None
+    assert result.han == 1
+    assert result.fu == 30
 
 
 @pytest.mark.parametrize(
