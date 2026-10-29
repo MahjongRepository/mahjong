@@ -20,7 +20,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
-      deployments: read
+      actions: read # Read Environment protection and deployment-branch policy settings.
     outputs:
       sha: ${{ steps.release.outputs.sha }}
       version: ${{ steps.release.outputs.version }}
