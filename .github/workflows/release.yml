@@ -1,0 +1,142 @@
+name: Release
+
+on:
+  push:
+    branches: [master]
+    paths: [.github/release.json]
+  # Dispatch is ALWAYS a dry-run, including on upstream. Production starts only on merge.
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  identify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+      deployments: read
+    outputs:
+      sha: ${{ steps.release.outputs.sha }}
+      version: ${{ steps.release.outputs.version }}
+      tag: ${{ steps.release.outputs.tag }}
+      prerelease: ${{ steps.release.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          python-version: '3.14'
+          enable-cache: false
+      - name: Verify the release identity and protection settings
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' || github.repository != 'MahjongRepository/mahjong' }}
+        run: |
+          args=()
+          if [[ "$DRY_RUN" == true ]]; then args+=(--dry-run); fi
+          uv run --no-project python scripts/release.py verify "${args[@]}"
+
+  checks:
+    needs: identify
+    permissions:
+      contents: read
+    uses: ./.github/workflows/lint_and_test.yml # zizmor: ignore[self-repository] -- pinned actionlint does not support $/ yet
+    with:
+      ref: ${{ needs.identify.outputs.sha }}
+
+  docs:
+    needs: identify
+    permissions:
+      contents: read
+    uses: ./.github/workflows/build_docs.yml # zizmor: ignore[self-repository] -- pinned actionlint does not support $/ yet
+    with:
+      ref: ${{ needs.identify.outputs.sha }}
+
+  distributions:
+    needs: identify
+    permissions:
+      contents: read
+    uses: ./.github/workflows/check_package.yml # zizmor: ignore[self-repository] -- pinned actionlint does not support $/ yet
+    with:
+      ref: ${{ needs.identify.outputs.sha }}
+
+  validated:
+    needs: [identify, checks, docs, distributions]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identify.outputs.sha }}
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          python-version: '3.14'
+          enable-cache: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.distributions.outputs.artifact-id }}
+          path: dist
+          merge-multiple: true
+      - name: Record the validated files and reviewed notes
+        run: uv run --no-project python scripts/release.py record
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-validation
+          path: release-artifacts.json
+          if-no-files-found: error
+
+  publish:
+    if: github.repository == 'MahjongRepository/mahjong' && github.event_name == 'push'
+    needs: [identify, distributions, validated]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: pypi
+      url: https://pypi.org/project/mahjong/
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identify.outputs.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          python-version: '3.14'
+          enable-cache: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.distributions.outputs.artifact-id }}
+          path: dist
+          merge-multiple: true
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-validation
+      - name: Verify artifacts, check retry state and create the tag
+        id: state
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh auth setup-git
+          uv run --no-project python scripts/release.py publication-state
+      - name: Publish validated distributions to PyPI
+        if: steps.state.outputs.state == 'new'
+        run: uv publish --trusted-publishing always dist/*
+      - name: Verify PyPI and publish the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: uv run --no-project python scripts/release.py github-release
