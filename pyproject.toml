@@ -139,8 +139,6 @@ invalid-method-override = "ignore"
 [tool.pytest]
 python_files = ["tests_*.py"]
 addopts = [
-    "-p",
-    "no:warnings",
     "--no-header",
     "--tb=short",
     "-qq",
