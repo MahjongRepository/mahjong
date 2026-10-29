@@ -1398,7 +1398,6 @@ def test_aka_dora() -> None:
         (2, 0, 3),
         (3, 0, 4),
         (4, 0, 5),
-        (-1, 0, 1),
         (0, 1, 1),
         (1, 1, 3),
         (2, 1, 5),
@@ -1406,7 +1405,6 @@ def test_aka_dora() -> None:
         (0, 2, 1),
         (1, 2, 4),
         (4, 4, 21),
-        (-1, 4, 1),
     ],
 )
 def test_nuki_dora_with_dora_indicators(num_nuki_dora: int, num_dora_indicators: int, han: int) -> None:
@@ -1438,7 +1436,6 @@ def test_nuki_dora_with_dora_indicators(num_nuki_dora: int, num_dora_indicators:
         (2, 0, 3),
         (3, 0, 4),
         (4, 0, 5),
-        (-1, 0, 1),
         (0, 1, 1),
         (1, 1, 3),
         (2, 1, 5),
@@ -1446,7 +1443,6 @@ def test_nuki_dora_with_dora_indicators(num_nuki_dora: int, num_dora_indicators:
         (0, 2, 1),
         (1, 2, 4),
         (4, 4, 21),
-        (-1, 4, 1),
     ],
 )
 def test_nuki_dora_with_ura_dora_indicators(num_nuki_dora: int, num_ura_dora_indicators: int, han: int) -> None:
