@@ -5,12 +5,14 @@ on:
     branches: [master]
     paths:
       - .github/wiki/**
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   publish:
+    if: github.ref == 'refs/heads/master'
     name: Publish Wiki
     runs-on: ubuntu-latest
     timeout-minutes: 5

@@ -23,6 +23,7 @@ on:
       - uv.lock
       - Makefile
       - .github/workflows/lint_and_test.yml
+  workflow_dispatch:
 
 permissions:
   contents: read
