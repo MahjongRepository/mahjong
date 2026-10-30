@@ -1,7 +1,5 @@
 """Prepare release files and check their versions; remote operations live in workflows."""
 
-from __future__ import annotations
-
 import argparse
 import json
 import os
