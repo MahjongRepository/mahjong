@@ -33,13 +33,16 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           python-version: '3.14'
           enable-cache: false
+
       - name: Verify the local release identity
         id: release
         run: uv run --no-project python scripts/release.py verify --dry-run
+
       - name: Fetch merged PR and Environment protection settings
         if: github.repository == 'MahjongRepository/mahjong' && github.event_name == 'push'
         env:
@@ -51,6 +54,7 @@ jobs:
             --paginate --slurp > "$RELEASE_DATA/merged-prs.json"
           gh api "repos/$GITHUB_REPOSITORY/environments/pypi" > "$RELEASE_DATA/environment.json"
           gh api "repos/$GITHUB_REPOSITORY/environments/pypi/deployment-branch-policies" > "$RELEASE_DATA/branch-policies.json"
+
       - name: Verify production context and protection settings
         if: github.repository == 'MahjongRepository/mahjong' && github.event_name == 'push'
         run: uv run --no-project python scripts/release.py verify
@@ -92,17 +96,21 @@ jobs:
         with:
           ref: ${{ needs.identify.outputs.sha }}
           persist-credentials: false
+
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           python-version: '3.14'
           enable-cache: false
+
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.distributions.outputs.artifact-id }}
           path: dist
           merge-multiple: true
+
       - name: Record the validated files and reviewed notes
         run: uv run --no-project python scripts/release.py record
+
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         id: record
         with:
@@ -129,19 +137,23 @@ jobs:
           ref: ${{ needs.identify.outputs.sha }}
           fetch-depth: 0
           persist-credentials: false
+
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           python-version: '3.14'
           enable-cache: false
+
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.distributions.outputs.artifact-id }}
           path: dist
           merge-multiple: true
+
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           artifact-ids: ${{ needs.validated.outputs.record-id }}
           merge-multiple: true
+
       - name: Fetch existing tag refs and PyPI files
         env:
           GH_TOKEN: ${{ github.token }}
@@ -158,9 +170,11 @@ jobs:
             404) printf '{"urls":[]}\n' > "$RELEASE_DATA/pypi.json" ;;
             *) echo "PyPI lookup failed: HTTP $status" >&2; exit 1 ;;
           esac
+
       - name: Verify artifacts and check retry state
         id: state
         run: uv run --no-project python scripts/release.py publication-state
+
       - name: Create the tag without replacing an existing tag
         if: steps.state.outputs.tag_exists == 'false'
         env:
@@ -171,9 +185,11 @@ jobs:
           gh auth setup-git
           git tag "$TAG" "$SHA"
           git push origin "refs/tags/$TAG"
+
       - name: Publish validated distributions to PyPI
         if: steps.state.outputs.state == 'new'
         run: uv publish --trusted-publishing always dist/*
+
       - name: Fetch published files and existing GitHub Releases
         env:
           GH_TOKEN: ${{ github.token }}
@@ -182,9 +198,11 @@ jobs:
           curl --fail --silent --show-error --retry 2 \
             "https://pypi.org/pypi/mahjong/$VERSION/json" > "$RELEASE_DATA/pypi.json"
           gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" --paginate --slurp > "$RELEASE_DATA/releases.json"
+
       - name: Verify PyPI and plan GitHub Release creation or recovery
         id: github-release
         run: uv run --no-project python scripts/release.py github-release
+
       - name: Publish the GitHub Release or upload missing assets
         env:
           GH_TOKEN: ${{ github.token }}

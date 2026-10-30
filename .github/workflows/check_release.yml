@@ -20,10 +20,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           persist-credentials: false
+
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           python-version: '3.14'
           enable-cache: false
+
       - name: Fetch PR changes and current base ref
         env:
           GH_TOKEN: ${{ github.token }}
@@ -34,5 +36,6 @@ jobs:
           gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files?per_page=100" \
             --paginate --slurp > "$RELEASE_DATA/pr-files.json"
           gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$BASE" > "$RELEASE_DATA/base-ref.json"
+
       - name: Check preparation freshness and reviewed notes
         run: uv run --no-project python scripts/release.py check-pr

@@ -34,16 +34,19 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+
       - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           python-version: '3.14'
           enable-cache: false
+
       - name: Validate the version and plan the preparation
         id: plan
         env:
           RELEASE_VERSION: ${{ inputs.version }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: uv run --no-project python scripts/release.py plan --version "$RELEASE_VERSION"
+
       - name: Fetch existing releases, PRs and PyPI files
         env:
           GH_TOKEN: ${{ github.token }}
@@ -60,9 +63,11 @@ jobs:
             404) printf '{"urls":[]}\n' > "$RELEASE_DATA/pypi.json" ;;
             *) echo "PyPI lookup failed: HTTP $status" >&2; exit 1 ;;
           esac
+
       - name: Check collisions and select the existing preparation
         id: state
         run: uv run --no-project python scripts/release.py preparation-state
+
       - name: Fetch the previous preparation for a safe refresh
         if: steps.state.outputs.head_sha != ''
         env:
@@ -76,6 +81,7 @@ jobs:
           old_source=$(jq -r '.source_sha' "$RELEASE_DATA/old-manifest.json")
           [[ "$old_source" =~ ^[0-9a-f]{40}$ ]]
           git diff --name-only "$old_source" "$HEAD_SHA" -- > "$RELEASE_DATA/old-files.txt"
+
       - name: Generate release notes with GitHub
         env:
           GH_TOKEN: ${{ github.token }}
@@ -86,12 +92,14 @@ jobs:
           gh api --method POST "repos/$GITHUB_REPOSITORY/releases/generate-notes" \
             -f tag_name="v$VERSION" -f target_commitish="$SOURCE" \
             -f previous_tag_name="$PREVIOUS_TAG" --jq '.body' > "$RELEASE_DATA/generated-notes.md"
+
       - name: Update the version and local changelog
         env:
           VERSION: ${{ steps.plan.outputs.version }}
         run: |
           uv version --no-sync "$VERSION"
           uv run --no-project python scripts/release.py prepare
+
       - name: Commit and push the preparation branch
         if: inputs.dry-run == false
         env:
@@ -107,6 +115,7 @@ jobs:
           git add pyproject.toml uv.lock CHANGELOG.md .github/release.json
           git commit -m "chore: prepare release $VERSION"
           git push "--force-with-lease=refs/heads/$BRANCH:$EXPECTED_HEAD" origin "HEAD:refs/heads/$BRANCH"
+
       - name: Open the preparation PR
         if: inputs.dry-run == false && steps.state.outputs.head_sha == ''
         env:
@@ -122,6 +131,7 @@ jobs:
           EOF
           gh pr create --repo "$GITHUB_REPOSITORY" --base "$BASE" --head "$BRANCH" \
             --title "chore: prepare release $VERSION" --body-file "$RELEASE_DATA/pr-body.md"
+
       - name: Upload preview
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
