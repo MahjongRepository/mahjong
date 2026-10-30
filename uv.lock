@@ -472,8 +472,8 @@ dev = [
     { name = "ruff", specifier = ">=0.17.1,<0.18" },
     { name = "sphinx", specifier = ">=8.1.3" },
     { name = "sphinx-rtd-theme", specifier = ">=3.1.0" },
-    { name = "tomli", specifier = ">=2" },
-    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2" },
+    { name = "tomli", specifier = ">=2.5.0" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.5.0" },
     { name = "ty", specifier = ">=0.0.42" },
 ]
 docs = [
@@ -483,17 +483,17 @@ docs = [
 hooks = [
     { name = "prek", specifier = ">=0.5.7,<0.6" },
     { name = "ruff", specifier = ">=0.17.1,<0.18" },
-    { name = "tomli", specifier = ">=2" },
+    { name = "tomli", specifier = ">=2.5.0" },
     { name = "ty", specifier = ">=0.0.42" },
 ]
 lint = [{ name = "ruff", specifier = ">=0.17.1,<0.18" }]
 test = [
     { name = "pytest", specifier = ">=9.0.2,<10" },
     { name = "pytest-cov", specifier = ">=7.0.0,<8" },
-    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.5.0" },
 ]
 typing = [
-    { name = "tomli", specifier = ">=2" },
+    { name = "tomli", specifier = ">=2.5.0" },
     { name = "ty", specifier = ">=0.0.42" },
 ]
 
