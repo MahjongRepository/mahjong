@@ -10,7 +10,7 @@ on:
       - MANIFEST.in
       - README.md
       - LICENSE.txt
-      - tests/check_distribution.py
+      - scripts/check_distribution.py
       - .github/workflows/check_package.yml
   pull_request:
     branches: [master]
@@ -21,7 +21,7 @@ on:
       - MANIFEST.in
       - README.md
       - LICENSE.txt
-      - tests/check_distribution.py
+      - scripts/check_distribution.py
       - .github/workflows/check_package.yml
   workflow_dispatch:
   workflow_call:
@@ -107,4 +107,4 @@ jobs:
           esac
           test "${#distributions[@]}" -eq 1
           uv run --isolated --no-project --with "${distributions[0]}" \
-            python -I "$GITHUB_WORKSPACE/tests/check_distribution.py" "$EXPECTED_VERSION"
+            python -I "$GITHUB_WORKSPACE/scripts/check_distribution.py" "$EXPECTED_VERSION"
