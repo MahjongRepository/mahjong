@@ -121,6 +121,12 @@ convention = "pep257"
     "T201",    # print
     "INP001",  # implicit-namespace-package
 ]
+"./scripts/*" = [
+    "D",       # pydocstyle
+    "T201",    # print
+    "INP001",  # implicit-namespace-package
+    "S101",    # assert
+]
 "./tests/*" = [
     "D",       # pydocstyle
     "S101",    # assert

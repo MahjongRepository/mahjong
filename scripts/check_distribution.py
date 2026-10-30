@@ -1,7 +1,5 @@
 """Smoke checks run against an installed wheel or sdist, without the source tree."""
 
-# ruff: noqa: S101 -- Assertions implement the distribution smoke checks.
-
 import importlib
 import pkgutil
 import sys

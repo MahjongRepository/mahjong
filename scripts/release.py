@@ -45,7 +45,7 @@ def version_key(version: str) -> tuple[int, int, int, int, int]:
     """Order the canonical stable and dev versions supported by this workflow."""
     match = VERSION.fullmatch(version)
     require(match, "Expected X.Y.Z or X.Y.Z.devN with no leading zeroes")
-    assert match is not None  # noqa: S101
+    assert match is not None
     major, minor, patch, dev = match.groups()
     return int(major), int(minor), int(patch), int(dev is None), int(dev or 0)
 
@@ -88,7 +88,7 @@ def output(**values: object) -> None:
             for key, value in values.items():
                 require("\n" not in str(value), "Multiline workflow output")
                 stream.write(f"{key}={value}\n")
-    print(json.dumps(values))  # noqa: T201
+    print(json.dumps(values))
 
 
 def project_version() -> str:
@@ -193,7 +193,7 @@ if __name__ == "__main__":
     try:
         main()
     except (ValueError, KeyError, subprocess.CalledProcessError) as error:
-        print(f"Release stopped: {error}", file=sys.stderr)  # noqa: T201
+        print(f"Release stopped: {error}", file=sys.stderr)
         if isinstance(error, subprocess.CalledProcessError) and error.stderr:
-            print(error.stderr.strip(), file=sys.stderr)  # noqa: T201
+            print(error.stderr.strip(), file=sys.stderr)
         sys.exit(1)
