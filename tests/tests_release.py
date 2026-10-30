@@ -1,6 +1,5 @@
 """Release tooling tests never publish, push, or call a live remote service."""
 
-import json
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -71,7 +70,6 @@ def test_stable_notes_start_at_last_stable_tag(monkeypatch: pytest.MonkeyPatch) 
 @pytest.fixture
 def checkout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     monkeypatch.chdir(tmp_path)
-    Path(".github").mkdir()
     Path("pyproject.toml").write_text('[project]\nname = "mahjong"\nversion = "2.2.0.dev1"\n')
     Path("uv.lock").write_text('[[package]]\nname = "mahjong"\nversion = "2.2.0.dev1"\n')
     release.CHANGELOG.write_text(release.UNRELEASED.format(manual="Deprecation notice."))
@@ -83,14 +81,13 @@ def checkout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 def test_preparation_allows_review_edits_without_regeneration(checkout: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(release, "run", Mock(return_value="diff"))
     release.prepare("2.2.0.dev1", checkout)
-    assert json.loads(release.MANIFEST.read_text()) == {"version": "2.2.0.dev1"}
     release.CHANGELOG.write_text(release.CHANGELOG.read_text().replace("Deprecation notice.", "Reviewed explanation."))
     assert "Reviewed explanation." in release.check_contents()
     release.verify(None)
     assert "Reviewed explanation." in Path("release-notes.md").read_text()
 
 
-@pytest.mark.parametrize("file", ["uv.lock", ".github/release.json", "CHANGELOG.md"])
+@pytest.mark.parametrize("file", ["uv.lock", "CHANGELOG.md"])
 def test_mismatched_release_files_stop_publication(
     checkout: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -113,49 +110,30 @@ def test_repeated_preparation_preserves_existing_edits(checkout: Path, monkeypat
     assert release.CHANGELOG.read_text() == content
 
 
-@pytest.mark.parametrize(
-    ("old", "marker_changed", "expected"),
-    [("2.1.0", True, True), ("2.2.0.dev1", False, False)],
-)
+@pytest.mark.parametrize(("old", "expected"), [("2.1.0", True), ("2.2.0.dev1", False)])
 def test_version_change_detection(
     checkout: Path,
     monkeypatch: pytest.MonkeyPatch,
     old: str,
-    marker_changed: bool,
     expected: bool,
 ) -> None:
     monkeypatch.setattr(release, "run", Mock(return_value="diff"))
     release.prepare("2.2.0.dev1", checkout)
-    command = Mock(side_effect=[f'[project]\nversion = "{old}"', ".github/release.json" if marker_changed else ""])
-    monkeypatch.setattr(release, "run", command)
+    monkeypatch.setattr(release, "run", Mock(return_value=f'[project]\nversion = "{old}"'))
     assert release.check_change("a" * 40) is expected
 
 
-@pytest.mark.parametrize(
-    ("old", "changed", "message"),
-    [
-        ("2.2.0", ".github/release.json", "increase"),
-        ("2.1.0", "pyproject.toml", "marker update"),
-        ("2.2.0.dev1", ".github/release.json", "without a version increase"),
-    ],
-)
 @pytest.mark.usefixtures("checkout")
-def test_invalid_version_changes_stop(
-    monkeypatch: pytest.MonkeyPatch,
-    old: str,
-    changed: str,
-    message: str,
-) -> None:
-    monkeypatch.setattr(release, "run", Mock(side_effect=[f'[project]\nversion = "{old}"', changed]))
-    with pytest.raises(ValueError, match=message):
-        release.check_change("a" * 40)
+def test_version_decrease_stops_publication(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(release, "run", Mock(return_value='[project]\nversion = "2.2.0"'))
+    with pytest.raises(ValueError, match="Version must increase"):
+        release.verify("a" * 40)
 
 
 @pytest.mark.usefixtures("checkout")
-def test_ordinary_pr_does_not_need_a_release_marker(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(release, "run", Mock(side_effect=['[project]\nversion = "2.2.0.dev1"', "mahjong/tile.py"]))
+def test_ordinary_pr_does_not_need_release_notes(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(release, "run", Mock(return_value='[project]\nversion = "2.2.0.dev1"'))
     assert not release.check_change("a" * 40)
-    assert not release.MANIFEST.exists()
 
 
 @pytest.mark.usefixtures("checkout")
@@ -166,10 +144,13 @@ def test_plan_rejects_an_existing_tag(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 @pytest.mark.usefixtures("checkout")
-def test_push_without_version_change_is_not_a_release(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(release, "run", Mock(side_effect=['[project]\nversion = "2.2.0.dev1"', "README.md"]))
-    with pytest.raises(ValueError, match="No release version change"):
-        release.verify("a" * 40)
+def test_dependency_only_push_skips_release_without_requiring_notes(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(release, "run", Mock(return_value='[project]\nversion = "2.2.0.dev1"'))
+    result = Path("outputs.txt")
+    monkeypatch.setenv("GITHUB_OUTPUT", str(result.resolve()))
+    release.verify("a" * 40)
+    assert result.read_text() == "release=false\n"
+    assert not Path("release-notes.md").exists()
 
 
 @pytest.mark.parametrize("version", ["2.2.0.dev1", "2.2.0"])
@@ -198,5 +179,28 @@ def test_release_after_normal_branch_updates(
     release.run("git", "add", ".")
     release.run("git", "commit", "-m", "Review and update preparation")
     assert release.check_change(base)
-    release.verify(base)
+    result = Path("outputs.txt")
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setenv("GITHUB_OUTPUT", str(result.resolve()))
+        release.verify(base)
+    assert "release=true\n" in result.read_text()
     assert "Final reviewed note." in Path("release-notes.md").read_text()
+
+
+@pytest.mark.usefixtures("checkout")
+def test_non_release_push_with_real_git_history(monkeypatch: pytest.MonkeyPatch) -> None:
+    release.run("git", "init")
+    release.run("git", "config", "user.name", "Release test")
+    release.run("git", "config", "user.email", "release@example.invalid")
+    release.run("git", "add", ".")
+    release.run("git", "commit", "-m", "Initial state")
+    base = release.run("git", "rev-parse", "HEAD")
+    with Path("pyproject.toml").open("a") as stream:
+        stream.write('description = "Dependency and metadata update without a release"\n')
+    release.run("git", "add", "pyproject.toml")
+    release.run("git", "commit", "-m", "Update metadata without changing the version")
+    result = Path("outputs.txt")
+    monkeypatch.setenv("GITHUB_OUTPUT", str(result.resolve()))
+    release.verify(base)
+    assert result.read_text() == "release=false\n"
+    assert not Path("release-notes.md").exists()

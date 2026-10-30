@@ -90,7 +90,7 @@ jobs:
           git switch -c "$BRANCH"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add pyproject.toml uv.lock CHANGELOG.md .github/release.json
+          git add pyproject.toml uv.lock CHANGELOG.md
           git commit -m "chore: prepare release $VERSION"
           git push origin "HEAD:refs/heads/$BRANCH"
 
@@ -117,6 +117,4 @@ jobs:
           path: |
             release-preview.md
             release-preview.patch
-            .github/release.json
-          include-hidden-files: true
           if-no-files-found: error

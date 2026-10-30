@@ -11,10 +11,10 @@ Workflow steps handle GitHub operations with `gh`, version updates with `uv vers
 Git pushes and Trusted Publishing with `uv publish`. `scripts/release.py` only edits local notes
 and checks versions and changelog structure. It never makes network requests or publishes.
 
-`.github/release.json` contains only the release version. Updating it on `master` triggers Release;
-ordinary code changes do not. There is no source-SHA manifest, notes hash, automatic PR refresh,
-Environment-settings inspection or cross-service recovery state machine. Reviewed notes in the
-merged commit are used verbatim, excluding structural comments.
+`pyproject.toml` is the source of the release version. A `master` push changing this file starts
+Release, which compares its version before and after the push. If the version is unchanged (for
+example, a dependency update), release validation and publication jobs are skipped successfully.
+Reviewed notes in the merged commit are used verbatim, excluding structural comments.
 
 ## One-time setup (repository administrator and PyPI project owner)
 
@@ -43,7 +43,7 @@ and PyPI project roles are independent; the owner should configure the settings 
 4. Protect `master`: require independent PR review, dismiss stale approvals, require an up-to-date
    branch and the relevant existing CI checks plus **`release-preparation`**. Review workflow and
    release-tool changes carefully. Only merge the reviewed preparation PR to start a release;
-   do not directly push version or release-marker changes to `master`.
+   do not directly push version changes to `master`.
 5. Verify independent deployment approval on a separate non-publishing test environment.
    Self-review prevention applies to the workflow initiator, normally the person who merged the
    preparation PR. Use a human merge and a different maintainer's publication approval.
@@ -66,9 +66,9 @@ References: [GitHub environments](https://docs.github.com/en/actions/reference/w
 3. Run with **dry-run disabled** to create `release/{version}` and open its preparation PR.
    The workflow updates `pyproject.toml` and `uv.lock`, generates the change list with GitHub's
    Release Notes API and combines it with the hand-written notes. Existing dependency pins remain.
-   The marker records just `{"version": "2.2.0.dev1"}`. The changelog date is the UTC preparation date.
+   The changelog date is the UTC preparation date.
 4. Review and edit the PR directly, including the generated list if necessary. Keep structural
-   marker comments intact and keep the version identical in the project, lock file and marker.
+   marker comments intact and keep the version identical in the project and lock file.
    Preparation never updates an existing PR or replaces its branch; another open preparation PR
    or an existing same-name branch causes it to stop.
 5. If `master` advances, update the PR branch normally, resolve conflicts and review the resulting
@@ -98,8 +98,8 @@ Existing dev release sections are preserved.
 
 ## Validate, approve and publish
 
-Merging the version-marker update starts **Release**. It checks that the push increased the project
-version and that the marker, lock file and changelog agree. It runs the existing lint/type/test matrix,
+Merging the version update starts **Release**. It checks that the push increased the project
+version and that the project, lock file and changelog agree. It runs the existing lint/type/test matrix,
 strict documentation build without deployment, and wheel/sdist installation checks on three systems.
 All reusable workflows use the same merged SHA, regardless of ordinary CI path filters.
 
@@ -116,8 +116,8 @@ A failed PyPI upload prevents GitHub Release creation. Runs are serialized and n
 ## Dry-run and initial validation
 
 Manually starting **Release** is **always a dry-run**, including upstream. It validates and builds
-but skips the entire publication job. Run it on a prepared branch with a matching version marker
-and changelog section. An ordinary implementation branch is not a prepared release.
+but skips the entire publication job. Run it on a prepared branch with a matching project/lock
+version and changelog section. An ordinary implementation branch is not a prepared release.
 
 Forks can run preparation and Release dry-runs, but the publication job explicitly requires an
 upstream `master` push. Preparation accepts the fork's default branch for an isolated rehearsal.

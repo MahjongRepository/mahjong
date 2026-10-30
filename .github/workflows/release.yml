@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches: [master]
-    paths: [.github/release.json]
+    paths: [pyproject.toml]
   # Dispatch is ALWAYS a dry-run, including on upstream. Production starts only on merge.
   workflow_dispatch:
 
@@ -20,6 +20,7 @@ jobs:
     permissions:
       contents: read
     outputs:
+      release: ${{ steps.release.outputs.release }}
       sha: ${{ steps.release.outputs.sha }}
       version: ${{ steps.release.outputs.version }}
       tag: ${{ steps.release.outputs.tag }}
@@ -45,6 +46,7 @@ jobs:
           uv run --no-project python scripts/release.py verify "${args[@]}"
 
   checks:
+    if: needs.identify.outputs.release == 'true'
     needs: identify
     permissions:
       contents: read
@@ -53,6 +55,7 @@ jobs:
       ref: ${{ needs.identify.outputs.sha }}
 
   docs:
+    if: needs.identify.outputs.release == 'true'
     needs: identify
     permissions:
       contents: read
@@ -61,6 +64,7 @@ jobs:
       ref: ${{ needs.identify.outputs.sha }}
 
   distributions:
+    if: needs.identify.outputs.release == 'true'
     needs: identify
     permissions:
       contents: read
@@ -69,7 +73,10 @@ jobs:
       ref: ${{ needs.identify.outputs.sha }}
 
   publish:
-    if: github.repository == 'MahjongRepository/mahjong' && github.event_name == 'push'
+    if: >-
+      needs.identify.outputs.release == 'true' &&
+      github.repository == 'MahjongRepository/mahjong' &&
+      github.event_name == 'push'
     needs: [identify, checks, docs, distributions]
     runs-on: ubuntu-latest
     timeout-minutes: 10

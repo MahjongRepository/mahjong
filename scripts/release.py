@@ -16,7 +16,6 @@ if sys.version_info >= (3, 11):
 else:
     import tomli as tomllib
 
-MANIFEST = Path(".github/release.json")
 CHANGELOG = Path("CHANGELOG.md")
 VERSION = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:\.dev(0|[1-9][0-9]*))?")
 UNRELEASED = "<!-- unreleased:start -->\n{manual}\n<!-- unreleased:end -->"
@@ -100,9 +99,8 @@ def project_version() -> str:
 
 
 def check_contents() -> str:
-    """Check the release marker, lock file and changelog against the project version."""
+    """Check the lock file and changelog against the project version."""
     version = project_version()
-    require(json.loads(MANIFEST.read_text(encoding="utf-8")) == {"version": version}, "Release marker version differs")
     packages = tomllib.loads(Path("uv.lock").read_text(encoding="utf-8"))["package"]
     versions = [package["version"] for package in packages if package["name"] == "mahjong"]
     require(versions == [version], "Lock file version differs")
@@ -114,12 +112,9 @@ def check_change(base: str) -> bool:
     require(re.fullmatch(r"[0-9a-f]{40}", base), "Expected a base commit SHA")
     old = tomllib.loads(run("git", "show", f"{base}:pyproject.toml"))["project"]["version"]
     version = project_version()
-    changed = run("git", "diff", "--name-only", base, "HEAD").splitlines()
     if old == version:
-        require(MANIFEST.as_posix() not in changed, "Release marker changed without a version increase")
         return False
     require(version_key(version) > version_key(old), "Version must increase")
-    require(MANIFEST.as_posix() in changed, "Version changes require a release marker update")
     check_contents()
     return True
 
@@ -142,7 +137,7 @@ def plan(version: str) -> None:
 
 
 def prepare(version: str, notes: Path) -> None:
-    """Create the initial release notes and version-only marker."""
+    """Create the initial release notes for the requested project version."""
     require(project_version() == version, "Set the requested project version first")
     content = CHANGELOG.read_text(encoding="utf-8")
     manual = marked(content, "unreleased")
@@ -152,7 +147,6 @@ def prepare(version: str, notes: Path) -> None:
         ),
         encoding="utf-8",
     )
-    MANIFEST.write_text(json.dumps({"version": version}, indent=2) + "\n", encoding="utf-8")
     body = check_contents()
     Path("release-preview.md").write_text(body, encoding="utf-8")
     Path("release-preview.patch").write_text(run("git", "diff") + "\n", encoding="utf-8")
@@ -160,13 +154,14 @@ def prepare(version: str, notes: Path) -> None:
 
 def verify(base: str | None) -> None:
     """Identify a release and write the reviewed notes for publication."""
-    if base is not None:
-        require(check_change(base), "No release version change in this push")
+    if base is not None and not check_change(base):
+        output(release="false")
+        return
     body = check_contents()
     version = project_version()
     sha = run("git", "rev-parse", "HEAD")
     Path("release-notes.md").write_text(body, encoding="utf-8")
-    output(version=version, sha=sha, tag=f"v{version}", prerelease=str(".dev" in version).lower())
+    output(release="true", version=version, sha=sha, tag=f"v{version}", prerelease=str(".dev" in version).lower())
     if "GITHUB_STEP_SUMMARY" in os.environ:
         with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a", encoding="utf-8") as stream:
             stream.write(f"## Release {version}\n\nCommit: `{sha}`\n\n{body}")
