@@ -180,17 +180,18 @@ def main() -> None:
     parser.add_argument("--notes", type=Path)
     parser.add_argument("--base")
     args = parser.parse_args()
-    if args.command == "plan":
-        require(args.version, "--version is required")
-        plan(args.version)
-    elif args.command == "prepare":
-        require(args.version and args.notes, "--version and --notes are required")
-        prepare(args.version, args.notes)
-    elif args.command == "check-pr":
-        require(args.base, "--base is required")
-        check_change(args.base)
-    else:
-        verify(args.base)
+    match args.command:
+        case "plan":
+            require(args.version, "--version is required")
+            plan(args.version)
+        case "prepare":
+            require(args.version and args.notes, "--version and --notes are required")
+            prepare(args.version, args.notes)
+        case "check-pr":
+            require(args.base, "--base is required")
+            check_change(args.base)
+        case "verify":
+            verify(args.base)
 
 
 if __name__ == "__main__":
