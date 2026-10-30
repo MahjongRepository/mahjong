@@ -12,8 +12,6 @@ jobs:
   release-preparation:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    env:
-      RELEASE_DATA: /tmp/mahjong-release-data
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -26,16 +24,7 @@ jobs:
           python-version: '3.14'
           enable-cache: false
 
-      - name: Fetch PR changes and current base ref
+      - name: Check version and changelog consistency
         env:
-          GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          BASE: ${{ github.event.pull_request.base.ref }}
-        run: |
-          mkdir -p "$RELEASE_DATA"
-          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files?per_page=100" \
-            --paginate --slurp > "$RELEASE_DATA/pr-files.json"
-          gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$BASE" > "$RELEASE_DATA/base-ref.json"
-
-      - name: Check preparation freshness and reviewed notes
-        run: uv run --no-project python scripts/release.py check-pr
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: uv run --no-project python scripts/release.py check-pr --base "$BASE"

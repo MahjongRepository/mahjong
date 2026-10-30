@@ -19,10 +19,6 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
-      pull-requests: read
-      actions: read # Read Environment protection and deployment-branch policy settings.
-    env:
-      RELEASE_DATA: /tmp/mahjong-release-data
     outputs:
       sha: ${{ steps.release.outputs.sha }}
       version: ${{ steps.release.outputs.version }}
@@ -39,25 +35,14 @@ jobs:
           python-version: '3.14'
           enable-cache: false
 
-      - name: Verify the local release identity
+      - name: Identify the release and reviewed notes
         id: release
-        run: uv run --no-project python scripts/release.py verify --dry-run
-
-      - name: Fetch merged PR and Environment protection settings
-        if: github.repository == 'MahjongRepository/mahjong' && github.event_name == 'push'
         env:
-          GH_TOKEN: ${{ github.token }}
-          SHA: ${{ steps.release.outputs.sha }}
+          BEFORE: ${{ github.event.before }}
         run: |
-          mkdir -p "$RELEASE_DATA"
-          gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/pulls?per_page=100" \
-            --paginate --slurp > "$RELEASE_DATA/merged-prs.json"
-          gh api "repos/$GITHUB_REPOSITORY/environments/pypi" > "$RELEASE_DATA/environment.json"
-          gh api "repos/$GITHUB_REPOSITORY/environments/pypi/deployment-branch-policies" > "$RELEASE_DATA/branch-policies.json"
-
-      - name: Verify production context and protection settings
-        if: github.repository == 'MahjongRepository/mahjong' && github.event_name == 'push'
-        run: uv run --no-project python scripts/release.py verify
+          args=()
+          if [[ "$GITHUB_EVENT_NAME" == push ]]; then args=(--base "$BEFORE"); fi
+          uv run --no-project python scripts/release.py verify "${args[@]}"
 
   checks:
     needs: identify
@@ -83,44 +68,9 @@ jobs:
     with:
       ref: ${{ needs.identify.outputs.sha }}
 
-  validated:
-    needs: [identify, checks, docs, distributions]
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-    outputs:
-      record-id: ${{ steps.record.outputs.artifact-id }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ needs.identify.outputs.sha }}
-          persist-credentials: false
-
-      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
-        with:
-          python-version: '3.14'
-          enable-cache: false
-
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          artifact-ids: ${{ needs.distributions.outputs.artifact-id }}
-          path: dist
-          merge-multiple: true
-
-      - name: Record the validated files and reviewed notes
-        run: uv run --no-project python scripts/release.py record
-
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        id: record
-        with:
-          name: release-validation-${{ github.run_attempt }}
-          path: release-artifacts.json
-          if-no-files-found: error
-
   publish:
     if: github.repository == 'MahjongRepository/mahjong' && github.event_name == 'push'
-    needs: [identify, distributions, validated]
+    needs: [identify, checks, docs, distributions]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
@@ -129,8 +79,6 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    env:
-      RELEASE_DATA: /tmp/mahjong-release-data
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -149,34 +97,10 @@ jobs:
           path: dist
           merge-multiple: true
 
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          artifact-ids: ${{ needs.validated.outputs.record-id }}
-          merge-multiple: true
+      - name: Read the reviewed release notes
+        run: uv run --no-project python scripts/release.py verify
 
-      - name: Fetch existing tag refs and PyPI files
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ needs.identify.outputs.version }}
-          TAG: ${{ needs.identify.outputs.tag }}
-        run: |
-          mkdir -p "$RELEASE_DATA"
-          gh auth setup-git
-          git ls-remote origin "refs/tags/$TAG" "refs/tags/$TAG^{}" > "$RELEASE_DATA/tag-refs.txt"
-          status=$(curl --silent --show-error --retry 2 --output "$RELEASE_DATA/pypi.json" \
-            --write-out '%{http_code}' "https://pypi.org/pypi/mahjong/$VERSION/json")
-          case "$status" in
-            200) ;;
-            404) printf '{"urls":[]}\n' > "$RELEASE_DATA/pypi.json" ;;
-            *) echo "PyPI lookup failed: HTTP $status" >&2; exit 1 ;;
-          esac
-
-      - name: Verify artifacts and check retry state
-        id: state
-        run: uv run --no-project python scripts/release.py publication-state
-
-      - name: Create the tag without replacing an existing tag
-        if: steps.state.outputs.tag_exists == 'false'
+      - name: Create the version tag
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ needs.identify.outputs.tag }}
@@ -187,39 +111,15 @@ jobs:
           git push origin "refs/tags/$TAG"
 
       - name: Publish validated distributions to PyPI
-        if: steps.state.outputs.state == 'new'
         run: uv publish --trusted-publishing always dist/*
 
-      - name: Fetch published files and existing GitHub Releases
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ needs.identify.outputs.version }}
-        run: |
-          curl --fail --silent --show-error --retry 2 \
-            "https://pypi.org/pypi/mahjong/$VERSION/json" > "$RELEASE_DATA/pypi.json"
-          gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" --paginate --slurp > "$RELEASE_DATA/releases.json"
-
-      - name: Verify PyPI and plan GitHub Release creation or recovery
-        id: github-release
-        run: uv run --no-project python scripts/release.py github-release
-
-      - name: Publish the GitHub Release or upload missing assets
+      - name: Publish the GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ needs.identify.outputs.tag }}
           PRERELEASE: ${{ needs.identify.outputs.prerelease }}
-          EXISTS: ${{ steps.github-release.outputs.exists }}
         run: |
-          if [[ "$EXISTS" == true ]]; then
-            mapfile -t names < <(jq -r '.[]' "$RELEASE_DATA/missing-assets.json")
-            assets=()
-            for name in "${names[@]}"; do assets+=("dist/$name"); done
-            if (( ${#assets[@]} > 0 )); then
-              gh release upload "$TAG" --repo "$GITHUB_REPOSITORY" "${assets[@]}"
-            fi
-          else
-            args=(--latest)
-            if [[ "$PRERELEASE" == true ]]; then args=(--prerelease --latest=false); fi
-            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" \
-              --notes-file release-notes.md "${args[@]}" dist/*
-          fi
+          args=(--latest)
+          if [[ "$PRERELEASE" == true ]]; then args=(--prerelease --latest=false); fi
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" \
+            --notes-file release-notes.md "${args[@]}" dist/*

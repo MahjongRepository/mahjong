@@ -28,7 +28,7 @@ jobs:
       contents: write
       pull-requests: write
     env:
-      RELEASE_DATA: /tmp/mahjong-release-data
+      NOTES: /tmp/mahjong-release-notes.md
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -44,61 +44,40 @@ jobs:
         id: plan
         env:
           RELEASE_VERSION: ${{ inputs.version }}
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: uv run --no-project python scripts/release.py plan --version "$RELEASE_VERSION"
 
-      - name: Fetch existing releases, PRs and PyPI files
+      - name: Reject an existing preparation PR or branch
         env:
           GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.plan.outputs.version }}
-          BASE: ${{ steps.plan.outputs.base }}
+          BRANCH: ${{ steps.plan.outputs.branch }}
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" --paginate --slurp > "$RELEASE_DATA/releases.json"
-          gh api --method GET "repos/$GITHUB_REPOSITORY/pulls" \
-            -f state=open -f base="$BASE" -F per_page=100 --paginate --slurp > "$RELEASE_DATA/pulls.json"
-          status=$(curl --silent --show-error --retry 2 --output "$RELEASE_DATA/pypi.json" \
-            --write-out '%{http_code}' "https://pypi.org/pypi/mahjong/$VERSION/json")
-          case "$status" in
-            200) ;;
-            404) printf '{"urls":[]}\n' > "$RELEASE_DATA/pypi.json" ;;
-            *) echo "PyPI lookup failed: HTTP $status" >&2; exit 1 ;;
-          esac
-
-      - name: Check collisions and select the existing preparation
-        id: state
-        run: uv run --no-project python scripts/release.py preparation-state
-
-      - name: Fetch the previous preparation for a safe refresh
-        if: steps.state.outputs.head_sha != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-          HEAD_SHA: ${{ steps.state.outputs.head_sha }}
-        run: |
-          gh auth setup-git
-          git fetch origin "$HEAD_SHA"
-          git show "$HEAD_SHA:.github/release.json" > "$RELEASE_DATA/old-manifest.json"
-          git show "$HEAD_SHA:CHANGELOG.md" > "$RELEASE_DATA/old-changelog.md"
-          old_source=$(jq -r '.source_sha' "$RELEASE_DATA/old-manifest.json")
-          [[ "$old_source" =~ ^[0-9a-f]{40}$ ]]
-          git diff --name-only "$old_source" "$HEAD_SHA" -- > "$RELEASE_DATA/old-files.txt"
+          count=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 1000 --json headRefName \
+            --jq '[.[] | select(.headRefName | startswith("release/"))] | length')
+          if [[ "$count" != 0 ]]; then
+            echo 'A preparation PR is already open. Edit or close it before preparing another release.' >&2
+            exit 1
+          fi
+          if [[ -n "$(git ls-remote origin "refs/heads/$BRANCH")" ]]; then
+            echo 'Preparation branch already exists; it will not be overwritten.' >&2
+            exit 1
+          fi
 
       - name: Generate release notes with GitHub
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.plan.outputs.version }}
-          SOURCE: ${{ steps.plan.outputs.source }}
           PREVIOUS_TAG: ${{ steps.plan.outputs.previous_tag }}
         run: |
           gh api --method POST "repos/$GITHUB_REPOSITORY/releases/generate-notes" \
-            -f tag_name="v$VERSION" -f target_commitish="$SOURCE" \
-            -f previous_tag_name="$PREVIOUS_TAG" --jq '.body' > "$RELEASE_DATA/generated-notes.md"
+            -f tag_name="v$VERSION" -f target_commitish="$GITHUB_SHA" \
+            -f previous_tag_name="$PREVIOUS_TAG" --jq '.body' > "$NOTES"
 
       - name: Update the version and local changelog
         env:
           VERSION: ${{ steps.plan.outputs.version }}
         run: |
           uv version --no-sync "$VERSION"
-          uv run --no-project python scripts/release.py prepare
+          uv run --no-project python scripts/release.py prepare --version "$VERSION" --notes "$NOTES"
 
       - name: Commit and push the preparation branch
         if: inputs.dry-run == false
@@ -106,7 +85,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.plan.outputs.version }}
           BRANCH: ${{ steps.plan.outputs.branch }}
-          EXPECTED_HEAD: ${{ steps.state.outputs.head_sha }}
         run: |
           gh auth setup-git
           git switch -c "$BRANCH"
@@ -114,23 +92,23 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add pyproject.toml uv.lock CHANGELOG.md .github/release.json
           git commit -m "chore: prepare release $VERSION"
-          git push "--force-with-lease=refs/heads/$BRANCH:$EXPECTED_HEAD" origin "HEAD:refs/heads/$BRANCH"
+          git push origin "HEAD:refs/heads/$BRANCH"
 
       - name: Open the preparation PR
-        if: inputs.dry-run == false && steps.state.outputs.head_sha == ''
+        if: inputs.dry-run == false
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.plan.outputs.version }}
           BRANCH: ${{ steps.plan.outputs.branch }}
-          BASE: ${{ steps.plan.outputs.base }}
+          BASE: ${{ github.event.repository.default_branch }}
         run: |
-          cat > "$RELEASE_DATA/pr-body.md" <<'EOF'
-          Review the version, manual notes and generated changes. Refresh this PR if its base changes.
+          cat > "$RUNNER_TEMP/release-pr-body.md" <<'EOF'
+          Review the version, manual notes and generated changes. Edit this PR directly; the preparation workflow does not refresh it.
 
           M04: https://github.com/MahjongRepository/mahjong/issues/333
           EOF
           gh pr create --repo "$GITHUB_REPOSITORY" --base "$BASE" --head "$BRANCH" \
-            --title "chore: prepare release $VERSION" --body-file "$RELEASE_DATA/pr-body.md"
+            --title "chore: prepare release $VERSION" --body-file "$RUNNER_TEMP/release-pr-body.md"
 
       - name: Upload preview
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

@@ -64,9 +64,11 @@ lint = [
     "ruff>=0.17.1,<0.18",
 ]
 typing = [
+    "tomli>=2",
     "ty>=0.0.42",
 ]
 test = [
+    "tomli>=2; python_version < '3.11'",
     "pytest>=9.0.2,<10",
     "pytest-cov>=7.0.0,<8",
 ]
