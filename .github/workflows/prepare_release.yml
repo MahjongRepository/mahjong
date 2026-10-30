@@ -104,8 +104,6 @@ jobs:
         run: |
           cat > "$RUNNER_TEMP/release-pr-body.md" <<'EOF'
           Review the version, manual notes and generated changes. Edit this PR directly; the preparation workflow does not refresh it.
-
-          M04: https://github.com/MahjongRepository/mahjong/issues/333
           EOF
           gh pr create --repo "$GITHUB_REPOSITORY" --base "$BASE" --head "$BRANCH" \
             --title "chore: prepare release $VERSION" --body-file "$RUNNER_TEMP/release-pr-body.md"
