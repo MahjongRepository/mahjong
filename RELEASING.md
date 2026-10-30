@@ -1,155 +1,82 @@
 # Releasing mahjong
 
-A manual workflow creates a preparation PR. After review and merge, the release workflow builds
-and tests the merged commit, waits for independent approval, then creates a tag, publishes to PyPI
-and creates the GitHub Release. Supported versions are `X.Y.Z` and `X.Y.Z.devN`. Older maintenance
-series and other prerelease formats are outside the initial scope.
+Maintainers prepare releases in a PR, then publish the reviewed version to PyPI and GitHub.
+Supported versions are `X.Y.Z` and `X.Y.Z.devN`; older maintenance series are outside this workflow.
 
-## Responsibilities
+## Prerequisites
 
-Workflow steps handle GitHub operations with `gh`, version updates with `uv version --no-sync`,
-Git pushes and Trusted Publishing with `uv publish`. `scripts/release.py` only edits local notes
-and checks versions and changelog structure. It never makes network requests or publishes.
+The repository administrator and PyPI project owner must maintain these settings:
 
-`pyproject.toml` is the source of the release version. A `master` push changing this file starts
-Release, which compares its version before and after the push. If the version is unchanged (for
-example, a dependency update), release validation and publication jobs are skipped successfully.
-Reviewed notes in the merged commit are used verbatim, excluding structural comments.
+- Protect `master` with independent review, an up-to-date branch and passing CI, including
+  `release-preparation`. Allow GitHub Actions to create preparation PRs.
+- Configure the **`pypi`** GitHub Environment with required reviewers, self-review prevention,
+  administrator bypass disabled and deployment restricted to the **`master` branch**.
+- Configure a PyPI Trusted Publisher for the existing **`mahjong`** project:
 
-## One-time setup (repository administrator and PyPI project owner)
+  | Field | Value |
+  | --- | --- |
+  | Owner | `MahjongRepository` |
+  | Repository | `mahjong` |
+  | Workflow filename | `release.yml` |
+  | Environment | `pypi` |
 
-Complete these settings **before merging the first preparation PR**. GitHub repository permissions
-and PyPI project roles are independent; the owner should configure the settings they control.
+See [GitHub Environment configuration](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)
+and [PyPI Trusted Publisher setup](https://docs.pypi.org/trusted-publishers/adding-a-publisher/).
+The workflow relies on these protections; it does not configure them or verify their settings.
 
-1. Create the GitHub Environment **`pypi`** in `MahjongRepository/mahjong`:
-   - Required reviewers: **`Nihisil`** and **`Apricot-S`**. One reviewer approves, not both.
-   - Enable **Prevent self-review**.
-   - Disable **Allow administrators to bypass configured protection rules**.
-   - Allow deployments only from the **`master` branch**, not tags. The job runs on the merged
-     branch and creates the tag later.
-2. In the existing PyPI **`mahjong`** project's **Manage → Publishing**, add a Trusted Publisher:
+## Prepare and publish
 
-   | Field | Value |
-   | --- | --- |
-   | Owner | `MahjongRepository` |
-   | Repository | `mahjong` |
-   | Workflow filename | `release.yml` |
-   | Environment | `pypi` |
+1. From `master`, run **Prepare release** with an unused version newer than the current project
+   version, without a `v` prefix. Start with **dry-run enabled** and review its preview artifact.
+2. Run again with **dry-run disabled** to create `release/{version}` and its preparation PR.
+   The workflow updates `pyproject.toml`, `uv.lock` and `CHANGELOG.md`, combining hand-written
+   `Unreleased` notes with GitHub's generated change list.
+3. Review the version, lock-file diff and release notes. Edit the PR directly as needed, keeping
+   the changelog's structural comments intact. If `master` advances, update the branch and review
+   the notes again; the generated list is not refreshed automatically.
+4. Approve bot-created CI runs if GitHub requests it. Obtain independent review and merge using
+   a human account when all required checks pass. Merge, squash and rebase are supported.
+5. **Release** validates and builds the merged commit. A different maintainer reviews the results
+   and the **identify** job summary, then approves the **`pypi`** deployment. After approval, the
+   workflow creates `v{version}`, publishes the validated files to PyPI, then creates the GitHub
+   Release with the reviewed notes and the same files.
+6. Check the PyPI version, GitHub Release notes, attached files and prerelease/Latest flags.
 
-   Register the top-level workflow. No PyPI API token is needed.
-3. Allow GitHub Actions to create PRs in **Settings → Actions → General**, including any required
-   organization policy. Preparation uses `GITHUB_TOKEN`, not a PAT. Approve bot-created PR CI runs
-   if GitHub requests it; confirm this behavior before the first release.
-4. Protect `master`: require independent PR review, dismiss stale approvals, require an up-to-date
-   branch and the relevant existing CI checks plus **`release-preparation`**. Review workflow and
-   release-tool changes carefully. Only merge the reviewed preparation PR to start a release;
-   do not directly push version changes to `master`.
-5. Verify independent deployment approval on a separate non-publishing test environment.
-   Self-review prevention applies to the workflow initiator, normally the person who merged the
-   preparation PR. Use a human merge and a different maintainer's publication approval.
-6. Review older PyPI tokens and other publishing paths with the owner. Retire unnecessary
-   credentials only after the replacement is validated, or document their emergency use.
+Only one preparation PR should be open. Preparation does not update an existing PR or overwrite
+its branch. To start over, save any needed edits, close the old PR and remove its branch first.
 
-The workflow relies on these repository and Environment protections. It does not inspect their
-configuration through the API on every release. The administrator must maintain them.
+Do not directly push version changes to `master` or merge several release preparations together.
+A `master` push changing `pyproject.toml` starts Release; if the version is unchanged, it skips
+release validation and publication successfully.
 
-References: [GitHub environments](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments),
-[Trusted Publishers](https://docs.pypi.org/trusted-publishers/adding-a-publisher/),
-[workflow triggers](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow).
+## Dev releases
 
-## Prepare and review
+For example, release `2.2.0.dev1`, then `2.2.0.dev2`, then `2.2.0`. Dev releases use **production PyPI**,
+follow the same review and approval process, and are GitHub prereleases excluded from Latest.
+Stable Releases are Latest.
 
-1. Optionally add important changes and deprecations between the `unreleased` markers in
-   `CHANGELOG.md` in ordinary PRs.
-2. On `master`, run **Prepare release** with a full version such as `2.2.0.dev1`, initially with
-   **dry-run enabled**. Inspect its preview artifact. This only changes the disposable checkout.
-3. Run with **dry-run disabled** to create `release/{version}` and open its preparation PR.
-   The workflow updates `pyproject.toml` and `uv.lock`, generates the change list with GitHub's
-   Release Notes API and combines it with the hand-written notes. Existing dependency pins remain.
-   The changelog date is the UTC preparation date.
-4. Review and edit the PR directly, including the generated list if necessary. Keep structural
-   marker comments intact and keep the version identical in the project and lock file.
-   Preparation never updates an existing PR or replaces its branch; another open preparation PR
-   or an existing same-name branch causes it to stop.
-5. If `master` advances, update the PR branch normally, resolve conflicts and review the resulting
-   notes and CI. Refresh the generated list manually if new changes belong in the release; use the
-   same `previous_tag_name` policy described below. The workflow does not check that the list is
-   exhaustive. To start over, close the old PR and remove its branch after saving any needed edits.
-6. Approve CI runs if requested, obtain independent review, then merge with a human account when
-   all required checks pass. Normal merge, squash and rebase are supported; the final merged commit
-   is the one built and tagged. Do not batch several release preparations into one push.
+Dev notes compare against the preceding supported tag; stable notes compare against the preceding
+stable tag, including changes made during dev releases. Hand-written notes remain in `Unreleased`
+until stable preparation. If editing dev notes that should carry into stable, update `Unreleased` too.
 
-Versions have no `v` prefix or leading zeroes and must advance the current project version.
-Existing version tags are rejected. Use an unused PyPI version; preparation does not query PyPI
-or existing GitHub Releases. Conflicts there fail during publication and require manual handling.
-Tags use `v{version}`.
+## Dry-run
 
-### Dev releases
+Manually running **Release** is always a dry-run, including upstream. Select a prepared branch
+with matching project/lock versions and a changelog section. It validates and builds without
+creating a tag, publishing to PyPI or creating a GitHub Release. Forks can also run preparation
+and Release dry-runs; production publication is restricted to upstream `master` pushes.
 
-Prepare `2.2.0.dev1`, then `2.2.0.dev2`, then `2.2.0` as needed. All publish to **production PyPI**
-with the same validation and approval. Dev GitHub Releases are prereleases and excluded from Latest;
-stable Releases are Latest.
+## Failed releases
 
-Dev notes compare against the preceding supported tag reachable from the preparation commit.
-Stable notes compare against the preceding **stable** tag, including changes made during dev releases.
-Hand-written notes remain in `Unreleased` during dev releases and are cleared when preparing stable.
-If editing a dev release's manual notes, also update `Unreleased` when they should carry into stable.
-Existing dev release sections are preserved.
+Automatic recovery is not provided. Keep the original run, merged commit and validated artifacts.
+Do not blindly rerun publication once a tag or upload exists, or substitute a local rebuild.
 
-## Validate, approve and publish
-
-Merging the version update starts **Release**. It checks that the push increased the project
-version and that the project, lock file and changelog agree. It runs the existing lint/type/test matrix,
-strict documentation build without deployment, and wheel/sdist installation checks on three systems.
-All reusable workflows use the same merged SHA, regardless of ordinary CI path filters.
-
-Documentation builds are shared in `build_docs.yml`. The normal `docs.yml` workflow calls it
-and requests a Pages artifact only when deployment is intended. Release calls it without Pages
-artifact upload; deployment permissions and the `github-pages` Environment belong only to `docs.yml`.
-
-Before approving **`pypi`**, review the merged PR, validation results and the version, commit and notes
-in the **identify** job summary. The publication job downloads the same distribution artifact by its
-immutable ID; it never rebuilds. After approval it creates the tag, runs `uv publish` with Trusted
-Publishing, then creates the GitHub Release with the reviewed notes and the same distributions.
-A failed PyPI upload prevents GitHub Release creation. Runs are serialized and not auto-canceled.
-
-## Dry-run and initial validation
-
-Manually starting **Release** is **always a dry-run**, including upstream. It validates and builds
-but skips the entire publication job. Run it on a prepared branch with a matching project/lock
-version and changelog section. An ordinary implementation branch is not a prepared release.
-
-Forks can run preparation and Release dry-runs, but the publication job explicitly requires an
-upstream `master` push. Preparation accepts the fork's default branch for an isolated rehearsal.
-Never configure the fork as a Trusted Publisher for the production PyPI project.
-
-Before the first production dev release:
-
-- Test preview, preparation PR creation, direct notes editing, duplicate-preparation rejection and
-  the complete Release dry-run in the fork.
-- Have the owner complete the settings and verify independent approval behavior.
-- Review and merge the implementation upstream, then prepare and approve the agreed unused dev version.
-- Install the published version in a fresh environment and run the distribution smoke check.
-- Confirm PyPI preceded the GitHub Release, and inspect prerelease/Latest flags and attached files.
-
-## Manual recovery
-
-Automatic recovery is intentionally outside this workflow. A rerun does not skip an existing tag,
-PyPI upload or GitHub Release, and does not compare remote hashes or upload only missing assets.
-Do not blindly rerun publication after it has started. Keep the original run, merged SHA and build
-artifact ID for investigation. Download distributions from that successful build, not a local rebuild.
-
-| Failure point | Maintainer action |
+| State | Action |
 | --- | --- |
-| Validation, before any tag/upload | Retry transient failed checks. For code changes, use a reviewed fix and a new preparation; reconcile the already merged version/notes explicitly. No publication occurs while checks fail. |
-| Approval rejected, before publication | Resolve the review concern. Retry only after confirming no tag/upload was made. |
-| Tag created, PyPI not yet complete | Check the tag target and PyPI state with the owner. Do not move a tag or blindly retry. Complete publication from the original artifact through the agreed approved recovery procedure, or abandon this version and prepare a higher one. |
-| PyPI complete, GitHub Release absent | Leave PyPI and the tag unchanged. Create the GitHub Release manually with the original run's notes, correct flags and original artifacts. Do not repeat PyPI publication. |
-| GitHub Release or assets partially created | Inspect the existing Release and complete it manually using the original notes and artifacts. |
-| Wrong or partially published PyPI contents | Investigate with the owner; decide whether to complete unchanged original files or yank and issue a new version. Do not mask mismatches with `--skip-existing`. |
-| Original artifacts expired | Stop and agree a recovery plan with the owner. A rebuild is not the already validated artifact. |
+| Validation failed before a tag or upload | Retry transient failed checks. For code fixes, use a reviewed PR and prepare a new version. |
+| PyPI publication succeeded, GitHub Release is missing | Create the GitHub Release from the original run's notes and files, with the appropriate prerelease/Latest flags. Do not repeat the PyPI upload. |
+| A tag, PyPI upload or GitHub Release is partial or inconsistent | Investigate with the owner before completing publication or issuing a new version. Do not move existing tags or mask mismatches with `--skip-existing`. |
 
-Any resumed PyPI publication must use a documented owner-approved recovery path that preserves
-independent approval. The default workflow supplies no automatic resume command. PyPI files cannot
-be replaced under an existing filename. Yanking and emergency publication are owner-led operations.
-The old token-based `make build-and-release` target remains removed.
+Use the original validated files for recovery. If they have expired, agree on a recovery plan with
+the owner. PyPI files cannot be replaced under an existing filename; yanking and emergency
+publication require owner coordination and independent approval.
