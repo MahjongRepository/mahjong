@@ -33,7 +33,8 @@ jobs:
       - run: uv sync --locked --no-default-groups --group docs
 
       - name: Build documentation
-        run: uv run --no-sync sphinx-build -W -b html docs/source docs/build/html
+        working-directory: docs
+        run: uv run --no-sync make clean html SPHINXOPTS="-W"
 
       - name: Upload documentation for Pages
         if: inputs.upload-pages
