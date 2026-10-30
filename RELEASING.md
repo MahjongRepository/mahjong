@@ -103,6 +103,10 @@ version and that the marker, lock file and changelog agree. It runs the existing
 strict documentation build without deployment, and wheel/sdist installation checks on three systems.
 All reusable workflows use the same merged SHA, regardless of ordinary CI path filters.
 
+Documentation builds are shared in `build_docs.yml`. The normal `docs.yml` workflow calls it
+and requests a Pages artifact only when deployment is intended. Release calls it without Pages
+artifact upload; deployment permissions and the `github-pages` Environment belong only to `docs.yml`.
+
 Before approving **`pypi`**, review the merged PR, validation results and the version, commit and notes
 in the **identify** job summary. The publication job downloads the same distribution artifact by its
 immutable ID; it never rebuilds. After approval it creates the tag, runs `uv publish` with Trusted
