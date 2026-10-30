@@ -1,4 +1,4 @@
-"""Prepare and verify releases; all remote writes require an explicit command."""
+"""Edit release files and validate snapshots; remote operations live in the workflows."""
 
 from __future__ import annotations
 
@@ -12,8 +12,6 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.error import HTTPError
-from urllib.request import urlopen
 
 UPSTREAM = "MahjongRepository/mahjong"
 MANIFEST = Path(".github/release.json")
@@ -41,21 +39,6 @@ def run(*args: str, input_text: str | None = None) -> str:
     return subprocess.run(  # noqa: S603
         args, input=input_text, text=True, encoding="utf-8", capture_output=True, check=True
     ).stdout.strip()
-
-
-def api(path: str, data: dict[str, Any] | None = None, method: str | None = None) -> Any:  # noqa: ANN401
-    """Call GitHub using the job's token without placing it in command arguments."""
-    args = ["gh", "api", path, "--method", method or ("POST" if data is not None else "GET")]
-    if data is not None:
-        args.extend(["--input", "-"])
-    result = run(*args, input_text=json.dumps(data) if data is not None else None)
-    return json.loads(result) if result else None
-
-
-def pages(path: str) -> list[dict[str, Any]]:
-    """Read every page of a list endpoint."""
-    result = json.loads(run("gh", "api", path, "--paginate", "--slurp"))
-    return [item for page in result for item in page]
 
 
 def digest(data: bytes) -> str:
@@ -109,19 +92,6 @@ def update_changelog(content: str, version: str, manual: str, generated: str, da
     replacement = UNRELEASED.format(manual=retained)
     section = SECTION.format(version=version, day=day, manual=manual, generated=generated.rstrip())
     return content[:start] + replacement + "\n\n" + section + content[end:]
-
-
-def pypi_files(version: str) -> dict[str, str]:
-    """Read the existing file names and hashes without downloading or executing packages."""
-    version_key(version)
-    try:
-        with urlopen(f"https://pypi.org/pypi/mahjong/{version}/json", timeout=30) as response:
-            data = json.load(response)
-    except HTTPError as error:
-        if error.code == 404:
-            return {}
-        raise
-    return {item["filename"]: item["digests"]["sha256"] for item in data["urls"]}
 
 
 def publish_state(local: dict[str, str], remote: dict[str, str]) -> str:
@@ -182,157 +152,6 @@ def previous_tag(version: str) -> str:
     return max(candidates, key=lambda tag: version_key(tag[1:]))
 
 
-def prepare(version: str, dry_run: bool) -> None:
-    """Generate changes locally, then explicitly create or update the preparation PR."""
-    version_key(version)
-    repo = os.environ["GITHUB_REPOSITORY"]
-    base = "master" if repo == UPSTREAM else api(f"repos/{repo}")["default_branch"]
-    require(os.environ["GITHUB_REF"] == f"refs/heads/{base}", "Run preparation from the default branch")
-    require(not run("git", "status", "--porcelain", "--untracked-files=no"), "Checkout must be clean")
-    require(version_key(version) > version_key(run("uv", "version", "--short")), "Version must increase")
-    require(not run("git", "tag", "--list", f"v{version}"), "Tag already exists")
-    require(not pypi_files(version), "Version already exists on PyPI")
-    releases = pages(f"repos/{repo}/releases?per_page=100")
-    require(not any(r["tag_name"] == f"v{version}" for r in releases), "GitHub Release already exists")
-    branch = f"release/{version}"
-    prs = pages(f"repos/{repo}/pulls?state=open&base={base}&per_page=100")
-    preparations = [pr for pr in prs if pr["head"]["ref"].startswith("release/")]
-    require(all(pr["head"]["ref"] == branch for pr in preparations), "Another release preparation PR is open")
-    require(len(preparations) <= 1, "Multiple preparation PRs found")
-    source = run("git", "rev-parse", "HEAD")
-    content = CHANGELOG.read_text(encoding="utf-8")
-    original = marked(content, "unreleased")
-    manual = original
-    expected_head = ""
-    if preparations:
-        pr = preparations[0]
-        require(pr["head"]["repo"]["full_name"] == repo, "Preparation PR must belong to this repository")
-        expected_head = pr["head"]["sha"]
-        run("git", "fetch", "origin", expected_head)
-        old = json.loads(run("git", "show", f"{expected_head}:{MANIFEST.as_posix()}"))
-        require(old["version"] == version, "Unexpected preparation version")
-        require(re.fullmatch(r"[0-9a-f]{40}", old["source_sha"]), "Invalid previous preparation source")
-        changed = set(run("git", "diff", "--name-only", old["source_sha"], expected_head).splitlines())
-        require(changed <= ALLOWED_FILES, "Preparation PR contains other changes; preserve them in a separate PR")
-        edited = marked(marked(run("git", "show", f"{expected_head}:CHANGELOG.md"), f"release:{version}"), "manual")
-        manual = merge_manual(original, edited, old["manual_source"])
-    tag = previous_tag(version)
-    generated = api(
-        f"repos/{repo}/releases/generate-notes",
-        {
-            "tag_name": f"v{version}",
-            "previous_tag_name": tag,
-            "target_commitish": source,
-        },
-    )["body"]
-    run("uv", "version", "--no-sync", version)
-    CHANGELOG.write_text(
-        update_changelog(content, version, manual, generated, datetime.now(timezone.utc).date().isoformat()),
-        encoding="utf-8",
-    )
-    data = {
-        "version": version,
-        "source_sha": source,
-        "previous_tag": tag,
-        "manual_source": original,
-        "prepared_by": os.environ["GITHUB_ACTOR"],
-        "notes_sha256": digest(release_body(CHANGELOG.read_text(encoding="utf-8"), version).encode()),
-    }
-    MANIFEST.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-    Path("release-preview.md").write_text(
-        release_body(CHANGELOG.read_text(encoding="utf-8"), version), encoding="utf-8"
-    )
-    Path("release-preview.patch").write_text(run("git", "diff") + "\n", encoding="utf-8")
-    if dry_run:
-        output(version=version, source=source, mode="dry-run")
-        return
-    run("git", "switch", "-c", branch)
-    run("git", "config", "user.name", "github-actions[bot]")
-    run("git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
-    run("git", "add", *sorted(ALLOWED_FILES))
-    run("git", "commit", "-m", f"chore: prepare release {version}")
-    run("git", "push", f"--force-with-lease=refs/heads/{branch}:{expected_head}", "origin", f"HEAD:refs/heads/{branch}")
-    if preparations:
-        url = preparations[0]["html_url"]
-    else:
-        url = api(
-            f"repos/{repo}/pulls",
-            {
-                "title": f"chore: prepare release {version}",
-                "head": branch,
-                "base": base,
-                "body": "Review the version, manual notes and generated changes. "
-                "Refresh this PR if its base changes.\n\n"
-                "M04: https://github.com/MahjongRepository/mahjong/issues/333",
-            },
-        )["html_url"]
-    output(version=version, source=source, pr=url)
-
-
-def check_pr() -> None:
-    """Reject stale or modified release preparations before they can be merged."""
-    event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
-    pr = event["pull_request"]
-    repo = os.environ["GITHUB_REPOSITORY"]
-    files = pages(f"repos/{repo}/pulls/{pr['number']}/files?per_page=100")
-    if MANIFEST.as_posix() not in {f["filename"] for f in files}:
-        return
-    data = load_manifest()
-    require(pr["head"]["repo"]["full_name"] == repo, "Release PR cannot come from a fork")
-    require(pr["head"]["ref"] == f"release/{data['version']}", "Unexpected release branch")
-    base = api(f"repos/{repo}/git/ref/heads/{pr['base']['ref']}")["object"]["sha"]
-    require(data["source_sha"] == base, "Release preparation is stale; run Prepare release again")
-    verify_contents(data)
-
-
-def verify(dry_run: bool) -> None:
-    """Resolve the release identity before granting any publishing permissions."""
-    data = load_manifest()
-    body = verify_contents(data)
-    sha = run("git", "rev-parse", "HEAD")
-    repo = os.environ["GITHUB_REPOSITORY"]
-    if not dry_run:
-        require(
-            repo == UPSTREAM and os.environ["GITHUB_REF"] == "refs/heads/master", "Production is upstream master only"
-        )
-        require(os.environ["GITHUB_EVENT_NAME"] == "push", "Production must start with a merged preparation")
-        parents = run("git", "show", "-s", "--format=%P", "HEAD").split()
-        require(parents and parents[0] == data["source_sha"], "Preparation base changed before merge; prepare again")
-        prs = pages(f"repos/{repo}/commits/{sha}/pulls?per_page=100")
-        matches = [
-            pr
-            for pr in prs
-            if pr["merged_at"]
-            and pr["merge_commit_sha"] == sha
-            and pr["base"]["ref"] == "master"
-            and pr["head"]["ref"] == f"release/{data['version']}"
-            and pr["head"]["repo"]
-            and pr["head"]["repo"]["full_name"] == repo
-        ]
-        require(len(matches) == 1, "Expected exactly one merged release preparation PR")
-        settings = api(f"repos/{repo}/environments/pypi")
-        reviewers = [rule for rule in settings["protection_rules"] if rule["type"] == "required_reviewers"]
-        require(
-            len(reviewers) == 1 and reviewers[0]["prevent_self_review"],
-            "Enable required reviewers and prevent self-review",
-        )
-        logins = {reviewer["reviewer"]["login"] for reviewer in reviewers[0]["reviewers"] if reviewer["type"] == "User"}
-        require(logins == {"Nihisil", "Apricot-S"}, "Expected the two agreed publication reviewers")
-        require(len(reviewers[0]["reviewers"]) == 2, "Only the two agreed reviewers may approve")
-        require(settings["can_admins_bypass"] is False, "Disable administrator bypass")
-        policy = settings.get("deployment_branch_policy") or {}
-        require(policy.get("custom_branch_policies"), "Restrict the environment to master")
-        rules = api(f"repos/{repo}/environments/pypi/deployment-branch-policies")["branch_policies"]
-        require(
-            [(rule["name"], rule["type"]) for rule in rules] == [("master", "branch")],
-            "Only the master branch may deploy",
-        )
-    Path("release-notes.md").write_text(body, encoding="utf-8")
-    output(
-        version=data["version"], sha=sha, tag=f"v{data['version']}", prerelease=str(".dev" in data["version"]).lower()
-    )
-
-
 def record(directory: Path) -> None:
     """Save the validated distribution hashes before the approval gate."""
     data = load_manifest()
@@ -348,44 +167,211 @@ def record(directory: Path) -> None:
             stream.write(summary)
 
 
+def data_file(name: str) -> Path:
+    """Locate workflow-provided snapshots outside the source checkout."""
+    return Path(os.environ.get("RELEASE_DATA", "release-data")) / name
+
+
+def read_json(name: str) -> Any:  # noqa: ANN401
+    """Read a previously fetched response; this tool never makes network requests."""
+    return json.loads(data_file(name).read_text(encoding="utf-8"))
+
+
+def read_pages(name: str) -> list[dict[str, Any]]:
+    """Flatten gh api --paginate --slurp responses."""
+    return [item for page in read_json(name) for item in page]
+
+
+def pypi_files(version: str) -> dict[str, str]:
+    """Read the names and hashes in a workflow-fetched PyPI response."""
+    version_key(version)
+    data = read_json("pypi.json")
+    if data.get("info"):
+        require(data["info"]["version"] == version, "PyPI response version differs")
+    return {item["filename"]: item["digests"]["sha256"] for item in data["urls"]}
+
+
+def plan(version: str) -> None:
+    """Validate local inputs before the workflow fetches any remote state."""
+    version_key(version)
+    base = "master" if os.environ["GITHUB_REPOSITORY"] == UPSTREAM else os.environ["DEFAULT_BRANCH"]
+    require(os.environ["GITHUB_REF"] == f"refs/heads/{base}", "Run preparation from the default branch")
+    require(not run("git", "status", "--porcelain", "--untracked-files=no"), "Checkout must be clean")
+    require(version_key(version) > version_key(run("uv", "version", "--short")), "Version must increase")
+    require(not run("git", "tag", "--list", f"v{version}"), "Tag already exists")
+    data = {
+        "version": version,
+        "base": base,
+        "source": run("git", "rev-parse", "HEAD"),
+        "branch": f"release/{version}",
+        "previous_tag": previous_tag(version),
+    }
+    data_file("plan.json").parent.mkdir(parents=True, exist_ok=True)
+    data_file("plan.json").write_text(json.dumps(data), encoding="utf-8")
+    output(**data)
+
+
+def preparation_state() -> None:
+    """Validate existing remote objects before fetching or updating a preparation branch."""
+    data = read_json("plan.json")
+    version = data["version"]
+    version_key(version)
+    require(not pypi_files(version), "Version already exists on PyPI")
+    require(
+        not any(r["tag_name"] == f"v{version}" for r in read_pages("releases.json")), "GitHub Release already exists"
+    )
+    prs = [pr for pr in read_pages("pulls.json") if pr["head"]["ref"].startswith("release/")]
+    require(all(pr["head"]["ref"] == data["branch"] for pr in prs), "Another release preparation PR is open")
+    require(len(prs) <= 1, "Multiple preparation PRs found")
+    head = ""
+    if prs:
+        pr = prs[0]
+        require(
+            pr["head"]["repo"]["full_name"] == os.environ["GITHUB_REPOSITORY"],
+            "Preparation PR must belong to this repository",
+        )
+        head = pr["head"]["sha"]
+        require(re.fullmatch(r"[0-9a-f]{40}", head), "Invalid preparation head SHA")
+    output(head_sha=head)
+
+
+def prepare() -> None:
+    """Edit only local release files using fetched notes and optional previous PR files."""
+    data = read_json("plan.json")
+    version = data["version"]
+    version_key(version)
+    require(run("git", "rev-parse", "HEAD") == data["source"], "Source commit changed during preparation")
+    require(run("uv", "version", "--short") == version, "uv version must set the requested version first")
+    content = CHANGELOG.read_text(encoding="utf-8")
+    original = marked(content, "unreleased")
+    manual = original
+    if data_file("old-manifest.json").exists():
+        old = read_json("old-manifest.json")
+        require(old["version"] == version, "Unexpected preparation version")
+        require(re.fullmatch(r"[0-9a-f]{40}", old["source_sha"]), "Invalid previous preparation source")
+        changed = set(data_file("old-files.txt").read_text(encoding="utf-8").splitlines())
+        require(changed <= ALLOWED_FILES, "Preparation PR contains other changes; preserve them in a separate PR")
+        edited = marked(
+            marked(data_file("old-changelog.md").read_text(encoding="utf-8"), f"release:{version}"), "manual"
+        )
+        manual = merge_manual(original, edited, old["manual_source"])
+    generated = data_file("generated-notes.md").read_text(encoding="utf-8")
+    CHANGELOG.write_text(
+        update_changelog(content, version, manual, generated, datetime.now(timezone.utc).date().isoformat()),
+        encoding="utf-8",
+    )
+    manifest = {
+        "version": version,
+        "source_sha": data["source"],
+        "previous_tag": data["previous_tag"],
+        "manual_source": original,
+        "prepared_by": os.environ["GITHUB_ACTOR"],
+        "notes_sha256": digest(release_body(CHANGELOG.read_text(encoding="utf-8"), version).encode()),
+    }
+    MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    Path("release-preview.md").write_text(
+        release_body(CHANGELOG.read_text(encoding="utf-8"), version), encoding="utf-8"
+    )
+    Path("release-preview.patch").write_text(run("git", "diff") + "\n", encoding="utf-8")
+
+
+def check_pr() -> None:
+    """Reject stale or modified release preparations using fetched PR metadata."""
+    pr = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))["pull_request"]
+    if MANIFEST.as_posix() not in {file["filename"] for file in read_pages("pr-files.json")}:
+        return
+    data = load_manifest()
+    require(pr["head"]["repo"]["full_name"] == os.environ["GITHUB_REPOSITORY"], "Release PR cannot come from a fork")
+    require(pr["head"]["ref"] == f"release/{data['version']}", "Unexpected release branch")
+    require(
+        data["source_sha"] == read_json("base-ref.json")["object"]["sha"],
+        "Release preparation is stale; run Prepare release again",
+    )
+    verify_contents(data)
+
+
+def verify(dry_run: bool) -> None:
+    """Check local identity and, for production, workflow-fetched approval settings."""
+    data = load_manifest()
+    body = verify_contents(data)
+    sha = run("git", "rev-parse", "HEAD")
+    repo = os.environ["GITHUB_REPOSITORY"]
+    if not dry_run:
+        require(
+            repo == UPSTREAM and os.environ["GITHUB_REF"] == "refs/heads/master", "Production is upstream master only"
+        )
+        require(os.environ["GITHUB_EVENT_NAME"] == "push", "Production must start with a merged preparation")
+        parents = run("git", "show", "-s", "--format=%P", "HEAD").split()
+        require(parents and parents[0] == data["source_sha"], "Preparation base changed before merge; prepare again")
+        matches = [
+            pr
+            for pr in read_pages("merged-prs.json")
+            if pr["merged_at"]
+            and pr["merge_commit_sha"] == sha
+            and pr["base"]["ref"] == "master"
+            and pr["head"]["ref"] == f"release/{data['version']}"
+            and pr["head"]["repo"]
+            and pr["head"]["repo"]["full_name"] == repo
+        ]
+        require(len(matches) == 1, "Expected exactly one merged release preparation PR")
+        settings = read_json("environment.json")
+        reviewers = [rule for rule in settings["protection_rules"] if rule["type"] == "required_reviewers"]
+        require(
+            len(reviewers) == 1 and reviewers[0]["prevent_self_review"],
+            "Enable required reviewers and prevent self-review",
+        )
+        logins = {r["reviewer"]["login"] for r in reviewers[0]["reviewers"] if r["type"] == "User"}
+        require(logins == {"Nihisil", "Apricot-S"}, "Expected the two agreed publication reviewers")
+        require(len(reviewers[0]["reviewers"]) == 2, "Only the two agreed reviewers may approve")
+        require(settings["can_admins_bypass"] is False, "Disable administrator bypass")
+        require(
+            (settings.get("deployment_branch_policy") or {}).get("custom_branch_policies"),
+            "Restrict the environment to master",
+        )
+        rules = read_json("branch-policies.json")["branch_policies"]
+        require([(r["name"], r["type"]) for r in rules] == [("master", "branch")], "Only the master branch may deploy")
+    Path("release-notes.md").write_text(body, encoding="utf-8")
+    output(
+        version=data["version"], sha=sha, tag=f"v{data['version']}", prerelease=str(".dev" in data["version"]).lower()
+    )
+
+
 def publication_state(directory: Path) -> None:
-    """Check immutable artifacts, an existing tag and PyPI before upload or retry."""
+    """Check validated hashes, fetched tag refs and PyPI state without publishing."""
     data = load_manifest()
     record_data = json.loads(Path("release-artifacts.json").read_text(encoding="utf-8"))
     sha = run("git", "rev-parse", "HEAD")
     require(record_data["sha"] == sha and record_data["version"] == data["version"], "Artifact identity mismatch")
-    local = file_hashes(directory, data["version"])
-    require(local == record_data["files"], "Artifact hashes changed after validation")
-    tag = f"v{data['version']}"
-    refs = run("git", "ls-remote", "origin", f"refs/tags/{tag}", f"refs/tags/{tag}^{{}}").splitlines()
+    files = file_hashes(directory, data["version"])
+    require(files == record_data["files"], "Artifact hashes changed after validation")
+    refs = data_file("tag-refs.txt").read_text(encoding="utf-8").splitlines()
     if refs:
+        tag = f"v{data['version']}"
         resolved = {line.split()[1]: line.split()[0] for line in refs}
         require(
             resolved.get(f"refs/tags/{tag}^{{}}", resolved.get(f"refs/tags/{tag}")) == sha,
             "Existing tag points elsewhere",
         )
-    state = publish_state(local, pypi_files(data["version"]))
-    if not refs:
-        require(state == "new", "PyPI exists without the expected tag; investigate")
-        run("git", "tag", tag, sha)
-        run("git", "push", "origin", f"refs/tags/{tag}")
-    output(state=state)
+    state = publish_state(files, pypi_files(data["version"]))
+    require(refs or state == "new", "PyPI exists without the expected tag; investigate")
+    output(state=state, tag_exists=str(bool(refs)).lower())
 
 
 def github_release(directory: Path) -> None:
-    """Publish reviewed notes and the same files only after verifying PyPI success."""
+    """Validate release creation/recovery and write the asset plan for gh commands."""
     data = load_manifest()
     files = file_hashes(directory, data["version"])
     require(publish_state(files, pypi_files(data["version"])) == "published", "PyPI publication is not complete")
-    repo = os.environ["GITHUB_REPOSITORY"]
-    tag = f"v{data['version']}"
     body = verify_contents(data)
-    existing = [r for r in pages(f"repos/{repo}/releases?per_page=100") if r["tag_name"] == tag]
-    prerelease = ".dev" in data["version"]
+    existing = [r for r in read_pages("releases.json") if r["tag_name"] == f"v{data['version']}"]
+    require(len(existing) <= 1, "Multiple GitHub Releases for the same tag")
+    assets = {}
     if existing:
         release = existing[0]
         require(
-            not release["draft"] and release["body"].strip() == body.strip() and release["prerelease"] == prerelease,
+            not release["draft"]
+            and release["body"].strip() == body.strip()
+            and release["prerelease"] == (".dev" in data["version"]),
             "Existing GitHub Release differs; investigate",
         )
         assets = {asset["name"]: asset.get("digest") for asset in release["assets"]}
@@ -393,43 +379,38 @@ def github_release(directory: Path) -> None:
             all(name in files and value == f"sha256:{files[name]}" for name, value in assets.items()),
             "Existing Release assets differ",
         )
-        missing = files.keys() - assets.keys()
-        if missing:
-            run("gh", "release", "upload", tag, "--repo", repo, *(str(directory / name) for name in sorted(missing)))
-        return
+    data_file("missing-assets.json").write_text(json.dumps(sorted(files.keys() - assets.keys())), encoding="utf-8")
     Path("release-notes.md").write_text(body, encoding="utf-8")
-    args = [
-        "gh",
-        "release",
-        "create",
-        tag,
-        "--repo",
-        repo,
-        "--verify-tag",
-        "--title",
-        tag,
-        "--notes-file",
-        "release-notes.md",
-        "--latest=false" if prerelease else "--latest",
-    ]
-    if prerelease:
-        args.append("--prerelease")
-    run(*args, *(str(directory / name) for name in files))
+    output(exists=str(bool(existing)).lower())
 
 
 def main() -> None:
-    """Dispatch one explicit release operation."""
+    """Run one local editing or validation operation."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "command", choices=["prepare", "check-pr", "verify", "record", "publication-state", "github-release"]
+        "command",
+        choices=[
+            "plan",
+            "preparation-state",
+            "prepare",
+            "check-pr",
+            "verify",
+            "record",
+            "publication-state",
+            "github-release",
+        ],
     )
     parser.add_argument("--version")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--dist", type=Path, default=Path("dist"))
     args = parser.parse_args()
-    if args.command == "prepare":
+    if args.command == "plan":
         require(args.version, "--version is required")
-        prepare(args.version, args.dry_run)
+        plan(args.version)
+    elif args.command == "preparation-state":
+        preparation_state()
+    elif args.command == "prepare":
+        prepare()
     elif args.command == "check-pr":
         check_pr()
     elif args.command == "verify":

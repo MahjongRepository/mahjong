@@ -5,6 +5,31 @@ maintainer, then published to PyPI before the GitHub Release is published. Suppo
 `X.Y.Z` and `X.Y.Z.devN`. Maintenance releases for older series and other prerelease formats are
 outside this workflow's initial scope.
 
+## Implementation responsibilities
+
+GitHub and network operations are visible as individual workflow steps. Python only edits local
+release files, reads fetched snapshots and validates release state; it never invokes `gh`, makes
+HTTP requests, pushes a branch/tag, or creates a pull request or Release.
+
+| Responsibility | Implementation |
+| --- | --- |
+| Fetch releases, PRs, refs and Environment settings | Workflow `gh api` steps |
+| Generate the change list | Workflow `gh api .../releases/generate-notes` |
+| Read PyPI metadata | Workflow `curl` steps; only HTTP 404 is treated as absent |
+| Update package/lock versions | Workflow `uv version --no-sync <version>` |
+| Edit changelog and validate metadata/artifact hashes | `scripts/release.py`, using local files |
+| Commit/push the preparation and create its PR | Workflow `git` and `gh pr create` steps |
+| Create the immutable version tag | Workflow `git tag` and `git push` steps |
+| Upload the validated distributions | Workflow `uv publish` step |
+| Create the GitHub Release or attach missing assets on retry | Workflow `gh release create/upload` steps |
+
+The snapshots live in a temporary directory on each Ubuntu runner. Python writes the validated
+identifiers and decisions to step outputs and emits a list of missing assets; the workflow uses
+those results for subsequent commands. Preparation dry-run skips commit/push/PR steps. Release
+dry-run skips the entire publishing job. Moving commands into YAML does not remove the validation
+or approval gates, but it makes the workflow longer and exposes the sequence of remote operations
+directly in the Actions log.
+
 ## One-time setup (repository administrator and PyPI project owner)
 
 Configure these settings **before merging the first release preparation PR**. The implementation
