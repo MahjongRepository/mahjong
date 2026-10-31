@@ -1,0 +1,118 @@
+name: Prepare release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to prepare (X.Y.Z or X.Y.Z.devN)'
+        required: true
+        type: string
+      dry-run:
+        description: 'Preview changes without creating a branch or PR'
+        required: true
+        default: true
+        type: boolean
+
+permissions: {}
+
+concurrency:
+  group: prepare-release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      NOTES: /tmp/mahjong-release-notes.md
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          python-version: '3.14'
+          enable-cache: false
+
+      - name: Validate the version and plan the preparation
+        id: plan
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: uv run --no-project python scripts/release.py plan --version "$RELEASE_VERSION"
+
+      - name: Reject an existing preparation PR or branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.plan.outputs.branch }}
+        run: |
+          count=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 1000 --json headRefName \
+            --jq '[.[] | select(.headRefName | startswith("release/"))] | length')
+          if [[ "$count" != 0 ]]; then
+            echo 'A preparation PR is already open. Edit or close it before preparing another release.' >&2
+            exit 1
+          fi
+          if [[ -n "$(git ls-remote origin "refs/heads/$BRANCH")" ]]; then
+            echo 'Preparation branch already exists; it will not be overwritten.' >&2
+            exit 1
+          fi
+
+      - name: Generate release notes with GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.plan.outputs.version }}
+          PREVIOUS_TAG: ${{ steps.plan.outputs.previous_tag }}
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/releases/generate-notes" \
+            -f tag_name="v$VERSION" -f target_commitish="$GITHUB_SHA" \
+            -f previous_tag_name="$PREVIOUS_TAG" --jq '.body' > "$NOTES"
+
+      - name: Update the version and local changelog
+        env:
+          VERSION: ${{ steps.plan.outputs.version }}
+        run: |
+          uv version --no-sync "$VERSION"
+          uv run --no-project python scripts/release.py prepare --version "$VERSION" --notes "$NOTES"
+
+      - name: Commit and push the preparation branch
+        if: inputs.dry-run == false
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.plan.outputs.version }}
+          BRANCH: ${{ steps.plan.outputs.branch }}
+        run: |
+          gh auth setup-git
+          git switch -c "$BRANCH"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pyproject.toml uv.lock CHANGELOG.md
+          git commit -m "chore: prepare release $VERSION"
+          git push origin "HEAD:refs/heads/$BRANCH"
+
+      - name: Open the preparation PR
+        if: inputs.dry-run == false
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.plan.outputs.version }}
+          BRANCH: ${{ steps.plan.outputs.branch }}
+          BASE: ${{ github.event.repository.default_branch }}
+        run: |
+          cat > "$RUNNER_TEMP/release-pr-body.md" <<'EOF'
+          Review the version, manual notes and generated changes. Edit this PR directly; the preparation workflow does not refresh it.
+          EOF
+          gh pr create --repo "$GITHUB_REPOSITORY" --base "$BASE" --head "$BRANCH" \
+            --title "chore: prepare release $VERSION" --body-file "$RUNNER_TEMP/release-pr-body.md"
+
+      - name: Upload preview
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-preview-${{ github.run_attempt }}
+          path: |
+            release-preview.md
+            release-preview.patch
+          if-no-files-found: error

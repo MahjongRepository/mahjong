@@ -1,0 +1,53 @@
+name: Build documentation
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - docs/**
+      - mahjong/**
+      - pyproject.toml
+      - uv.lock
+      - .github/workflows/docs.yml
+      - .github/workflows/build_docs.yml
+  pull_request:
+    branches:
+      - master
+    paths:
+      - docs/**
+      - mahjong/**
+      - pyproject.toml
+      - uv.lock
+      - .github/workflows/docs.yml
+      - .github/workflows/build_docs.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-docs:
+    uses: ./.github/workflows/build_docs.yml # zizmor: ignore[self-repository] -- pinned actionlint does not support $/ yet
+    with:
+      ref: ${{ github.sha }}
+      upload-pages: >-
+        ${{ github.ref == 'refs/heads/master' &&
+            (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+
+  deploy:
+    if: >-
+      github.ref == 'refs/heads/master' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    needs: build-docs
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

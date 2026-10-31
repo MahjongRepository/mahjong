@@ -1,0 +1,43 @@
+name: Check documentation build
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+      upload-pages:
+        description: Upload the built documentation for a subsequent Pages deployment
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref }}
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          python-version: '3.14'
+          enable-cache: false
+
+      - run: uv sync --locked --no-default-groups --group docs
+
+      - name: Build documentation
+        working-directory: docs
+        run: uv run --no-sync make clean html SPHINXOPTS="-W"
+
+      - name: Upload documentation for Pages
+        if: inputs.upload-pages
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: docs/build/html

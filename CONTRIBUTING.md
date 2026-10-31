@@ -150,8 +150,10 @@ Run examples from the repository root with `uv run examples/FILE.py` and check t
   or `Closes #123` is enough.
 - Preserve existing public APIs and default rule behavior where possible. Discuss intentional compatibility
   changes explicitly, and update affected examples and documentation.
-- Updating [CHANGELOG.md](CHANGELOG.md) is not required in pull requests; the project owner updates it
-  before each release.
+- Updating [CHANGELOG.md](CHANGELOG.md) is optional in ordinary pull requests. Important user-facing
+  changes and deprecation notices can be added between the `unreleased` markers. Maintainers review
+  these notes alongside the generated change list in the release preparation PR.
+- Maintainers: see [RELEASING.md](RELEASING.md) for release preparation, approval and recovery.
 - Use a descriptive title with an appropriate Conventional Commit prefix, such as `fix:`, `feat:`,
   `docs:`, or `ci:`, consistent with the repository's recent history.
 - Submit upstream contributions against `MahjongRepository/mahjong`'s `master` branch unless a maintainer

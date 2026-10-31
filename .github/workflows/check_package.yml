@@ -10,7 +10,7 @@ on:
       - MANIFEST.in
       - README.md
       - LICENSE.txt
-      - tests/check_distribution.py
+      - scripts/check_distribution.py
       - .github/workflows/check_package.yml
   pull_request:
     branches: [master]
@@ -21,9 +21,18 @@ on:
       - MANIFEST.in
       - README.md
       - LICENSE.txt
-      - tests/check_distribution.py
+      - scripts/check_distribution.py
       - .github/workflows/check_package.yml
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+    outputs:
+      artifact-id:
+        description: 'Immutable ID of the built distributions in this run'
+        value: ${{ jobs.build.outputs.artifact-id }}
 
 permissions:
   contents: read
@@ -33,11 +42,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
-      artifact-name: ${{ steps.package.outputs.artifact-name }}
+      artifact-id: ${{ steps.distributions.outputs.artifact-id }}
       package-version: ${{ steps.package.outputs.package_version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.ref }}
           persist-credentials: false
 
       # Builds the wheel from the sdist, checks its contents and PyPI metadata,
@@ -45,6 +55,18 @@ jobs:
       - name: Build and inspect distributions
         id: package
         uses: hynek/build-and-inspect-python-package@67230f7b8410ae0052b39c1efc89d89fff43ff10 # v3.0.2
+        with:
+          upload-name-suffix: -${{ github.run_attempt }}
+
+      - name: Keep distributions by immutable artifact ID
+        id: distributions
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: validated-distributions-${{ github.run_attempt }}
+          path: |
+            ${{ steps.package.outputs.dist }}/*.whl
+            ${{ steps.package.outputs.dist }}/*.tar.gz
+          if-no-files-found: error
 
   install:
     needs: build
@@ -57,6 +79,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.ref }}
           persist-credentials: false
 
       - name: Install uv and the minimum supported Python
@@ -67,7 +90,8 @@ jobs:
       - name: Download distributions
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          name: ${{ needs.build.outputs.artifact-name }}
+          artifact-ids: ${{ needs.build.outputs.artifact-id }}
+          merge-multiple: true
           path: ${{ runner.temp }}/packages
 
       - name: Check an isolated installation
@@ -83,4 +107,4 @@ jobs:
           esac
           test "${#distributions[@]}" -eq 1
           uv run --isolated --no-project --with "${distributions[0]}" \
-            python -I "$GITHUB_WORKSPACE/tests/check_distribution.py" "$EXPECTED_VERSION"
+            python -I "$GITHUB_WORKSPACE/scripts/check_distribution.py" "$EXPECTED_VERSION"
