@@ -1,2 +1,3 @@
 prune examples
+prune scripts
 prune tests
