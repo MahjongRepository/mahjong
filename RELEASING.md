@@ -8,9 +8,10 @@ Releases for older maintenance series are outside its scope.
 
 The repository administrator and PyPI project owner must maintain these settings:
 
-- Protect `master`. Require independent review, an up-to-date PR branch and passing CI.
-  Include `release-preparation` among the required checks.
+- Protect `master` with the ruleset settings below.
 - Allow GitHub Actions to create preparation PRs.
+  In **Settings → Actions → General → Workflow permissions**,
+  enable **Allow GitHub Actions to create and approve pull requests** and click **Save**.
 - Configure the **`pypi`** GitHub Environment to require reviewer approval.
   Prevent self-review. Disable administrator bypass.
   Restrict deployments to the **`master` branch**.
@@ -27,6 +28,30 @@ Configure a PyPI Trusted Publisher for the existing **`mahjong`** project with t
 See [GitHub Environment configuration](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)
 and [PyPI Trusted Publisher setup](https://docs.pypi.org/trusted-publishers/adding-a-publisher/).
 The workflow relies on these protections. It does not configure them or verify their settings.
+
+### Protect `master` with a branch ruleset
+
+In **Settings → Rulesets → Rulesets**, create or edit a branch ruleset targeting `master`.
+Set **Enforcement status** to **Active**. Enable the following parent rules to reveal
+their sub-options:
+
+1. **Require a pull request before merging**:
+   - Set **Required approvals** to **1** or more.
+   - Enable **Require approval of the most recent reviewable push**. The latest push
+     must be approved by someone other than the person who pushed it; GitHub also
+     prevents PR authors from approving their own PRs.
+   - Optionally enable **Dismiss stale pull request approvals when new commits are pushed**
+     to require a new review after further changes.
+2. **Require status checks to pass**:
+   - Enable **Require branches to be up to date before merging**.
+   - Use **Add checks** to require `release-preparation`.
+     If it is unavailable, open or update a PR containing `.github/workflows/check_release.yml`
+     so the check runs, then return to add it.
+
+Only require other CI checks if they run for every PR targeting `master`.
+The current lint, test, documentation and distribution workflows use path filters;
+requiring their checks can leave unrelated PRs blocked with pending checks.
+See [GitHub's guidance on skipped required checks](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks#handling-skipped-but-required-checks).
 
 ## Prepare and publish
 
