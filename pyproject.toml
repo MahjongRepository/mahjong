@@ -64,9 +64,11 @@ lint = [
     "ruff>=0.17.1,<0.18",
 ]
 typing = [
+    "tomli>=2.5.0",
     "ty>=0.0.42",
 ]
 test = [
+    "tomli>=2.5.0; python_version < '3.11'",
     "pytest>=9.0.2,<10",
     "pytest-cov>=7.0.0,<8",
 ]
@@ -119,6 +121,12 @@ convention = "pep257"
     "T201",    # print
     "INP001",  # implicit-namespace-package
 ]
+"./scripts/*" = [
+    "D",       # pydocstyle
+    "T201",    # print
+    "INP001",  # implicit-namespace-package
+    "S101",    # assert
+]
 "./tests/*" = [
     "D",       # pydocstyle
     "S101",    # assert
@@ -128,7 +136,7 @@ convention = "pep257"
 "mahjong/hand_calculating/yaku_list/*.py" = ["ARG002"] # for `is_condition_met()`
 
 [tool.ty.src]
-include = ["mahjong"]
+include = ["mahjong", "scripts"]
 
 [[tool.ty.overrides]]
 include = ["mahjong/hand_calculating/yaku_list/**"] # for `is_condition_met()`

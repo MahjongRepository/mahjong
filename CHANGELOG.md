@@ -1,6 +1,12 @@
 Releases History
 ================
 
+## Unreleased
+
+<!-- unreleased:start -->
+
+<!-- unreleased:end -->
+
 2.1.0 (Oct 24, 2026)
 -------------------
 
