@@ -1,6 +1,6 @@
 [project]
 name = "mahjong"
-version = "2.1.0"
+version = "2.2.0.dev1"
 description = "Mahjong hands calculation"
 authors = [
     { name = "Alexey Lisikhin", email = "alexey@nihisil.com" },

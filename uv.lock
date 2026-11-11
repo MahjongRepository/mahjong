@@ -419,7 +419,7 @@ wheels = [
 
 [[package]]
 name = "mahjong"
-version = "2.1.0"
+version = "2.2.0.dev1"
 source = { editable = "." }
 
 [package.dev-dependencies]

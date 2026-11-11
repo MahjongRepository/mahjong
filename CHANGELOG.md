@@ -20,6 +20,63 @@ Releases History
 - Meld tiles can be given in any order: a chi of `987p` now works the same as `789p`.
 <!-- unreleased:end -->
 
+<!-- release:2.2.0.dev1:start -->
+2.2.0.dev1 (Nov 11, 2026)
+-------------------------
+
+<!-- manual:start -->
+## Behavior changes
+`HandCalculator.estimate_hand_value()` now checks its input more strictly. Some hands that were scored before now return an error in `HandResponse.error` instead.
+
+- **Melds.** Each meld in `melds` must match its type: a chi is three tiles in a row of one suit, a pon is three identical tiles, a kan is four identical tiles. Only a kan can be closed (`opened=False`). All meld tiles must also be in `tiles`. Errors: `meld_invalid`, `meld_tile_not_in_hand`. You can check a meld yourself with the new `Meld.is_valid()`.
+- **Nuki melds.** A `Meld.NUKI` in `melds` returns `nuki_meld_not_supported`. Pass the number of extracted north winds in `HandConfig.num_nuki_dora` instead.
+- **Rinshan.** `is_rinshan=True` needs a kan in `melds` (or `num_nuki_dora` above 0). Error: `rinshan_without_kan_not_allowed`. Rinshan and ippatsu together are rejected too, because a kan after riichi cancels ippatsu. Error: `ippatsu_with_rinshan_not_allowed`.
+- **Tenhou.** `is_tenhou=True` needs `player_wind=EAST`. Before, if `player_wind` was not set, tenhou was paid as a non-dealer win (32000 instead of 48000). Error: `tenhou_not_as_dealer_not_allowed`.
+- **Negative counts.** Negative `tsumi_number`, `kyoutaku_number`, `paarenchan` and `num_nuki_dora` are rejected. Errors: `negative_tsumi_number_not_allowed`, `negative_kyoutaku_number_not_allowed`, `negative_paarenchan_not_allowed`, `negative_nuki_dora_not_allowed`.
+
+## Bug fixes
+- Honor tiles that can't form a pair or a set, for example one extra East in a complete hand, were ignored and the hand still scored. Now the hand is not winning.
+- Kokushi scored even with extra tiles or with a closed kan. Now kokushi needs exactly 14 tiles and no melds.
+- A hand scored when the winning tile was only inside a declared meld, including a closed kan. Now it returns `hand_not_winning`.
+- Meld tiles can be given in any order: a chi of `987p` now works the same as `789p`.
+<!-- manual:end -->
+
+<!-- generated:start -->
+<!-- Release notes generated using configuration in .github/release.yml at 7f1f996c5c3b91912f57a5f2d0b602b2e685e2b6 -->
+
+## What's Changed
+* fix: reject honor tiles that cannot be decomposed by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/315
+* fix: reject kokushi with extra tiles or melds by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/317
+* chore: share Ruff and ty checks through prek by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/320
+* docs: add a contributing guide by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/321
+* fix: validate declared melds in HandCalculator by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/319
+* ci: validate built wheel and source distributions by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/322
+* chore: separate check and fix commands by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/327
+* ci: build documentation when dependencies change by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/328
+* fix: reject rinshan without a kan and ippatsu with rinshan by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/326
+* fix: reject tenhou without a seat wind by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/325
+* docs: derive Sphinx release from package metadata by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/329
+* test: enable pytest warning reporting by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/330
+* ci: test Windows and macOS and verify distributions across platforms by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/331
+* style: normalize documentation index line endings to LF by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/334
+* ci: enable manual runs for tests and publishing workflows by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/335
+* fix: accept meld tiles in any order by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/323
+* ci: fail documentation builds on Sphinx warnings by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/337
+* fix: reject negative honba, riichi sticks, paarenchan and nuki dora by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/336
+* fix: exclude closed kans from winning-group selection by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/338
+* ci: automate release preparation and publishing by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/339
+* ci: exclude dependency updates from generated release notes by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/345
+* ci: match release changelog headings to existing entries by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/346
+* docs: add unreleased notes for 2.2.0 by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/347
+* ci: update actionlint and reusable workflow references by @Apricot-S in https://github.com/MahjongRepository/mahjong/pull/348
+
+## New Contributors
+* @dependabot[bot] made their first contribution in https://github.com/MahjongRepository/mahjong/pull/340
+
+**Full Changelog**: https://github.com/MahjongRepository/mahjong/compare/v2.1.0...v2.2.0.dev1
+<!-- generated:end -->
+<!-- release:2.2.0.dev1:end -->
+
 2.1.0 (Oct 24, 2026)
 -------------------
 
