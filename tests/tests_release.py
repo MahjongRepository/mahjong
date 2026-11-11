@@ -1,5 +1,6 @@
 """Release tooling tests never publish, push, or call a live remote service."""
 
+from datetime import date
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -45,12 +46,20 @@ def test_dev_notes_survive_until_stable_release() -> None:
     text = "## Unreleased\n\n" + release.UNRELEASED.format(manual="Important deprecation.") + "\n\n" + old
     for version in ("2.2.0.dev1", "2.2.0.dev2", "2.2.0"):
         text = release.update_changelog(
-            text, version, release.marked(text, "unreleased"), "## What's Changed\n- Fix", "2026-10-29"
+            text, version, release.marked(text, "unreleased"), "## What's Changed\n- Fix", date(2026, 10, 29)
         )
         assert "Important deprecation." in release.release_body(text, version)
         assert text.endswith(old)
     assert release.marked(text, "unreleased") == ""
     assert "<!--" not in release.release_body(text, "2.2.0")
+
+
+@pytest.mark.parametrize(
+    ("day", "heading"), [(date(2026, 10, 29), "2.2.0 (Oct 29, 2026)"), (date(2026, 11, 2), "2.2.0 (Nov 2, 2026)")]
+)
+def test_release_heading_matches_existing_entries(day: date, heading: str) -> None:
+    text = release.update_changelog(release.UNRELEASED.format(manual=""), "2.2.0", "", "- Fix", day)
+    assert f"<!-- release:2.2.0:start -->\n{heading}\n{'-' * len(heading)}\n\n" in text
 
 
 @pytest.mark.parametrize(
