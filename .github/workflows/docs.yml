@@ -28,7 +28,7 @@ permissions:
 
 jobs:
   build-docs:
-    uses: ./.github/workflows/build_docs.yml # zizmor: ignore[self-repository] -- pinned actionlint does not support $/ yet
+    uses: $/.github/workflows/build_docs.yml
     with:
       ref: ${{ github.sha }}
       upload-pages: >-

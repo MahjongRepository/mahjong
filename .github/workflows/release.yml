@@ -50,7 +50,7 @@ jobs:
     needs: identify
     permissions:
       contents: read
-    uses: ./.github/workflows/lint_and_test.yml # zizmor: ignore[self-repository] -- pinned actionlint does not support $/ yet
+    uses: $/.github/workflows/lint_and_test.yml
     with:
       ref: ${{ needs.identify.outputs.sha }}
 
@@ -59,7 +59,7 @@ jobs:
     needs: identify
     permissions:
       contents: read
-    uses: ./.github/workflows/build_docs.yml # zizmor: ignore[self-repository] -- pinned actionlint does not support $/ yet
+    uses: $/.github/workflows/build_docs.yml
     with:
       ref: ${{ needs.identify.outputs.sha }}
 
@@ -68,7 +68,7 @@ jobs:
     needs: identify
     permissions:
       contents: read
-    uses: ./.github/workflows/check_package.yml # zizmor: ignore[self-repository] -- pinned actionlint does not support $/ yet
+    uses: $/.github/workflows/check_package.yml
     with:
       ref: ${{ needs.identify.outputs.sha }}
 

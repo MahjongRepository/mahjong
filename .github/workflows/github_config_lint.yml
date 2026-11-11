@@ -24,7 +24,7 @@ jobs:
           persist-credentials: false
 
       - name: Lint workflows
-        uses: docker://rhysd/actionlint@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667 # v1.7.12
+        uses: docker://ghcr.io/kjanat/actionlint@sha256:c0a63b3e5c974c2466ead39404b70e448176beaff8c5ec7af0b2e96191aea661 # v1.17.1
         with:
           args: -color
 
