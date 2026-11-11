@@ -1,0 +1,44 @@
+name: Bug report
+description: Report incorrect calculations, errors, or unexpected behavior in mahjong
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please read the [contribution guide](https://github.com/MahjongRepository/mahjong/blob/master/CONTRIBUTING.md) and search existing [issues](https://github.com/MahjongRepository/mahjong/issues) and [pull requests](https://github.com/MahjongRepository/mahjong/pulls) before submitting a report.
+
+  - type: textarea
+    attributes:
+      label: Summary
+      description: |
+        Describe the problem and include a small, runnable Python example with all imports and inputs.
+        Explain the expected result and the actual result. Include relevant output or the full traceback as text.
+
+        Include a rule reference or comparison supporting your expectation, and identify any optional-rule differences when comparing calculators.
+        The [Wiki](https://github.com/MahjongRepository/mahjong/wiki) describes supported rules and usage examples.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Platform
+      description: Include your operating system and CPU architecture.
+      placeholder: e.g., Windows 11 x86_64, Ubuntu 24.04 amd64, macOS 15 arm64
+    validations:
+      required: false
+
+  - type: input
+    attributes:
+      label: Version
+      description: Enter your mahjong version (run `python -m pip show mahjong`), or the commit hash if using a source checkout.
+      placeholder: e.g., 2.0.0
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Python version
+      description: Enter the Python version used to reproduce the problem (run `python --version`).
+      placeholder: e.g., Python 3.13.2
+    validations:
+      required: false
