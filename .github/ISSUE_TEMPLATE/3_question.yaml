@@ -1,0 +1,41 @@
+name: Question
+description: Ask about mahjong usage, calculations, or supported rules
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check the [API reference](https://mahjongrepository.github.io/mahjong) and [Wiki](https://github.com/MahjongRepository/mahjong/wiki), and search existing [issues](https://github.com/MahjongRepository/mahjong/issues) before asking a question.
+
+  - type: textarea
+    attributes:
+      label: Question
+      description: |
+        Explain what you are trying to do and what you would like to understand.
+        Include a small code example or example hand and relevant rule settings where helpful.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Platform
+      description: Include your operating system and CPU architecture if relevant.
+      placeholder: e.g., Windows 11 x86_64, Ubuntu 24.04 amd64, macOS 15 arm64
+    validations:
+      required: false
+
+  - type: input
+    attributes:
+      label: Version
+      description: Enter your mahjong version (run `python -m pip show mahjong`), or the commit hash if using a source checkout.
+      placeholder: e.g., 2.0.0
+    validations:
+      required: false
+
+  - type: input
+    attributes:
+      label: Python version
+      description: Enter the Python version you are using (run `python --version`).
+      placeholder: e.g., Python 3.13.2
+    validations:
+      required: false
