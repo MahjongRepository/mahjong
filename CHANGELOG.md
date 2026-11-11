@@ -4,7 +4,20 @@ Releases History
 ## Unreleased
 
 <!-- unreleased:start -->
+## Behavior changes
+`HandCalculator.estimate_hand_value()` now checks its input more strictly. Some hands that were scored before now return an error in `HandResponse.error` instead.
 
+- **Melds.** Each meld in `melds` must match its type: a chi is three tiles in a row of one suit, a pon is three identical tiles, a kan is four identical tiles. Only a kan can be closed (`opened=False`). All meld tiles must also be in `tiles`. Errors: `meld_invalid`, `meld_tile_not_in_hand`. You can check a meld yourself with the new `Meld.is_valid()`.
+- **Nuki melds.** A `Meld.NUKI` in `melds` returns `nuki_meld_not_supported`. Pass the number of extracted north winds in `HandConfig.num_nuki_dora` instead.
+- **Rinshan.** `is_rinshan=True` needs a kan in `melds` (or `num_nuki_dora` above 0). Error: `rinshan_without_kan_not_allowed`. Rinshan and ippatsu together are rejected too, because a kan after riichi cancels ippatsu. Error: `ippatsu_with_rinshan_not_allowed`.
+- **Tenhou.** `is_tenhou=True` needs `player_wind=EAST`. Before, if `player_wind` was not set, tenhou was paid as a non-dealer win (32000 instead of 48000). Error: `tenhou_not_as_dealer_not_allowed`.
+- **Negative counts.** Negative `tsumi_number`, `kyoutaku_number`, `paarenchan` and `num_nuki_dora` are rejected. Errors: `negative_tsumi_number_not_allowed`, `negative_kyoutaku_number_not_allowed`, `negative_paarenchan_not_allowed`, `negative_nuki_dora_not_allowed`.
+
+## Bug fixes
+- Honor tiles that can't form a pair or a set, for example one extra East in a complete hand, were ignored and the hand still scored. Now the hand is not winning.
+- Kokushi scored even with extra tiles or with a closed kan. Now kokushi needs exactly 14 tiles and no melds.
+- A hand scored when the winning tile was only inside a declared meld, including a closed kan. Now it returns `hand_not_winning`.
+- Meld tiles can be given in any order: a chi of `987p` now works the same as `789p`.
 <!-- unreleased:end -->
 
 2.1.0 (Oct 24, 2026)
