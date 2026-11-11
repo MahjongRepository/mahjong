@@ -118,7 +118,10 @@ jobs:
           git push origin "refs/tags/$TAG"
 
       - name: Publish validated distributions to PyPI
-        run: uv publish --trusted-publishing always dist/*
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+        with:
+          packages-dir: dist/
+          attestations: true
 
       - name: Publish the GitHub Release
         env:
@@ -129,4 +132,4 @@ jobs:
           args=(--latest)
           if [[ "$PRERELEASE" == true ]]; then args=(--prerelease --latest=false); fi
           gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" \
-            --notes-file release-notes.md "${args[@]}" dist/*
+            --notes-file release-notes.md "${args[@]}" dist/*.whl dist/*.tar.gz

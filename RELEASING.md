@@ -73,9 +73,11 @@ See [GitHub's guidance on skipped required checks](https://docs.github.com/en/pu
    A maintainer other than the person who merged the PR must review the results and the
    **identify** job summary. That maintainer then approves the **`pypi`** deployment.
    After approval, the workflow creates the `v{version}` tag.
-   It publishes the validated files to PyPI, then creates the GitHub Release.
-   The GitHub Release uses the reviewed notes and the same files.
-6. Check the PyPI version, GitHub Release notes, attached files and prerelease/Latest flags.
+   It uses `pypa/gh-action-pypi-publish` with Trusted Publishing to generate PEP 740
+   publish attestations and upload them with the validated files to PyPI.
+   It then creates the GitHub Release using the reviewed notes and the same wheel and sdist files.
+6. Check the PyPI version and provenance attestations, GitHub Release notes, attached files
+   and prerelease/Latest flags.
 
 Keep only one preparation PR open. The preparation workflow does not update an existing PR
 or overwrite its branch. To start over, first save any edits you want to keep.
@@ -102,8 +104,9 @@ If you edit dev notes that should carry into the stable release, update `Unrelea
 
 Manually running **Release** is always a dry-run, including upstream.
 Select a prepared branch with matching project/lock versions and a changelog section.
-The workflow validates and builds the release. It does not create a tag, publish to PyPI or
-create a GitHub Release. Forks can also run preparation workflows and Release dry-runs.
+The workflow validates and builds the release. It does not generate publish attestations,
+create a tag, publish to PyPI or create a GitHub Release.
+Forks can also run preparation workflows and Release dry-runs.
 Production publication requires a push to upstream `master`.
 
 ## Failed releases
