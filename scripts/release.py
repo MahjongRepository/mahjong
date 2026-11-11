@@ -6,7 +6,7 @@ import os
 import re
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 if sys.version_info >= (3, 11):
@@ -19,7 +19,7 @@ VERSION = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:\.dev
 UNRELEASED = "<!-- unreleased:start -->\n{manual}\n<!-- unreleased:end -->"
 SECTION = (
     "<!-- release:{version}:start -->\n"
-    "## {version} ({day})\n\n"
+    "{heading}\n{underline}\n\n"
     "<!-- manual:start -->\n{manual}\n<!-- manual:end -->\n\n"
     "<!-- generated:start -->\n{generated}\n<!-- generated:end -->\n"
     "<!-- release:{version}:end -->"
@@ -56,16 +56,21 @@ def marked(text: str, name: str) -> str:
     return text.split(start, 1)[1].split(end, 1)[0].strip()
 
 
+def release_heading(version: str, day: date) -> str:
+    """Title a release like the hand-written changelog entries: ``2.1.0 (Oct 24, 2026)``."""
+    return f"{version} ({day:%b} {day.day}, {day.year})"
+
+
 def release_body(changelog: str, version: str) -> str:
     """Extract the reviewed body, removing only our structural comments."""
     section = marked(changelog, f"release:{version}")
-    require(section.startswith(f"## {version} ("), "Changelog version heading does not match")
+    require(section.startswith(f"{version} ("), "Changelog version heading does not match")
     manual = marked(section, "manual")
     generated = marked(section, "generated")
     return "\n\n".join(part for part in (manual, generated) if part) + "\n"
 
 
-def update_changelog(content: str, version: str, manual: str, generated: str, day: str) -> str:
+def update_changelog(content: str, version: str, manual: str, generated: str, day: date) -> str:
     """Keep old releases intact and retain dev notes for the eventual stable release."""
     version_key(version)
     require(f"<!-- release:{version}:start -->" not in content, "Release already exists in changelog")
@@ -75,7 +80,10 @@ def update_changelog(content: str, version: str, manual: str, generated: str, da
     end = content.index("<!-- unreleased:end -->") + len("<!-- unreleased:end -->")
     retained = manual if ".dev" in version else ""
     replacement = UNRELEASED.format(manual=retained)
-    section = SECTION.format(version=version, day=day, manual=manual, generated=generated.rstrip())
+    heading = release_heading(version, day)
+    section = SECTION.format(
+        version=version, heading=heading, underline="-" * len(heading), manual=manual, generated=generated.rstrip()
+    )
     return content[:start] + replacement + "\n\n" + section + content[end:]
 
 
@@ -141,7 +149,11 @@ def prepare(version: str, notes: Path) -> None:
     manual = marked(content, "unreleased")
     CHANGELOG.write_text(
         update_changelog(
-            content, version, manual, notes.read_text(encoding="utf-8"), datetime.now(timezone.utc).date().isoformat()
+            content=content,
+            version=version,
+            manual=manual,
+            generated=notes.read_text(encoding="utf-8"),
+            day=datetime.now(timezone.utc).date(),
         ),
         encoding="utf-8",
     )
