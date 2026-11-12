@@ -1,0 +1,27 @@
+name: Feature request
+description: Propose a feature, rule option, or improvement to mahjong
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please read the [contribution guide](https://github.com/MahjongRepository/mahjong/blob/master/CONTRIBUTING.md) and search existing [issues](https://github.com/MahjongRepository/mahjong/issues) and [pull requests](https://github.com/MahjongRepository/mahjong/pulls) before submitting a request.
+
+  - type: textarea
+    attributes:
+      label: Summary
+      description: |
+        Explain your use case, the current limitation, and the change you propose.
+        For a new rule or rule option, provide a rule reference if available.
+        Mention any intended changes to existing public APIs or default rule behavior.
+        For documentation improvements, link to the relevant page or section.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Example
+      description: |
+        Show how you would use the proposed feature, such as a Python usage example or an example hand with the expected result.
+    validations:
+      required: false
