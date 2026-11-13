@@ -1,5 +1,6 @@
 """Release tooling tests never publish, push, or call a live remote service."""
 
+import os
 from datetime import date
 from pathlib import Path
 from unittest.mock import Mock
@@ -87,6 +88,21 @@ def checkout(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     return notes
 
 
+@pytest.fixture
+def git_repo(checkout: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Initialize real git in the checkout, isolated from the developer's config, hooks, and git environment."""
+    for name in list(os.environ):
+        if name.startswith("GIT_"):
+            monkeypatch.delenv(name)
+
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", os.devnull)
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
+
+    release.run("git", "init", str(checkout.parent))
+    release.run("git", "config", "user.name", "Release test")
+    release.run("git", "config", "user.email", "release@example.invalid")
+
+
 def test_preparation_allows_review_edits_without_regeneration(checkout: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(release, "run", Mock(return_value="diff"))
     release.prepare("2.2.0.dev1", checkout)
@@ -162,14 +178,12 @@ def test_dependency_only_push_skips_release_without_requiring_notes(monkeypatch:
     assert not Path("release-notes.md").exists()
 
 
+@pytest.mark.usefixtures("git_repo")
 @pytest.mark.parametrize("version", ["2.2.0.dev1", "2.2.0"])
 def test_release_after_normal_branch_updates(
     checkout: Path,
     version: str,
 ) -> None:
-    release.run("git", "init")
-    release.run("git", "config", "user.name", "Release test")
-    release.run("git", "config", "user.email", "release@example.invalid")
     Path("pyproject.toml").write_text('[project]\nname = "mahjong"\nversion = "2.1.0"\n')
     release.run("git", "add", ".")
     release.run("git", "commit", "-m", "Initial state")
@@ -196,11 +210,8 @@ def test_release_after_normal_branch_updates(
     assert "Final reviewed note." in Path("release-notes.md").read_text()
 
 
-@pytest.mark.usefixtures("checkout")
+@pytest.mark.usefixtures("git_repo")
 def test_non_release_push_with_real_git_history(monkeypatch: pytest.MonkeyPatch) -> None:
-    release.run("git", "init")
-    release.run("git", "config", "user.name", "Release test")
-    release.run("git", "config", "user.email", "release@example.invalid")
     release.run("git", "add", ".")
     release.run("git", "commit", "-m", "Initial state")
     base = release.run("git", "rev-parse", "HEAD")
