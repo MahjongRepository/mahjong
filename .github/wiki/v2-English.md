@@ -17,7 +17,7 @@ It supports optional features like:
 | Upper limit for cumulative han of non-yakuman yaku (counted yakuman / counted sanbaiman / no limit) | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
 | Support kiriage mangan | `kiriage` | `False` |
 | Whether to add 2 fu for open pinfu-form ron (totaling 30 fu); when disabled, 1 han 20 fu hands become possible | `fu_for_open_pinfu` | `True` |
-| Disable or enable pinfu tsumo | `fu_for_pinfu_tsumo` | `False` |
+| No pinfu for tsumo wins: a pinfu hand won by tsumo gets 2 fu and no pinfu (30 fu, menzen tsumo only) | `fu_for_pinfu_tsumo` | `False` |
 | Counting renhou as 5 han or yakuman | `renhou_as_yakuman` | `False` |
 | Disable or enable Daisharin yakuman | `has_daisharin` | `False` |
 | Disable or enable Daisharin in other suits (Daisuurin, Daichikurin) | `has_daisharin_other_suits` | `False` |
