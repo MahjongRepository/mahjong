@@ -16,7 +16,7 @@ Python 3.10以上に対応しています。
 | 非役満役の累計飜数の上限設定（数え役満/数え三倍満/上限なし） | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
 | 切り上げ満貫を有効にするかどうか | `kiriage` | `False` |
 | 喰い平和形ロンに2符を追加するかどうか | `fu_for_open_pinfu` | `True` |
-| 平和のツモ符を有効にするかどうか | `fu_for_pinfu_tsumo` | `False` |
+| ピンヅモなしにするかどうか（平和形のツモは平和が付かず、ツモ符2符で30符・門前清自摸和のみ） | `fu_for_pinfu_tsumo` | `False` |
 | 人和を役満とするかどうか（無効の場合は5飜） | `renhou_as_yakuman` | `False` |
 | 大車輪（門前清 22334455667788筒）を有効にするかどうか | `has_daisharin` | `False` |
 | 色違いの大車輪（索子：大竹林、萬子：大数隣）を有効にするかどうか | `has_daisharin_other_suits` | `False` |

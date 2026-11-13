@@ -48,8 +48,9 @@ class OptionalRules:
     :ivar fu_for_open_pinfu: add 2 fu for open pinfu-form ron (totaling 30 fu);
         when False, 1 han 20 fu hands become possible
     :vartype fu_for_open_pinfu: bool
-    :ivar fu_for_pinfu_tsumo: award 2 fu for tsumo on pinfu hands (disabling the 0-fu
-        tsumo pinfu exception)
+    :ivar fu_for_pinfu_tsumo: no pinfu for tsumo wins: a pinfu hand won by tsumo gets 2 fu
+        for the tsumo and no pinfu, so it scores 30 fu with menzen tsumo only;
+        when False, it scores 20 fu with both pinfu and menzen tsumo
     :vartype fu_for_pinfu_tsumo: bool
     :ivar renhou_as_yakuman: treat renhou as yakuman instead of mangan
     :vartype renhou_as_yakuman: bool
@@ -121,7 +122,7 @@ class OptionalRules:
         :param kazoe_limit: kazoe yakuman limit mode
         :param kiriage: round up to mangan at boundary han/fu combinations
         :param fu_for_open_pinfu: award 2 fu for open hands with no other fu sources
-        :param fu_for_pinfu_tsumo: award tsumo fu even for pinfu hands
+        :param fu_for_pinfu_tsumo: no pinfu for tsumo wins; the hand gets 2 fu for the tsumo instead
         :param renhou_as_yakuman: treat renhou as yakuman
         :param has_daisharin: enable daisharin yakuman
         :param has_daisharin_other_suits: allow daisharin in all suits

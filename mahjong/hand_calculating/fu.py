@@ -295,7 +295,7 @@ class FuCalculator:
             fu_details.append(FuDetail(fu=fu, reason=reason))
             fu_total += fu
 
-        # tsumo fu (not for pinfu unless option is enabled)
+        # 2 fu for tsumo; a pinfu hand gets them only when fu_for_pinfu_tsumo is on
         if is_tsumo and (fu_total > 0 or opts.fu_for_pinfu_tsumo):
             fu_details.append(FuDetail(fu=2, reason=FuCalculator.TSUMO))
             fu_total += 2

@@ -16,7 +16,7 @@
 | 非役满役种累计番数上限设置（累计役满/累计三倍满/无限制） | `kazoe_limit` | `HandConstants.KAZOE_LIMITED` |
 | 有无切上满贯 | `kiriage` | `False` |
 | 非门清平和型食和是否+2符（总计30符） | `fu_for_open_pinfu` | `True` |
-| 平和自摸是否仍然+2符（总计30符） | `fu_for_pinfu_tsumo` | `False` |
+| 是否取消自摸平和（平和型自摸不计平和，+2符，共30符，只计门前清自摸和） | `fu_for_pinfu_tsumo` | `False` |
 | 人和是否视为役满（还是只有5番） | `renhou_as_yakuman` | `False` |
 | 是否有大车轮役种（门前清22334455667788饼） | `has_daisharin` | `False` |
 | 是否有其他花色的大车轮役种（索：大竹林，万：大数邻） | `has_daisharin_other_suits` | `False` |
