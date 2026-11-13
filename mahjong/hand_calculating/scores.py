@@ -68,6 +68,9 @@ class ScoresCalculator:
         (mangan, haneman, baiman, sanbaiman, yakuman), then add honba
         and kyoutaku bonuses.
 
+        A nagashi mangan is always paid as a tsumo, without honba or kyoutaku
+        bonuses: it is settled as a draw, so both stay on the table.
+
         A non-dealer ron at 3 han 30 fu:
 
         >>> from mahjong.hand_calculating.scores import ScoresCalculator
@@ -187,20 +190,23 @@ class ScoresCalculator:
             else:  # below mangan
                 pass
 
-        if config.is_tsumo:
+        tsumi_number = 0 if config.is_nagashi_mangan else config.tsumi_number
+        kyoutaku_number = 0 if config.is_nagashi_mangan else config.kyoutaku_number
+
+        if config.is_tsumo or config.is_nagashi_mangan:
             main = double_rounded
-            main_bonus = 100 * config.tsumi_number
+            main_bonus = 100 * tsumi_number
             additional_bonus = main_bonus
             additional = main if config.is_dealer else rounded
 
         else:  # ron
             additional = 0
             additional_bonus = 0
-            main_bonus = (200 if config.options.is_three_player else 300) * config.tsumi_number
+            main_bonus = (200 if config.options.is_three_player else 300) * tsumi_number
             main = six_rounded if config.is_dealer else four_rounded
 
         num_additional = 1 if config.options.is_three_player else 2
-        kyoutaku_bonus = 1000 * config.kyoutaku_number
+        kyoutaku_bonus = 1000 * kyoutaku_number
         total = (main + main_bonus) + num_additional * (additional + additional_bonus) + kyoutaku_bonus
 
         if config.is_nagashi_mangan:
@@ -258,7 +264,7 @@ class Aotenjou(ScoresCalculator):
         four_rounded = (4 * base_points + 99) // 100 * 100
         six_rounded = (6 * base_points + 99) // 100 * 100
 
-        if config.is_tsumo:
+        if config.is_tsumo or config.is_nagashi_mangan:
             main = double_rounded
             additional = double_rounded if config.is_dealer else rounded
         else:
