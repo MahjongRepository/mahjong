@@ -190,6 +190,39 @@ def test_calculate_scores_with_bonus_three_player() -> None:
 
 
 @pytest.mark.parametrize(
+    ("player_wind", "is_three_player", "expected_main", "expected_additional", "expected_total"),
+    [
+        (EAST, False, 4000, 4000, 12000),
+        (WEST, False, 4000, 2000, 8000),
+        (EAST, True, 4000, 4000, 8000),
+        (WEST, True, 4000, 2000, 6000),
+    ],
+)
+def test_nagashi_mangan_is_a_tsumo_without_bonuses(
+    player_wind: int,
+    is_three_player: bool,
+    expected_main: int,
+    expected_additional: int,
+    expected_total: int,
+) -> None:
+    config = HandConfig(
+        player_wind=player_wind,
+        is_nagashi_mangan=True,
+        tsumi_number=2,
+        kyoutaku_number=3,
+        options=OptionalRules(is_three_player=is_three_player),
+    )
+    result = ScoresCalculator.calculate_scores(han=5, fu=30, config=config)
+    assert result["main"] == expected_main
+    assert result["additional"] == expected_additional
+    assert result["main_bonus"] == 0
+    assert result["additional_bonus"] == 0
+    assert result["kyoutaku_bonus"] == 0
+    assert result["total"] == expected_total
+    assert result["yaku_level"] == "nagashi mangan"
+
+
+@pytest.mark.parametrize(
     ("player_wind", "han", "fu", "expected_main"),
     [
         (None, 4, 30, 8000),

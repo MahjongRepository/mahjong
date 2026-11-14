@@ -4,7 +4,8 @@ Releases History
 ## Unreleased
 
 <!-- unreleased:start -->
-
+## Breaking changes
+- **Nagashi mangan.** It is now always paid as a tsumo, even without `is_tsumo=True`, and without honba or riichi sticks, since it is settled as a draw.
 <!-- unreleased:end -->
 
 <!-- release:2.2.0:start -->
