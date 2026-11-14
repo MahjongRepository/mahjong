@@ -58,6 +58,17 @@ class Yaku(ABC):
     is_yakuman: bool = False
     """Whether this yaku is a yakuman (worth 13 han or more)."""
 
+    def __eq__(self, other: object) -> bool:
+        """Compare by ``yaku_id``, regardless of han or display name."""
+        if not isinstance(other, Yaku):
+            return NotImplemented
+
+        return self.yaku_id == other.yaku_id
+
+    def __hash__(self) -> int:
+        """Hash by ``yaku_id``, consistent with :meth:`__eq__`."""
+        return hash(self.yaku_id)
+
     def __str__(self) -> str:
         """Return the yaku name."""
         return self.name

@@ -6,6 +6,12 @@ Releases History
 <!-- unreleased:start -->
 ## Breaking changes
 - **Nagashi mangan.** It is now always paid as a tsumo, even without `is_tsumo=True`, and without honba or riichi sticks, since it is settled as a draw.
+
+## Behavior changes
+- Yaku compare and hash by `yaku_id`, so two yaku with the same id but different han are equal.
+
+## Bug fixes
+- `estimate_hand_value()` no longer changes `HandConfig.yaku`, so reusing a config no longer changes earlier results or keeps `has_double_yakuman=False` in effect.
 <!-- unreleased:end -->
 
 <!-- release:2.2.0:start -->
