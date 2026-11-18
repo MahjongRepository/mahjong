@@ -121,7 +121,8 @@ class OptionalRules:
         :param has_double_yakuman: allow double yakuman scoring
         :param kazoe_limit: kazoe yakuman limit mode
         :param kiriage: round up to mangan at boundary han/fu combinations
-        :param fu_for_open_pinfu: award 2 fu for open hands with no other fu sources
+        :param fu_for_open_pinfu: award 2 fu for open hands won by ron with no other fu sources;
+            an open tsumo always gets the 2 tsumo fu
         :param fu_for_pinfu_tsumo: no pinfu for tsumo wins; the hand gets 2 fu for the tsumo instead
         :param renhou_as_yakuman: treat renhou as yakuman
         :param has_daisharin: enable daisharin yakuman
