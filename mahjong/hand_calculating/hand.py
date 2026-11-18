@@ -36,8 +36,8 @@ def _hand_priority(hand: _CalculatedHand) -> tuple[int, bool, int, int]:
 
 
 def _with_han(yaku: Yaku, han: int) -> Yaku:
-    """Create a yaku of the same type with the han it scores in one hand."""
-    scored = type(yaku)()
+    """Copy a yaku with the han it scores in one hand."""
+    scored = yaku.copy()
     scored.han_closed = han
     if yaku.han_open:
         scored.han_open = han
@@ -54,8 +54,8 @@ def _double_yakuman(yaku: Yaku, config: HandConfig) -> Yaku:
 
 
 def _paarenchan(config: HandConfig) -> Paarenchan:
-    """Create a paarenchan yaku with the hand's consecutive dealer win count."""
-    paarenchan = type(config.yaku.paarenchan)()
+    """Copy the paarenchan yaku with the hand's consecutive dealer win count."""
+    paarenchan = config.yaku.paarenchan.copy()
     paarenchan.set_paarenchan_count(config.paarenchan)
     return paarenchan
 
@@ -435,7 +435,7 @@ class HandCalculator:
                         config.options.has_daisharin_other_suits,
                     )
                     if is_daisharin:
-                        daisharin = type(config.yaku.daisharin)()
+                        daisharin = config.yaku.daisharin.copy()
                         daisharin.rename(hand)
                         hand_yaku.append(daisharin)
 

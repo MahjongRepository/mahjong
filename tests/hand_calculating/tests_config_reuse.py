@@ -63,3 +63,16 @@ def test_aotenjou_removes_precursors_of_renamed_daisharin() -> None:
     assert result.han == 14
     assert _snapshot(result.yaku) == [(0, "Menzen Tsumo", 0, 1), (109, "Daichikurin", 0, 13)]
     assert config.yaku.daisharin.name == "Daisharin"
+
+
+def test_scored_yaku_match_config_yaku_and_keep_custom_attributes() -> None:
+    tiles = TilesConverter.string_to_136_array(sou="119", man="19", pin="19", honors="1234567")
+    win_tile = _string_to_136_tile(sou="1")
+    config = _make_hand_config(disable_double_yakuman=True)
+    config.yaku.daburu_kokushi.name = "Custom Kokushi"
+
+    result = HandCalculator.estimate_hand_value(tiles, win_tile, config=config)
+    assert config.yaku.daburu_kokushi in result.yaku
+    assert config.yaku.daburu_kokushi in set(result.yaku)
+    assert _snapshot(result.yaku) == [(config.yaku.daburu_kokushi.yaku_id, "Custom Kokushi", 0, 13)]
+    assert config.yaku.daburu_kokushi.han_closed == 26

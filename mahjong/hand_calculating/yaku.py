@@ -10,8 +10,12 @@ Concrete yaku are located in the :mod:`~mahjong.hand_calculating.yaku_list`
 and :mod:`~mahjong.hand_calculating.yaku_list.yakuman` packages.
 """
 
+import copy
 from abc import ABC, abstractmethod
 from collections.abc import Collection, Sequence
+from typing import TypeVar
+
+_YakuT = TypeVar("_YakuT", bound="Yaku")
 
 
 class Yaku(ABC):
@@ -58,16 +62,29 @@ class Yaku(ABC):
     is_yakuman: bool = False
     """Whether this yaku is a yakuman (worth 13 han or more)."""
 
+    _origin: "Yaku | None" = None
+    """The yaku this one was copied from by :meth:`copy`, or ``None`` for an original."""
+
+    def copy(self: _YakuT) -> _YakuT:  # noqa: PYI019
+        """
+        Return a copy that compares equal to this yaku, so its han or name can change for one hand.
+
+        :return: shallow copy of this yaku, equal to it and with the same hash
+        """
+        copied = copy.copy(self)
+        copied._origin = self._origin or self  # noqa: SLF001
+        return copied
+
     def __eq__(self, other: object) -> bool:
-        """Compare by ``yaku_id``, regardless of han or display name."""
+        """Compare by identity, treating a copy from :meth:`copy` as the yaku it was copied from."""
         if not isinstance(other, Yaku):
             return NotImplemented
 
-        return self.yaku_id == other.yaku_id
+        return (self._origin or self) is (other._origin or other)
 
     def __hash__(self) -> int:
-        """Hash by ``yaku_id``, consistent with :meth:`__eq__`."""
-        return hash(self.yaku_id)
+        """Hash by identity, consistent with :meth:`__eq__`."""
+        return object.__hash__(self._origin or self)
 
     def __str__(self) -> str:
         """Return the yaku name."""

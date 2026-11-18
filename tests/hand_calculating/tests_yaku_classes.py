@@ -112,16 +112,29 @@ def test_paarenchan_str_after_set_count() -> None:
     assert str(yaku) == "Paarenchan 3"
 
 
-def test_yaku_with_same_id_are_equal() -> None:
+def test_yaku_copy_equals_its_original() -> None:
     """
-    Verify yaku compare by yaku_id, so a copy with another han equals its original.
+    Verify a copy with another han equals and hashes as the yaku it was copied from.
     """
     dora = Dora()
-    scored = copy.copy(dora)
+    scored = dora.copy()
     scored.han_closed = 3
 
     assert scored == dora
+    assert scored.copy() == dora
     assert hash(scored) == hash(dora)
+    assert dora.han_closed == 1
+
+
+def test_separate_yaku_instances_are_not_equal() -> None:
+    """
+    Verify separate instances of one yaku class stay distinct, as are plain copy.copy() copies.
+    """
+    dora = Dora()
+
+    assert dora != Dora()
+    assert dora != copy.copy(dora)
+    assert dora.copy() != Dora().copy()
     assert dora != UraDora()
     assert dora != dora.yaku_id
 
