@@ -6,6 +6,9 @@ Releases History
 <!-- unreleased:start -->
 ## Breaking changes
 - **Nagashi mangan.** It is now always paid as a tsumo, even without `is_tsumo=True`, and without honba or riichi sticks, since it is settled as a draw.
+
+## Bug fixes
+- A tenhou with kokushi, chuuren poutou or suuankou scored differently depending on `win_tile`. Now it always scores the thirteen-sided, nine-sided or tanki form.
 <!-- unreleased:end -->
 
 <!-- release:2.2.0:start -->

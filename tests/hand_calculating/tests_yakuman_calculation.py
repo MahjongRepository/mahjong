@@ -449,11 +449,11 @@ def test_kokushi_musou_multiple_yakuman() -> None:
 
     assert hand_calculation.error is None
     assert len(hand_calculation.yaku) == 2
-    assert hand_config.yaku.kokushi in hand_calculation.yaku
-    assert hand_config.yaku.daburu_kokushi not in hand_calculation.yaku
+    assert hand_config.yaku.kokushi not in hand_calculation.yaku
+    assert hand_config.yaku.daburu_kokushi in hand_calculation.yaku
     assert hand_config.yaku.tenhou in hand_calculation.yaku
     assert hand_config.yaku.chiihou not in hand_calculation.yaku
-    assert hand_calculation.han == 26
+    assert hand_calculation.han == 39
 
     hand_config = HandConfig(is_tsumo=True, is_tenhou=False, is_chiihou=True)
 
@@ -858,3 +858,70 @@ def test_suuankou_wins_over_kazoe_capped_at_sanbaiman() -> None:
     assert result.han == 13
     assert [yaku.name for yaku in result.yaku] == ["Suu Ankou"]
     assert result.cost["total"] == 32000
+
+
+_TENHOU_HANDS = [
+    pytest.param(TilesConverter.string_to_136_array(man="11123345678999"), "daburu_chuuren_poutou", id="chuuren"),
+    pytest.param(
+        TilesConverter.string_to_136_array(sou="19", pin="19", man="19", honors="12345677"),
+        "daburu_kokushi",
+        id="kokushi",
+    ),
+    pytest.param(
+        TilesConverter.string_to_136_array(man="111", pin="222", sou="333444", honors="55"),
+        "suuankou_tanki",
+        id="suuankou",
+    ),
+]
+
+
+def _tenhou_config(has_double_yakuman: bool) -> HandConfig:
+    return HandConfig(
+        is_tsumo=True,
+        is_tenhou=True,
+        player_wind=EAST,
+        options=OptionalRules(has_double_yakuman=has_double_yakuman),
+    )
+
+
+@pytest.mark.parametrize(("has_double_yakuman", "yakuman_count"), [(True, 3), (False, 2)])
+@pytest.mark.parametrize(("tiles", "double_form"), _TENHOU_HANDS)
+def test_tenhou_names_the_double_form_whichever_tile_is_the_win_tile(
+    tiles: list[int], double_form: str, has_double_yakuman: bool, yakuman_count: int
+) -> None:
+    config = _tenhou_config(has_double_yakuman)
+    expected_yaku = sorted([getattr(config.yaku, double_form), config.yaku.tenhou], key=str)
+
+    for win_tile in tiles:
+        result = HandCalculator.estimate_hand_value(tiles, win_tile, config=config)
+        assert result.error is None
+        assert sorted(result.yaku, key=str) == expected_yaku
+        assert result.han == 13 * yakuman_count
+        assert result.cost["main"] == 16000 * yakuman_count
+        assert result.cost["additional"] == 16000 * yakuman_count
+
+
+@pytest.mark.parametrize("has_double_yakuman", [True, False])
+@pytest.mark.parametrize(("tiles", "double_form"), _TENHOU_HANDS)
+def test_tenhou_scores_the_same_whichever_tile_is_the_win_tile(
+    tiles: list[int], double_form: str, has_double_yakuman: bool
+) -> None:
+    config = _tenhou_config(has_double_yakuman)
+
+    results = set()
+    for win_tile in tiles:
+        result = HandCalculator.estimate_hand_value(tiles, win_tile, config=config)
+        results.add((result.han, result.fu, tuple(str(yaku) for yaku in result.yaku), result.cost["total"]))
+
+    assert len(results) == 1, double_form
+
+
+def test_chiihou_keeps_the_wait_of_its_drawn_tile() -> None:
+    tiles = TilesConverter.string_to_136_array(man="11123345678999")
+    win_tile = _string_to_136_tile(man="1")
+    config = HandConfig(is_tsumo=True, is_chiihou=True)
+
+    result = HandCalculator.estimate_hand_value(tiles, win_tile, config=config)
+    assert result.error is None
+    assert sorted(result.yaku, key=str) == sorted([config.yaku.chuuren_poutou, config.yaku.chiihou], key=str)
+    assert result.han == 26

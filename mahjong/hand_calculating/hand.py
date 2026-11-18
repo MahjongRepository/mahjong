@@ -8,6 +8,12 @@ from mahjong.hand_calculating.hand_config import HandConfig
 from mahjong.hand_calculating.hand_response import HandResponse
 from mahjong.hand_calculating.scores import Aotenjou, ScoresCalculator, ScoresResult
 from mahjong.hand_calculating.yaku import Yaku
+from mahjong.hand_calculating.yaku_list.yakuman import (
+    DaburuChuurenPoutou,
+    DaburuKokushiMusou,
+    DaiSuushii,
+    SuuankouTanki,
+)
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 from mahjong.utils import build_dora_count_map, classify_hand_suits, count_dora_for_hand, plus_dora
@@ -22,16 +28,21 @@ class _CalculatedHand(TypedDict):
     fu_details: list[FuDetail]
 
 
-def _hand_priority(hand: _CalculatedHand) -> tuple[int, bool, int, int]:
+_DOUBLE_YAKUMAN_FORMS = (DaburuKokushiMusou, SuuankouTanki, DaburuChuurenPoutou, DaiSuushii)
+
+
+def _hand_priority(hand: _CalculatedHand) -> tuple[int, bool, int, int, int]:
     """
     Rank a hand decomposition, the most expensive one is used.
 
     The highest score wins, and on an equal score a real yakuman wins over counted (kazoe)
-    yakuman built from regular yaku, as on Tenhou.
+    yakuman built from regular yaku, as on Tenhou. Then the reading with more double yakuman
+    forms wins, so a tenhou names the double form even when it counts as one yakuman.
     """
     total = hand["cost"]["total"] if hand["cost"] else -1
     has_yakuman = any(yaku.is_yakuman for yaku in hand["hand_yaku"])
-    return total, has_yakuman, hand["han"], hand["fu"]
+    double_forms = sum(isinstance(yaku, _DOUBLE_YAKUMAN_FORMS) for yaku in hand["hand_yaku"]) if has_yakuman else 0
+    return total, has_yakuman, double_forms, hand["han"], hand["fu"]
 
 
 # suit bitmask: sou=1, pin=2, man=4
@@ -141,6 +152,9 @@ class HandCalculator:
         Validate the hand and win conditions, decompose the hand into all possible
         block combinations, evaluate yaku and fu for each decomposition, and return
         the highest-scoring result as a :class:`~mahjong.hand_calculating.hand_response.HandResponse`.
+
+        A tenhou has no winning tile, so each tile kind in it is tried as one, and ``win_tile``
+        does not change the result.
 
         Basic closed ron with tanyao:
 
@@ -365,6 +379,8 @@ class HandCalculator:
             config.yaku.round_wind_north,
         )
 
+        win_tiles = list({tile // 4: tile for tile in tiles}.values()) if config.is_tenhou else [win_tile]
+
         calculated_hands: list[_CalculatedHand] = []
         meld_blocks = [meld._sorted_tiles_34 for meld in melds]  # noqa: SLF001
         for hand in hand_options:
@@ -390,14 +406,20 @@ class HandCalculator:
             suit_mask, honor_count = classify_hand_suits(hand)
             has_honors = honor_count > 0
 
-            win_groups = HandCalculator._find_win_groups(win_tile, hand, meld_blocks)
-            for win_group in win_groups:
+            win_groups = [
+                (candidate_win_tile, win_group)
+                for candidate_win_tile in win_tiles
+                for win_group in HandCalculator._find_win_groups(candidate_win_tile, hand, meld_blocks)
+            ]
+            for candidate_win_tile, win_group in win_groups:
                 cost = None
                 error = None
                 hand_yaku = []
                 han = 0
 
-                fu_details, fu = FuCalculator.calculate_fu(hand, win_tile, win_group, config, valued_tiles, melds)
+                fu_details, fu = FuCalculator.calculate_fu(
+                    hand, candidate_win_tile, win_group, config, valued_tiles, melds
+                )
 
                 is_pinfu = len(fu_details) == 1 and not is_chiitoitsu and not is_open_hand
 
@@ -525,7 +547,7 @@ class HandCalculator:
                     if config.yaku.toitoi.is_condition_met(hand):
                         hand_yaku.append(config.yaku.toitoi)
 
-                    if config.yaku.sanankou.is_condition_met(hand, win_tile, melds, config.is_tsumo):
+                    if config.yaku.sanankou.is_condition_met(hand, candidate_win_tile, melds, config.is_tsumo):
                         hand_yaku.append(config.yaku.sanankou)
 
                     # sanshoku douko requires same triplet in all 3 suits
@@ -565,13 +587,15 @@ class HandCalculator:
 
                     # closed kan can't be used in chuuren_poutou; requires terminals
                     if not melds and not is_tanyao_hand and config.yaku.chuuren_poutou.is_condition_met(hand):
-                        if tiles_34[win_tile // 4] == 2 or tiles_34[win_tile // 4] == 4:
+                        if tiles_34[candidate_win_tile // 4] == 2 or tiles_34[candidate_win_tile // 4] == 4:
                             hand_yaku.append(config.yaku.daburu_chuuren_poutou)
                         else:
                             hand_yaku.append(config.yaku.chuuren_poutou)
 
-                    if not is_open_hand and config.yaku.suuankou.is_condition_met(hand, win_tile, config.is_tsumo):
-                        if tiles_34[win_tile // 4] == 2:
+                    if not is_open_hand and config.yaku.suuankou.is_condition_met(
+                        hand, candidate_win_tile, config.is_tsumo
+                    ):
+                        if tiles_34[candidate_win_tile // 4] == 2:
                             hand_yaku.append(config.yaku.suuankou_tanki)
                         else:
                             hand_yaku.append(config.yaku.suuankou)
@@ -645,7 +669,7 @@ class HandCalculator:
 
         # exception hand
         if not melds and config.yaku.kokushi.is_condition_met(None, tiles_34):
-            if tiles_34[win_tile // 4] == 2:
+            if any(tiles_34[candidate_win_tile // 4] == 2 for candidate_win_tile in win_tiles):
                 hand_yaku.append(config.yaku.daburu_kokushi)
             else:
                 hand_yaku.append(config.yaku.kokushi)
