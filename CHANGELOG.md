@@ -7,6 +7,9 @@ Releases History
 ## Breaking changes
 - **Nagashi mangan.** It is now always paid as a tsumo, even without `is_tsumo=True`, and without honba or riichi sticks, since it is settled as a draw.
 
+## Behavior changes
+- **Open hands with no other fu won by tsumo.** They now always get the 2 tsumo fu, so they score 30 fu. Before, `fu_for_open_pinfu=False` scored them at 20 fu, and with the default `fu_for_open_pinfu=True` the 2 fu appeared in `fu_details` as `hand_without_fu` instead of `tsumo`. `fu_for_open_pinfu` now applies to ron only.
+
 ## Bug fixes
 - A tenhou with kokushi, chuuren poutou or suuankou scored differently depending on `win_tile`. Now it always scores the thirteen-sided, nine-sided or tanki form.
 <!-- unreleased:end -->

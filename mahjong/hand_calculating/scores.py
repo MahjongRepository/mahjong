@@ -278,7 +278,7 @@ class Aotenjou(ScoresCalculator):
             main_bonus=0,
             additional_bonus=0,
             kyoutaku_bonus=0,
-            total=main + 2 * additional,
+            total=main + (1 if config.options.is_three_player else 2) * additional,
             yaku_level="",
         )
 
@@ -303,14 +303,15 @@ class Aotenjou(ScoresCalculator):
 
         if config.yaku.tsuisou in hand_yaku:
             # for tsuuiisou we need to remove toitoi and honroto
-            hand_yaku.remove(config.yaku.toitoi)
+            if config.yaku.toitoi in hand_yaku:
+                hand_yaku.remove(config.yaku.toitoi)
             hand_yaku.remove(config.yaku.honroto)
 
         if config.yaku.shosuushi in hand_yaku:
             # for shosuushi we do not need to remove anything
             pass
 
-        if config.yaku.daisuushi in hand_yaku:
+        if config.yaku.daisuushi in hand_yaku and config.yaku.toitoi in hand_yaku:
             # for daisuushi we need to remove toitoi
             hand_yaku.remove(config.yaku.toitoi)
 
@@ -323,7 +324,8 @@ class Aotenjou(ScoresCalculator):
 
         if config.yaku.chinroto in hand_yaku:
             # for chinroto we need to remove toitoi and honroto
-            hand_yaku.remove(config.yaku.toitoi)
+            if config.yaku.toitoi in hand_yaku:
+                hand_yaku.remove(config.yaku.toitoi)
             hand_yaku.remove(config.yaku.honroto)
 
         if config.yaku.suukantsu in hand_yaku and config.yaku.toitoi in hand_yaku:
