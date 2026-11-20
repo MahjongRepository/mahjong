@@ -278,7 +278,7 @@ class Aotenjou(ScoresCalculator):
             main_bonus=0,
             additional_bonus=0,
             kyoutaku_bonus=0,
-            total=main + 2 * additional,
+            total=main + (1 if config.options.is_three_player else 2) * additional,
             yaku_level="",
         )
 
