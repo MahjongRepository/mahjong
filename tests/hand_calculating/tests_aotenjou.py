@@ -1,5 +1,8 @@
-from mahjong.constants import EAST
+import pytest
+
+from mahjong.constants import EAST, WEST
 from mahjong.hand_calculating.hand import HandCalculator
+from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.hand_calculating.scores import Aotenjou
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
@@ -351,6 +354,65 @@ def test_ryuisou() -> None:
     assert result.cost["main"] + result.cost["additional"] == 20971600
 
 
+@pytest.mark.parametrize(
+    ("tiles_kwargs", "win_tile_kwargs", "is_tsumo", "expected_han", "expected_yaku"),
+    [
+        pytest.param(
+            {"honors": "11223344556677"},
+            {"honors": "7"},
+            False,
+            15,
+            {"Chiitoitsu", "Tsuu Iisou"},
+            id="tsuuiisou_chiitoitsu",
+        ),
+        pytest.param(
+            {"honors": "11122233344455"},
+            {"honors": "5"},
+            False,
+            67,
+            {
+                "Yakuhai (seat wind east)",
+                "Yakuhai (round wind east)",
+                "Tsuu Iisou",
+                "Dai Suushii",
+                "Suu Ankou Tanki",
+            },
+            id="tsuuiisou_daisuushii",
+        ),
+        pytest.param(
+            {"man": "111999", "pin": "111999", "sou": "11"},
+            {"sou": "1"},
+            True,
+            40,
+            {"Menzen Tsumo", "Chinroutou", "Suu Ankou Tanki"},
+            id="chinroutou_suuankou",
+        ),
+    ],
+)
+def test_overlapping_yakuman_remove_toitoi_once(
+    tiles_kwargs: dict,
+    win_tile_kwargs: dict,
+    is_tsumo: bool,
+    expected_han: int,
+    expected_yaku: set[str],
+) -> None:
+    hand = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(**tiles_kwargs)
+    win_tile = _string_to_136_tile(**win_tile_kwargs)
+
+    result = hand.estimate_hand_value(
+        tiles,
+        win_tile,
+        scores_calculator_factory=Aotenjou,
+        config=_make_hand_config(is_tsumo=is_tsumo, player_wind=EAST, round_wind=EAST),
+    )
+    assert result.error is None
+    assert result.han == expected_han
+    assert len(result.yaku) == len(expected_yaku)
+    assert {x.name for x in result.yaku} == expected_yaku
+
+
 def test_aotenjou_kokushi_tsumo() -> None:
     hand = HandCalculator()
 
@@ -411,3 +473,30 @@ def test_aotenjou_kokushi_with_ura_dora() -> None:
     assert result.error is None
     assert result.han == 27
     assert result.fu == 40
+
+
+@pytest.mark.parametrize(
+    ("is_three_player", "player_wind", "expected_additional", "expected_total"),
+    [
+        pytest.param(False, EAST, 3900, 11700, id="four_player_dealer"),
+        pytest.param(False, WEST, 2000, 7900, id="four_player_non_dealer"),
+        pytest.param(True, EAST, 3900, 7800, id="three_player_dealer"),
+        pytest.param(True, WEST, 2000, 5900, id="three_player_non_dealer"),
+    ],
+)
+def test_aotenjou_tsumo_total_counts_paying_opponents(
+    is_three_player: bool,
+    player_wind: int,
+    expected_additional: int,
+    expected_total: int,
+) -> None:
+    config = HandConfig(
+        is_tsumo=True,
+        player_wind=player_wind,
+        options=OptionalRules(is_three_player=is_three_player),
+    )
+
+    result = Aotenjou.calculate_scores(han=4, fu=30, config=config)
+    assert result["main"] == 3900
+    assert result["additional"] == expected_additional
+    assert result["total"] == expected_total
