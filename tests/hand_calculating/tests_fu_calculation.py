@@ -98,6 +98,41 @@ def test_open_hand_without_additional_fu_2() -> None:
     assert fu == 20
 
 
+@pytest.mark.parametrize("fu_for_open_pinfu", [True, False])
+def test_open_hand_without_additional_fu_tsumo_gets_tsumo_fu(fu_for_open_pinfu: bool) -> None:
+    fu_calculator = FuCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="23478", man="234567", pin="22")
+    win_tile = _string_to_136_tile(sou="6")
+    hand = _hand(TilesConverter.to_34_array([*tiles, win_tile]))
+    melds = [_make_meld(Meld.CHI, sou="234")]
+
+    config = HandConfig(is_tsumo=True, options=OptionalRules(fu_for_open_pinfu=fu_for_open_pinfu))
+    fu_details, fu = fu_calculator.calculate_fu(hand, win_tile, _get_win_group(hand, win_tile), config, melds=melds)
+    assert len(fu_details) == 2
+    assert {"fu": 20, "reason": FuCalculator.BASE} in fu_details
+    assert {"fu": 2, "reason": FuCalculator.TSUMO} in fu_details
+    assert fu == 30
+
+
+@pytest.mark.parametrize("fu_for_open_pinfu", [True, False])
+def test_open_hand_without_additional_fu_tsumo_hand_value(fu_for_open_pinfu: bool) -> None:
+    calculator = HandCalculator()
+
+    tiles = TilesConverter.string_to_136_array(sou="234678", man="234567", pin="22")
+    win_tile = _string_to_136_tile(sou="6")
+    melds = [_make_meld(Meld.CHI, sou="234")]
+
+    config = HandConfig(
+        is_tsumo=True,
+        options=OptionalRules(has_open_tanyao=True, fu_for_open_pinfu=fu_for_open_pinfu),
+    )
+    result = calculator.estimate_hand_value(tiles, win_tile, melds=melds, config=config)
+    assert result.error is None
+    assert result.han == 1
+    assert result.fu == 30
+
+
 def test_tsumo_hand_base() -> None:
     fu_calculator = FuCalculator()
     config = HandConfig(is_tsumo=True)

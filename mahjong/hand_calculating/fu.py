@@ -296,12 +296,12 @@ class FuCalculator:
             fu_total += fu
 
         # 2 fu for tsumo; a pinfu hand gets them only when fu_for_pinfu_tsumo is on
-        if is_tsumo and (fu_total > 0 or opts.fu_for_pinfu_tsumo):
+        if is_tsumo and (is_open_hand or fu_total > 0 or opts.fu_for_pinfu_tsumo):
             fu_details.append(FuDetail(fu=2, reason=FuCalculator.TSUMO))
             fu_total += 2
 
         # open pinfu: no 1-20 hands exist, add 2 fu
-        if is_open_hand and fu_total == 0 and opts.fu_for_open_pinfu:
+        if is_open_hand and not is_tsumo and fu_total == 0 and opts.fu_for_open_pinfu:
             fu_details.append(FuDetail(fu=2, reason=FuCalculator.HAND_WITHOUT_FU))
             fu_total += 2
 
