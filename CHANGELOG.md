@@ -9,6 +9,21 @@ Releases History
 
 ## Behavior changes
 - **Open hands with no other fu won by tsumo.** They now always get the 2 tsumo fu, so they score 30 fu. Before, `fu_for_open_pinfu=False` scored them at 20 fu, and with the default `fu_for_open_pinfu=True` the 2 fu appeared in `fu_details` as `hand_without_fu` instead of `tsumo`. `fu_for_open_pinfu` now applies to ron only.
+
+## Bug fixes
+- `estimate_hand_value()` no longer changes `HandConfig.yaku`, so reusing a config no longer changes earlier results or keeps `has_double_yakuman=False` in effect.
+  Per-hand yaku such as dora are now copies that still compare equal to the `config.yaku` entries. For a closed hand with three dora, where `scored_dora` is the dora entry in `result.yaku`:
+
+  ```python
+  scored_dora is config.yaku.dora  # Before: True   After: False
+  scored_dora == config.yaku.dora  # Before: True   After: True
+  config.yaku.dora in result.yaku  # Before: True   After: True
+
+  scored_dora.han_closed           # Before: 3      After: 3
+  config.yaku.dora.han_closed      # Before: 3      After: 1
+  ```
+
+  Keep using `in` to check for a yaku, and read the han of a hand from its entry in `result.yaku`.
 <!-- unreleased:end -->
 
 <!-- release:2.2.0:start -->

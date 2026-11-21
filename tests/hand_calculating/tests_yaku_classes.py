@@ -1,3 +1,5 @@
+import copy
+
 import pytest
 
 from mahjong.hand_calculating.yaku import Yaku
@@ -108,6 +110,34 @@ def test_paarenchan_str_after_set_count() -> None:
     yaku = Paarenchan()
     yaku.set_paarenchan_count(3)
     assert str(yaku) == "Paarenchan 3"
+
+
+def test_yaku_copy_equals_its_original() -> None:
+    """
+    Verify a copy with another han equals and hashes as the yaku it was copied from.
+    """
+    dora = Dora()
+    scored = dora.copy()
+    scored.han_closed = 3
+
+    assert scored == dora
+    assert scored.copy() == dora
+    assert hash(scored) == hash(dora)
+    assert dora.han_closed == 1
+
+
+def test_separate_yaku_instances_are_not_equal() -> None:
+    """
+    Verify separate instances of one yaku class stay distinct, as are plain copy.copy() copies.
+    """
+    dora = Dora()
+
+    assert dora != Dora()
+    assert dora != copy.copy(dora)
+    assert dora.copy() != Dora().copy()
+    assert copy.copy(dora.copy()) != dora
+    assert dora != UraDora()
+    assert dora != dora.yaku_id
 
 
 def test_chuuren_poutou_is_condition_met_returns_false_for_wrong_length() -> None:
