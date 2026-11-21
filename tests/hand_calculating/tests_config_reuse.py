@@ -1,3 +1,7 @@
+import copy
+
+import pytest
+
 from mahjong.constants import EAST
 from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.scores import Aotenjou
@@ -76,3 +80,19 @@ def test_scored_yaku_match_config_yaku_and_keep_custom_attributes() -> None:
     assert config.yaku.daburu_kokushi in set(result.yaku)
     assert _snapshot(result.yaku) == [(config.yaku.daburu_kokushi.yaku_id, "Custom Kokushi", 0, 13)]
     assert config.yaku.daburu_kokushi.han_closed == 26
+
+
+@pytest.mark.parametrize("disable_double_yakuman", [False, True])
+def test_plain_copy_of_scored_yaku_is_separate(disable_double_yakuman: bool) -> None:
+    tiles = TilesConverter.string_to_136_array(sou="119", man="19", pin="19", honors="1234567")
+    win_tile = _string_to_136_tile(sou="1")
+    config = _make_hand_config(disable_double_yakuman=disable_double_yakuman)
+
+    result = HandCalculator.estimate_hand_value(tiles, win_tile, config=config)
+    scored = result.yaku[0]
+    copied = copy.copy(scored)
+
+    assert scored == config.yaku.daburu_kokushi
+    assert copied != scored
+    assert len({scored: 1, copied: 2}) == 2
+    assert (copied.name, copied.han_closed) == (scored.name, scored.han_closed)

@@ -75,6 +75,17 @@ class Yaku(ABC):
         copied._origin = self._origin or self  # noqa: SLF001
         return copied
 
+    def __copy__(self: _YakuT) -> _YakuT:  # noqa: PYI019
+        """
+        Return a shallow copy that is a separate yaku, even when this one was made by :meth:`copy`.
+
+        :return: shallow copy of this yaku, equal only to itself
+        """
+        copied = self.__class__.__new__(self.__class__)
+        copied.__dict__.update(self.__dict__)
+        copied.__dict__.pop("_origin", None)
+        return copied
+
     def __eq__(self, other: object) -> bool:
         """Compare by identity, treating a copy from :meth:`copy` as the yaku it was copied from."""
         if not isinstance(other, Yaku):

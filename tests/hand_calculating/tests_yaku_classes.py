@@ -135,6 +135,7 @@ def test_separate_yaku_instances_are_not_equal() -> None:
     assert dora != Dora()
     assert dora != copy.copy(dora)
     assert dora.copy() != Dora().copy()
+    assert copy.copy(dora.copy()) != dora
     assert dora != UraDora()
     assert dora != dora.yaku_id
 
