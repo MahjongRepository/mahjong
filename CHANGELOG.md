@@ -4,12 +4,39 @@ Releases History
 ## Unreleased
 
 <!-- unreleased:start -->
+
+<!-- unreleased:end -->
+
+<!-- release:2.3.0:start -->
+2.3.0 (Nov 22, 2026)
+--------------------
+
+<!-- manual:start -->
 ## Breaking changes
 - **Nagashi mangan.** It is now always paid as a tsumo, even without `is_tsumo=True`, and without honba or riichi sticks, since it is settled as a draw.
 
 ## Behavior changes
 - **Open hands with no other fu won by tsumo.** They now always get the 2 tsumo fu, so they score 30 fu. Before, `fu_for_open_pinfu=False` scored them at 20 fu, and with the default `fu_for_open_pinfu=True` the 2 fu appeared in `fu_details` as `hand_without_fu` instead of `tsumo`. `fu_for_open_pinfu` now applies to ron only.
-<!-- unreleased:end -->
+<!-- manual:end -->
+
+<!-- generated:start -->
+<!-- Release notes generated using configuration in .github/release.yml at 0b0180b2df0b4069ac15c4284cde0f8a4c72d1ab -->
+
+## What's Changed
+* test: isolate release tests from user git config by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/355
+* docs: explain that fu_for_pinfu_tsumo removes pinfu on tsumo by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/356
+* fix: pay nagashi mangan as a tsumo without honba or riichi sticks by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/358
+* Avoid removing toitoi twice in aotenjou scoring by @YiheHuang in https://github.com/MahjongRepository/mahjong/pull/361
+* Count only paying opponents in aotenjou three-player total by @YiheHuang in https://github.com/MahjongRepository/mahjong/pull/362
+* test: add aotenjou regression tests by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/363
+* fix: give open no-fu hands the tsumo fu on tsumo by @Nihisil in https://github.com/MahjongRepository/mahjong/pull/359
+
+## New Contributors
+* @YiheHuang made their first contribution in https://github.com/MahjongRepository/mahjong/pull/361
+
+**Full Changelog**: https://github.com/MahjongRepository/mahjong/compare/v2.2.0...v2.3.0
+<!-- generated:end -->
+<!-- release:2.3.0:end -->
 
 <!-- release:2.2.0:start -->
 2.2.0 (Nov 12, 2026)
